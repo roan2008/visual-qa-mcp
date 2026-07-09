@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-02",
+  "title": "Wrong axis unit",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "wrong_axis_unit",
+  "image_id": "mutated-02",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {}
+}

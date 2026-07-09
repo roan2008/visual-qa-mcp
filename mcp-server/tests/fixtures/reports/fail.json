@@ -1,0 +1,28 @@
+{
+  "image_id": "sample-fail",
+  "spec_id": "chart-fail",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-fail",
+      "type": "chart_value_mismatch",
+      "severity": "critical",
+      "message": "A bar value is wrong.",
+      "evidence": {
+        "expected_value": 70,
+        "detected_value": 52
+      },
+      "recommendation": "Correct the bar height."
+    }
+  ],
+  "checks_run": ["bar-values-match-data"],
+  "checks_skipped": [],
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-fail",
+      "kind": "bbox",
+      "bbox": [200, 120, 250, 350],
+      "label": "Value mismatch"
+    }
+  ]
+}

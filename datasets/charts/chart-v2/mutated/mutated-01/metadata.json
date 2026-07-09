@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-01",
+  "title": "Wrong bar height zero baseline",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "wrong_bar_height",
+  "image_id": "mutated-01",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {}
+}

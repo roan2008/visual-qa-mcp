@@ -1,0 +1,25 @@
+{
+  "image_id": "mutated-06",
+  "spec_id": "chart-mutated-06",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [
+    "bar-count-matches",
+    "axis-scale-monotonic",
+    "axis-label-present",
+    "axis-unit-present"
+  ],
+  "checks_skipped": [
+    {
+      "check_id": "axis-scale-readable",
+      "reason": "Insufficient readable tick labels to derive a stable axis scale."
+    },
+    {
+      "check_id": "bar-values-match-data",
+      "reason": "Insufficient readable tick labels to derive a stable axis scale."
+    }
+  ],
+  "confidence": 0.4,
+  "overlay_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-06\\overlay.png",
+  "evidence_graph_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-06\\evidence_graph.json"
+}

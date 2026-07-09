@@ -1,0 +1,25 @@
+{
+  "gate": "gate-1-scale-contract-review",
+  "scope": "chart-only bar chart verifier v2",
+  "checks": [
+    "chart_value_consistency",
+    "bar_count_matches",
+    "axis_label_present",
+    "axis_unit_present",
+    "axis_scale_readable",
+    "axis_scale_monotonic",
+    "axis_zero_line_resolved_for_signed"
+  ],
+  "contract_changes": [
+    "Tick label detections are first-class evidence.",
+    "Axis mapping is explicit in EvidenceGraph.",
+    "Bars derive values from axis mapping rather than metadata max_value."
+  ],
+  "release_rule": "missing or contradictory scale evidence must not produce pass",
+  "non_goals": [
+    "physics",
+    "mechanical",
+    "medical",
+    "broad real-world chart QA claim"
+  ]
+}

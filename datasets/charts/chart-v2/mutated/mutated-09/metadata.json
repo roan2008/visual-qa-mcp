@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-09",
+  "title": "Wrong bar height non-zero minimum",
+  "kind": "mutated",
+  "axis_mode": "non_zero_min",
+  "defect_type": "wrong_bar_height_non_zero",
+  "image_id": "mutated-09",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {}
+}

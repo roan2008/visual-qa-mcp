@@ -1,0 +1,63 @@
+{
+  "image_id": "mutated-04",
+  "spec_id": "chart-mutated-04",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-axis-label",
+      "type": "label_missing_or_wrong",
+      "severity": "high",
+      "message": "The y-axis label is missing or does not match the expected text.",
+      "evidence": {
+        "expected_label": "Rainfall (mm)",
+        "detected_label": "Rainfall (cm)"
+      },
+      "recommendation": "Restore the required y-axis label text."
+    },
+    {
+      "id": "finding-axis-unit",
+      "type": "unit_mismatch",
+      "severity": "high",
+      "message": "The y-axis unit is missing or incorrect.",
+      "evidence": {
+        "expected_unit": "mm",
+        "detected_unit": "cm"
+      },
+      "recommendation": "Restore the expected y-axis unit in the label."
+    }
+  ],
+  "checks_run": [
+    "bar-count-matches",
+    "bar-values-match-data",
+    "axis-label-present",
+    "axis-unit-present"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.91,
+  "overlay_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v1\\mutated\\mutated-04\\overlay.png",
+  "evidence_graph_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v1\\mutated\\mutated-04\\evidence_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-axis-label",
+      "kind": "bbox",
+      "bbox": [
+        150,
+        24,
+        500,
+        52
+      ],
+      "label": "Axis label issue"
+    },
+    {
+      "finding_id": "finding-axis-unit",
+      "kind": "bbox",
+      "bbox": [
+        150,
+        24,
+        500,
+        52
+      ],
+      "label": "Axis unit issue"
+    }
+  ]
+}

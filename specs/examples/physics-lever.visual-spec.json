@@ -1,0 +1,47 @@
+{
+  "id": "physics-lever-001",
+  "domain": "physics",
+  "risk_level": "medium",
+  "learning_objective": "Teach that torque depends on force and distance from the pivot.",
+  "required_elements": [
+    {"id": "pivot", "kind": "point", "name": "pivot", "count": 1},
+    {"id": "beam", "kind": "line", "name": "lever beam", "count": 1},
+    {"id": "weight_a", "kind": "mass", "name": "left weight", "count": 1},
+    {"id": "weight_b", "kind": "mass", "name": "right weight", "count": 1},
+    {"id": "gravity_arrow_a", "kind": "arrow", "name": "left gravity force", "count": 1},
+    {"id": "gravity_arrow_b", "kind": "arrow", "name": "right gravity force", "count": 1}
+  ],
+  "labels": [
+    {"text": "pivot", "target": "pivot"},
+    {"text": "force", "target": "gravity_arrow_a"},
+    {"text": "distance", "target": "beam"}
+  ],
+  "relations": [
+    {
+      "type": "arrow_direction",
+      "from": "gravity_arrow_a",
+      "expected": {"direction": "down"},
+      "tolerance": {"angle_deg": 8}
+    },
+    {
+      "type": "arrow_direction",
+      "from": "gravity_arrow_b",
+      "expected": {"direction": "down"},
+      "tolerance": {"angle_deg": 8}
+    }
+  ],
+  "checks": [
+    {
+      "id": "force-arrows-down",
+      "type": "arrow_direction",
+      "severity": "high",
+      "description": "Gravity force arrows should point downward."
+    },
+    {
+      "id": "pivot-present",
+      "type": "required_element_present",
+      "severity": "high",
+      "description": "The pivot must be visible and labeled."
+    }
+  ]
+}

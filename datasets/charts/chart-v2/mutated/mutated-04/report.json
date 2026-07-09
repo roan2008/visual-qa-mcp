@@ -1,0 +1,28 @@
+{
+  "image_id": "mutated-04",
+  "spec_id": "chart-mutated-04",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [
+    "bar-count-matches",
+    "axis-label-present",
+    "axis-unit-present"
+  ],
+  "checks_skipped": [
+    {
+      "check_id": "axis-scale-readable",
+      "reason": "Axis scale could not be derived from the available tick evidence."
+    },
+    {
+      "check_id": "axis-scale-monotonic",
+      "reason": "Tick values are not strictly monotonic from top to bottom."
+    },
+    {
+      "check_id": "bar-values-match-data",
+      "reason": "Tick values are not strictly monotonic from top to bottom."
+    }
+  ],
+  "confidence": 0.95,
+  "overlay_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-04\\overlay.png",
+  "evidence_graph_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-04\\evidence_graph.json"
+}

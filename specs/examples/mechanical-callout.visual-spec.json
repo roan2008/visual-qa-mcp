@@ -1,0 +1,43 @@
+{
+  "id": "mechanical-callout-001",
+  "domain": "mechanical",
+  "risk_level": "medium",
+  "learning_objective": "Show a mounting bracket with two aligned holes and correct callout arrows.",
+  "required_elements": [
+    {"id": "bracket_body", "kind": "part", "name": "mounting bracket", "count": 1},
+    {"id": "mounting_holes", "kind": "circle", "name": "mounting holes", "count": 2},
+    {"id": "centerline", "kind": "line", "name": "hole centerline", "count": 1}
+  ],
+  "labels": [
+    {"text": "mounting hole", "target": "mounting_holes"},
+    {"text": "centerline", "target": "centerline"}
+  ],
+  "relations": [
+    {
+      "type": "alignment",
+      "from": "mounting_holes",
+      "expected": {"axis": "horizontal"},
+      "tolerance": {"pixels": 6}
+    }
+  ],
+  "checks": [
+    {
+      "id": "two-holes-present",
+      "type": "count_objects",
+      "severity": "critical",
+      "description": "Exactly two mounting holes should be visible."
+    },
+    {
+      "id": "holes-aligned",
+      "type": "geometry_alignment",
+      "severity": "high",
+      "description": "Mounting hole centers should be aligned."
+    },
+    {
+      "id": "callouts-target-holes",
+      "type": "arrow_target",
+      "severity": "high",
+      "description": "Callout arrows should point to mounting holes."
+    }
+  ]
+}

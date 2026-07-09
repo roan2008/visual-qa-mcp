@@ -1,0 +1,39 @@
+{
+  "case_id": "mutated-06",
+  "title": "Unreadable tick labels",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "unreadable_ticks",
+  "image_id": "mutated-06",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "tick_fill_overrides": {
+      "0": [
+        228,
+        228,
+        228
+      ],
+      "20": [
+        228,
+        228,
+        228
+      ],
+      "40": [
+        228,
+        228,
+        228
+      ],
+      "60": [
+        228,
+        228,
+        228
+      ],
+      "80": [
+        228,
+        228,
+        228
+      ]
+    }
+  }
+}

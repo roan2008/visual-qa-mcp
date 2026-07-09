@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visual-qa-mcp.local/schemas/visual-spec.schema.json",
+  "title": "VisualSpec",
+  "type": "object",
+  "required": ["id", "domain", "learning_objective", "required_elements", "checks"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string",
+      "examples": ["physics", "mechanical", "chart", "biology", "medical"]
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "default": "medium"
+    },
+    "learning_objective": {
+      "type": "string"
+    },
+    "source_reference": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "required_elements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/element"
+      }
+    },
+    "forbidden_elements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/element"
+      }
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/label"
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relation"
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/check"
+      }
+    }
+  },
+  "$defs": {
+    "element": {
+      "type": "object",
+      "required": ["id", "kind", "name"],
+      "properties": {
+        "id": {"type": "string"},
+        "kind": {"type": "string"},
+        "name": {"type": "string"},
+        "count": {"type": "integer", "minimum": 0},
+        "attributes": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "label": {
+      "type": "object",
+      "required": ["text", "target"],
+      "properties": {
+        "text": {"type": "string"},
+        "target": {"type": "string"},
+        "required": {"type": "boolean", "default": true}
+      }
+    },
+    "relation": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {"type": "string"},
+        "from": {"type": "string"},
+        "to": {"type": "string"},
+        "expected": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "tolerance": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "check": {
+      "type": "object",
+      "required": ["id", "type", "severity"],
+      "properties": {
+        "id": {"type": "string"},
+        "type": {"type": "string"},
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "description": {"type": "string"},
+        "params": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

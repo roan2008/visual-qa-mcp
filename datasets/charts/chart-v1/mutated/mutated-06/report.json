@@ -1,0 +1,23 @@
+{
+  "image_id": "mutated-06",
+  "spec_id": "chart-mutated-06",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [
+    "axis-label-present",
+    "axis-unit-present"
+  ],
+  "checks_skipped": [
+    {
+      "check_id": "bar-count-matches",
+      "reason": "Detected 2 bars but expected 3."
+    },
+    {
+      "check_id": "bar-values-match-data",
+      "reason": "Detected 2 bars but expected 3."
+    }
+  ],
+  "confidence": 0.92,
+  "overlay_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v1\\mutated\\mutated-06\\overlay.png",
+  "evidence_graph_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v1\\mutated\\mutated-06\\evidence_graph.json"
+}

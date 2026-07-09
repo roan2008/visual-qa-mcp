@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-12",
+  "title": "Extra bar rendered",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "extra_bar",
+  "image_id": "mutated-12",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {}
+}

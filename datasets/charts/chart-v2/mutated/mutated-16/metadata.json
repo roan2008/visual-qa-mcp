@@ -1,0 +1,25 @@
+{
+  "case_id": "mutated-16",
+  "title": "OCR stretch optional backend",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "ocr_stretch_optional_backend",
+  "image_id": "mutated-16",
+  "backend": "optional_ocr",
+  "chart_version": "v2",
+  "render_options": {
+    "layout_overrides": {
+      "width": 780,
+      "height": 560,
+      "margin_left": 152,
+      "axis_label_box": [
+        220,
+        30,
+        720,
+        64
+      ]
+    },
+    "tick_font_size": 22,
+    "x_label_font_size": 16
+  }
+}

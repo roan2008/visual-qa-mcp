@@ -1,0 +1,11 @@
+{
+  "case_id": "golden-06",
+  "title": "Signed axis basic",
+  "kind": "golden",
+  "axis_mode": "signed",
+  "defect_type": null,
+  "image_id": "golden-06",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {}
+}

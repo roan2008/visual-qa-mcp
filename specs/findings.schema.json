@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visual-qa-mcp.local/schemas/findings.schema.json",
+  "title": "VisualQaReport",
+  "type": "object",
+  "required": ["image_id", "verdict", "findings"],
+  "properties": {
+    "image_id": {
+      "type": "string"
+    },
+    "spec_id": {
+      "type": "string"
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "warning", "fail", "needs_review"]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/finding"
+      }
+    },
+    "checks_run": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "checks_skipped": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["check_id", "reason"],
+        "properties": {
+          "check_id": {"type": "string"},
+          "reason": {"type": "string"}
+        }
+      }
+    },
+    "overlay_path": {
+      "type": "string"
+    },
+    "evidence_graph_path": {
+      "type": "string"
+    },
+    "overlay_annotations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/overlay_annotation"
+      }
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "required": ["id", "type", "severity", "message", "evidence"],
+      "properties": {
+        "id": {"type": "string"},
+        "type": {"type": "string"},
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "message": {"type": "string"},
+        "evidence": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "recommendation": {
+          "type": "string"
+        }
+      }
+    },
+    "overlay_annotation": {
+      "type": "object",
+      "required": ["finding_id", "kind", "bbox", "label"],
+      "properties": {
+        "finding_id": {"type": "string"},
+        "kind": {"type": "string"},
+        "bbox": {
+          "type": "array",
+          "items": {"type": "integer"},
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "label": {"type": "string"}
+      }
+    }
+  }
+}

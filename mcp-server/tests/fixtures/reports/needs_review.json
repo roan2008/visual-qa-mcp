@@ -1,0 +1,13 @@
+{
+  "image_id": "sample-needs-review",
+  "spec_id": "chart-needs-review",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [],
+  "checks_skipped": [
+    {
+      "check_id": "axis-label-present",
+      "reason": "Required evidence could not be extracted."
+    }
+  ]
+}

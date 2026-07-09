@@ -1,0 +1,190 @@
+{
+  "image_id": "mutated-14",
+  "chart_type": "bar",
+  "bars": [
+    {
+      "bar_id": "bar-1",
+      "category": "Jan",
+      "value": null,
+      "bbox": [
+        165,
+        268,
+        271,
+        329
+      ],
+      "confidence": 0.86,
+      "matched_label": "Jan",
+      "top_y": 268,
+      "bottom_y": 329,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-2",
+      "category": "Feb",
+      "value": null,
+      "bbox": [
+        341,
+        222,
+        448,
+        268
+      ],
+      "confidence": 0.86,
+      "matched_label": "Feb",
+      "top_y": 222,
+      "bottom_y": 268,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-3",
+      "category": "Mar",
+      "value": null,
+      "bbox": [
+        518,
+        115,
+        624,
+        268
+      ],
+      "confidence": 0.86,
+      "matched_label": "Mar",
+      "top_y": 115,
+      "bottom_y": 268,
+      "value_source": "axis_mapping"
+    }
+  ],
+  "x_axis_labels": [
+    "Jan",
+    "Feb",
+    "Mar"
+  ],
+  "y_axis": {
+    "label_text": "Rainfall (mm)",
+    "unit_text": "mm",
+    "label_bbox": [
+      170,
+      26,
+      610,
+      58
+    ],
+    "confidence": 1.0,
+    "tick_labels": [
+      {
+        "text": "60",
+        "parsed_value": 60.0,
+        "bbox": [
+          33,
+          71,
+          119,
+          97
+        ],
+        "confidence": 1.0
+      },
+      {
+        "text": "40",
+        "parsed_value": 40.0,
+        "bbox": [
+          33,
+          132,
+          119,
+          158
+        ],
+        "confidence": 1.0
+      },
+      {
+        "text": "-20",
+        "parsed_value": -20.0,
+        "bbox": [
+          33,
+          193,
+          119,
+          219
+        ],
+        "confidence": 1.0
+      },
+      {
+        "text": "0",
+        "parsed_value": 0.0,
+        "bbox": [
+          33,
+          255,
+          119,
+          281
+        ],
+        "confidence": 1.0
+      },
+      {
+        "text": "20",
+        "parsed_value": 20.0,
+        "bbox": [
+          33,
+          316,
+          119,
+          342
+        ],
+        "confidence": 1.0
+      },
+      {
+        "text": "-40",
+        "parsed_value": -40.0,
+        "bbox": [
+          33,
+          377,
+          119,
+          403
+        ],
+        "confidence": 1.0
+      }
+    ],
+    "axis_line_x": 129,
+    "baseline_y": null,
+    "top_y": 84,
+    "zero_line_y": null,
+    "mapping": null,
+    "backend": "template"
+  },
+  "extraction_confidence": 0.96,
+  "gaps": [
+    {
+      "code": "non_monotonic_tick_values",
+      "message": "Tick values are not strictly monotonic from top to bottom.",
+      "check_ids": [
+        "axis-scale-monotonic",
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_value_unresolved",
+      "message": "Unable to derive a stable numeric value for bar 1 from axis mapping.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_value_unresolved",
+      "message": "Unable to derive a stable numeric value for bar 2 from axis mapping.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_value_unresolved",
+      "message": "Unable to derive a stable numeric value for bar 3 from axis mapping.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "axis_scale_unreadable",
+      "message": "Axis scale could not be derived from the available tick evidence.",
+      "check_ids": [
+        "axis-scale-readable",
+        "bar-values-match-data"
+      ]
+    }
+  ],
+  "metadata": {
+    "chart_version": "v2",
+    "axis_mode": "signed",
+    "dataset_case": "mutated-14",
+    "backend": "template"
+  }
+}

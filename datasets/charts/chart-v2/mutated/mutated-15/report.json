@@ -1,0 +1,99 @@
+{
+  "image_id": "mutated-15",
+  "spec_id": "chart-mutated-15",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-bar-value-bar-1",
+      "type": "chart_value_mismatch",
+      "severity": "critical",
+      "message": "Bar 'Jan' value 19.87 does not match expected 35.00.",
+      "evidence": {
+        "bar_id": "bar-1",
+        "category": "Jan",
+        "expected_value": 35.0,
+        "detected_value": 19.87,
+        "relative_tolerance": 0.05,
+        "value_source": "axis_mapping"
+      },
+      "recommendation": "Update the bar height so it matches the source data within tolerance."
+    },
+    {
+      "id": "finding-bar-value-bar-2",
+      "type": "chart_value_mismatch",
+      "severity": "critical",
+      "message": "Bar 'Feb' value 60.13 does not match expected 65.00.",
+      "evidence": {
+        "bar_id": "bar-2",
+        "category": "Feb",
+        "expected_value": 65.0,
+        "detected_value": 60.13,
+        "relative_tolerance": 0.05,
+        "value_source": "axis_mapping"
+      },
+      "recommendation": "Update the bar height so it matches the source data within tolerance."
+    },
+    {
+      "id": "finding-bar-value-bar-3",
+      "type": "chart_value_mismatch",
+      "severity": "critical",
+      "message": "Bar 'Mar' value 40.00 does not match expected 50.00.",
+      "evidence": {
+        "bar_id": "bar-3",
+        "category": "Mar",
+        "expected_value": 50.0,
+        "detected_value": 40.0,
+        "relative_tolerance": 0.05,
+        "value_source": "axis_mapping"
+      },
+      "recommendation": "Update the bar height so it matches the source data within tolerance."
+    }
+  ],
+  "checks_run": [
+    "bar-count-matches",
+    "axis-scale-readable",
+    "axis-scale-monotonic",
+    "bar-values-match-data",
+    "axis-label-present",
+    "axis-unit-present"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.95,
+  "overlay_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-15\\overlay.png",
+  "evidence_graph_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-15\\evidence_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-bar-value-bar-1",
+      "kind": "bbox",
+      "bbox": [
+        165,
+        314,
+        271,
+        390
+      ],
+      "label": "Jan: value mismatch"
+    },
+    {
+      "finding_id": "finding-bar-value-bar-2",
+      "kind": "bbox",
+      "bbox": [
+        341,
+        160,
+        448,
+        390
+      ],
+      "label": "Feb: value mismatch"
+    },
+    {
+      "finding_id": "finding-bar-value-bar-3",
+      "kind": "bbox",
+      "bbox": [
+        518,
+        237,
+        624,
+        390
+      ],
+      "label": "Mar: value mismatch"
+    }
+  ]
+}

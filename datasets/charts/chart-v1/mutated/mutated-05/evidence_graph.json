@@ -1,0 +1,113 @@
+{
+  "image_id": "mutated-05",
+  "chart_type": "bar",
+  "bars": [
+    {
+      "bar_id": "bar-1",
+      "category": "Jan",
+      "value": 40.0,
+      "bbox": [
+        115,
+        190,
+        190,
+        350
+      ],
+      "confidence": 0.88,
+      "matched_label": "Jan"
+    },
+    {
+      "bar_id": "bar-2",
+      "category": "Feb",
+      "value": 70.0,
+      "bbox": [
+        240,
+        70,
+        315,
+        350
+      ],
+      "confidence": 0.88,
+      "matched_label": "Feb"
+    },
+    {
+      "bar_id": "bar-3",
+      "category": "Mar",
+      "value": 55.0,
+      "bbox": [
+        365,
+        130,
+        440,
+        350
+      ],
+      "confidence": 0.88,
+      "matched_label": "Mar"
+    },
+    {
+      "bar_id": "bar-4",
+      "category": null,
+      "value": 60.0,
+      "bbox": [
+        490,
+        110,
+        565,
+        350
+      ],
+      "confidence": 0.75,
+      "matched_label": null
+    }
+  ],
+  "x_axis_labels": [
+    "Jan",
+    "Feb",
+    "Mar",
+    null
+  ],
+  "y_axis": {
+    "label_text": "Rainfall (mm)",
+    "unit_text": "mm",
+    "label_bbox": [
+      150,
+      24,
+      500,
+      52
+    ],
+    "confidence": 1.0
+  },
+  "extraction_confidence": 0.88,
+  "gaps": [
+    {
+      "code": "missing_bar_label",
+      "message": "Unable to confidently match x-axis label for bar 4.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_count_mismatch",
+      "message": "Detected 4 bars but expected 3.",
+      "check_ids": [
+        "bar-count-matches",
+        "bar-values-match-data"
+      ]
+    }
+  ],
+  "metadata": {
+    "layout": "chart-v1",
+    "source_reference": {
+      "data": [
+        {
+          "month": "Jan",
+          "rainfall_mm": 40
+        },
+        {
+          "month": "Feb",
+          "rainfall_mm": 70
+        },
+        {
+          "month": "Mar",
+          "rainfall_mm": 55
+        }
+      ]
+    },
+    "dataset_case": "mutated-05"
+  }
+}

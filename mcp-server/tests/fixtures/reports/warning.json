@@ -1,0 +1,18 @@
+{
+  "image_id": "sample-warning",
+  "spec_id": "chart-warning",
+  "verdict": "warning",
+  "findings": [
+    {
+      "id": "finding-warning",
+      "type": "minor_alignment_note",
+      "severity": "medium",
+      "message": "A non-blocking visual note was recorded.",
+      "evidence": {
+        "note": "example"
+      }
+    }
+  ],
+  "checks_run": ["bar-values-match-data"],
+  "checks_skipped": []
+}

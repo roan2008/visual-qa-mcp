@@ -1,0 +1,22 @@
+{
+  "case_id": "golden-08",
+  "title": "Signed axis color variation",
+  "kind": "golden",
+  "axis_mode": "signed",
+  "defect_type": null,
+  "image_id": "golden-08",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "bar_fill": [
+      59,
+      132,
+      230
+    ],
+    "axis_fill": [
+      44,
+      44,
+      44
+    ]
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visual-qa-mcp.local/schemas/evidence-graph.schema.json",
+  "title": "EvidenceGraph",
+  "type": "object",
+  "required": [
+    "image_id",
+    "chart_type",
+    "bars",
+    "x_axis_labels",
+    "y_axis",
+    "extraction_confidence",
+    "gaps",
+    "metadata"
+  ],
+  "properties": {
+    "image_id": {"type": "string"},
+    "chart_type": {"type": "string", "enum": ["bar"]},
+    "bars": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/bar"}
+    },
+    "x_axis_labels": {
+      "type": "array",
+      "items": {"type": ["string", "null"]}
+    },
+    "y_axis": {"$ref": "#/$defs/axis"},
+    "extraction_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "gaps": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/gap"}
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "bar": {
+      "type": "object",
+      "required": [
+        "bar_id",
+        "category",
+        "value",
+        "bbox",
+        "confidence",
+        "matched_label",
+        "top_y",
+        "bottom_y",
+        "value_source"
+      ],
+      "properties": {
+        "bar_id": {"type": "string"},
+        "category": {"type": ["string", "null"]},
+        "value": {"type": ["number", "null"]},
+        "bbox": {
+          "type": "array",
+          "items": {"type": "integer"},
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "matched_label": {"type": ["string", "null"]},
+        "top_y": {"type": ["integer", "null"]},
+        "bottom_y": {"type": ["integer", "null"]},
+        "value_source": {"type": "string"}
+      }
+    },
+    "axis": {
+      "type": "object",
+      "required": [
+        "label_text",
+        "unit_text",
+        "label_bbox",
+        "confidence",
+        "tick_labels",
+        "axis_line_x",
+        "baseline_y",
+        "top_y",
+        "zero_line_y",
+        "mapping",
+        "backend"
+      ],
+      "properties": {
+        "label_text": {"type": ["string", "null"]},
+        "unit_text": {"type": ["string", "null"]},
+        "label_bbox": {
+          "type": "array",
+          "items": {"type": "integer"},
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "tick_labels": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/tick_label"}
+        },
+        "axis_line_x": {"type": ["integer", "null"]},
+        "baseline_y": {"type": ["integer", "null"]},
+        "top_y": {"type": ["integer", "null"]},
+        "zero_line_y": {"type": ["integer", "null"]},
+        "mapping": {
+          "anyOf": [
+            {"$ref": "#/$defs/axis_mapping"},
+            {"type": "null"}
+          ]
+        },
+        "backend": {
+          "type": "string",
+          "enum": ["template", "optional_ocr"]
+        }
+      }
+    },
+    "tick_label": {
+      "type": "object",
+      "required": ["text", "parsed_value", "bbox", "confidence"],
+      "properties": {
+        "text": {"type": ["string", "null"]},
+        "parsed_value": {"type": ["number", "null"]},
+        "bbox": {
+          "type": "array",
+          "items": {"type": "integer"},
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "axis_mapping": {
+      "type": "object",
+      "required": [
+        "min_value",
+        "max_value",
+        "pixels_per_unit",
+        "scale_mode",
+        "value_direction",
+        "readable"
+      ],
+      "properties": {
+        "min_value": {"type": "number"},
+        "max_value": {"type": "number"},
+        "pixels_per_unit": {"type": "number"},
+        "scale_mode": {
+          "type": "string",
+          "enum": ["zero_baseline", "non_zero_min", "signed"]
+        },
+        "value_direction": {
+          "type": "string",
+          "enum": ["positive_up"]
+        },
+        "readable": {"type": "boolean"}
+      }
+    },
+    "gap": {
+      "type": "object",
+      "required": ["code", "message", "check_ids"],
+      "properties": {
+        "code": {"type": "string"},
+        "message": {"type": "string"},
+        "check_ids": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    }
+  }
+}

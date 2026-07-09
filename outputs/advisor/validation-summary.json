@@ -1,0 +1,313 @@
+{
+  "total_cases": 24,
+  "golden_cases": 8,
+  "mutated_cases": 16,
+  "critical_error_recall": 1.0,
+  "typed_mutated_cases": 9,
+  "typed_mutated_hits": 9,
+  "ambiguous_cases": 7,
+  "ambiguous_guard_rate": 1.0,
+  "mutated_case_guard_rate": 1.0,
+  "false_unsupported_passes": 0,
+  "golden_failures": 0,
+  "subset_metrics": {
+    "zero_baseline": {
+      "typed_cases": 5,
+      "typed_hits": 5,
+      "typed_recall": 1.0,
+      "guard_rate": 1.0
+    },
+    "signed": {
+      "typed_cases": 2,
+      "typed_hits": 2,
+      "typed_recall": 1.0,
+      "guard_rate": 1.0
+    },
+    "non_zero_min": {
+      "typed_cases": 2,
+      "typed_hits": 2,
+      "typed_recall": 1.0,
+      "guard_rate": 1.0
+    }
+  },
+  "results": [
+    {
+      "case_id": "golden-01",
+      "kind": "golden",
+      "axis_mode": "zero_baseline",
+      "backend": "template",
+      "expected_verdict": "pass",
+      "actual_verdict": "pass",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "golden-02",
+      "kind": "golden",
+      "axis_mode": "zero_baseline",
+      "backend": "template",
+      "expected_verdict": "pass",
+      "actual_verdict": "pass",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "golden-03",
+      "kind": "golden",
+      "axis_mode": "zero_baseline",
+      "backend": "template",
+      "expected_verdict": "pass",
+      "actual_verdict": "pass",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "golden-04",
+      "kind": "golden",
+      "axis_mode": "non_zero_min",
+      "backend": "template",
+      "expected_verdict": "pass",
+      "actual_verdict": "pass",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "golden-05",
+      "kind": "golden",
+      "axis_mode": "non_zero_min",
+      "backend": "template",
+      "expected_verdict": "pass",
+      "actual_verdict": "pass",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "golden-06",
+      "kind": "golden",
+      "axis_mode": "signed",
+      "backend": "template",
+      "expected_verdict": "pass",
+      "actual_verdict": "pass",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "golden-07",
+      "kind": "golden",
+      "axis_mode": "signed",
+      "backend": "template",
+      "expected_verdict": "pass",
+      "actual_verdict": "pass",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "golden-08",
+      "kind": "golden",
+      "axis_mode": "signed",
+      "backend": "template",
+      "expected_verdict": "pass",
+      "actual_verdict": "pass",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "mutated-01",
+      "kind": "mutated",
+      "axis_mode": "zero_baseline",
+      "backend": "template",
+      "expected_verdict": "fail",
+      "actual_verdict": "fail",
+      "expected_types": [
+        "chart_value_mismatch"
+      ],
+      "actual_types": [
+        "chart_value_mismatch"
+      ]
+    },
+    {
+      "case_id": "mutated-02",
+      "kind": "mutated",
+      "axis_mode": "zero_baseline",
+      "backend": "template",
+      "expected_verdict": "fail",
+      "actual_verdict": "fail",
+      "expected_types": [
+        "label_missing_or_wrong",
+        "unit_mismatch"
+      ],
+      "actual_types": [
+        "label_missing_or_wrong",
+        "unit_mismatch"
+      ]
+    },
+    {
+      "case_id": "mutated-03",
+      "kind": "mutated",
+      "axis_mode": "zero_baseline",
+      "backend": "template",
+      "expected_verdict": "needs_review",
+      "actual_verdict": "needs_review",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "mutated-04",
+      "kind": "mutated",
+      "axis_mode": "zero_baseline",
+      "backend": "template",
+      "expected_verdict": "needs_review",
+      "actual_verdict": "needs_review",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "mutated-05",
+      "kind": "mutated",
+      "axis_mode": "zero_baseline",
+      "backend": "template",
+      "expected_verdict": "needs_review",
+      "actual_verdict": "needs_review",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "mutated-06",
+      "kind": "mutated",
+      "axis_mode": "zero_baseline",
+      "backend": "template",
+      "expected_verdict": "needs_review",
+      "actual_verdict": "needs_review",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "mutated-07",
+      "kind": "mutated",
+      "axis_mode": "zero_baseline",
+      "backend": "template",
+      "expected_verdict": "fail",
+      "actual_verdict": "fail",
+      "expected_types": [
+        "chart_value_mismatch"
+      ],
+      "actual_types": [
+        "chart_value_mismatch"
+      ]
+    },
+    {
+      "case_id": "mutated-08",
+      "kind": "mutated",
+      "axis_mode": "signed",
+      "backend": "template",
+      "expected_verdict": "needs_review",
+      "actual_verdict": "needs_review",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "mutated-09",
+      "kind": "mutated",
+      "axis_mode": "non_zero_min",
+      "backend": "template",
+      "expected_verdict": "fail",
+      "actual_verdict": "fail",
+      "expected_types": [
+        "chart_value_mismatch"
+      ],
+      "actual_types": [
+        "chart_value_mismatch"
+      ]
+    },
+    {
+      "case_id": "mutated-10",
+      "kind": "mutated",
+      "axis_mode": "signed",
+      "backend": "template",
+      "expected_verdict": "fail",
+      "actual_verdict": "fail",
+      "expected_types": [
+        "chart_value_mismatch"
+      ],
+      "actual_types": [
+        "chart_value_mismatch"
+      ]
+    },
+    {
+      "case_id": "mutated-11",
+      "kind": "mutated",
+      "axis_mode": "signed",
+      "backend": "template",
+      "expected_verdict": "fail",
+      "actual_verdict": "fail",
+      "expected_types": [
+        "chart_value_mismatch"
+      ],
+      "actual_types": [
+        "chart_value_mismatch"
+      ]
+    },
+    {
+      "case_id": "mutated-12",
+      "kind": "mutated",
+      "axis_mode": "zero_baseline",
+      "backend": "template",
+      "expected_verdict": "fail",
+      "actual_verdict": "fail",
+      "expected_types": [
+        "bar_count_mismatch"
+      ],
+      "actual_types": [
+        "bar_count_mismatch"
+      ]
+    },
+    {
+      "case_id": "mutated-13",
+      "kind": "mutated",
+      "axis_mode": "zero_baseline",
+      "backend": "template",
+      "expected_verdict": "fail",
+      "actual_verdict": "fail",
+      "expected_types": [
+        "bar_count_mismatch"
+      ],
+      "actual_types": [
+        "bar_count_mismatch"
+      ]
+    },
+    {
+      "case_id": "mutated-14",
+      "kind": "mutated",
+      "axis_mode": "signed",
+      "backend": "template",
+      "expected_verdict": "needs_review",
+      "actual_verdict": "needs_review",
+      "expected_types": [],
+      "actual_types": []
+    },
+    {
+      "case_id": "mutated-15",
+      "kind": "mutated",
+      "axis_mode": "non_zero_min",
+      "backend": "template",
+      "expected_verdict": "fail",
+      "actual_verdict": "fail",
+      "expected_types": [
+        "chart_value_mismatch"
+      ],
+      "actual_types": [
+        "chart_value_mismatch"
+      ]
+    },
+    {
+      "case_id": "mutated-16",
+      "kind": "mutated",
+      "axis_mode": "zero_baseline",
+      "backend": "optional_ocr",
+      "expected_verdict": "needs_review",
+      "actual_verdict": "needs_review",
+      "expected_types": [],
+      "actual_types": []
+    }
+  ]
+}

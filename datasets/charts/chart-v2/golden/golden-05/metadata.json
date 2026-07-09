@@ -1,0 +1,26 @@
+{
+  "case_id": "golden-05",
+  "title": "Non-zero minimum layout variation",
+  "kind": "golden",
+  "axis_mode": "non_zero_min",
+  "defect_type": null,
+  "image_id": "golden-05",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "layout_overrides": {
+      "width": 720,
+      "height": 500,
+      "margin_left": 136,
+      "margin_top": 92,
+      "axis_label_box": [
+        200,
+        30,
+        650,
+        60
+      ]
+    },
+    "tick_font_size": 15,
+    "x_label_font_size": 13
+  }
+}

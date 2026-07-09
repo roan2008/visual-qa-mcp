@@ -1,0 +1,11 @@
+{
+  "case_id": "golden-04",
+  "title": "Non-zero minimum basic",
+  "kind": "golden",
+  "axis_mode": "non_zero_min",
+  "defect_type": null,
+  "image_id": "golden-04",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {}
+}

@@ -1,0 +1,15 @@
+{
+  "case_id": "mutated-08",
+  "title": "Ambiguous zero line",
+  "kind": "mutated",
+  "axis_mode": "signed",
+  "defect_type": "ambiguous_zero_line",
+  "image_id": "mutated-08",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "tick_text_overrides": {
+      "0": ""
+    }
+  }
+}

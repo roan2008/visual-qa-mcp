@@ -1,0 +1,6 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "bar_count_mismatch"
+  ]
+}

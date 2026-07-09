@@ -1,0 +1,189 @@
+{
+  "image_id": "mutated-16",
+  "chart_type": "bar",
+  "bars": [
+    {
+      "bar_id": "bar-1",
+      "category": "Jan",
+      "value": null,
+      "bbox": [
+        191,
+        358,
+        308,
+        450
+      ],
+      "confidence": 0.75,
+      "matched_label": "Jan",
+      "top_y": 358,
+      "bottom_y": 450,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-2",
+      "category": "Feb",
+      "value": null,
+      "bbox": [
+        387,
+        176,
+        504,
+        450
+      ],
+      "confidence": 0.72,
+      "matched_label": "Feb",
+      "top_y": 176,
+      "bottom_y": 450,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-3",
+      "category": "Mar",
+      "value": null,
+      "bbox": [
+        583,
+        267,
+        700,
+        450
+      ],
+      "confidence": 0.72,
+      "matched_label": "Mar",
+      "top_y": 267,
+      "bottom_y": 450,
+      "value_source": "axis_mapping"
+    }
+  ],
+  "x_axis_labels": [
+    "Jan",
+    "Feb",
+    "Mar"
+  ],
+  "y_axis": {
+    "label_text": "Rainfall (mm)",
+    "unit_text": "mm",
+    "label_bbox": [
+      220,
+      30,
+      720,
+      64
+    ],
+    "confidence": 1.0,
+    "tick_labels": [
+      {
+        "text": null,
+        "parsed_value": null,
+        "bbox": [
+          55,
+          71,
+          141,
+          97
+        ],
+        "confidence": 0.0
+      },
+      {
+        "text": null,
+        "parsed_value": null,
+        "bbox": [
+          55,
+          163,
+          141,
+          189
+        ],
+        "confidence": 0.0
+      },
+      {
+        "text": null,
+        "parsed_value": null,
+        "bbox": [
+          55,
+          254,
+          141,
+          280
+        ],
+        "confidence": 0.0
+      },
+      {
+        "text": null,
+        "parsed_value": null,
+        "bbox": [
+          55,
+          345,
+          141,
+          371
+        ],
+        "confidence": 0.0
+      },
+      {
+        "text": null,
+        "parsed_value": null,
+        "bbox": [
+          55,
+          437,
+          141,
+          463
+        ],
+        "confidence": 0.0
+      }
+    ],
+    "axis_line_x": 151,
+    "baseline_y": null,
+    "top_y": 84,
+    "zero_line_y": null,
+    "mapping": null,
+    "backend": "optional_ocr"
+  },
+  "extraction_confidence": 0.35,
+  "gaps": [
+    {
+      "code": "insufficient_tick_evidence",
+      "message": "Insufficient readable tick labels to derive a stable axis scale.",
+      "check_ids": [
+        "axis-scale-readable",
+        "axis-scale-monotonic",
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "optional_ocr_unavailable",
+      "message": "Optional OCR backend is not configured in the current environment.",
+      "check_ids": [
+        "axis-scale-readable",
+        "axis-scale-monotonic",
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_value_unresolved",
+      "message": "Unable to derive a stable numeric value for bar 1 from axis mapping.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_value_unresolved",
+      "message": "Unable to derive a stable numeric value for bar 2 from axis mapping.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_value_unresolved",
+      "message": "Unable to derive a stable numeric value for bar 3 from axis mapping.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "axis_scale_unreadable",
+      "message": "Axis scale could not be derived from the available tick evidence.",
+      "check_ids": [
+        "axis-scale-readable",
+        "bar-values-match-data"
+      ]
+    }
+  ],
+  "metadata": {
+    "chart_version": "v2",
+    "axis_mode": "zero_baseline",
+    "dataset_case": "mutated-16",
+    "backend": "optional_ocr"
+  }
+}

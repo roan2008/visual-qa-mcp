@@ -1,0 +1,38 @@
+{
+  "gate": "gate-3-readiness-review",
+  "metrics": {
+    "critical_error_recall": 1.0,
+    "typed_mutated_cases": 9,
+    "typed_mutated_hits": 9,
+    "ambiguous_guard_rate": 1.0,
+    "mutated_case_guard_rate": 1.0,
+    "false_unsupported_passes": 0,
+    "golden_failures": 0,
+    "total_cases": 24,
+    "subset_metrics": {
+      "zero_baseline": {
+        "typed_cases": 5,
+        "typed_hits": 5,
+        "typed_recall": 1.0,
+        "guard_rate": 1.0
+      },
+      "signed": {
+        "typed_cases": 2,
+        "typed_hits": 2,
+        "typed_recall": 1.0,
+        "guard_rate": 1.0
+      },
+      "non_zero_min": {
+        "typed_cases": 2,
+        "typed_hits": 2,
+        "typed_recall": 1.0,
+        "guard_rate": 1.0
+      }
+    }
+  },
+  "unknowns": [
+    "Template backend is still tuned to the synthetic-to-semi-realistic dataset family.",
+    "Optional OCR backend is scaffolded but not validated in this environment.",
+    "Readiness claims remain limited to the configured backend used in validation."
+  ]
+}

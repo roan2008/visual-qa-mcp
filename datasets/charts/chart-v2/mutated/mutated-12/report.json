@@ -1,0 +1,30 @@
+{
+  "image_id": "mutated-12",
+  "spec_id": "chart-mutated-12",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-bar-count",
+      "type": "bar_count_mismatch",
+      "severity": "high",
+      "message": "Detected 4 bars but expected 3.",
+      "evidence": {
+        "expected_count": 3,
+        "detected_count": 4
+      },
+      "recommendation": "Regenerate the chart with the required number of bars."
+    }
+  ],
+  "checks_run": [
+    "bar-count-matches",
+    "axis-scale-readable",
+    "axis-scale-monotonic",
+    "bar-values-match-data",
+    "axis-label-present",
+    "axis-unit-present"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.94,
+  "overlay_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-12\\overlay.png",
+  "evidence_graph_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-12\\evidence_graph.json"
+}

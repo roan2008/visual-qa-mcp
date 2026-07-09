@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-07",
+  "title": "Shifted scale with correct bars",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "shifted_scale",
+  "image_id": "mutated-07",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {}
+}

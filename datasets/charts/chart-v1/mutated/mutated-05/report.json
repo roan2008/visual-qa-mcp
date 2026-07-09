@@ -1,0 +1,23 @@
+{
+  "image_id": "mutated-05",
+  "spec_id": "chart-mutated-05",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [
+    "axis-label-present",
+    "axis-unit-present"
+  ],
+  "checks_skipped": [
+    {
+      "check_id": "bar-count-matches",
+      "reason": "Detected 4 bars but expected 3."
+    },
+    {
+      "check_id": "bar-values-match-data",
+      "reason": "Unable to confidently match x-axis label for bar 4."
+    }
+  ],
+  "confidence": 0.88,
+  "overlay_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v1\\mutated\\mutated-05\\overlay.png",
+  "evidence_graph_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v1\\mutated\\mutated-05\\evidence_graph.json"
+}

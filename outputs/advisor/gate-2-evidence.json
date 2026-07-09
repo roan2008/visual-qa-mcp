@@ -1,0 +1,15 @@
+{
+  "gate": "gate-2-implementation-review",
+  "interfaces": [
+    "VisualSpec",
+    "EvidenceGraph",
+    "VisualQaReport",
+    "tick_reader backend interface"
+  ],
+  "decisions": [
+    "Use a dual tick-reader path: template by default, optional OCR when configured.",
+    "Use image-derived tick values for bar value mapping in chart-v2 mode.",
+    "Use layout-aware but evidence-first extraction for synthetic and semi-realistic fixtures.",
+    "Treat unreadable, contradictory, or unresolved scale evidence as checks_skipped leading to needs_review."
+  ]
+}

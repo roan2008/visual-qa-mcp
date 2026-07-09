@@ -1,0 +1,6 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "chart_value_mismatch"
+  ]
+}

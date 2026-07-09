@@ -1,0 +1,148 @@
+{
+  "image_id": "mutated-15",
+  "chart_type": "bar",
+  "bars": [
+    {
+      "bar_id": "bar-1",
+      "category": "Jan",
+      "value": 19.87,
+      "bbox": [
+        165,
+        314,
+        271,
+        390
+      ],
+      "confidence": 0.86,
+      "matched_label": "Jan",
+      "top_y": 314,
+      "bottom_y": 390,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-2",
+      "category": "Feb",
+      "value": 60.13,
+      "bbox": [
+        341,
+        160,
+        448,
+        390
+      ],
+      "confidence": 0.86,
+      "matched_label": "Feb",
+      "top_y": 160,
+      "bottom_y": 390,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-3",
+      "category": "Mar",
+      "value": 40.0,
+      "bbox": [
+        518,
+        237,
+        624,
+        390
+      ],
+      "confidence": 0.86,
+      "matched_label": "Mar",
+      "top_y": 237,
+      "bottom_y": 390,
+      "value_source": "axis_mapping"
+    }
+  ],
+  "x_axis_labels": [
+    "Jan",
+    "Feb",
+    "Mar"
+  ],
+  "y_axis": {
+    "label_text": "Rainfall (mm)",
+    "unit_text": "mm",
+    "label_bbox": [
+      170,
+      26,
+      610,
+      58
+    ],
+    "confidence": 1.0,
+    "tick_labels": [
+      {
+        "text": "80",
+        "parsed_value": 80.0,
+        "bbox": [
+          33,
+          71,
+          119,
+          97
+        ],
+        "confidence": 1.0
+      },
+      {
+        "text": "60",
+        "parsed_value": 60.0,
+        "bbox": [
+          33,
+          147,
+          119,
+          173
+        ],
+        "confidence": 1.0
+      },
+      {
+        "text": "40",
+        "parsed_value": 40.0,
+        "bbox": [
+          33,
+          224,
+          119,
+          250
+        ],
+        "confidence": 1.0
+      },
+      {
+        "text": "20",
+        "parsed_value": 20.0,
+        "bbox": [
+          33,
+          301,
+          119,
+          327
+        ],
+        "confidence": 1.0
+      },
+      {
+        "text": "0",
+        "parsed_value": 0.0,
+        "bbox": [
+          33,
+          377,
+          119,
+          403
+        ],
+        "confidence": 1.0
+      }
+    ],
+    "axis_line_x": 129,
+    "baseline_y": 390,
+    "top_y": 84,
+    "zero_line_y": null,
+    "mapping": {
+      "min_value": 0.0,
+      "max_value": 80.0,
+      "pixels_per_unit": 3.825,
+      "scale_mode": "zero_baseline",
+      "value_direction": "positive_up",
+      "readable": true
+    },
+    "backend": "template"
+  },
+  "extraction_confidence": 0.95,
+  "gaps": [],
+  "metadata": {
+    "chart_version": "v2",
+    "axis_mode": "non_zero_min",
+    "dataset_case": "mutated-15",
+    "backend": "template"
+  }
+}

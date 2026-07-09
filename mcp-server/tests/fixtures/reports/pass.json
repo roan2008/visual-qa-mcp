@@ -1,0 +1,8 @@
+{
+  "image_id": "sample-pass",
+  "spec_id": "chart-pass",
+  "verdict": "pass",
+  "findings": [],
+  "checks_run": ["bar-values-match-data", "axis-label-present", "axis-unit-present", "bar-count-matches"],
+  "checks_skipped": []
+}

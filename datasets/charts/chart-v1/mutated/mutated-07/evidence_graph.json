@@ -1,0 +1,83 @@
+{
+  "image_id": "mutated-07",
+  "chart_type": "bar",
+  "bars": [
+    {
+      "bar_id": "bar-1",
+      "category": "Feb",
+      "value": 40.0,
+      "bbox": [
+        123,
+        190,
+        223,
+        350
+      ],
+      "confidence": 0.88,
+      "matched_label": "Feb"
+    },
+    {
+      "bar_id": "bar-2",
+      "category": "Jan",
+      "value": 70.0,
+      "bbox": [
+        289,
+        70,
+        390,
+        350
+      ],
+      "confidence": 0.88,
+      "matched_label": "Jan"
+    },
+    {
+      "bar_id": "bar-3",
+      "category": "Mar",
+      "value": 55.0,
+      "bbox": [
+        456,
+        130,
+        556,
+        350
+      ],
+      "confidence": 0.88,
+      "matched_label": "Mar"
+    }
+  ],
+  "x_axis_labels": [
+    "Feb",
+    "Jan",
+    "Mar"
+  ],
+  "y_axis": {
+    "label_text": "Rainfall (mm)",
+    "unit_text": "mm",
+    "label_bbox": [
+      150,
+      24,
+      500,
+      52
+    ],
+    "confidence": 1.0
+  },
+  "extraction_confidence": 0.91,
+  "gaps": [],
+  "metadata": {
+    "layout": "chart-v1",
+    "source_reference": {
+      "data": [
+        {
+          "month": "Jan",
+          "rainfall_mm": 40
+        },
+        {
+          "month": "Feb",
+          "rainfall_mm": 70
+        },
+        {
+          "month": "Mar",
+          "rainfall_mm": 55
+        }
+      ]
+    },
+    "dataset_case": "mutated-07"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "case_id": "mutated-08",
+  "title": "Unreadable required evidence",
+  "kind": "mutated",
+  "defect_type": "missing_evidence",
+  "image_id": "mutated-08",
+  "expected_values": [
+    40,
+    70,
+    55
+  ],
+  "source_reference": {
+    "data": [
+      {
+        "month": "Jan",
+        "rainfall_mm": 40
+      },
+      {
+        "month": "Feb",
+        "rainfall_mm": 70
+      },
+      {
+        "month": "Mar",
+        "rainfall_mm": 55
+      }
+    ]
+  },
+  "candidate_units": [
+    "mm",
+    "cm",
+    "kg",
+    "N"
+  ]
+}

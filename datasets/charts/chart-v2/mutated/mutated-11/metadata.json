@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-11",
+  "title": "Wrong negative signed bar",
+  "kind": "mutated",
+  "axis_mode": "signed",
+  "defect_type": "wrong_negative_signed_bar",
+  "image_id": "mutated-11",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {}
+}
