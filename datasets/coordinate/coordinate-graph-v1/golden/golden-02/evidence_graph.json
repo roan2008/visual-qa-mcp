@@ -1,0 +1,404 @@
+{
+  "image_id": "image",
+  "diagram_type": "coordinate_plane",
+  "x_axis": {
+    "orientation": "x",
+    "tick_labels": [
+      {
+        "text": "20",
+        "parsed_value": 20.0,
+        "bbox": [
+          65,
+          468,
+          115,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "30",
+        "parsed_value": 30.0,
+        "bbox": [
+          121,
+          468,
+          171,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "40",
+        "parsed_value": 40.0,
+        "bbox": [
+          177,
+          468,
+          227,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "50",
+        "parsed_value": 50.0,
+        "bbox": [
+          233,
+          468,
+          283,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "60",
+        "parsed_value": 60.0,
+        "bbox": [
+          289,
+          468,
+          339,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "70",
+        "parsed_value": 70.0,
+        "bbox": [
+          345,
+          468,
+          395,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "80",
+        "parsed_value": 80.0,
+        "bbox": [
+          401,
+          468,
+          451,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "90",
+        "parsed_value": 90.0,
+        "bbox": [
+          457,
+          468,
+          507,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "100",
+        "parsed_value": 100.0,
+        "bbox": [
+          513,
+          468,
+          563,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "110",
+        "parsed_value": 110.0,
+        "bbox": [
+          569,
+          468,
+          619,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "120",
+        "parsed_value": 120.0,
+        "bbox": [
+          625,
+          468,
+          675,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      }
+    ],
+    "axis_pixel_position": 460,
+    "reference_pixel": 90,
+    "fit_slope": 0.178571,
+    "fit_intercept": 3.9286,
+    "mapping": {
+      "min_value": 20.0,
+      "max_value": 120.0,
+      "pixels_per_unit": 5.6,
+      "scale_mode": "non_zero_min",
+      "value_direction": "positive_right",
+      "readable": true
+    },
+    "confidence": 0.9,
+    "backend": "template",
+    "primitive_ids": [
+      "coordinate.line.x-axis"
+    ]
+  },
+  "y_axis": {
+    "orientation": "y",
+    "tick_labels": [
+      {
+        "text": "90",
+        "parsed_value": 90.0,
+        "bbox": [
+          26,
+          30,
+          82,
+          50
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "80",
+        "parsed_value": 80.0,
+        "bbox": [
+          26,
+          100,
+          82,
+          120
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "70",
+        "parsed_value": 70.0,
+        "bbox": [
+          26,
+          170,
+          82,
+          190
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "60",
+        "parsed_value": 60.0,
+        "bbox": [
+          26,
+          240,
+          82,
+          260
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "50",
+        "parsed_value": 50.0,
+        "bbox": [
+          26,
+          310,
+          82,
+          330
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "40",
+        "parsed_value": 40.0,
+        "bbox": [
+          26,
+          380,
+          82,
+          400
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "30",
+        "parsed_value": 30.0,
+        "bbox": [
+          26,
+          450,
+          82,
+          470
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      }
+    ],
+    "axis_pixel_position": 90,
+    "reference_pixel": 460,
+    "fit_slope": -0.142857,
+    "fit_intercept": 95.7143,
+    "mapping": {
+      "min_value": 30.0,
+      "max_value": 90.0,
+      "pixels_per_unit": 7.0,
+      "scale_mode": "non_zero_min",
+      "value_direction": "positive_up",
+      "readable": true
+    },
+    "confidence": 0.9,
+    "backend": "template",
+    "primitive_ids": [
+      "coordinate.line.y-axis"
+    ]
+  },
+  "points": [
+    {
+      "point_id": "point-01",
+      "rgb": [
+        142,
+        68,
+        173
+      ],
+      "pixel_xy": [
+        622,
+        54
+      ],
+      "data_xy": [
+        115.0,
+        88.0
+      ],
+      "bbox": [
+        615,
+        47,
+        629,
+        61
+      ],
+      "pixel_count": 177,
+      "confidence": 0.9,
+      "primitive_ids": [
+        "coordinate.point.point-01"
+      ]
+    },
+    {
+      "point_id": "point-02",
+      "rgb": [
+        0,
+        148,
+        50
+      ],
+      "pixel_xy": [
+        482,
+        180
+      ],
+      "data_xy": [
+        90.0,
+        70.0
+      ],
+      "bbox": [
+        475,
+        173,
+        489,
+        187
+      ],
+      "pixel_count": 177,
+      "confidence": 0.9,
+      "primitive_ids": [
+        "coordinate.point.point-02"
+      ]
+    },
+    {
+      "point_id": "point-03",
+      "rgb": [
+        9,
+        132,
+        227
+      ],
+      "pixel_xy": [
+        314,
+        285
+      ],
+      "data_xy": [
+        60.0,
+        55.0
+      ],
+      "bbox": [
+        307,
+        278,
+        321,
+        292
+      ],
+      "pixel_count": 177,
+      "confidence": 0.9,
+      "primitive_ids": [
+        "coordinate.point.point-03"
+      ]
+    },
+    {
+      "point_id": "point-04",
+      "rgb": [
+        214,
+        48,
+        49
+      ],
+      "pixel_xy": [
+        118,
+        425
+      ],
+      "data_xy": [
+        25.0,
+        35.0
+      ],
+      "bbox": [
+        111,
+        418,
+        125,
+        432
+      ],
+      "pixel_count": 177,
+      "confidence": 0.9,
+      "primitive_ids": [
+        "coordinate.point.point-04"
+      ]
+    }
+  ],
+  "polyline_edges": [
+    {
+      "from_point_id": "point-01",
+      "to_point_id": "point-02",
+      "coverage": 1.0
+    },
+    {
+      "from_point_id": "point-02",
+      "to_point_id": "point-03",
+      "coverage": 1.0
+    },
+    {
+      "from_point_id": "point-03",
+      "to_point_id": "point-04",
+      "coverage": 1.0
+    }
+  ],
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "coordinate-graph-v1",
+    "extractor_version": "0.1.0",
+    "backend": "dual_axis_template",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "image_path": "datasets\\coordinate\\coordinate-graph-v1\\golden\\golden-02\\image.png"
+  }
+}

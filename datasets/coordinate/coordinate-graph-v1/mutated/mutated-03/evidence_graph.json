@@ -1,0 +1,332 @@
+{
+  "image_id": "image",
+  "diagram_type": "coordinate_plane",
+  "x_axis": {
+    "orientation": "x",
+    "tick_labels": [
+      {
+        "text": "0",
+        "parsed_value": 0.0,
+        "bbox": [
+          65,
+          468,
+          115,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "20",
+        "parsed_value": 20.0,
+        "bbox": [
+          177,
+          468,
+          227,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "40",
+        "parsed_value": 40.0,
+        "bbox": [
+          289,
+          468,
+          339,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "60",
+        "parsed_value": 60.0,
+        "bbox": [
+          401,
+          468,
+          451,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "80",
+        "parsed_value": 80.0,
+        "bbox": [
+          513,
+          468,
+          563,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "100",
+        "parsed_value": 100.0,
+        "bbox": [
+          625,
+          468,
+          675,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      }
+    ],
+    "axis_pixel_position": 460,
+    "reference_pixel": 90,
+    "fit_slope": 0.178571,
+    "fit_intercept": -16.0714,
+    "mapping": {
+      "min_value": 0.0,
+      "max_value": 100.0,
+      "pixels_per_unit": 5.6,
+      "scale_mode": "zero_baseline",
+      "value_direction": "positive_right",
+      "readable": true
+    },
+    "confidence": 0.9,
+    "backend": "template",
+    "primitive_ids": [
+      "coordinate.line.x-axis"
+    ]
+  },
+  "y_axis": {
+    "orientation": "y",
+    "tick_labels": [
+      {
+        "text": "50",
+        "parsed_value": 50.0,
+        "bbox": [
+          26,
+          30,
+          82,
+          50
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "40",
+        "parsed_value": 40.0,
+        "bbox": [
+          26,
+          114,
+          82,
+          134
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "30",
+        "parsed_value": 30.0,
+        "bbox": [
+          26,
+          198,
+          82,
+          218
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "20",
+        "parsed_value": 20.0,
+        "bbox": [
+          26,
+          282,
+          82,
+          302
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "10",
+        "parsed_value": 10.0,
+        "bbox": [
+          26,
+          366,
+          82,
+          386
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "0",
+        "parsed_value": 0.0,
+        "bbox": [
+          26,
+          450,
+          82,
+          470
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      }
+    ],
+    "axis_pixel_position": 90,
+    "reference_pixel": 460,
+    "fit_slope": -0.119048,
+    "fit_intercept": 54.7619,
+    "mapping": {
+      "min_value": 0.0,
+      "max_value": 50.0,
+      "pixels_per_unit": 8.4,
+      "scale_mode": "zero_baseline",
+      "value_direction": "positive_up",
+      "readable": true
+    },
+    "confidence": 0.9,
+    "backend": "template",
+    "primitive_ids": [
+      "coordinate.line.y-axis"
+    ]
+  },
+  "points": [
+    {
+      "point_id": "point-01",
+      "rgb": [
+        142,
+        68,
+        173
+      ],
+      "pixel_xy": [
+        622,
+        56
+      ],
+      "data_xy": [
+        95.0,
+        48.095
+      ],
+      "bbox": [
+        615,
+        49,
+        629,
+        63
+      ],
+      "pixel_count": 177,
+      "confidence": 0.9,
+      "primitive_ids": [
+        "coordinate.point.point-01"
+      ]
+    },
+    {
+      "point_id": "point-02",
+      "rgb": [
+        0,
+        148,
+        50
+      ],
+      "pixel_xy": [
+        482,
+        166
+      ],
+      "data_xy": [
+        70.0,
+        35.0
+      ],
+      "bbox": [
+        475,
+        159,
+        489,
+        173
+      ],
+      "pixel_count": 177,
+      "confidence": 0.9,
+      "primitive_ids": [
+        "coordinate.point.point-02"
+      ]
+    },
+    {
+      "point_id": "point-03",
+      "rgb": [
+        9,
+        132,
+        227
+      ],
+      "pixel_xy": [
+        566,
+        334
+      ],
+      "data_xy": [
+        85.0,
+        15.0
+      ],
+      "bbox": [
+        559,
+        327,
+        573,
+        341
+      ],
+      "pixel_count": 177,
+      "confidence": 0.9,
+      "primitive_ids": [
+        "coordinate.point.point-03"
+      ]
+    },
+    {
+      "point_id": "point-04",
+      "rgb": [
+        214,
+        48,
+        49
+      ],
+      "pixel_xy": [
+        146,
+        418
+      ],
+      "data_xy": [
+        10.0,
+        5.0
+      ],
+      "bbox": [
+        139,
+        411,
+        153,
+        425
+      ],
+      "pixel_count": 177,
+      "confidence": 0.9,
+      "primitive_ids": [
+        "coordinate.point.point-04"
+      ]
+    }
+  ],
+  "polyline_edges": [
+    {
+      "from_point_id": "point-01",
+      "to_point_id": "point-02",
+      "coverage": 1.0
+    },
+    {
+      "from_point_id": "point-01",
+      "to_point_id": "point-04",
+      "coverage": 0.958
+    },
+    {
+      "from_point_id": "point-02",
+      "to_point_id": "point-04",
+      "coverage": 1.0
+    }
+  ],
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "coordinate-graph-v1",
+    "extractor_version": "0.1.0",
+    "backend": "dual_axis_template",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "image_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-03\\image.png"
+  }
+}

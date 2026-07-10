@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-06",
+  "title": "Two points share an ambiguous color",
+  "kind": "mutated",
+  "defect_type": "ambiguous_point_colors",
+  "scenario": "coordinate_plane",
+  "dataset_track": "controlled",
+  "image_id": "mutated-06",
+  "diagram_version": "coordinate-graph-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

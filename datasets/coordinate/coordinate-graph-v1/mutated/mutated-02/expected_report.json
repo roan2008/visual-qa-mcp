@@ -1,0 +1,10 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "point_count_mismatch",
+    "extra_point"
+  ],
+  "expected_evidence": {
+    "point_count": 5
+  }
+}

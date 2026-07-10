@@ -254,6 +254,56 @@ class GeometryEvidenceGraph:
 
 
 @dataclass
+class ExtractedCoordinateAxis:
+    orientation: str
+    tick_labels: list[TickLabel]
+    axis_pixel_position: int | None
+    reference_pixel: int | None
+    fit_slope: float | None
+    fit_intercept: float | None
+    mapping: AxisMapping | None
+    confidence: float
+    backend: str = "template"
+    primitive_ids: list[str] = field(default_factory=list)
+
+
+@dataclass
+class ExtractedPoint:
+    point_id: str
+    rgb: list[int]
+    pixel_xy: list[int]
+    data_xy: list[float] | None
+    bbox: list[int]
+    pixel_count: int
+    confidence: float
+    primitive_ids: list[str] = field(default_factory=list)
+
+
+@dataclass
+class DetectedPolylineEdge:
+    from_point_id: str
+    to_point_id: str
+    coverage: float
+
+
+@dataclass
+class CoordinateEvidenceGraph:
+    image_id: str
+    diagram_type: str
+    x_axis: ExtractedCoordinateAxis
+    y_axis: ExtractedCoordinateAxis
+    points: list[ExtractedPoint]
+    polyline_edges: list[DetectedPolylineEdge]
+    extraction_confidence: float
+    provenance: ExtractionProvenance
+    gaps: list[EvidenceGap] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
 class Finding:
     id: str
     rule_id: str
@@ -373,6 +423,20 @@ class GeometryDatasetCase:
 
 
 @dataclass
+class CoordinateDatasetCase:
+    case_id: str
+    title: str
+    kind: str
+    defect_type: str | None
+    scenario: str
+    image_path: Path
+    spec_path: Path
+    metadata_path: Path
+    expected_report_path: Path
+    dataset_track: str = "controlled"
+
+
+@dataclass
 class ArtifactPaths:
     output_dir: Path
     overlay_path: Path
@@ -403,7 +467,7 @@ class VerificationResult:
     metadata_path: Path | None
     backend: str
     claim_graph: ClaimGraph
-    evidence_graph: EvidenceGraph | ArrowEvidenceGraph | GeometryEvidenceGraph
+    evidence_graph: EvidenceGraph | ArrowEvidenceGraph | GeometryEvidenceGraph | CoordinateEvidenceGraph
     report: VisualQaReport
     primitive_graph: PrimitiveEvidenceGraph | None = None
 

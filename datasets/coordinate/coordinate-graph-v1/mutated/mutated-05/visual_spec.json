@@ -1,0 +1,124 @@
+{
+  "id": "coordinate-mutated-05",
+  "domain": "mathematics",
+  "risk_level": "medium",
+  "learning_objective": "Read a coordinate plane where each scatter point has the correct position and color identity, and the connecting polyline links the declared points in order.",
+  "source_reference": {
+    "x_axis": {
+      "min": 0,
+      "max": 100
+    },
+    "y_axis": {
+      "min": 0,
+      "max": 50
+    },
+    "points": [
+      {
+        "id": "p1",
+        "name": "Point 1",
+        "rgb": [
+          214,
+          48,
+          49
+        ],
+        "x": 10,
+        "y": 5
+      },
+      {
+        "id": "p2",
+        "name": "Point 2",
+        "rgb": [
+          9,
+          132,
+          227
+        ],
+        "x": 40,
+        "y": 15
+      },
+      {
+        "id": "p3",
+        "name": "Point 3",
+        "rgb": [
+          0,
+          148,
+          50
+        ],
+        "x": 70,
+        "y": 35
+      },
+      {
+        "id": "p4",
+        "name": "Point 4",
+        "rgb": [
+          142,
+          68,
+          173
+        ],
+        "x": 95,
+        "y": 48
+      }
+    ],
+    "polyline": {
+      "ordered_point_ids": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ]
+    }
+  },
+  "required_elements": [
+    {
+      "id": "points",
+      "kind": "point",
+      "name": "scatter points",
+      "count": 4
+    }
+  ],
+  "labels": [],
+  "relations": [],
+  "checks": [
+    {
+      "id": "point-count-matches",
+      "type": "point_count_matches",
+      "severity": "high",
+      "description": "The number of detected scatter points should match the declared points."
+    },
+    {
+      "id": "required-points-present",
+      "type": "required_points_present",
+      "severity": "critical",
+      "description": "Every required point must be present with its declared color identity.",
+      "params": {
+        "color_match_distance": 60.0
+      }
+    },
+    {
+      "id": "point-positions-correct",
+      "type": "point_positions_correct",
+      "severity": "critical",
+      "description": "Each point's data-space position, derived from independent X/Y axis scales, must match its declared position within tolerance.",
+      "params": {
+        "color_match_distance": 60.0
+      }
+    },
+    {
+      "id": "axis-scale-correct",
+      "type": "axis_scale_correct",
+      "severity": "critical",
+      "description": "The displayed X and Y axis ranges must match the declared spec ranges.",
+      "params": {
+        "axis_value_tolerance": 0.5
+      }
+    },
+    {
+      "id": "polyline-connections-correct",
+      "type": "polyline_connections_correct",
+      "severity": "high",
+      "description": "The declared ordered polyline must connect its points in the declared order, verified against rendered line-pixel evidence.",
+      "params": {
+        "color_match_distance": 60.0
+      }
+    }
+  ]
+}

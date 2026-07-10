@@ -1,6 +1,11 @@
 """Visual QA MCP chart MVP package."""
 
-from .claim_graph import build_arrow_claim_graph, build_chart_claim_graph, build_geometry_claim_graph
+from .claim_graph import (
+    build_arrow_claim_graph,
+    build_chart_claim_graph,
+    build_coordinate_claim_graph,
+    build_geometry_claim_graph,
+)
 from .contracts import (
     ArtifactPaths,
     AxisMapping,
@@ -8,6 +13,7 @@ from .contracts import (
     ClaimCheck,
     ClaimGap,
     ClaimGraph,
+    CoordinateEvidenceGraph,
     EvidenceGraph,
     EvidenceGap,
     ExtractionProvenance,
@@ -27,12 +33,15 @@ from .contracts import (
 from .server import create_server
 from .service import (
     build_claim_graph_from_spec,
+    build_coordinate_claim_graph_from_spec,
     extract_chart_evidence_from_inputs,
+    extract_coordinate_evidence_from_inputs,
     extract_geometry_evidence_from_inputs,
     extract_primitive_evidence_from_inputs,
     load_claim_graph,
     load_evidence_graph,
     run_chart_verification,
+    run_coordinate_verification,
     run_geometry_verification,
     run_chart_rules_from_graphs,
     write_verification_artifacts,
@@ -44,16 +53,20 @@ __all__ = [
     "build_claim_graph_from_spec",
     "build_chart_claim_graph",
     "build_arrow_claim_graph",
+    "build_coordinate_claim_graph",
+    "build_coordinate_claim_graph_from_spec",
     "build_geometry_claim_graph",
     "ChartDatasetCase",
     "ClaimCheck",
     "ClaimGap",
     "ClaimGraph",
+    "CoordinateEvidenceGraph",
     "create_server",
     "EvidenceGraph",
     "EvidenceGap",
     "ExtractionProvenance",
     "extract_chart_evidence_from_inputs",
+    "extract_coordinate_evidence_from_inputs",
     "extract_geometry_evidence_from_inputs",
     "extract_primitive_evidence_from_inputs",
     "ExtractedAxis",
@@ -68,6 +81,7 @@ __all__ = [
     "load_evidence_graph",
     "OverlayAnnotation",
     "run_chart_verification",
+    "run_coordinate_verification",
     "run_geometry_verification",
     "run_chart_rules_from_graphs",
     "TickLabel",

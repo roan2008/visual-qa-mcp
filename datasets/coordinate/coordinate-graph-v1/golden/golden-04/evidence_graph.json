@@ -1,0 +1,313 @@
+{
+  "image_id": "image",
+  "diagram_type": "coordinate_plane",
+  "x_axis": {
+    "orientation": "x",
+    "tick_labels": [
+      {
+        "text": "0",
+        "parsed_value": 0.0,
+        "bbox": [
+          65,
+          468,
+          115,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "10",
+        "parsed_value": 10.0,
+        "bbox": [
+          159,
+          468,
+          209,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "20",
+        "parsed_value": 20.0,
+        "bbox": [
+          251,
+          468,
+          301,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "30",
+        "parsed_value": 30.0,
+        "bbox": [
+          345,
+          468,
+          395,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "40",
+        "parsed_value": 40.0,
+        "bbox": [
+          439,
+          468,
+          489,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "50",
+        "parsed_value": 50.0,
+        "bbox": [
+          531,
+          468,
+          581,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "60",
+        "parsed_value": 60.0,
+        "bbox": [
+          625,
+          468,
+          675,
+          488
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      }
+    ],
+    "axis_pixel_position": 460,
+    "reference_pixel": 90,
+    "fit_slope": 0.107197,
+    "fit_intercept": -9.6628,
+    "mapping": {
+      "min_value": 0.0,
+      "max_value": 60.0,
+      "pixels_per_unit": 9.3286,
+      "scale_mode": "zero_baseline",
+      "value_direction": "positive_right",
+      "readable": true
+    },
+    "confidence": 0.9,
+    "backend": "template",
+    "primitive_ids": [
+      "coordinate.line.x-axis"
+    ]
+  },
+  "y_axis": {
+    "orientation": "y",
+    "tick_labels": [
+      {
+        "text": "30",
+        "parsed_value": 30.0,
+        "bbox": [
+          26,
+          30,
+          82,
+          50
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "25",
+        "parsed_value": 25.0,
+        "bbox": [
+          26,
+          100,
+          82,
+          120
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "20",
+        "parsed_value": 20.0,
+        "bbox": [
+          26,
+          170,
+          82,
+          190
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "15",
+        "parsed_value": 15.0,
+        "bbox": [
+          26,
+          240,
+          82,
+          260
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "10",
+        "parsed_value": 10.0,
+        "bbox": [
+          26,
+          310,
+          82,
+          330
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "5",
+        "parsed_value": 5.0,
+        "bbox": [
+          26,
+          380,
+          82,
+          400
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      },
+      {
+        "text": "0",
+        "parsed_value": 0.0,
+        "bbox": [
+          26,
+          450,
+          82,
+          470
+        ],
+        "confidence": 0.85,
+        "primitive_ids": []
+      }
+    ],
+    "axis_pixel_position": 90,
+    "reference_pixel": 460,
+    "fit_slope": -0.071429,
+    "fit_intercept": 32.8571,
+    "mapping": {
+      "min_value": 0.0,
+      "max_value": 30.0,
+      "pixels_per_unit": 14.0,
+      "scale_mode": "zero_baseline",
+      "value_direction": "positive_up",
+      "readable": true
+    },
+    "confidence": 0.9,
+    "backend": "template",
+    "primitive_ids": [
+      "coordinate.line.y-axis"
+    ]
+  },
+  "points": [
+    {
+      "point_id": "point-01",
+      "rgb": [
+        0,
+        148,
+        50
+      ],
+      "pixel_xy": [
+        603,
+        68
+      ],
+      "data_xy": [
+        54.977,
+        28.0
+      ],
+      "bbox": [
+        596,
+        61,
+        610,
+        75
+      ],
+      "pixel_count": 177,
+      "confidence": 0.9,
+      "primitive_ids": [
+        "coordinate.point.point-01"
+      ]
+    },
+    {
+      "point_id": "point-02",
+      "rgb": [
+        214,
+        48,
+        49
+      ],
+      "pixel_xy": [
+        136,
+        110
+      ],
+      "data_xy": [
+        4.916,
+        25.0
+      ],
+      "bbox": [
+        129,
+        103,
+        143,
+        117
+      ],
+      "pixel_count": 177,
+      "confidence": 0.9,
+      "primitive_ids": [
+        "coordinate.point.point-02"
+      ]
+    },
+    {
+      "point_id": "point-03",
+      "rgb": [
+        9,
+        132,
+        227
+      ],
+      "pixel_xy": [
+        370,
+        320
+      ],
+      "data_xy": [
+        30.0,
+        10.0
+      ],
+      "bbox": [
+        363,
+        313,
+        377,
+        327
+      ],
+      "pixel_count": 177,
+      "confidence": 0.9,
+      "primitive_ids": [
+        "coordinate.point.point-03"
+      ]
+    }
+  ],
+  "polyline_edges": [],
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "coordinate-graph-v1",
+    "extractor_version": "0.1.0",
+    "backend": "dual_axis_template",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "image_path": "datasets\\coordinate\\coordinate-graph-v1\\golden\\golden-04\\image.png"
+  }
+}

@@ -11,6 +11,7 @@ from .arrow_extractor import extract_arrow_evidence
 from .chart_extractor import _find_bar_regions, _to_np, detect_plot_area
 from .contracts import (
     ArrowEvidenceGraph,
+    CoordinateEvidenceGraph,
     EvidenceGap,
     EvidenceGraph,
     ExtractionProvenance,
@@ -20,10 +21,11 @@ from .contracts import (
     PrimitiveRelationship,
     PrimitiveSourceRef,
 )
+from .coordinate_extractor import extract_coordinate_evidence
 from .geometry_extractor import extract_geometry_evidence
 from .geometry_labels import dimension_label_box
 
-SUPPORTED_PRIMITIVE_PROFILES = ("chart-v2", "arrow-v1", "geometry-v1")
+SUPPORTED_PRIMITIVE_PROFILES = ("chart-v2", "arrow-v1", "geometry-v1", "coordinate-graph-v1")
 RELATIONSHIP_TYPES = {
     "inside",
     "touches",
@@ -376,6 +378,96 @@ def primitive_graph_from_chart(
     return graph
 
 
+def primitive_graph_from_coordinates(
+    evidence: CoordinateEvidenceGraph,
+    image_path: Path,
+) -> PrimitiveEvidenceGraph:
+    with Image.open(image_path) as image:
+        width, height = image.size
+    primitives: list[Primitive] = []
+    relationships: list[PrimitiveRelationship] = []
+
+    for axis_evidence in (evidence.x_axis, evidence.y_axis):
+        readable_ticks = [tick for tick in axis_evidence.tick_labels if tick.parsed_value is not None]
+        if axis_evidence.axis_pixel_position is None or len(readable_ticks) < 2:
+            continue
+        axis_id = f"coordinate.line.{axis_evidence.orientation}-axis"
+        centers = sorted(
+            int(round((tick.bbox[1] + tick.bbox[3]) / 2))
+            if axis_evidence.orientation == "y"
+            else int(round((tick.bbox[0] + tick.bbox[2]) / 2))
+            for tick in readable_ticks
+        )
+        if axis_evidence.orientation == "y":
+            start = [axis_evidence.axis_pixel_position, centers[0]]
+            end = [axis_evidence.axis_pixel_position, centers[-1]]
+        else:
+            start = [centers[0], axis_evidence.axis_pixel_position]
+            end = [centers[-1], axis_evidence.axis_pixel_position]
+        bounds = _bbox([start[0], start[1], end[0], end[1]], width, height)
+        axis_evidence.primitive_ids = [axis_id]
+        primitives.append(
+            Primitive(
+                primitive_id=axis_id,
+                type="line",
+                bbox=bounds,
+                geometry={"start": start, "end": end},
+                confidence=axis_evidence.confidence,
+                attributes={"role": f"{axis_evidence.orientation}_axis"},
+                source_refs=_source(f"{axis_evidence.orientation}_axis", f"{axis_evidence.orientation}-axis"),
+            )
+        )
+
+    point_primitive_ids: dict[str, str] = {}
+    for point in evidence.points:
+        primitive_id = f"coordinate.point.{point.point_id}"
+        bounds = _bbox(point.bbox, width, height)
+        point.primitive_ids = [primitive_id]
+        point_primitive_ids[point.point_id] = primitive_id
+        primitives.append(
+            Primitive(
+                primitive_id=primitive_id,
+                type="point",
+                bbox=bounds,
+                geometry={"point": list(point.pixel_xy)},
+                confidence=point.confidence,
+                attributes={"rgb": list(point.rgb), "data_xy": point.data_xy},
+                source_refs=_source("points", point.point_id),
+            )
+        )
+
+    for edge in evidence.polyline_edges:
+        first_id = point_primitive_ids.get(edge.from_point_id)
+        second_id = point_primitive_ids.get(edge.to_point_id)
+        if first_id is None or second_id is None:
+            continue
+        relationships.append(
+            PrimitiveRelationship(
+                relationship_id=f"coordinate.connected_to.{edge.from_point_id}.{edge.to_point_id}",
+                type="connected_to",
+                source_primitive_id=first_id,
+                target_primitive_id=second_id,
+                confidence=edge.coverage,
+                measurements={"coverage": edge.coverage},
+            )
+        )
+
+    graph = PrimitiveEvidenceGraph(
+        schema_version="1.0",
+        image_id=evidence.image_id,
+        profile="coordinate-graph-v1",
+        coordinate_system=_coordinate_system(width, height),
+        primitives=primitives,
+        relationships=relationships,
+        gaps=_deduplicate_gaps(list(evidence.gaps)),
+        provenance=_adapter_provenance("coordinate-graph-v1", evidence.provenance.backend),
+        metadata={"source_extractor": evidence.provenance.extractor_id},
+    )
+    _raise_if_invalid(graph)
+    _raise_if_domain_links_invalid(evidence, graph)
+    return graph
+
+
 def extract_primitive_evidence(image_path: Path, profile: str) -> PrimitiveEvidenceGraph:
     if profile not in SUPPORTED_PRIMITIVE_PROFILES:
         raise ValueError(
@@ -388,6 +480,9 @@ def extract_primitive_evidence(image_path: Path, profile: str) -> PrimitiveEvide
     if profile == "arrow-v1":
         evidence = extract_arrow_evidence(image_path)
         return primitive_graph_from_arrows(evidence, image_path)
+    if profile == "coordinate-graph-v1":
+        evidence = extract_coordinate_evidence(image_path)
+        return primitive_graph_from_coordinates(evidence, image_path)
     return _extract_spec_blind_chart_primitives(image_path)
 
 
@@ -497,7 +592,7 @@ def validate_primitive_graph_semantics(graph: PrimitiveEvidenceGraph) -> list[st
 
 
 def validate_domain_primitive_links(
-    evidence: EvidenceGraph | ArrowEvidenceGraph | GeometryEvidenceGraph,
+    evidence: EvidenceGraph | ArrowEvidenceGraph | GeometryEvidenceGraph | CoordinateEvidenceGraph,
     graph: PrimitiveEvidenceGraph,
 ) -> list[str]:
     errors: list[str] = []
@@ -514,6 +609,14 @@ def validate_domain_primitive_links(
             domain_objects[("arrows", item.arrow_id)] = item.primitive_ids
         for item in evidence.regions:
             domain_objects[("regions", item.region_id)] = item.primitive_ids
+    elif isinstance(evidence, CoordinateEvidenceGraph):
+        for item in evidence.points:
+            domain_objects[("points", item.point_id)] = item.primitive_ids
+        for axis_evidence in (evidence.x_axis, evidence.y_axis):
+            if axis_evidence.primitive_ids:
+                domain_objects[
+                    (f"{axis_evidence.orientation}_axis", f"{axis_evidence.orientation}-axis")
+                ] = axis_evidence.primitive_ids
     else:
         for item in evidence.bars:
             domain_objects[("bars", item.bar_id)] = item.primitive_ids
@@ -583,7 +686,7 @@ def _raise_if_invalid(graph: PrimitiveEvidenceGraph) -> None:
 
 
 def _raise_if_domain_links_invalid(
-    evidence: EvidenceGraph | ArrowEvidenceGraph | GeometryEvidenceGraph,
+    evidence: EvidenceGraph | ArrowEvidenceGraph | GeometryEvidenceGraph | CoordinateEvidenceGraph,
     graph: PrimitiveEvidenceGraph,
 ) -> None:
     errors = validate_domain_primitive_links(evidence, graph)

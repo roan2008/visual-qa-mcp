@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-05",
+  "title": "Polyline skips a declared point",
+  "kind": "mutated",
+  "defect_type": "polyline_skips_point",
+  "scenario": "coordinate_plane",
+  "dataset_track": "controlled",
+  "image_id": "mutated-05",
+  "diagram_version": "coordinate-graph-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

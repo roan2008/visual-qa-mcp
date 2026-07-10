@@ -1,0 +1,188 @@
+{
+  "image_id": "image",
+  "spec_id": "coordinate-mutated-04",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-point-position-p1",
+      "rule_id": "coordinate-graph-v1.point-positions-correct",
+      "type": "point_position_wrong",
+      "severity": "critical",
+      "message": "Point 'p1' measures data position (10.00, 15.00) but the spec declares (10.00, 5.00).",
+      "evidence": {
+        "point_id": "p1",
+        "detected_point_id": "point-04",
+        "expected_xy": [
+          10.0,
+          5.0
+        ],
+        "detected_data_xy": [
+          10.0,
+          15.0
+        ],
+        "detected_pixel_xy": [
+          146,
+          418
+        ],
+        "position_tolerance_x": 3.0,
+        "position_tolerance_y": 1.5
+      },
+      "recommendation": "Redraw the point at its declared data-space position."
+    },
+    {
+      "id": "finding-point-position-p2",
+      "rule_id": "coordinate-graph-v1.point-positions-correct",
+      "type": "point_position_wrong",
+      "severity": "critical",
+      "message": "Point 'p2' measures data position (40.00, 25.00) but the spec declares (40.00, 15.00).",
+      "evidence": {
+        "point_id": "p2",
+        "detected_point_id": "point-03",
+        "expected_xy": [
+          40.0,
+          15.0
+        ],
+        "detected_data_xy": [
+          40.0,
+          25.0
+        ],
+        "detected_pixel_xy": [
+          314,
+          334
+        ],
+        "position_tolerance_x": 3.0,
+        "position_tolerance_y": 1.5
+      },
+      "recommendation": "Redraw the point at its declared data-space position."
+    },
+    {
+      "id": "finding-point-position-p3",
+      "rule_id": "coordinate-graph-v1.point-positions-correct",
+      "type": "point_position_wrong",
+      "severity": "critical",
+      "message": "Point 'p3' measures data position (70.00, 45.00) but the spec declares (70.00, 35.00).",
+      "evidence": {
+        "point_id": "p3",
+        "detected_point_id": "point-02",
+        "expected_xy": [
+          70.0,
+          35.0
+        ],
+        "detected_data_xy": [
+          70.0,
+          45.0
+        ],
+        "detected_pixel_xy": [
+          482,
+          166
+        ],
+        "position_tolerance_x": 3.0,
+        "position_tolerance_y": 1.5
+      },
+      "recommendation": "Redraw the point at its declared data-space position."
+    },
+    {
+      "id": "finding-point-position-p4",
+      "rule_id": "coordinate-graph-v1.point-positions-correct",
+      "type": "point_position_wrong",
+      "severity": "critical",
+      "message": "Point 'p4' measures data position (95.00, 58.09) but the spec declares (95.00, 48.00).",
+      "evidence": {
+        "point_id": "p4",
+        "detected_point_id": "point-01",
+        "expected_xy": [
+          95.0,
+          48.0
+        ],
+        "detected_data_xy": [
+          95.0,
+          58.095
+        ],
+        "detected_pixel_xy": [
+          622,
+          56
+        ],
+        "position_tolerance_x": 3.0,
+        "position_tolerance_y": 1.5
+      },
+      "recommendation": "Redraw the point at its declared data-space position."
+    },
+    {
+      "id": "finding-axis-scale-y",
+      "rule_id": "coordinate-graph-v1.axis-scale-correct",
+      "type": "axis_scale_misread",
+      "severity": "critical",
+      "message": "The y-axis displays range 10.00..60.00 but the spec declares 0.00..50.00.",
+      "evidence": {
+        "orientation": "y",
+        "expected_min": 0.0,
+        "expected_max": 50.0,
+        "detected_min": 10.0,
+        "detected_max": 60.0,
+        "axis_value_tolerance": 0.5
+      },
+      "recommendation": "Correct the displayed axis tick range so it matches the declared spec."
+    }
+  ],
+  "checks_run": [
+    "point-count-matches",
+    "required-points-present",
+    "point-positions-correct",
+    "polyline-connections-correct",
+    "axis-scale-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.3,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.3,
+  "overlay_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-04\\overlay.png",
+  "evidence_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-04\\evidence_graph.json",
+  "claim_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-04\\claim_graph.json",
+  "primitive_evidence_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-04\\primitive_evidence_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-point-position-p1",
+      "kind": "bbox",
+      "bbox": [
+        139,
+        411,
+        153,
+        425
+      ],
+      "label": "p1: position"
+    },
+    {
+      "finding_id": "finding-point-position-p2",
+      "kind": "bbox",
+      "bbox": [
+        307,
+        327,
+        321,
+        341
+      ],
+      "label": "p2: position"
+    },
+    {
+      "finding_id": "finding-point-position-p3",
+      "kind": "bbox",
+      "bbox": [
+        475,
+        159,
+        489,
+        173
+      ],
+      "label": "p3: position"
+    },
+    {
+      "finding_id": "finding-point-position-p4",
+      "kind": "bbox",
+      "bbox": [
+        615,
+        49,
+        629,
+        63
+      ],
+      "label": "p4: position"
+    }
+  ]
+}

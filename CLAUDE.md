@@ -72,7 +72,8 @@ Run this every new session:
 6. Read `wiki/impl-arrow-v1-free-body.md` when working on arrows or force balance
 7. Read `wiki/impl-geometry-v1-mechanical.md` when working on mechanical geometry
 8. Read `wiki/impl-primitive-evidence-foundation.md` when working on shared primitives, relationships, or new verticals
-9. Read relevant knowledge pages, especially:
+9. Read `wiki/impl-coordinate-graph-v1-dual-axis.md` when working on coordinate graphs or dual-axis extraction
+10. Read relevant knowledge pages, especially:
    - `wiki/knowledge-product-direction.md`
    - `wiki/knowledge-rules-validators.md`
    - `wiki/knowledge-no-tuning-and-3d.md`
@@ -135,9 +136,10 @@ Capture knowledge immediately after each meaningful step, in this priority order
 - `run-chart-suite-validation` reports controlled, noisy, and pilot summaries. The existing validation command remains the compatibility surface for the original chart dataset.
 - `arrow-v1` is the second executable vertical: controlled free-body diagrams with color-declared and label-declared arrow identity, validated on a 17-case controlled set (8/8 typed defects, 3/3 ambiguity guard, 0 unsupported passes) plus a 6-case noisy blur/downscale/JPEG track (4/4 typed defects, 0 unsupported passes). It includes one theory-aware check: opt-in translational force balance (`source_reference.scenario_type = "equilibrium"` plus a `force-balance-correct` check) that sums extractor pixel vectors and refuses to sum a partial force set. It has no torque/moment balance, no magnitude calibration, and no real-world images yet.
 - `geometry-v1` is the third executable vertical: controlled rectangular mechanical plates with circular holes, relative diameter-ratio checks, opt-in linear alignment/spacing, and a fixed dimension-label catalog. Its 14-case controlled dataset records 7/7 typed defects and 2/2 ambiguity guards. A separate checksum-frozen 20-case noisy track records 10/10 golden passes, 5/5 typed hits, 5/5 ambiguity guards, and 0 unsupported passes across configured blur/downscale/JPEG/low-contrast/label-degradation transforms. It has no independently authored images, general OCR, unit calibration, callout-arrow extraction, or native CAD support.
-- `PrimitiveEvidenceGraph` v1 is an additive audit layer for explicit chart/arrow/geometry profiles. It records type-discriminated primitives, relationships, provenance, gaps, and domain traceability. Current domain rules do not consume it; standalone chart primitive parsing remains spec-blind.
-- The MCP wrapper exposes chart, arrow, geometry, and `parse_primitives` tools. The package can be installed locally with `python -m pip install -e .`, which provides the `visual-qa` console command.
-- The unified 85-test suite passes in about 63 seconds on the milestone machine; chart end-to-end passes 16/16 in about 35 seconds.
+- `coordinate-graph-v1` is the fourth executable vertical: controlled coordinate planes with independent numeric X and Y axes, color-identified scatter points, and one connected polyline. Its 11-case controlled dataset records 5/5 typed defects and 2/2 ambiguity guards, with pixel-to-data-space round-trip error measured near zero across zero-baseline/non-zero-min/signed axis configurations (including mismatched X/Y pixel scale) before the position tolerance (3% of declared axis range) was set. It has no noisy/real-world track, no multi-series or curve fitting, no general topology extraction, and no label-based point identity.
+- `PrimitiveEvidenceGraph` v1 is an additive audit layer for explicit chart/arrow/geometry/coordinate profiles. It records type-discriminated primitives, relationships, provenance, gaps, and domain traceability. Current domain rules do not consume it; standalone chart primitive parsing remains spec-blind.
+- The MCP wrapper exposes chart, arrow, geometry, coordinate, and `parse_primitives` tools. The package can be installed locally with `python -m pip install -e .`, which provides the `visual-qa` console command.
+- The unified 106-test suite passes in about 65 seconds on the milestone machine; chart end-to-end passes 16/16 in about 35 seconds.
 
 ## Claim Discipline
 

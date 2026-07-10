@@ -8,7 +8,7 @@
   "properties": {
     "schema_version": {"const": "1.0"},
     "image_id": {"type": "string", "minLength": 1},
-    "profile": {"enum": ["chart-v2", "arrow-v1", "geometry-v1"]},
+    "profile": {"enum": ["chart-v2", "arrow-v1", "geometry-v1", "coordinate-graph-v1"]},
     "coordinate_system": {"$ref": "#/$defs/coordinateSystem"},
     "primitives": {"type": "array", "items": {"$ref": "#/$defs/primitive"}},
     "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship"}},

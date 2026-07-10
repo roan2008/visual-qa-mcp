@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-07",
+  "title": "Y-axis ticks removed, scale unreadable",
+  "kind": "mutated",
+  "defect_type": "unreadable_axis",
+  "scenario": "coordinate_plane",
+  "dataset_track": "controlled",
+  "image_id": "mutated-07",
+  "diagram_version": "coordinate-graph-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

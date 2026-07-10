@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-04",
+  "title": "Y-axis tick labels shifted, misreading the scale",
+  "kind": "mutated",
+  "defect_type": "axis_scale_misread",
+  "scenario": "coordinate_plane",
+  "dataset_track": "controlled",
+  "image_id": "mutated-04",
+  "diagram_version": "coordinate-graph-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

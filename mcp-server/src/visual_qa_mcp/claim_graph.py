@@ -409,6 +409,196 @@ def build_geometry_claim_graph(spec_path: Path) -> ClaimGraph:
     )
 
 
+def _coordinate_rule_id(check_id: str) -> str:
+    return f"coordinate-graph-v1.{check_id}"
+
+
+def build_coordinate_claim_graph(spec_path: Path) -> ClaimGraph:
+    spec = json.loads(spec_path.read_text(encoding="utf-8"))
+    source_reference = spec.get("source_reference", {})
+    expected_points = source_reference.get("points", [])
+    polyline = source_reference.get("polyline")
+    x_axis_reference = source_reference.get("x_axis", {})
+    y_axis_reference = source_reference.get("y_axis", {})
+
+    default_tolerance_x = 0.03 * (
+        float(x_axis_reference.get("max", 1.0)) - float(x_axis_reference.get("min", 0.0))
+    )
+    default_tolerance_y = 0.03 * (
+        float(y_axis_reference.get("max", 1.0)) - float(y_axis_reference.get("min", 0.0))
+    )
+
+    claims: list[ClaimCheck] = []
+    gaps: list[ClaimGap] = []
+    for check in spec.get("checks", []):
+        check_id = check["id"]
+        params = check.get("params", {})
+        common_metadata = {
+            "description": check.get("description"),
+            "learning_objective": spec.get("learning_objective"),
+        }
+
+        def _coordinate_claim(
+            target: str,
+            expected: dict[str, Any],
+            evidence_requirements: list[str],
+            tolerance: dict[str, Any] | None = None,
+        ) -> ClaimCheck:
+            return ClaimCheck(
+                claim_id=f"claim-{check_id}",
+                rule_id=_coordinate_rule_id(check_id),
+                check_id=check_id,
+                check_type=check["type"],
+                severity=check["severity"],
+                target=target,
+                expected=expected,
+                tolerance=tolerance or {},
+                evidence_requirements=evidence_requirements,
+                metadata=common_metadata,
+            )
+
+        if check_id == "point-count-matches":
+            claims.append(
+                _coordinate_claim(
+                    target="points",
+                    expected={"count": len(expected_points)},
+                    evidence_requirements=["point_geometry"],
+                )
+            )
+        elif check_id == "required-points-present":
+            claims.append(
+                _coordinate_claim(
+                    target="points",
+                    expected={
+                        "points_by_id": {
+                            point["id"]: {"rgb": point["rgb"], "name": point.get("name")}
+                            for point in expected_points
+                        }
+                    },
+                    evidence_requirements=["point_geometry", "point_color"],
+                    tolerance={"color_match_distance": params.get("color_match_distance", 60.0)},
+                )
+            )
+        elif check_id == "point-positions-correct":
+            claims.append(
+                _coordinate_claim(
+                    target="points",
+                    expected={
+                        "points_by_id": {
+                            point["id"]: {"rgb": point["rgb"], "x": point["x"], "y": point["y"]}
+                            for point in expected_points
+                        }
+                    },
+                    evidence_requirements=["point_geometry", "point_color", "axis_mapping"],
+                    tolerance={
+                        "color_match_distance": params.get("color_match_distance", 60.0),
+                        "position_tolerance_x": params.get(
+                            "position_tolerance_x", default_tolerance_x
+                        ),
+                        "position_tolerance_y": params.get(
+                            "position_tolerance_y", default_tolerance_y
+                        ),
+                    },
+                )
+            )
+        elif check_id == "polyline-connections-correct":
+            if not polyline or not polyline.get("ordered_point_ids"):
+                gaps.append(
+                    ClaimGap(
+                        check_id=check_id,
+                        code="polyline_not_declared",
+                        message=(
+                            "Check 'polyline-connections-correct' requires "
+                            "source_reference.polyline.ordered_point_ids; none was declared. "
+                            "The check is opt-in and cannot run without a declared polyline."
+                        ),
+                        metadata={
+                            "check_type": check.get("type"),
+                            "severity": check.get("severity"),
+                        },
+                    )
+                )
+            else:
+                claims.append(
+                    _coordinate_claim(
+                        target="polyline",
+                        expected={
+                            "ordered_point_ids": polyline["ordered_point_ids"],
+                            "points_by_id": {
+                                point["id"]: {"rgb": point["rgb"]} for point in expected_points
+                            },
+                        },
+                        evidence_requirements=["point_geometry", "point_color", "polyline_edges"],
+                        tolerance={
+                            "color_match_distance": params.get("color_match_distance", 60.0)
+                        },
+                    )
+                )
+        elif check_id == "axis-scale-correct":
+            claims.append(
+                _coordinate_claim(
+                    target="axes",
+                    expected={
+                        "x_axis": {
+                            "expected_min": x_axis_reference.get("min"),
+                            "expected_max": x_axis_reference.get("max"),
+                        },
+                        "y_axis": {
+                            "expected_min": y_axis_reference.get("min"),
+                            "expected_max": y_axis_reference.get("max"),
+                        },
+                    },
+                    evidence_requirements=["axis_mapping"],
+                    tolerance={"axis_value_tolerance": params.get("axis_value_tolerance", 0.5)},
+                )
+            )
+        else:
+            gaps.append(
+                ClaimGap(
+                    check_id=check_id,
+                    code="unsupported_claim_check",
+                    message=(
+                        f"Check '{check_id}' of type '{check.get('type')}' is not mapped "
+                        "to a coordinate-graph-v1 ClaimGraph contract."
+                    ),
+                    metadata={
+                        "check_type": check.get("type"),
+                        "severity": check.get("severity"),
+                    },
+                )
+            )
+
+    if polyline and polyline.get("ordered_point_ids") and not any(
+        claim.check_id == "polyline-connections-correct" for claim in claims
+    ) and not any(gap.check_id == "polyline-connections-correct" for gap in gaps):
+        gaps.append(
+            ClaimGap(
+                check_id="polyline-connections-correct",
+                code="polyline_without_connections_check",
+                message=(
+                    "source_reference.polyline is declared but no "
+                    "'polyline-connections-correct' check was requested, so the polyline "
+                    "claim cannot be verified."
+                ),
+                metadata={"polyline": polyline},
+            )
+        )
+
+    return ClaimGraph(
+        spec_id=spec["id"],
+        domain=spec["domain"],
+        risk_level=spec.get("risk_level", "medium"),
+        claims=claims,
+        gaps=gaps,
+        source_reference=source_reference,
+        metadata={
+            "generator": "coordinate-graph-v1",
+            "spec_path": str(spec_path),
+            "required_elements": spec.get("required_elements", []),
+        },
+    )
+
+
 def build_chart_claim_graph(spec_path: Path) -> ClaimGraph:
     spec = json.loads(spec_path.read_text(encoding="utf-8"))
     source_reference = spec.get("source_reference", {})

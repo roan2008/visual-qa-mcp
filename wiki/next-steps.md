@@ -4,12 +4,49 @@ description: Current priority and queued follow-up work
 metadata:
   type: reference
   status: current
-  last_updated: 2026-07-10
+  last_updated: 2026-07-11
 ---
 
 # Next Steps
 
 ## Current Priority
+
+### 2026-07-11 session 16 - COMPLETE
+
+Implemented `coordinate-graph-v1`, the fourth executable vertical, proving the dual
+independent-numeric-axis capability the plan flagged as the one genuinely new technical piece.
+
+Delivered:
+
+- `coordinate_generator.py` (dual numeric-axis Pillow renderer: independent X/Y ticks, colored
+  scatter points, one connected polyline), `coordinate_extractor.py` (spec-blind dual-axis tick
+  reader adapted from `tick_reader`'s numeric template catalog, point color-component detection,
+  per-pair polyline edge coverage), `coordinate_rules.py`, `build_coordinate_claim_graph`,
+  `coordinate_dataset.py`
+- `specs/coordinate-evidence-graph.schema.json`, coordinate service entrypoints, CLI commands
+  `generate-coordinate-dataset`, `verify-coordinate`, `run-coordinate-validation`, and three new
+  MCP tools (`build_coordinate_claim_graph`, `parse_coordinate`, `verify_coordinate`)
+- `primitive_graph_from_coordinates` primitive-evidence adapter (points -> `point` primitives,
+  axes -> `line` primitives, detected polyline edges -> `connected_to` relationships)
+- `datasets/coordinate/coordinate-graph-v1` with 11 cases (4 golden including a mismatched
+  X/Y-scale signed-axis "trap" case, 7 mutated: 5 typed + 2 ambiguous)
+- Found and fixed a real extraction bug during validation: the axis-minimum tick's label text
+  sits at the same pixel row/column where the two axes meet, and its text was bleeding into the
+  opposite axis's tick-mark search, corrupting the linear fit on one golden case
+
+Verified:
+
+- Measured pixel->data round-trip error first (per the no-guessed-tolerance discipline) across
+  zero-baseline/non-zero-min/signed axis configs with X-scale != Y-scale: effectively zero after
+  the corner-tick-bleed fix; set position tolerance at 3% of each axis's declared range
+- coordinate-graph-v1 controlled (11 cases): typed hits `5/5`, ambiguous guard `2/2`, false
+  unsupported passes `0`, golden failures `0`, verdict mismatches `0`
+- 106 tests pass (85 prior + 21 new); chart/arrow/geometry controlled metrics re-verified
+  unchanged (`9/9`, `8/8`, `7/7`, all guard rates `1.0`, `0`/`0`)
+
+Bounds: controlled Pillow renders only; single connected polyline (no multi-series, no curve
+fitting, no general topology); tick catalog restricted to multiples of 5 in [-150, 150]; no noisy
+track or independently authored images yet; color-only point identity.
 
 ### 2026-07-10 session 15 - COMPLETE
 
@@ -329,17 +366,17 @@ Verified:
 
 ## Suggested Next Work
 
-1. Build `coordinate-graph-v1` as the first new vertical composed from shared axes, ticks, points,
-   lines/curves, and spatial relationships.
-2. Build `flowchart-v1` after coordinate graphs, using shapes, text regions, connectors, arrow
+1. Build `flowchart-v1` after coordinate graphs, using shapes, text regions, connectors, arrow
    direction, and topology; then build `circuit-v1` with separately gated symbol/connectivity rules.
-3. Add independently authored or publisher-sourced open-license chart and geometry images; current images
+2. Add independently authored or publisher-sourced open-license chart and geometry images; current images
    are still locally rendered and should not be treated as general real-world coverage.
    Install and validate the optional OCR backend in a configured environment so OCR gets its own
    evidence-backed readiness gate.
-4. Extend force-balance beyond v1 when justified: a noisy-track equilibrium case, non-zero
+3. Extend force-balance beyond v1 when justified: a noisy-track equilibrium case, non-zero
    declared expected resultants, and (much later) torque/moment balance with points of
    application.
+4. Extend coordinate-graph-v1 beyond v1 when justified: a noisy blur/downscale/JPEG track, a
+   multi-series or curve-fitting mode, and label-based point identity as a second signal.
 
 ## Recent Completed Milestones
 
@@ -356,3 +393,4 @@ Verified:
 - 2026-07-10: Arrow-v1 label-based identity and noisy track added (14-case controlled, 6-case noisy, 7/7 and 4/4 typed hits).
 - 2026-07-10: Arrow-v1 translational force-balance rule added (first theory-aware check; 17-case controlled set, 8/8 typed hits, force-balance 1/1).
 - 2026-07-10: PrimitiveEvidenceGraph v1, geometry noisy gate, and sub-minute unified regression baseline added.
+- 2026-07-11: Coordinate-graph-v1 added as the fourth executable vertical with dual independent numeric axes (11-case controlled dataset, 5/5 typed hits, 2/2 ambiguity guards).

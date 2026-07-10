@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-01",
+  "title": "Missing declared point",
+  "kind": "mutated",
+  "defect_type": "missing_point",
+  "scenario": "coordinate_plane",
+  "dataset_track": "controlled",
+  "image_id": "mutated-01",
+  "diagram_version": "coordinate-graph-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}
