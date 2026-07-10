@@ -1,0 +1,28 @@
+{
+  "image_id": "rw-public-ambiguous-02",
+  "spec_id": "chart-rw-public-ambiguous-02",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [
+    "bar-count-matches",
+    "axis-scale-readable",
+    "axis-scale-monotonic",
+    "bar-values-match-data"
+  ],
+  "checks_skipped": [
+    {
+      "check_id": "axis-label-present",
+      "reason": "Unable to confidently match the y-axis label text."
+    },
+    {
+      "check_id": "axis-unit-present",
+      "reason": "Unable to confidently match the y-axis label text."
+    }
+  ],
+  "confidence": 0.67,
+  "extraction_confidence": 0.75,
+  "rule_confidence": 0.67,
+  "overlay_path": "datasets\\charts\\chart-v2-realworld-pilot\\mutated\\rw-public-ambiguous-02\\overlay.png",
+  "evidence_graph_path": "datasets\\charts\\chart-v2-realworld-pilot\\mutated\\rw-public-ambiguous-02\\evidence_graph.json",
+  "claim_graph_path": "datasets\\charts\\chart-v2-realworld-pilot\\mutated\\rw-public-ambiguous-02\\claim_graph.json"
+}

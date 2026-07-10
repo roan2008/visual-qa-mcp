@@ -1,0 +1,30 @@
+{
+  "case_id": "noisy-mutated-04",
+  "title": "Noisy OCR stretch",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "ocr_stretch_optional_backend",
+  "dataset_track": "noisy",
+  "image_id": "noisy-mutated-04",
+  "backend": "optional_ocr",
+  "chart_version": "v2",
+  "render_options": {
+    "layout_overrides": {
+      "width": 792,
+      "height": 562,
+      "margin_left": 156,
+      "axis_label_box": [
+        224,
+        30,
+        724,
+        66
+      ]
+    },
+    "tick_font_size": 22,
+    "x_label_font_size": 16,
+    "postprocess": {
+      "downscale_factor": 0.88,
+      "jpeg_quality": 76
+    }
+  }
+}

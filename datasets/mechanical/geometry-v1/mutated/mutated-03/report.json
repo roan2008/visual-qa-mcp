@@ -1,0 +1,56 @@
+{
+  "image_id": "image",
+  "spec_id": "geometry-mutated-03",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-hole-diameter-hole-b",
+      "rule_id": "geometry-v1.hole-diameter-ratio-correct",
+      "type": "hole_diameter_ratio_violation",
+      "severity": "critical",
+      "message": "Hole 'hole-b' measures 61.3 px, a 1.48 ratio to the reference hole, but the spec declares a 1.00 ratio (deviation 0.48, tolerance 0.12).",
+      "evidence": {
+        "hole_id": "hole-b",
+        "declared_diameter": 10.0,
+        "measured_diameter_px": 61.3,
+        "reference_hole_id": "hole-a",
+        "reference_measured_diameter_px": 41.3,
+        "declared_ratio": 1.0,
+        "measured_ratio": 1.484,
+        "ratio_deviation": 0.484,
+        "diameter_ratio_tolerance": 0.12,
+        "center_xy": [
+          300,
+          225
+        ]
+      },
+      "recommendation": "Redraw the hole at its declared relative diameter."
+    }
+  ],
+  "checks_run": [
+    "hole-count-correct",
+    "hole-diameter-ratio-correct",
+    "hole-alignment-correct",
+    "dimension-text-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.7,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.7,
+  "overlay_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-03\\overlay.png",
+  "evidence_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-03\\evidence_graph.json",
+  "claim_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-03\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-hole-diameter-hole-b",
+      "kind": "bbox",
+      "bbox": [
+        273,
+        198,
+        327,
+        252
+      ],
+      "label": "hole-b: diameter"
+    }
+  ]
+}

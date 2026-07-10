@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-08",
+  "title": "Two holes drawn overlapping into one blob",
+  "kind": "mutated",
+  "defect_type": "overlapping_holes",
+  "scenario": "mechanical_plate",
+  "dataset_track": "controlled",
+  "image_id": "mutated-08",
+  "diagram_version": "geometry-v1",
+  "render_options": {}
+}

@@ -4,15 +4,31 @@
   "verdict": "fail",
   "findings": [
     {
-      "id": "finding-bar-value-bar-1",
+      "id": "finding-axis-range",
+      "rule_id": "chart-v2.bar-values-match-data",
       "type": "chart_value_mismatch",
       "severity": "critical",
-      "message": "Bar 'Jan' value 19.87 does not match expected 35.00.",
+      "message": "Displayed axis range 0.00..80.00 does not match expected 20.00..80.00.",
+      "evidence": {
+        "expected_min_value": 20.0,
+        "expected_max_value": 80.0,
+        "detected_min_value": 0.0,
+        "detected_max_value": 80.0,
+        "value_source": "axis_mapping"
+      },
+      "recommendation": "Correct the displayed tick range so it matches the source axis specification."
+    },
+    {
+      "id": "finding-bar-value-bar-1",
+      "rule_id": "chart-v2.bar-values-match-data",
+      "type": "chart_value_mismatch",
+      "severity": "critical",
+      "message": "Bar 'Jan' value 20.07 does not match expected 35.00.",
       "evidence": {
         "bar_id": "bar-1",
         "category": "Jan",
         "expected_value": 35.0,
-        "detected_value": 19.87,
+        "detected_value": 20.07,
         "relative_tolerance": 0.05,
         "value_source": "axis_mapping"
       },
@@ -20,14 +36,15 @@
     },
     {
       "id": "finding-bar-value-bar-2",
+      "rule_id": "chart-v2.bar-values-match-data",
       "type": "chart_value_mismatch",
       "severity": "critical",
-      "message": "Bar 'Feb' value 60.13 does not match expected 65.00.",
+      "message": "Bar 'Feb' value 60.20 does not match expected 65.00.",
       "evidence": {
         "bar_id": "bar-2",
         "category": "Feb",
         "expected_value": 65.0,
-        "detected_value": 60.13,
+        "detected_value": 60.2,
         "relative_tolerance": 0.05,
         "value_source": "axis_mapping"
       },
@@ -35,14 +52,15 @@
     },
     {
       "id": "finding-bar-value-bar-3",
+      "rule_id": "chart-v2.bar-values-match-data",
       "type": "chart_value_mismatch",
       "severity": "critical",
-      "message": "Bar 'Mar' value 40.00 does not match expected 50.00.",
+      "message": "Bar 'Mar' value 40.13 does not match expected 50.00.",
       "evidence": {
         "bar_id": "bar-3",
         "category": "Mar",
         "expected_value": 50.0,
-        "detected_value": 40.0,
+        "detected_value": 40.13,
         "relative_tolerance": 0.05,
         "value_source": "axis_mapping"
       },
@@ -58,9 +76,12 @@
     "axis-unit-present"
   ],
   "checks_skipped": [],
-  "confidence": 0.95,
-  "overlay_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-15\\overlay.png",
-  "evidence_graph_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-15\\evidence_graph.json",
+  "confidence": 0.3,
+  "extraction_confidence": 0.89,
+  "rule_confidence": 0.3,
+  "overlay_path": "datasets\\charts\\chart-v2\\mutated\\mutated-15\\overlay.png",
+  "evidence_graph_path": "datasets\\charts\\chart-v2\\mutated\\mutated-15\\evidence_graph.json",
+  "claim_graph_path": "datasets\\charts\\chart-v2\\mutated\\mutated-15\\claim_graph.json",
   "overlay_annotations": [
     {
       "finding_id": "finding-bar-value-bar-1",

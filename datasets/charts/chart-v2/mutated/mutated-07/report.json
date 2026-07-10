@@ -4,19 +4,19 @@
   "verdict": "fail",
   "findings": [
     {
-      "id": "finding-bar-value-bar-2",
+      "id": "finding-axis-range",
+      "rule_id": "chart-v2.bar-values-match-data",
       "type": "chart_value_mismatch",
       "severity": "critical",
-      "message": "Bar 'Feb' value 92.75 does not match expected 55.00.",
+      "message": "Displayed axis range 0.00..75.00 does not match expected 0.00..80.00.",
       "evidence": {
-        "bar_id": "bar-2",
-        "category": "Feb",
-        "expected_value": 55.0,
-        "detected_value": 92.75,
-        "relative_tolerance": 0.05,
+        "expected_min_value": 0.0,
+        "expected_max_value": 80.0,
+        "detected_min_value": 0.0,
+        "detected_max_value": 75.0,
         "value_source": "axis_mapping"
       },
-      "recommendation": "Update the bar height so it matches the source data within tolerance."
+      "recommendation": "Correct the displayed tick range so it matches the source axis specification."
     }
   ],
   "checks_run": [
@@ -28,20 +28,10 @@
     "axis-unit-present"
   ],
   "checks_skipped": [],
-  "confidence": 0.95,
-  "overlay_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-07\\overlay.png",
-  "evidence_graph_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-07\\evidence_graph.json",
-  "overlay_annotations": [
-    {
-      "finding_id": "finding-bar-value-bar-2",
-      "kind": "bbox",
-      "bbox": [
-        341,
-        38,
-        448,
-        390
-      ],
-      "label": "Feb: value mismatch"
-    }
-  ]
+  "confidence": 0.7,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.7,
+  "overlay_path": "datasets\\charts\\chart-v2\\mutated\\mutated-07\\overlay.png",
+  "evidence_graph_path": "datasets\\charts\\chart-v2\\mutated\\mutated-07\\evidence_graph.json",
+  "claim_graph_path": "datasets\\charts\\chart-v2\\mutated\\mutated-07\\claim_graph.json"
 }

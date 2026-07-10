@@ -1,0 +1,27 @@
+{
+  "case_id": "noisy-golden-02",
+  "title": "Noisy signed blurred",
+  "kind": "golden",
+  "axis_mode": "signed",
+  "defect_type": null,
+  "dataset_track": "noisy",
+  "image_id": "noisy-golden-02",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "bar_fill": [
+      62,
+      128,
+      226
+    ],
+    "grid_fill": [
+      226,
+      230,
+      238
+    ],
+    "postprocess": {
+      "blur_radius": 0.35,
+      "downscale_factor": 0.9
+    }
+  }
+}

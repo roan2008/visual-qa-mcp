@@ -1,0 +1,80 @@
+{
+  "image_id": "image",
+  "spec_id": "geometry-mutated-07",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-dimension-text-hole-b",
+      "rule_id": "geometry-v1.dimension-text-correct",
+      "type": "dimension_text_mismatch",
+      "severity": "critical",
+      "message": "Hole 'hole-b' is labeled 'D12' but the spec declares 'D8'.",
+      "evidence": {
+        "hole_id": "hole-b",
+        "expected_dimension_text": "D8",
+        "decoded_dimension_text": "D12",
+        "label_confidence": 0.98,
+        "center_xy": [
+          260,
+          200
+        ]
+      },
+      "recommendation": "Correct the dimension callout text for this hole."
+    },
+    {
+      "id": "finding-dimension-text-hole-c",
+      "rule_id": "geometry-v1.dimension-text-correct",
+      "type": "dimension_text_mismatch",
+      "severity": "critical",
+      "message": "Hole 'hole-c' is labeled 'D8' but the spec declares 'D12'.",
+      "evidence": {
+        "hole_id": "hole-c",
+        "expected_dimension_text": "D12",
+        "decoded_dimension_text": "D8",
+        "label_confidence": 0.92,
+        "center_xy": [
+          350,
+          200
+        ]
+      },
+      "recommendation": "Correct the dimension callout text for this hole."
+    }
+  ],
+  "checks_run": [
+    "hole-count-correct",
+    "hole-diameter-ratio-correct",
+    "hole-alignment-correct",
+    "dimension-text-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.4,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.4,
+  "overlay_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-07\\overlay.png",
+  "evidence_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-07\\evidence_graph.json",
+  "claim_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-07\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-dimension-text-hole-b",
+      "kind": "bbox",
+      "bbox": [
+        247,
+        187,
+        273,
+        213
+      ],
+      "label": "hole-b: dimension text"
+    },
+    {
+      "finding_id": "finding-dimension-text-hole-c",
+      "kind": "bbox",
+      "bbox": [
+        329,
+        179,
+        371,
+        221
+      ],
+      "label": "hole-c: dimension text"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "case_id": "golden-03",
+  "title": "Three-force variant without applied force",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "golden-03",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

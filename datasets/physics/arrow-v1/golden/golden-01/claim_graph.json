@@ -1,0 +1,281 @@
+{
+  "spec_id": "arrow-golden-01",
+  "domain": "physics",
+  "risk_level": "medium",
+  "claims": [
+    {
+      "claim_id": "claim-arrow-count-matches",
+      "rule_id": "arrow-v1.arrow-count-matches",
+      "check_id": "arrow-count-matches",
+      "check_type": "arrow_count_matches",
+      "severity": "high",
+      "target": "arrows",
+      "expected": {
+        "count": 4
+      },
+      "tolerance": {},
+      "evidence_requirements": [
+        "arrow_geometry"
+      ],
+      "metadata": {
+        "description": "The number of detected force arrows should match the source forces.",
+        "learning_objective": "Read a free-body diagram where each force arrow has the correct identity, direction, and attachment to the object."
+      }
+    },
+    {
+      "claim_id": "claim-required-arrows-present",
+      "rule_id": "arrow-v1.required-arrows-present",
+      "check_id": "required-arrows-present",
+      "check_type": "required_arrows_present",
+      "severity": "critical",
+      "target": "arrows",
+      "expected": {
+        "arrows_by_id": {
+          "weight": {
+            "rgb": [
+              214,
+              48,
+              49
+            ],
+            "name": "Weight (W)",
+            "label_text": "W"
+          },
+          "normal": {
+            "rgb": [
+              9,
+              132,
+              227
+            ],
+            "name": "Normal force (N)",
+            "label_text": "N"
+          },
+          "applied": {
+            "rgb": [
+              0,
+              148,
+              50
+            ],
+            "name": "Applied force (F)",
+            "label_text": "F"
+          },
+          "friction": {
+            "rgb": [
+              230,
+              126,
+              34
+            ],
+            "name": "Friction (f)",
+            "label_text": "f"
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "arrow_geometry",
+        "arrow_color"
+      ],
+      "metadata": {
+        "description": "Every required force arrow must be present with its declared color identity.",
+        "learning_objective": "Read a free-body diagram where each force arrow has the correct identity, direction, and attachment to the object."
+      }
+    },
+    {
+      "claim_id": "claim-arrow-directions-correct",
+      "rule_id": "arrow-v1.arrow-directions-correct",
+      "check_id": "arrow-directions-correct",
+      "check_type": "arrow_directions_correct",
+      "severity": "critical",
+      "target": "arrows",
+      "expected": {
+        "directions_by_id": {
+          "weight": {
+            "rgb": [
+              214,
+              48,
+              49
+            ],
+            "direction_degrees": 270,
+            "label_text": "W"
+          },
+          "normal": {
+            "rgb": [
+              9,
+              132,
+              227
+            ],
+            "direction_degrees": 90,
+            "label_text": "N"
+          },
+          "applied": {
+            "rgb": [
+              0,
+              148,
+              50
+            ],
+            "direction_degrees": 0,
+            "label_text": "F"
+          },
+          "friction": {
+            "rgb": [
+              230,
+              126,
+              34
+            ],
+            "direction_degrees": 180,
+            "label_text": "f"
+          }
+        }
+      },
+      "tolerance": {
+        "angle_tolerance_degrees": 15.0,
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "arrow_geometry",
+        "arrow_color"
+      ],
+      "metadata": {
+        "description": "Each force arrow must point in its physically correct direction.",
+        "learning_objective": "Read a free-body diagram where each force arrow has the correct identity, direction, and attachment to the object."
+      }
+    },
+    {
+      "claim_id": "claim-arrow-anchors-object",
+      "rule_id": "arrow-v1.arrow-anchors-object",
+      "check_id": "arrow-anchors-object",
+      "check_type": "arrow_anchors_object",
+      "severity": "high",
+      "target": "arrows",
+      "expected": {
+        "anchored_arrow_ids": [
+          "weight",
+          "normal",
+          "applied",
+          "friction"
+        ],
+        "arrows_by_id": {
+          "weight": {
+            "rgb": [
+              214,
+              48,
+              49
+            ],
+            "label_text": "W"
+          },
+          "normal": {
+            "rgb": [
+              9,
+              132,
+              227
+            ],
+            "label_text": "N"
+          },
+          "applied": {
+            "rgb": [
+              0,
+              148,
+              50
+            ],
+            "label_text": "F"
+          },
+          "friction": {
+            "rgb": [
+              230,
+              126,
+              34
+            ],
+            "label_text": "f"
+          }
+        }
+      },
+      "tolerance": {
+        "anchor_tolerance_px": 14.0,
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "arrow_geometry",
+        "object_region"
+      ],
+      "metadata": {
+        "description": "Each force arrow must be attached to the object it acts on.",
+        "learning_objective": "Read a free-body diagram where each force arrow has the correct identity, direction, and attachment to the object."
+      }
+    }
+  ],
+  "gaps": [],
+  "source_reference": {
+    "arrows": [
+      {
+        "id": "weight",
+        "name": "Weight (W)",
+        "rgb": [
+          214,
+          48,
+          49
+        ],
+        "direction_degrees": 270,
+        "label_text": "W",
+        "target": "object"
+      },
+      {
+        "id": "normal",
+        "name": "Normal force (N)",
+        "rgb": [
+          9,
+          132,
+          227
+        ],
+        "direction_degrees": 90,
+        "label_text": "N",
+        "target": "object"
+      },
+      {
+        "id": "applied",
+        "name": "Applied force (F)",
+        "rgb": [
+          0,
+          148,
+          50
+        ],
+        "direction_degrees": 0,
+        "label_text": "F",
+        "target": "object"
+      },
+      {
+        "id": "friction",
+        "name": "Friction (f)",
+        "rgb": [
+          230,
+          126,
+          34
+        ],
+        "direction_degrees": 180,
+        "label_text": "f",
+        "target": "object"
+      }
+    ],
+    "object": {
+      "kind": "box"
+    }
+  },
+  "metadata": {
+    "generator": "arrow-v1",
+    "spec_path": "datasets\\physics\\arrow-v1\\golden\\golden-01\\visual_spec.json",
+    "required_elements": [
+      {
+        "id": "object",
+        "kind": "box",
+        "name": "object under analysis",
+        "count": 1
+      },
+      {
+        "id": "arrows",
+        "kind": "arrow",
+        "name": "force arrows",
+        "count": 4
+      }
+    ]
+  }
+}

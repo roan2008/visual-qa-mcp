@@ -5,7 +5,7 @@
     {
       "bar_id": "bar-1",
       "category": "Jan",
-      "value": 19.87,
+      "value": 20.07,
       "bbox": [
         183,
         314,
@@ -21,7 +21,7 @@
     {
       "bar_id": "bar-2",
       "category": "Feb",
-      "value": 54.9,
+      "value": 54.98,
       "bbox": [
         448,
         180,
@@ -59,7 +59,7 @@
           119,
           97
         ],
-        "confidence": 1.0
+        "confidence": 0.88
       },
       {
         "text": "60",
@@ -70,7 +70,7 @@
           119,
           173
         ],
-        "confidence": 1.0
+        "confidence": 0.83
       },
       {
         "text": "40",
@@ -81,7 +81,7 @@
           119,
           250
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       },
       {
         "text": "20",
@@ -92,35 +92,48 @@
           119,
           327
         ],
-        "confidence": 1.0
+        "confidence": 0.89
       },
       {
         "text": "0",
         "parsed_value": 0.0,
         "bbox": [
           33,
-          377,
+          378,
           119,
-          403
+          404
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       }
     ],
     "axis_line_x": 129,
-    "baseline_y": 390,
+    "baseline_y": 391,
     "top_y": 84,
     "zero_line_y": null,
     "mapping": {
       "min_value": 0.0,
       "max_value": 80.0,
-      "pixels_per_unit": 3.825,
+      "pixels_per_unit": 3.8375,
       "scale_mode": "zero_baseline",
       "value_direction": "positive_up",
       "readable": true
     },
     "backend": "template"
   },
-  "extraction_confidence": 0.96,
+  "extraction_confidence": 0.89,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
   "gaps": [
     {
       "code": "bar_count_mismatch",

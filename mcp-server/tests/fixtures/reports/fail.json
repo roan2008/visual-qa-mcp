@@ -2,9 +2,13 @@
   "image_id": "sample-fail",
   "spec_id": "chart-fail",
   "verdict": "fail",
+  "confidence": 0.7,
+  "extraction_confidence": 0.91,
+  "rule_confidence": 0.7,
   "findings": [
     {
       "id": "finding-fail",
+      "rule_id": "chart-v2.bar-values-match-data",
       "type": "chart_value_mismatch",
       "severity": "critical",
       "message": "A bar value is wrong.",

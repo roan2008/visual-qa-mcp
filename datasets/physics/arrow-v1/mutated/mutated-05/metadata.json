@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-05",
+  "title": "Weight arrow detached from object",
+  "kind": "mutated",
+  "defect_type": "detached_anchor",
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "mutated-05",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

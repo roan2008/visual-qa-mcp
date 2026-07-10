@@ -1,0 +1,7 @@
+{
+  "verdict": "pass",
+  "expected_finding_types": [],
+  "expected_evidence": {
+    "hole_count": 2
+  }
+}

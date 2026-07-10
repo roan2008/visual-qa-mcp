@@ -62,26 +62,52 @@ Do not ask a vision model, "Is this correct?" as the only check.
 Instead, ask tools to extract evidence, then run checks grounded in specs, theory, source references, and tolerances:
 
 ```text
-image -> extracted scene JSON -> domain rules -> findings + overlay
+image -> evidence graph -> claim graph -> domain rules -> findings + overlay
 ```
 
 The agent can still use a vision-language model, but only as one part of an evidence-backed QA loop.
 
 ## Current Executable MVP
 
-The current runnable prototype is chart-v2: a chart-only verifier for bar charts that derives values from image-read axis scale evidence.
+The current runtime has three bounded executable verticals:
+
+- `chart-v2`: template-backed bar charts with image-read Y-axis scale evidence
+- `arrow-v1`: controlled free-body diagrams with arrow identity, direction, anchor, and opt-in translational force balance
+- `geometry-v1`: controlled mechanical plates with circular-hole count, relative diameter, linear alignment/spacing, and fixed-catalog dimension labels
 
 Implemented pieces:
 
 - `EvidenceGraph` schema with tick detections, axis mapping, and bar geometry.
-- Local Python extractor and rule runner in `mcp-server/src/visual_qa_mcp/`.
+- `ClaimGraph` schema and chart-v2 claim generator so rule execution consumes explicit claims instead of ad hoc spec parsing.
+- claim-generation gaps and `claim_graph.json` audit artifacts so unsupported checks degrade to `needs_review` instead of disappearing silently.
+- Local callable Python tool surface in `mcp-server/src/visual_qa_mcp/` for claim generation, evidence extraction, verification, and artifact writing.
+- MCP server wrapper over chart, arrow, and geometry claim/extraction/verification surfaces.
+- Audit-oriented provenance and confidence separation:
+  - extractor provenance in `EvidenceGraph`
+  - stable `rule_id` values in claims and findings
+  - separate extraction versus rule confidence in `VisualQaReport`
 - Dual tick-reader path:
   - default template backend
   - optional OCR backend scaffold
 - Validation dataset with 24 cases:
   - 8 golden
   - 16 mutated
+- Separate noisy chart-v2 validation dataset for Phase 2 evidence expansion.
+- A separate 24-case `chart-v2-realworld-pilot` track with Pillow/Matplotlib renderer diversity,
+  World Bank reference-backed source snapshots, provenance/license metadata, and frozen checksums.
+- Generic chart source records using `category` / `value`, while retaining compatibility with the
+  original `month` / `rainfall_mm` controlled fixtures.
 - Overlay generation for flagged findings.
 - Verification tests, validation summary artifacts, and advisor-gate evidence packs.
+
+Geometry-v1 is validated only on its 14-case controlled Pillow-rendered family: typed defects `7/7`,
+ambiguity guards `2/2`, false unsupported passes `0`, and golden non-passes `0`. This does not cover
+arbitrary mechanical drawings, real-world images, general OCR, calibrated units, or native CAD.
+
+The bounded readiness claim remains narrow: the validated default is the template backend on the
+controlled chart-v2 family and the configured noisy transform family. The real-world pilot is an
+evidence-expansion track, not proof of general real-world chart readiness. Its public-reference cases
+are locally rendered from a frozen World Bank data snapshot; they do not establish robustness across
+arbitrary publishers, fonts, palettes, or chart images. OCR remains a separate unvalidated backend.
 
 See `docs/chart-mvp-workflow.md` for the operational workflow and advisor gates.

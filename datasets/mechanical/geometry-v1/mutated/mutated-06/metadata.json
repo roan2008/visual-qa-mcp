@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-06",
+  "title": "Wrong dimension callout on the middle hole",
+  "kind": "mutated",
+  "defect_type": "wrong_dimension_text",
+  "scenario": "mechanical_plate",
+  "dataset_track": "controlled",
+  "image_id": "mutated-06",
+  "diagram_version": "geometry-v1",
+  "render_options": {}
+}

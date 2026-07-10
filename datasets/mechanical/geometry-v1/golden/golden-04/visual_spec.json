@@ -1,0 +1,78 @@
+{
+  "id": "geometry-golden-04",
+  "domain": "mechanical",
+  "risk_level": "medium",
+  "learning_objective": "Read a mechanical part illustration where each drilled hole has the correct count, relative diameter, position, and dimension callout.",
+  "source_reference": {
+    "plate": {
+      "kind": "rectangle"
+    },
+    "holes": [
+      {
+        "id": "hole-a",
+        "diameter": 10,
+        "dimension_text": "D10"
+      },
+      {
+        "id": "hole-b",
+        "diameter": 10,
+        "dimension_text": "D10"
+      },
+      {
+        "id": "hole-c",
+        "diameter": 10,
+        "dimension_text": "D10"
+      }
+    ],
+    "layout": "linear"
+  },
+  "required_elements": [
+    {
+      "id": "plate",
+      "kind": "rectangle",
+      "name": "plate under illustration",
+      "count": 1
+    },
+    {
+      "id": "holes",
+      "kind": "circle",
+      "name": "drilled holes",
+      "count": 3
+    }
+  ],
+  "labels": [],
+  "relations": [],
+  "checks": [
+    {
+      "id": "hole-count-correct",
+      "type": "hole_count_correct",
+      "severity": "high",
+      "description": "The number of detected circular holes should match the declared holes."
+    },
+    {
+      "id": "hole-diameter-ratio-correct",
+      "type": "hole_diameter_ratio_correct",
+      "severity": "critical",
+      "description": "Measured hole diameter ratios must match the declared nominal diameter ratios (no pixel-to-unit calibration in v1).",
+      "params": {
+        "diameter_ratio_tolerance": 0.12
+      }
+    },
+    {
+      "id": "dimension-text-correct",
+      "type": "dimension_text_correct",
+      "severity": "critical",
+      "description": "Each hole's dimension callout text must match the declared dimension."
+    },
+    {
+      "id": "hole-alignment-correct",
+      "type": "hole_alignment_correct",
+      "severity": "high",
+      "description": "For a declared linear layout, hole centers must be collinear and evenly spaced.",
+      "params": {
+        "alignment_tolerance_px": 6.0,
+        "spacing_ratio_tolerance": 0.15
+      }
+    }
+  ]
+}

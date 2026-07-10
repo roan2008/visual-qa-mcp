@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-03",
+  "title": "Missing normal force arrow",
+  "kind": "mutated",
+  "defect_type": "missing_arrow",
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "mutated-03",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

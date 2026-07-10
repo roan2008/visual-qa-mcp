@@ -1,0 +1,20 @@
+{
+  "case_id": "rw-render-mutated-02",
+  "title": "Renderer-diverse pilot: wrong_bar_height",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "wrong_bar_height",
+  "dataset_track": "realworld_pilot",
+  "image_id": "rw-render-mutated-02",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {},
+  "renderer": "matplotlib",
+  "transform_family": "wrong_bar_height",
+  "provenance": {
+    "source_type": "project_generated",
+    "license": "repository test fixture",
+    "source_url": null,
+    "retrieved_at": "2026-07-10"
+  }
+}

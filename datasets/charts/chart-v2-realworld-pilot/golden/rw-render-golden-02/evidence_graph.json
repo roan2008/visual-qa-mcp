@@ -1,0 +1,161 @@
+{
+  "image_id": "rw-render-golden-02",
+  "chart_type": "bar",
+  "bars": [
+    {
+      "bar_id": "bar-1",
+      "category": "Jan",
+      "value": 24.84,
+      "bbox": [
+        164,
+        314,
+        272,
+        389
+      ],
+      "confidence": 0.7,
+      "matched_label": "Jan",
+      "top_y": 314,
+      "bottom_y": 389,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-2",
+      "category": "Feb",
+      "value": 50.0,
+      "bbox": [
+        340,
+        237,
+        449,
+        389
+      ],
+      "confidence": 0.74,
+      "matched_label": "Feb",
+      "top_y": 237,
+      "bottom_y": 389,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-3",
+      "category": "Mar",
+      "value": 74.84,
+      "bbox": [
+        517,
+        161,
+        625,
+        389
+      ],
+      "confidence": 0.69,
+      "matched_label": "Mar",
+      "top_y": 161,
+      "bottom_y": 389,
+      "value_source": "axis_mapping"
+    }
+  ],
+  "x_axis_labels": [
+    "Jan",
+    "Feb",
+    "Mar"
+  ],
+  "y_axis": {
+    "label_text": "Rainfall (mm)",
+    "unit_text": "mm",
+    "label_bbox": [
+      170,
+      26,
+      610,
+      58
+    ],
+    "confidence": 0.78,
+    "tick_labels": [
+      {
+        "text": "100",
+        "parsed_value": 100.0,
+        "bbox": [
+          33,
+          71,
+          119,
+          97
+        ],
+        "confidence": 0.87
+      },
+      {
+        "text": "75",
+        "parsed_value": 75.0,
+        "bbox": [
+          33,
+          148,
+          119,
+          174
+        ],
+        "confidence": 0.95
+      },
+      {
+        "text": "50",
+        "parsed_value": 50.0,
+        "bbox": [
+          33,
+          224,
+          119,
+          250
+        ],
+        "confidence": 0.95
+      },
+      {
+        "text": "25",
+        "parsed_value": 25.0,
+        "bbox": [
+          33,
+          301,
+          119,
+          327
+        ],
+        "confidence": 0.94
+      },
+      {
+        "text": "0",
+        "parsed_value": 0.0,
+        "bbox": [
+          33,
+          377,
+          119,
+          403
+        ],
+        "confidence": 0.91
+      }
+    ],
+    "axis_line_x": 129,
+    "baseline_y": 390,
+    "top_y": 84,
+    "zero_line_y": null,
+    "mapping": {
+      "min_value": 0.0,
+      "max_value": 100.0,
+      "pixels_per_unit": 3.06,
+      "scale_mode": "zero_baseline",
+      "value_direction": "positive_up",
+      "readable": true
+    },
+    "backend": "template"
+  },
+  "extraction_confidence": 0.84,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "chart_version": "v2",
+    "axis_mode": "zero_baseline",
+    "dataset_case": "rw-render-golden-02",
+    "backend": "template"
+  }
+}

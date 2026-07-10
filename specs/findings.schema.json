@@ -20,6 +20,16 @@
       "minimum": 0,
       "maximum": 1
     },
+    "extraction_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "rule_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
     "findings": {
       "type": "array",
       "items": {
@@ -47,6 +57,9 @@
     "evidence_graph_path": {
       "type": "string"
     },
+    "claim_graph_path": {
+      "type": "string"
+    },
     "overlay_annotations": {
       "type": "array",
       "items": {
@@ -57,9 +70,10 @@
   "$defs": {
     "finding": {
       "type": "object",
-      "required": ["id", "type", "severity", "message", "evidence"],
+      "required": ["id", "rule_id", "type", "severity", "message", "evidence"],
       "properties": {
         "id": {"type": "string"},
+        "rule_id": {"type": "string"},
         "type": {"type": "string"},
         "severity": {
           "type": "string",

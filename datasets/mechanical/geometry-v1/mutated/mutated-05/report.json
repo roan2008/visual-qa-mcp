@@ -1,0 +1,54 @@
+{
+  "image_id": "image",
+  "spec_id": "geometry-mutated-05",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-hole-alignment-hole-b",
+      "rule_id": "geometry-v1.hole-alignment-correct",
+      "type": "hole_alignment_violation",
+      "severity": "high",
+      "message": "Hole 'hole-b' at [300, 195] sits 20.0 px off the best-fit line through the declared linear layout (tolerance 6.0 px).",
+      "evidence": {
+        "hole_id": "hole-b",
+        "center_xy": [
+          300,
+          195
+        ],
+        "line_residuals_px": [
+          10.0,
+          20.0,
+          10.0
+        ],
+        "alignment_tolerance_px": 6.0
+      },
+      "recommendation": "Reposition the hole onto the declared linear layout."
+    }
+  ],
+  "checks_run": [
+    "hole-count-correct",
+    "hole-diameter-ratio-correct",
+    "hole-alignment-correct",
+    "dimension-text-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.8,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.8,
+  "overlay_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-05\\overlay.png",
+  "evidence_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-05\\evidence_graph.json",
+  "claim_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-05\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-hole-alignment-hole-b",
+      "kind": "bbox",
+      "bbox": [
+        283,
+        178,
+        317,
+        212
+      ],
+      "label": "hole-b: alignment"
+    }
+  ]
+}

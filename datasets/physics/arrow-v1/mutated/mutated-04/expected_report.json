@@ -1,0 +1,10 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "arrow_count_mismatch",
+    "unexpected_arrow"
+  ],
+  "expected_evidence": {
+    "arrow_count": 5
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "image_id": "image",
+  "spec_id": "arrow-noisy-mutated-02",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-arrow-missing-normal",
+      "rule_id": "arrow-v1.required-arrows-present",
+      "type": "arrow_missing",
+      "severity": "critical",
+      "message": "Required arrow 'Normal force (N)' was not detected.",
+      "evidence": {
+        "arrow_id": "normal",
+        "expected_rgb": [
+          9,
+          132,
+          227
+        ]
+      },
+      "recommendation": "Add the missing force arrow with its expected color and direction."
+    },
+    {
+      "id": "finding-arrow-count",
+      "rule_id": "arrow-v1.arrow-count-matches",
+      "type": "arrow_count_mismatch",
+      "severity": "high",
+      "message": "Detected 3 arrows but expected 4.",
+      "evidence": {
+        "expected_count": 4,
+        "detected_count": 3
+      },
+      "recommendation": "Regenerate the diagram with the required set of force arrows."
+    }
+  ],
+  "checks_run": [
+    "arrow-count-matches",
+    "required-arrows-present",
+    "arrow-directions-correct",
+    "arrow-anchors-object"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.5,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.5,
+  "overlay_path": "datasets\\physics\\arrow-v1-noisy\\mutated\\noisy-mutated-02\\overlay.png",
+  "evidence_graph_path": "datasets\\physics\\arrow-v1-noisy\\mutated\\noisy-mutated-02\\evidence_graph.json",
+  "claim_graph_path": "datasets\\physics\\arrow-v1-noisy\\mutated\\noisy-mutated-02\\claim_graph.json"
+}

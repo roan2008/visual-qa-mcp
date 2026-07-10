@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visual-qa-mcp.local/schemas/claim-graph.schema.json",
+  "title": "ClaimGraph",
+  "type": "object",
+  "required": [
+    "spec_id",
+    "domain",
+    "risk_level",
+    "claims",
+    "gaps",
+    "source_reference",
+    "metadata"
+  ],
+  "properties": {
+    "spec_id": {"type": "string"},
+    "domain": {"type": "string"},
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    },
+    "claims": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/claim"}
+    },
+    "gaps": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/gap"}
+    },
+    "source_reference": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "claim": {
+      "type": "object",
+      "required": [
+        "claim_id",
+        "rule_id",
+        "check_id",
+        "check_type",
+        "severity",
+        "target",
+        "expected",
+        "tolerance",
+        "evidence_requirements",
+        "metadata"
+      ],
+      "properties": {
+        "claim_id": {"type": "string"},
+        "rule_id": {"type": "string"},
+        "check_id": {"type": "string"},
+        "check_type": {"type": "string"},
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"]
+        },
+        "target": {"type": "string"},
+        "expected": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "tolerance": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "evidence_requirements": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "gap": {
+      "type": "object",
+      "required": [
+        "check_id",
+        "code",
+        "message",
+        "metadata"
+      ],
+      "properties": {
+        "check_id": {"type": "string"},
+        "code": {"type": "string"},
+        "message": {"type": "string"},
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

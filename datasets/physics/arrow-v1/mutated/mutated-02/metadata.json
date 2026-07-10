@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-02",
+  "title": "Applied force drawn diagonally",
+  "kind": "mutated",
+  "defect_type": "wrong_direction_diagonal",
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "mutated-02",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

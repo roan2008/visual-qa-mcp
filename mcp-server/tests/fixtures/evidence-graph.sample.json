@@ -49,6 +49,19 @@
     "backend": "template"
   },
   "extraction_confidence": 0.89,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.28.1",
+      "jsonschema": "4.25.1",
+      "numpy": "2.1.3",
+      "pillow": "11.3.0"
+    },
+    "environment": {}
+  },
   "gaps": [],
   "metadata": {
     "chart_version": "v2",

@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-09",
+  "title": "Corrupted dimension text outside the catalog",
+  "kind": "mutated",
+  "defect_type": "unreadable_dimension_text",
+  "scenario": "mechanical_plate",
+  "dataset_track": "controlled",
+  "image_id": "mutated-09",
+  "diagram_version": "geometry-v1",
+  "render_options": {}
+}

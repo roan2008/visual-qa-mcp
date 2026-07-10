@@ -1,0 +1,28 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "chart_value_mismatch"
+  ],
+  "expected_evidence": {
+    "bar_count": 3,
+    "displayed_bar_values": {
+      "Malaysia": 35.0,
+      "Thailand": 55.0,
+      "Vietnam": 100.0
+    },
+    "tick_values": [
+      0.0,
+      30.0,
+      60.0,
+      90.0,
+      120.0
+    ],
+    "axis_mode": "zero_baseline",
+    "labels": [
+      "Malaysia",
+      "Thailand",
+      "Vietnam"
+    ],
+    "y_label": "Population (millions)"
+  }
+}

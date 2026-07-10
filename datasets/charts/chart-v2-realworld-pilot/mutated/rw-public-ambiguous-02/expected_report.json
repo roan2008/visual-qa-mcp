@@ -1,0 +1,16 @@
+{
+  "verdict": "needs_review",
+  "expected_finding_types": [],
+  "expected_evidence": {
+    "bar_count": 3,
+    "displayed_bar_values": {
+      "Malaysia": 35.0,
+      "Thailand": 72.0,
+      "Vietnam": 100.0
+    },
+    "tick_values": null,
+    "axis_mode": "zero_baseline",
+    "labels": null,
+    "y_label": "Population (millions)"
+  }
+}

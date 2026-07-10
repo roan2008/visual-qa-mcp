@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-11",
+  "title": "Declared equilibrium, unlabeled color collision blocks balance check",
+  "kind": "mutated",
+  "defect_type": "ambiguous_arrow_colors_equilibrium",
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "mutated-11",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

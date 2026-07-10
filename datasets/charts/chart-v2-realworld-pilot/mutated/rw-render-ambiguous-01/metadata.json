@@ -1,0 +1,48 @@
+{
+  "case_id": "rw-render-ambiguous-01",
+  "title": "Renderer-diverse pilot: unreadable_ticks",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "unreadable_ticks",
+  "dataset_track": "realworld_pilot",
+  "image_id": "rw-render-ambiguous-01",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "tick_fill_overrides": {
+      "0": [
+        238,
+        238,
+        238
+      ],
+      "20": [
+        238,
+        238,
+        238
+      ],
+      "40": [
+        238,
+        238,
+        238
+      ],
+      "60": [
+        238,
+        238,
+        238
+      ],
+      "80": [
+        238,
+        238,
+        238
+      ]
+    }
+  },
+  "renderer": "pillow",
+  "transform_family": "unreadable_ticks",
+  "provenance": {
+    "source_type": "project_generated",
+    "license": "repository test fixture",
+    "source_url": null,
+    "retrieved_at": "2026-07-10"
+  }
+}

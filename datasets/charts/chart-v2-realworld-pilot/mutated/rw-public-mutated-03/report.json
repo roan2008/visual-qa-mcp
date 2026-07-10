@@ -1,0 +1,70 @@
+{
+  "image_id": "rw-public-mutated-03",
+  "spec_id": "chart-rw-public-mutated-03",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-axis-label",
+      "rule_id": "chart-v2.axis-label-present",
+      "type": "label_missing_or_wrong",
+      "severity": "high",
+      "message": "The y-axis label is missing or does not match the expected text.",
+      "evidence": {
+        "expected_label": "Population (millions)",
+        "detected_label": "Population (thousands)"
+      },
+      "recommendation": "Restore the required y-axis label text."
+    },
+    {
+      "id": "finding-axis-unit",
+      "rule_id": "chart-v2.axis-unit-present",
+      "type": "unit_mismatch",
+      "severity": "high",
+      "message": "The y-axis unit is missing or incorrect.",
+      "evidence": {
+        "expected_unit": "millions",
+        "detected_unit": "thousands"
+      },
+      "recommendation": "Restore the expected y-axis unit in the label."
+    }
+  ],
+  "checks_run": [
+    "bar-count-matches",
+    "axis-scale-readable",
+    "axis-scale-monotonic",
+    "bar-values-match-data",
+    "axis-label-present",
+    "axis-unit-present"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.6,
+  "extraction_confidence": 0.88,
+  "rule_confidence": 0.6,
+  "overlay_path": "datasets\\charts\\chart-v2-realworld-pilot\\mutated\\rw-public-mutated-03\\overlay.png",
+  "evidence_graph_path": "datasets\\charts\\chart-v2-realworld-pilot\\mutated\\rw-public-mutated-03\\evidence_graph.json",
+  "claim_graph_path": "datasets\\charts\\chart-v2-realworld-pilot\\mutated\\rw-public-mutated-03\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-axis-label",
+      "kind": "bbox",
+      "bbox": [
+        170,
+        26,
+        610,
+        58
+      ],
+      "label": "Axis label issue"
+    },
+    {
+      "finding_id": "finding-axis-unit",
+      "kind": "bbox",
+      "bbox": [
+        170,
+        26,
+        610,
+        58
+      ],
+      "label": "Axis unit issue"
+    }
+  ]
+}

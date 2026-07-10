@@ -1,0 +1,608 @@
+{
+  "dataset": "chart-v2-realworld-pilot",
+  "status": "pilot_only",
+  "frozen_at": "2026-07-10",
+  "case_count": 24,
+  "cases": [
+    {
+      "case_id": "rw-public-golden-01",
+      "relative_path": "golden/rw-public-golden-01",
+      "checksums": {
+        "image.png": "3e60f3d4fb5cc6059ebc8ab4c420cb449fcf7c61f14eceee9b0b47f1bf9032fa",
+        "visual_spec.json": "d283ae1b341199d003aed71e2a4d3612c4282b81b2d522f4b9569313285192b5",
+        "expected_report.json": "710ab0ef28fb38df59936cf9041dc0adcf5018f5648e76c872aad11ab79298e3",
+        "metadata.json": "9e39c7eea10e55ce63ee94defcd5672a8d4aeb6fcae7e5d97f049ff69af887d3"
+      },
+      "provenance": {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+        "source_snapshot": {
+          "indicator": "SP.POP.TOTL",
+          "year": 2023,
+          "values": {
+            "MYS": 35126298,
+            "THA": 71702435,
+            "VNM": 100352192
+          },
+          "normalized_millions": {
+            "MYS": 35.0,
+            "THA": 72.0,
+            "VNM": 100.0
+          }
+        },
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+      }
+    },
+    {
+      "case_id": "rw-public-golden-02",
+      "relative_path": "golden/rw-public-golden-02",
+      "checksums": {
+        "image.png": "db315dd12c65e56c06c6e16bd240fbc12ef39b6d98238c9cb46621d0e82d4872",
+        "visual_spec.json": "6f0c5aa72c5f5f30ac9b30126af6f5026faa84bf0e62fa91bacebc1931b0672a",
+        "expected_report.json": "710ab0ef28fb38df59936cf9041dc0adcf5018f5648e76c872aad11ab79298e3",
+        "metadata.json": "41ee87fbb86efec0884bb5ffac1aeaafbc1326466e1c1f5807b47a28c85225c3"
+      },
+      "provenance": {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+        "source_snapshot": {
+          "indicator": "SP.POP.TOTL",
+          "year": 2023,
+          "values": {
+            "MYS": 35126298,
+            "THA": 71702435,
+            "VNM": 100352192
+          },
+          "normalized_millions": {
+            "MYS": 35.0,
+            "THA": 72.0,
+            "VNM": 100.0
+          }
+        },
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+      }
+    },
+    {
+      "case_id": "rw-public-golden-03",
+      "relative_path": "golden/rw-public-golden-03",
+      "checksums": {
+        "image.png": "1518ad019fcb72888f2fe31beee026052327b3fcefb6238ce9ce4978c04a3f2d",
+        "visual_spec.json": "43737ac58f5db89ad643edbf9a4c4ef4eec221f93ee7d9f1b843f49e7bea8dfe",
+        "expected_report.json": "710ab0ef28fb38df59936cf9041dc0adcf5018f5648e76c872aad11ab79298e3",
+        "metadata.json": "58f6e3d446a00e584ea3bc1b656bbb36d1ed7c96fa2e44d5eeb6351ad4a84d21"
+      },
+      "provenance": {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+        "source_snapshot": {
+          "indicator": "SP.POP.TOTL",
+          "year": 2023,
+          "values": {
+            "MYS": 35126298,
+            "THA": 71702435,
+            "VNM": 100352192
+          },
+          "normalized_millions": {
+            "MYS": 35.0,
+            "THA": 72.0,
+            "VNM": 100.0
+          }
+        },
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+      }
+    },
+    {
+      "case_id": "rw-public-golden-04",
+      "relative_path": "golden/rw-public-golden-04",
+      "checksums": {
+        "image.png": "cc0cabd0d2ddc82212cbbb14b3af2826dc7e592af26c25ffce3c49ce7438816f",
+        "visual_spec.json": "a7c061de3e8d6b71c030d1bfe79d8ff783f97218632d4a036ab31e5d70f3490a",
+        "expected_report.json": "710ab0ef28fb38df59936cf9041dc0adcf5018f5648e76c872aad11ab79298e3",
+        "metadata.json": "93c2fc78a5aa34e5a1384d74fb4bb1ede547ce75bf91d0841c873cdb17e443f0"
+      },
+      "provenance": {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+        "source_snapshot": {
+          "indicator": "SP.POP.TOTL",
+          "year": 2023,
+          "values": {
+            "MYS": 35126298,
+            "THA": 71702435,
+            "VNM": 100352192
+          },
+          "normalized_millions": {
+            "MYS": 35.0,
+            "THA": 72.0,
+            "VNM": 100.0
+          }
+        },
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+      }
+    },
+    {
+      "case_id": "rw-public-golden-05",
+      "relative_path": "golden/rw-public-golden-05",
+      "checksums": {
+        "image.png": "465f256abc164b0d743c48a14d10864c03427a6301f86dc7c29c967ae557be39",
+        "visual_spec.json": "d0b02b2842c041facc3d42dbaa63d12cf658522959fac275ff28eb4fcd317790",
+        "expected_report.json": "710ab0ef28fb38df59936cf9041dc0adcf5018f5648e76c872aad11ab79298e3",
+        "metadata.json": "c7a7c4d4f2cf683bba927b8152025143cd2118e7fa567fc653a6d08b274e0efe"
+      },
+      "provenance": {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+        "source_snapshot": {
+          "indicator": "SP.POP.TOTL",
+          "year": 2023,
+          "values": {
+            "MYS": 35126298,
+            "THA": 71702435,
+            "VNM": 100352192
+          },
+          "normalized_millions": {
+            "MYS": 35.0,
+            "THA": 72.0,
+            "VNM": 100.0
+          }
+        },
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+      }
+    },
+    {
+      "case_id": "rw-public-golden-06",
+      "relative_path": "golden/rw-public-golden-06",
+      "checksums": {
+        "image.png": "1578c6fc109c4597b95047a1fd0f9e0155566c96285663f5581038a584af77d9",
+        "visual_spec.json": "0f3376850480afcacdb3b2a4253e5142d8a1513e078ddab166f026ab692f2806",
+        "expected_report.json": "710ab0ef28fb38df59936cf9041dc0adcf5018f5648e76c872aad11ab79298e3",
+        "metadata.json": "f40719a32e319194e1d1c1d3f76cd55cbb36529210b5f87c6130e500c7ea2e26"
+      },
+      "provenance": {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+        "source_snapshot": {
+          "indicator": "SP.POP.TOTL",
+          "year": 2023,
+          "values": {
+            "MYS": 35126298,
+            "THA": 71702435,
+            "VNM": 100352192
+          },
+          "normalized_millions": {
+            "MYS": 35.0,
+            "THA": 72.0,
+            "VNM": 100.0
+          }
+        },
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+      }
+    },
+    {
+      "case_id": "rw-render-golden-01",
+      "relative_path": "golden/rw-render-golden-01",
+      "checksums": {
+        "image.png": "863bc87a92a8116b7dc80695baaf5a99b66edc3feee9f1a1dd59ad4227d4a889",
+        "visual_spec.json": "ed91043dab9239ab8bcdc3180a46a911bda0a037bc54044e018f3aebe49feb8a",
+        "expected_report.json": "7711df19b3e916fc1b68502a7814e839c00e769acc06d39c8cc136925bf7946c",
+        "metadata.json": "81e9fd8458b94cdcde91dc86f8b97825a61b2e6115b75c48be111c49846aafe4"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": null,
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "rw-render-golden-02",
+      "relative_path": "golden/rw-render-golden-02",
+      "checksums": {
+        "image.png": "fdc62739eb54e2bb6efda86b01451b12b82f0a06508655fa97debd4daa559762",
+        "visual_spec.json": "f38727f9768bc07da8d8a0855a9c830775de8cb979f253613aff0ac49b8dde03",
+        "expected_report.json": "78b620f5879afba9d087d2a16dc77f73fc8ab863ad4d885eb2066c20df6cbbda",
+        "metadata.json": "67147b7a9bffcdc9cca3f9d1ae3d7490e706bbacebe1f839d3d2b76360264038"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": null,
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "rw-render-golden-03",
+      "relative_path": "golden/rw-render-golden-03",
+      "checksums": {
+        "image.png": "1ee3e41ed1a95ea83d5110f10e7ebe9f99ebc925f77e1c6cace22aca62b31124",
+        "visual_spec.json": "fed6fd73ddc49f5ccb31d08ee5297b6676ea6bfd811157caa267df36d764d12c",
+        "expected_report.json": "9a03a7dd4613ea29da1ca4fc1ee628e5ce175ac58a1a30437e4c5724f7e65ac5",
+        "metadata.json": "d2b0ac12085c0f3c2d270cb87c9706377e83a0b5154573908037499ed74d17c1"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": null,
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "rw-render-golden-04",
+      "relative_path": "golden/rw-render-golden-04",
+      "checksums": {
+        "image.png": "8a5869c060b67136b818bba634fd2b71e6aac8dec2b88d6c4a6b0f207950429a",
+        "visual_spec.json": "34ea1d27d55c1ff4b4c45e7ce42235325124c41fdb843a8cf23a35242f338b71",
+        "expected_report.json": "343363aa6215ea83285f9463380f89b500396ecaab3267a0bf091acdec2d8046",
+        "metadata.json": "6280d76194c3a6d308e9c8424f0ad1066f8bfd37590ecf6ef51ab99bd5ae8122"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": null,
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "rw-public-ambiguous-01",
+      "relative_path": "mutated/rw-public-ambiguous-01",
+      "checksums": {
+        "image.png": "23471117f4044d8cef9b4a6b56fa4aea4abc834d51f4cb354e97f4952b82ae4b",
+        "visual_spec.json": "27c9fa658ccf63129be66b22b8308d9ac70993eb418d9ba0ec2892fcffd4de03",
+        "expected_report.json": "c0cc80cc257e234ab8bd80e7d1230e409633fef2df571a153ca950654986da97",
+        "metadata.json": "86d5ed66a43b948f1f461f48f4445a6c984554ee128717bc89e36c025c14958e"
+      },
+      "provenance": {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+        "source_snapshot": {
+          "indicator": "SP.POP.TOTL",
+          "year": 2023,
+          "values": {
+            "MYS": 35126298,
+            "THA": 71702435,
+            "VNM": 100352192
+          },
+          "normalized_millions": {
+            "MYS": 35.0,
+            "THA": 72.0,
+            "VNM": 100.0
+          }
+        },
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+      }
+    },
+    {
+      "case_id": "rw-public-ambiguous-02",
+      "relative_path": "mutated/rw-public-ambiguous-02",
+      "checksums": {
+        "image.png": "0018ab07e1eced6d791fdb1a220e477275aa370a6750cfe79237d1c7e2f224df",
+        "visual_spec.json": "5444e0a15560416fa6a20a547bfa315b4894dcb7542354f16c4a4245f59af613",
+        "expected_report.json": "c4ced9cd2c7a59a0a1b4f56ca4344dfbe9da5a0f53ec52a40fde59be7a7d981f",
+        "metadata.json": "6b84aec4502c981bbabd486d8bcda7f5efe726eb8c11789561b1a0db1a1cebb9"
+      },
+      "provenance": {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+        "source_snapshot": {
+          "indicator": "SP.POP.TOTL",
+          "year": 2023,
+          "values": {
+            "MYS": 35126298,
+            "THA": 71702435,
+            "VNM": 100352192
+          },
+          "normalized_millions": {
+            "MYS": 35.0,
+            "THA": 72.0,
+            "VNM": 100.0
+          }
+        },
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+      }
+    },
+    {
+      "case_id": "rw-public-ambiguous-03",
+      "relative_path": "mutated/rw-public-ambiguous-03",
+      "checksums": {
+        "image.png": "f865ffc0bf8948ff0bb1011850cc0f42dda158d3a7b79e4bbfcdbf9fe942ccea",
+        "visual_spec.json": "9d804df727169bb37b7c5abb1dc0f6eca5d1b8d71abba7f667d1c54aff7b5004",
+        "expected_report.json": "c4ced9cd2c7a59a0a1b4f56ca4344dfbe9da5a0f53ec52a40fde59be7a7d981f",
+        "metadata.json": "380213f30cf0f6cd8b19b0db4e11fdedfb42d9c77488ea6beb5cc702eb69b20b"
+      },
+      "provenance": {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+        "source_snapshot": {
+          "indicator": "SP.POP.TOTL",
+          "year": 2023,
+          "values": {
+            "MYS": 35126298,
+            "THA": 71702435,
+            "VNM": 100352192
+          },
+          "normalized_millions": {
+            "MYS": 35.0,
+            "THA": 72.0,
+            "VNM": 100.0
+          }
+        },
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+      }
+    },
+    {
+      "case_id": "rw-public-mutated-01",
+      "relative_path": "mutated/rw-public-mutated-01",
+      "checksums": {
+        "image.png": "0fc07e61a0eca20c00c433c57945ab1ca6495444fc7aaaf9fa71751cb9d8fa86",
+        "visual_spec.json": "1d30b2e5723bdef72d544aec8824c1e11ec6d924f546453a9a729ad61b4607c8",
+        "expected_report.json": "faff5d8f92e70a0e3819742cfe9696b24473494b49470eec64d65d3e89260e14",
+        "metadata.json": "2009e5d7e6131474a5e45c9990375aa49c62617f86d9b32d6f7b5ba82333f2b0"
+      },
+      "provenance": {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+        "source_snapshot": {
+          "indicator": "SP.POP.TOTL",
+          "year": 2023,
+          "values": {
+            "MYS": 35126298,
+            "THA": 71702435,
+            "VNM": 100352192
+          },
+          "normalized_millions": {
+            "MYS": 35.0,
+            "THA": 72.0,
+            "VNM": 100.0
+          }
+        },
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+      }
+    },
+    {
+      "case_id": "rw-public-mutated-02",
+      "relative_path": "mutated/rw-public-mutated-02",
+      "checksums": {
+        "image.png": "41065c02d9dd015010f766260c413f733c09c696ad93a8090de50b9d97ff3c64",
+        "visual_spec.json": "496d74abd4ff557c7b2fb6e0a463809dcf58e01caf0f465a14d8980c06c9fee8",
+        "expected_report.json": "04c70eb4cd9705426e6115f72c4a17300199302c815f737a1bbb5d64c152c22e",
+        "metadata.json": "4f682209ecb9ea6a51dd0083cb43018289b7ca92a121772ffe06bcbb37bfb195"
+      },
+      "provenance": {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+        "source_snapshot": {
+          "indicator": "SP.POP.TOTL",
+          "year": 2023,
+          "values": {
+            "MYS": 35126298,
+            "THA": 71702435,
+            "VNM": 100352192
+          },
+          "normalized_millions": {
+            "MYS": 35.0,
+            "THA": 72.0,
+            "VNM": 100.0
+          }
+        },
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+      }
+    },
+    {
+      "case_id": "rw-public-mutated-03",
+      "relative_path": "mutated/rw-public-mutated-03",
+      "checksums": {
+        "image.png": "dfdc79729e6fe71898276c6eb1b2cb179709809f04fc4fe37410fcd9250405fb",
+        "visual_spec.json": "abb15be5db69dd1553aea789f2c3f124e3c36e5efd765e79b348c939f084d8c4",
+        "expected_report.json": "7cd3c6999945f2555a942f08671e7275dc21ed4ac854dcbeaeb6d134b2dc47a5",
+        "metadata.json": "5ab8da760a9c54450971406882fdc1f2404b0c07b10fc9f65eb433c7e0ca91ff"
+      },
+      "provenance": {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+        "source_snapshot": {
+          "indicator": "SP.POP.TOTL",
+          "year": 2023,
+          "values": {
+            "MYS": 35126298,
+            "THA": 71702435,
+            "VNM": 100352192
+          },
+          "normalized_millions": {
+            "MYS": 35.0,
+            "THA": 72.0,
+            "VNM": 100.0
+          }
+        },
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+      }
+    },
+    {
+      "case_id": "rw-render-ambiguous-01",
+      "relative_path": "mutated/rw-render-ambiguous-01",
+      "checksums": {
+        "image.png": "ccc9f333f90bfc90683828922d32eea4afcf490aae22eae4ec14e4b1aa40e9d2",
+        "visual_spec.json": "60138dbb410d5700c16c2aefc2a58acb063ca2a104243fde6b0fa18cc8c3071c",
+        "expected_report.json": "a661f20c8bbf62160720d453c1b0a67346243e4647f32a3fa7b395f87b8fbf7e",
+        "metadata.json": "77eb8bf26b3cce75de05551beef7efa6e131feb794fac1486c169173c746d593"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": null,
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "rw-render-ambiguous-02",
+      "relative_path": "mutated/rw-render-ambiguous-02",
+      "checksums": {
+        "image.png": "9cd40df2cdefb16d50aaf60d5401e83cc478ce91bdca9f836c83f7b32b7ea069",
+        "visual_spec.json": "f981e26f947b3937ddacd234a7da075bf62355417f632c1a17fc5391fe73d7e4",
+        "expected_report.json": "3ecceeeeac75b93de599f7620bdb177f4e5a3a8dc1d96fe93c113bad8435bb59",
+        "metadata.json": "6a0c17992546c71661754500a7705ae458e9577e7f7c4233d16f399c2f941a28"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": null,
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "rw-render-ambiguous-03",
+      "relative_path": "mutated/rw-render-ambiguous-03",
+      "checksums": {
+        "image.png": "f368246f4bef74e5b033d37dc43f15c91ed01a8534e546522c7447a7641b169f",
+        "visual_spec.json": "7206436ab168dd8cd91fff4779c9d2c8bda6692e285ed642017ee18551601149",
+        "expected_report.json": "68e00e585d2bf0d47b14086704c80e79d12151392472fe4133f4db66de291644",
+        "metadata.json": "a6056a3b4ad65dbfaac83e7560ddd77432014334cdfa214f1df0cfd516fa3744"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": null,
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "rw-render-ambiguous-04",
+      "relative_path": "mutated/rw-render-ambiguous-04",
+      "checksums": {
+        "image.png": "b879d3ef43b60d4ff0002427f7d7bab9748862640de2e0ee4583d44fd2a361da",
+        "visual_spec.json": "12783fb158f9f60df25500e445f44110c1d89ba4305b898ee7d8945064a69500",
+        "expected_report.json": "4089f4d2efef9525049078458b001287754aa79d3cd38a97b09bb2541c48d6c0",
+        "metadata.json": "5d98584808acb877e0d5d059edfe41b954ef5444159105ee25ff823c2a77d6bd"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": null,
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "rw-render-mutated-01",
+      "relative_path": "mutated/rw-render-mutated-01",
+      "checksums": {
+        "image.png": "00a792805000876e18879d410007553fa3153b357977c8f0a788faf3c8798029",
+        "visual_spec.json": "cd28895c4c0281438df3deea78767165b973f6e3254c911050c81ba1e164c6c9",
+        "expected_report.json": "1f01be43ce33463473f24f162b370812210a7e8a73143c9bbabd069d7a4bbc4b",
+        "metadata.json": "7c0fc8cf2148c9eb50e464bbbb5326ce2c68924791b555df44ee3b4e467692d9"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": null,
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "rw-render-mutated-02",
+      "relative_path": "mutated/rw-render-mutated-02",
+      "checksums": {
+        "image.png": "7a0600036252b4995f01d1445ed3283d13f7b607d5c28e70b0e8bebc31165db5",
+        "visual_spec.json": "b03d93c78ead7eb2b8d4947c6b945952dd50cf78f50bd44295be6977b9945d83",
+        "expected_report.json": "7b6b267d6ed61f20e08b5387ea41bad6cff01f24fe5eb7d27c190f966a41b03d",
+        "metadata.json": "499465b05686b51289de458afc5b9348f20ec242be798e8315ae19374df2c0fe"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": null,
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "rw-render-mutated-03",
+      "relative_path": "mutated/rw-render-mutated-03",
+      "checksums": {
+        "image.png": "de591fbdb6ac04dc44ba033180c464933c66f2046d246a9412d8fa0db8b7a474",
+        "visual_spec.json": "0e060c4544822936c92c6b0861b391732d639bd4266564242c587f94b7030a08",
+        "expected_report.json": "060f98acee04f33cf22295ee40069d650f56789b2e6e674c072bb8a69f2efc5b",
+        "metadata.json": "2175a903c7d02d120774bfb7820b937f4ef8b6fd214070b832a018de3753d676"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": null,
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "rw-render-mutated-04",
+      "relative_path": "mutated/rw-render-mutated-04",
+      "checksums": {
+        "image.png": "e6b444b3571d6379fa18d6f5664ccfdd19ad66a22cf7d42619ab7fce45b71ed0",
+        "visual_spec.json": "b9edff13d3e8478379926a4a3104ae6e03e6ecfe76728a1350a276a4e725ef4e",
+        "expected_report.json": "3045f8619ab2961a38c1b89e9aeba9ea01b328db3847236d4939dc3f7324f2b8",
+        "metadata.json": "37773953cf640a052adf1b9783048ed8daa1deed2385e0251af0408c5dc161bb"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": null,
+        "retrieved_at": "2026-07-10"
+      }
+    }
+  ]
+}

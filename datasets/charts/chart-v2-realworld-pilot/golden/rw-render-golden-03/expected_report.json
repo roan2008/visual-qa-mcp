@@ -1,0 +1,26 @@
+{
+  "verdict": "pass",
+  "expected_finding_types": [],
+  "expected_evidence": {
+    "bar_count": 3,
+    "displayed_bar_values": {
+      "Jan": -20.0,
+      "Feb": 15.0,
+      "Mar": 40.0
+    },
+    "tick_values": [
+      -50.0,
+      -25.0,
+      0.0,
+      25.0,
+      50.0
+    ],
+    "axis_mode": "signed",
+    "labels": [
+      "Jan",
+      "Feb",
+      "Mar"
+    ],
+    "y_label": "Rainfall (mm)"
+  }
+}

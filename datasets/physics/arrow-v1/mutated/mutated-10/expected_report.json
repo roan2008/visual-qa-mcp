@@ -1,0 +1,9 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "force_balance_violation"
+  ],
+  "expected_evidence": {
+    "arrow_count": 4
+  }
+}

@@ -2,9 +2,13 @@
   "image_id": "sample-warning",
   "spec_id": "chart-warning",
   "verdict": "warning",
+  "confidence": 0.9,
+  "extraction_confidence": 0.92,
+  "rule_confidence": 0.9,
   "findings": [
     {
       "id": "finding-warning",
+      "rule_id": "chart-v2.minor-visual-note",
       "type": "minor_alignment_note",
       "severity": "medium",
       "message": "A non-blocking visual note was recorded.",

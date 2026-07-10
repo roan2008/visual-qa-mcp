@@ -1,19 +1,27 @@
 from __future__ import annotations
 
 import shutil
+import hashlib
+import json
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-from .chart_generator import render_chart_image, write_json
+from .chart_generator import render_chart_image, render_matplotlib_chart_image, write_json
 
 BASE_MONTHS = ["Jan", "Feb", "Mar"]
 
 
-def _source_data(values: list[float]) -> list[dict[str, Any]]:
+def _source_data(values: list[float], labels: list[str] | None = None, generic: bool = False) -> list[dict[str, Any]]:
+    labels = labels or BASE_MONTHS
+    if generic:
+        return [
+            {"category": label, "value": value}
+            for label, value in zip(labels, values, strict=True)
+        ]
     return [
         {"month": month, "rainfall_mm": value}
-        for month, value in zip(BASE_MONTHS, values, strict=True)
+        for month, value in zip(labels, values, strict=True)
     ]
 
 
@@ -80,14 +88,16 @@ def _base_spec(
     expected_y_label: str,
     axis_min: float,
     axis_max: float,
+    learning_objective: str = "Compare rainfall across months using a numerically correct bar chart.",
 ) -> dict[str, Any]:
-    labels = [{"text": item["month"], "target": "bars"} for item in source_reference]
+    categories = [str(item.get("category", item.get("month"))) for item in source_reference]
+    labels = [{"text": category, "target": "bars"} for category in categories]
     labels.append({"text": expected_y_label, "target": "y_axis"})
     return {
         "id": f"chart-{case_id}",
         "domain": "chart",
         "risk_level": "medium",
-        "learning_objective": "Compare rainfall across months using a numerically correct bar chart.",
+        "learning_objective": learning_objective,
         "source_reference": {
             "data": source_reference,
             "axis": {
@@ -97,9 +107,9 @@ def _base_spec(
             },
         },
         "required_elements": [
-            {"id": "x_axis", "kind": "axis", "name": "month axis", "count": 1},
-            {"id": "y_axis", "kind": "axis", "name": "rainfall axis", "count": 1},
-            {"id": "bars", "kind": "bar", "name": "rainfall bars", "count": len(source_reference)},
+            {"id": "x_axis", "kind": "axis", "name": "category axis", "count": 1},
+            {"id": "y_axis", "kind": "axis", "name": "value axis", "count": 1},
+            {"id": "bars", "kind": "bar", "name": "value bars", "count": len(source_reference)},
         ],
         "labels": labels,
         "relations": [],
@@ -122,14 +132,29 @@ def _case(
     display_y_label: str | None = None,
     render_options: dict[str, Any] | None = None,
     backend: str = "template",
+    dataset_track: str = "controlled",
+    source_labels: list[str] | None = None,
+    learning_objective: str | None = None,
+    renderer: str = "pillow",
+    transform_family: str = "clean",
+    provenance: dict[str, Any] | None = None,
+    expected_evidence: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    expected_report = deepcopy(expected_report)
+    if expected_evidence is not None:
+        expected_report["expected_evidence"] = expected_evidence
     return {
         "case_id": case_id,
         "title": title,
         "kind": kind,
+        "dataset_track": dataset_track,
         "axis_mode": axis_mode,
         "defect_type": defect_type,
-        "source_data": _source_data(source_values),
+        "source_data": _source_data(
+            source_values,
+            labels=source_labels,
+            generic=source_labels is not None,
+        ),
         "render_data": _render_data(render_labels, render_values),
         "spec_y_label": spec_y_label,
         "axis_config": {
@@ -140,6 +165,10 @@ def _case(
         "expected_report": expected_report,
         "render_options": render_options or {},
         "backend": backend,
+        "learning_objective": learning_objective or "Compare rainfall across months using a numerically correct bar chart.",
+        "renderer": renderer,
+        "transform_family": transform_family,
+        "provenance": provenance or {},
     }
 
 
@@ -488,12 +517,307 @@ def dataset_cases() -> list[dict[str, Any]]:
     ]
 
 
+def noisy_dataset_cases() -> list[dict[str, Any]]:
+    return [
+        _case(
+            "noisy-golden-01",
+            "Noisy zero baseline compressed",
+            "golden",
+            "zero_baseline",
+            [20, 55, 75],
+            BASE_MONTHS,
+            [20, 55, 75],
+            {"bar_axis": {"min": 0, "max": 80}, "display_ticks": [0, 20, 40, 60, 80]},
+            {"verdict": "pass", "expected_finding_types": []},
+            dataset_track="noisy",
+            render_options={
+                "layout_overrides": {"width": 744, "height": 516, "margin_left": 142, "axis_label_box": [196, 26, 660, 60]},
+                "tick_font_size": 17,
+                "x_label_font_size": 15,
+                "postprocess": {"downscale_factor": 0.82, "jpeg_quality": 82},
+            },
+        ),
+        _case(
+            "noisy-golden-02",
+            "Noisy signed blurred",
+            "golden",
+            "signed",
+            [-25, 10, 35],
+            BASE_MONTHS,
+            [-25, 10, 35],
+            {"bar_axis": {"min": -50, "max": 50}, "display_ticks": [-50, -25, 0, 25, 50]},
+            {"verdict": "pass", "expected_finding_types": []},
+            dataset_track="noisy",
+            render_options={
+                "bar_fill": [62, 128, 226],
+                "grid_fill": [226, 230, 238],
+                "postprocess": {"blur_radius": 0.35, "downscale_factor": 0.9},
+            },
+        ),
+        _case(
+            "noisy-mutated-01",
+            "Noisy wrong bar height",
+            "mutated",
+            "zero_baseline",
+            [20, 55, 75],
+            BASE_MONTHS,
+            [20, 38, 75],
+            {"bar_axis": {"min": 0, "max": 80}, "display_ticks": [0, 20, 40, 60, 80]},
+            {"verdict": "fail", "expected_finding_types": ["chart_value_mismatch"]},
+            defect_type="wrong_bar_height",
+            dataset_track="noisy",
+            render_options={
+                "postprocess": {"downscale_factor": 0.85, "jpeg_quality": 80},
+                "tick_jitter": {"20": 1, "40": -1, "60": 1},
+            },
+        ),
+        _case(
+            "noisy-mutated-02",
+            "Noisy unreadable ticks",
+            "mutated",
+            "zero_baseline",
+            [20, 55, 75],
+            BASE_MONTHS,
+            [20, 55, 75],
+            {"bar_axis": {"min": 0, "max": 80}, "display_ticks": [0, 20, 40, 60, 80]},
+            {"verdict": "needs_review", "expected_finding_types": []},
+            defect_type="unreadable_ticks",
+            dataset_track="noisy",
+            render_options={
+                "tick_fill_overrides": {"0": [236, 236, 236], "20": [236, 236, 236], "40": [236, 236, 236], "60": [236, 236, 236], "80": [236, 236, 236]},
+                "postprocess": {"blur_radius": 0.45, "downscale_factor": 0.84},
+            },
+        ),
+        _case(
+            "noisy-mutated-03",
+            "Noisy shifted scale",
+            "mutated",
+            "non_zero_min",
+            [35, 65, 50],
+            BASE_MONTHS,
+            [35, 65, 50],
+            {"bar_axis": {"min": 20, "max": 80}, "display_ticks": [20, 35, 50, 65, 80]},
+            {"verdict": "fail", "expected_finding_types": ["chart_value_mismatch"]},
+            defect_type="wrong_non_zero_scale_labels",
+            dataset_track="noisy",
+            render_options={
+                "tick_text_overrides": {"20": "0", "35": "20", "50": "40", "65": "60", "80": "80"},
+                "postprocess": {"jpeg_quality": 78},
+            },
+        ),
+        _case(
+            "noisy-mutated-04",
+            "Noisy OCR stretch",
+            "mutated",
+            "zero_baseline",
+            [30, 90, 60],
+            BASE_MONTHS,
+            [30, 90, 60],
+            {"bar_axis": {"min": 0, "max": 120}, "display_ticks": [0, 30, 60, 90, 120]},
+            {"verdict": "needs_review", "expected_finding_types": []},
+            defect_type="ocr_stretch_optional_backend",
+            dataset_track="noisy",
+            backend="optional_ocr",
+            render_options={
+                "layout_overrides": {"width": 792, "height": 562, "margin_left": 156, "axis_label_box": [224, 30, 724, 66]},
+                "tick_font_size": 22,
+                "x_label_font_size": 16,
+                "postprocess": {"downscale_factor": 0.88, "jpeg_quality": 76},
+            },
+        ),
+    ]
+
+
+WORLD_BANK_POPULATION_2023 = {
+    "MYS": 35126298,
+    "THA": 71702435,
+    "VNM": 100352192,
+}
+
+
+def _world_bank_population_provenance() -> dict[str, Any]:
+    snapshot = {
+        "indicator": "SP.POP.TOTL",
+        "year": 2023,
+        "values": WORLD_BANK_POPULATION_2023,
+        "normalized_millions": {"MYS": 35.0, "THA": 72.0, "VNM": 100.0},
+    }
+    canonical = json.dumps(snapshot, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return {
+        "source_type": "public_reference_snapshot",
+        "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+        "license": "CC BY 4.0",
+        "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+        "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+        "retrieved_at": "2026-07-10",
+        "source_sha256": hashlib.sha256(canonical).hexdigest(),
+        "source_snapshot": snapshot,
+        "normalization": "Population totals rounded to whole millions for integer tick-reader validation.",
+    }
+
+
+def _pilot_expected_evidence(
+    labels: list[str],
+    displayed_values: list[float],
+    tick_values: list[float] | None,
+    axis_mode: str,
+    y_label: str,
+) -> dict[str, Any]:
+    return {
+        "bar_count": len(labels),
+        "displayed_bar_values": {
+            label: float(value) for label, value in zip(labels, displayed_values, strict=True)
+        },
+        "tick_values": [float(value) for value in tick_values] if tick_values is not None else None,
+        "axis_mode": axis_mode,
+        "labels": labels,
+        "y_label": y_label,
+    }
+
+
+def realworld_pilot_cases() -> list[dict[str, Any]]:
+    cases: list[dict[str, Any]] = []
+    renderer_provenance = {
+        "source_type": "project_generated",
+        "license": "repository test fixture",
+        "source_url": None,
+        "retrieved_at": "2026-07-10",
+    }
+
+    renderer_definitions = [
+        ("rw-render-golden-01", "golden", "pillow", [20, 55, 75], [20, 55, 75], "zero_baseline", 0, 80, [0, 20, 40, 60, 80], {}, "pass", [], "jpeg_resize"),
+        ("rw-render-golden-02", "golden", "matplotlib", [25, 50, 75], [25, 50, 75], "zero_baseline", 0, 100, [0, 25, 50, 75, 100], {}, "pass", [], "alternate_renderer"),
+        ("rw-render-golden-03", "golden", "pillow", [-20, 15, 40], [-20, 15, 40], "signed", -50, 50, [-50, -25, 0, 25, 50], {"postprocess": {"blur_radius": 0.25}}, "pass", [], "signed_blur"),
+        ("rw-render-golden-04", "golden", "matplotlib", [35, 50, 65], [35, 50, 65], "non_zero_min", 20, 80, [20, 35, 50, 65, 80], {}, "pass", [], "non_zero_renderer"),
+        ("rw-render-mutated-01", "mutated", "pillow", [20, 55, 75], [20, 35, 75], "zero_baseline", 0, 80, [0, 20, 40, 60, 80], {"postprocess": {"jpeg_quality": 84}}, "fail", ["chart_value_mismatch"], "wrong_bar_height"),
+        ("rw-render-mutated-02", "mutated", "matplotlib", [25, 50, 75], [25, 70, 75], "zero_baseline", 0, 100, [0, 25, 50, 75, 100], {}, "fail", ["chart_value_mismatch"], "wrong_bar_height"),
+        ("rw-render-mutated-03", "mutated", "pillow", [20, 55, 75], [20, 55, 75], "zero_baseline", 0, 80, [0, 20, 40, 60, 80], {"tick_text_overrides": {"20": "25", "40": "50", "60": "75", "80": "100"}}, "fail", ["chart_value_mismatch"], "shifted_scale"),
+        ("rw-render-mutated-04", "mutated", "matplotlib", [20, 55, 75], [20, 55, 75], "zero_baseline", 0, 80, [0, 20, 40, 60, 80], {}, "fail", ["label_missing_or_wrong", "unit_mismatch"], "wrong_axis_unit"),
+        ("rw-render-ambiguous-01", "mutated", "pillow", [20, 55, 75], [20, 55, 75], "zero_baseline", 0, 80, [0, 20, 40, 60, 80], {"tick_fill_overrides": {str(value): [238, 238, 238] for value in [0, 20, 40, 60, 80]}}, "needs_review", [], "unreadable_ticks"),
+        ("rw-render-ambiguous-02", "mutated", "matplotlib", [25, 50, 75], [25, 50, 75], "zero_baseline", 0, 100, [0, 25, 50, 75, 100], {"tick_label_fill": [238, 238, 238]}, "needs_review", [], "unreadable_ticks"),
+        ("rw-render-ambiguous-03", "mutated", "pillow", [20, 55, 75], [20, 55, 75], "zero_baseline", 0, 80, [0, 20, 40, 60, 80], {"axis_label_fill": [238, 238, 238]}, "needs_review", [], "unreadable_axis_label"),
+        ("rw-render-ambiguous-04", "mutated", "matplotlib", [25, 50, 75], [25, 50, 75], "zero_baseline", 0, 100, [0, 25, 50, 75, 100], {"tick_label_fill": [238, 238, 238], "postprocess": {"blur_radius": 0.7, "downscale_factor": 0.72}}, "needs_review", [], "heavy_resample"),
+    ]
+    for case_id, kind, renderer, source_values, render_values, axis_mode, axis_min, axis_max, ticks, options, verdict, finding_types, family in renderer_definitions:
+        display_label = "Rainfall (cm)" if family == "wrong_axis_unit" else "Rainfall (mm)"
+        readable_ticks = None if kind == "mutated" and not finding_types else [float(options.get("tick_text_overrides", {}).get(str(value), value)) for value in ticks]
+        cases.append(
+            _case(
+                case_id,
+                f"Renderer-diverse pilot: {family}",
+                kind,
+                axis_mode,
+                source_values,
+                BASE_MONTHS,
+                render_values,
+                {"bar_axis": {"min": axis_min, "max": axis_max}, "display_ticks": ticks},
+                {"verdict": verdict, "expected_finding_types": finding_types},
+                defect_type=None if kind == "golden" else family,
+                display_y_label=display_label,
+                render_options=options,
+                dataset_track="realworld_pilot",
+                renderer=renderer,
+                transform_family=family,
+                provenance=renderer_provenance,
+                expected_evidence=_pilot_expected_evidence(BASE_MONTHS, render_values, readable_ticks, axis_mode, display_label),
+            )
+        )
+        if family in {"unreadable_axis_label", "heavy_resample"}:
+            cases[-1]["expected_report"]["expected_evidence"]["labels"] = None
+
+    public_labels = ["Malaysia", "Thailand", "Vietnam"]
+    public_values = [35, 72, 100]
+    public_provenance = _world_bank_population_provenance()
+    public_definitions = [
+        ("rw-public-golden-01", "golden", "pillow", public_values, {}, "pass", [], "public_clean"),
+        ("rw-public-golden-02", "golden", "pillow", public_values, {"postprocess": {"jpeg_quality": 86}}, "pass", [], "public_jpeg"),
+        ("rw-public-golden-03", "golden", "pillow", public_values, {"postprocess": {"blur_radius": 0.25}}, "pass", [], "public_blur"),
+        ("rw-public-golden-04", "golden", "matplotlib", public_values, {}, "pass", [], "public_renderer"),
+        ("rw-public-golden-05", "golden", "matplotlib", public_values, {"postprocess": {"downscale_factor": 0.86}}, "pass", [], "public_renderer_resize"),
+        ("rw-public-golden-06", "golden", "pillow", public_values, {"layout_overrides": {"width": 780, "height": 540, "margin_left": 150, "axis_label_box": [190, 26, 730, 60]}}, "pass", [], "public_wide_layout"),
+        ("rw-public-mutated-01", "mutated", "pillow", [35, 55, 100], {"postprocess": {"jpeg_quality": 84}}, "fail", ["chart_value_mismatch"], "public_wrong_bar"),
+        ("rw-public-mutated-02", "mutated", "matplotlib", public_values, {"tick_text_overrides": {"30": "40", "60": "80", "90": "120", "120": "160"}}, "fail", ["chart_value_mismatch"], "public_shifted_scale"),
+        ("rw-public-mutated-03", "mutated", "pillow", public_values, {}, "fail", ["label_missing_or_wrong", "unit_mismatch"], "public_wrong_unit"),
+        ("rw-public-ambiguous-01", "mutated", "pillow", public_values, {"tick_fill_overrides": {str(value): [238, 238, 238] for value in [0, 30, 60, 90, 120]}}, "needs_review", [], "public_unreadable_ticks"),
+        ("rw-public-ambiguous-02", "mutated", "matplotlib", public_values, {"axis_label_fill": [238, 238, 238]}, "needs_review", [], "public_unreadable_label"),
+        ("rw-public-ambiguous-03", "mutated", "pillow", public_values, {"postprocess": {"blur_radius": 0.8, "downscale_factor": 0.70}}, "needs_review", [], "public_heavy_resample"),
+    ]
+    for case_id, kind, renderer, render_values, options, verdict, finding_types, family in public_definitions:
+        display_label = "Population (thousands)" if family == "public_wrong_unit" else "Population (millions)"
+        readable_ticks = None if kind == "mutated" and not finding_types else [float(options.get("tick_text_overrides", {}).get(str(value), value)) for value in [0, 30, 60, 90, 120]]
+        cases.append(
+            _case(
+                case_id,
+                f"World Bank reference-backed pilot: {family}",
+                kind,
+                "zero_baseline",
+                public_values,
+                public_labels,
+                render_values,
+                {"bar_axis": {"min": 0, "max": 120}, "display_ticks": [0, 30, 60, 90, 120]},
+                {"verdict": verdict, "expected_finding_types": finding_types},
+                defect_type=None if kind == "golden" else family,
+                spec_y_label="Population (millions)",
+                display_y_label=display_label,
+                render_options=options,
+                dataset_track="realworld_pilot",
+                source_labels=public_labels,
+                learning_objective="Compare 2023 population totals for Malaysia, Thailand, and Vietnam in millions.",
+                renderer=renderer,
+                transform_family=family,
+                provenance=public_provenance,
+                expected_evidence=_pilot_expected_evidence(public_labels, render_values, readable_ticks, "zero_baseline", display_label),
+            )
+        )
+        if family in {"public_unreadable_label", "public_heavy_resample"}:
+            cases[-1]["expected_report"]["expected_evidence"]["labels"] = None
+    return cases
+
+
 def build_dataset(output_root: Path) -> None:
+    build_cases_dataset(output_root, dataset_cases())
+
+
+def build_noisy_dataset(output_root: Path) -> None:
+    build_cases_dataset(output_root, noisy_dataset_cases())
+
+
+def build_realworld_pilot_dataset(output_root: Path) -> None:
+    build_cases_dataset(output_root, realworld_pilot_cases())
+    manifest_cases: list[dict[str, Any]] = []
+    for metadata_path in sorted(output_root.glob("**/metadata.json")):
+        case_dir = metadata_path.parent
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        checksums = {}
+        for name in ("image.png", "visual_spec.json", "expected_report.json", "metadata.json"):
+            path = case_dir / name
+            checksums[name] = hashlib.sha256(path.read_bytes()).hexdigest()
+        manifest_cases.append(
+            {
+                "case_id": metadata["case_id"],
+                "relative_path": str(case_dir.relative_to(output_root)).replace("\\", "/"),
+                "checksums": checksums,
+                "provenance": metadata.get("provenance", {}),
+            }
+        )
+    write_json(
+        output_root / "manifest.json",
+        {
+            "dataset": "chart-v2-realworld-pilot",
+            "status": "pilot_only",
+            "frozen_at": "2026-07-10",
+            "case_count": len(manifest_cases),
+            "cases": manifest_cases,
+        },
+    )
+
+
+def build_cases_dataset(output_root: Path, cases: list[dict[str, Any]]) -> None:
     if output_root.exists():
         shutil.rmtree(output_root)
     output_root.mkdir(parents=True, exist_ok=True)
 
-    for case in dataset_cases():
+    for case in cases:
         case_dir = output_root / case["kind"] / case["case_id"]
         case_dir.mkdir(parents=True, exist_ok=True)
 
@@ -506,6 +830,7 @@ def build_dataset(output_root: Path) -> None:
             expected_y_label=case["spec_y_label"],
             axis_min=axis_min,
             axis_max=axis_max,
+            learning_objective=case.get("learning_objective", "Compare rainfall across months using a numerically correct bar chart."),
         )
 
         metadata = {
@@ -514,16 +839,21 @@ def build_dataset(output_root: Path) -> None:
             "kind": case["kind"],
             "axis_mode": case["axis_mode"],
             "defect_type": case["defect_type"],
+            "dataset_track": case.get("dataset_track", "controlled"),
             "image_id": case["case_id"],
             "backend": case["backend"],
             "chart_version": "v2",
             "render_options": case["render_options"],
+            "renderer": case.get("renderer", "pillow"),
+            "transform_family": case.get("transform_family", "clean"),
+            "provenance": case.get("provenance", {}),
         }
 
         write_json(case_dir / "visual_spec.json", spec)
         write_json(case_dir / "metadata.json", metadata)
         write_json(case_dir / "expected_report.json", case["expected_report"])
-        render_chart_image(
+        render_function = render_matplotlib_chart_image if case.get("renderer") == "matplotlib" else render_chart_image
+        render_function(
             image_path=case_dir / "image.png",
             data=case["render_data"],
             axis_config=case["axis_config"],

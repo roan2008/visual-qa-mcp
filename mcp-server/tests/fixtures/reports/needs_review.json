@@ -2,6 +2,9 @@
   "image_id": "sample-needs-review",
   "spec_id": "chart-needs-review",
   "verdict": "needs_review",
+  "confidence": 0.0,
+  "extraction_confidence": 0.22,
+  "rule_confidence": 0.0,
   "findings": [],
   "checks_run": [],
   "checks_skipped": [

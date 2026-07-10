@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-07",
+  "title": "Two arrows share one color",
+  "kind": "mutated",
+  "defect_type": "ambiguous_arrow_colors",
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "mutated-07",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

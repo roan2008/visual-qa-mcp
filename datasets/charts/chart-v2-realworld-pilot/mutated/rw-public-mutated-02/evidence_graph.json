@@ -1,0 +1,193 @@
+{
+  "image_id": "rw-public-mutated-02",
+  "chart_type": "bar",
+  "bars": [
+    {
+      "bar_id": "bar-1",
+      "category": "Malaysia",
+      "value": null,
+      "bbox": [
+        164,
+        301,
+        272,
+        389
+      ],
+      "confidence": 0.73,
+      "matched_label": "Malaysia",
+      "top_y": 301,
+      "bottom_y": 389,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-2",
+      "category": "Thailand",
+      "value": null,
+      "bbox": [
+        340,
+        206,
+        449,
+        389
+      ],
+      "confidence": 0.73,
+      "matched_label": "Thailand",
+      "top_y": 206,
+      "bottom_y": 389,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-3",
+      "category": "Vietnam",
+      "value": null,
+      "bbox": [
+        517,
+        135,
+        625,
+        389
+      ],
+      "confidence": 0.73,
+      "matched_label": "Vietnam",
+      "top_y": 135,
+      "bottom_y": 389,
+      "value_source": "axis_mapping"
+    }
+  ],
+  "x_axis_labels": [
+    "Malaysia",
+    "Thailand",
+    "Vietnam"
+  ],
+  "y_axis": {
+    "label_text": "Population (millions)",
+    "unit_text": "millions",
+    "label_bbox": [
+      170,
+      26,
+      610,
+      58
+    ],
+    "confidence": 0.82,
+    "tick_labels": [
+      {
+        "text": null,
+        "parsed_value": null,
+        "bbox": [
+          33,
+          71,
+          119,
+          97
+        ],
+        "confidence": 0.0
+      },
+      {
+        "text": "120",
+        "parsed_value": 120.0,
+        "bbox": [
+          33,
+          148,
+          119,
+          174
+        ],
+        "confidence": 0.88
+      },
+      {
+        "text": "80",
+        "parsed_value": 80.0,
+        "bbox": [
+          33,
+          224,
+          119,
+          250
+        ],
+        "confidence": 0.84
+      },
+      {
+        "text": "40",
+        "parsed_value": 40.0,
+        "bbox": [
+          33,
+          301,
+          119,
+          327
+        ],
+        "confidence": 0.97
+      },
+      {
+        "text": "0",
+        "parsed_value": 0.0,
+        "bbox": [
+          33,
+          377,
+          119,
+          403
+        ],
+        "confidence": 0.91
+      }
+    ],
+    "axis_line_x": 129,
+    "baseline_y": null,
+    "top_y": 84,
+    "zero_line_y": null,
+    "mapping": null,
+    "backend": "template"
+  },
+  "extraction_confidence": 0.73,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
+  "gaps": [
+    {
+      "code": "insufficient_tick_evidence",
+      "message": "Every detected gridline requires a readable tick label before deriving the axis scale.",
+      "check_ids": [
+        "axis-scale-readable",
+        "axis-scale-monotonic",
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_value_unresolved",
+      "message": "Unable to derive a stable numeric value for bar 1 from axis mapping.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_value_unresolved",
+      "message": "Unable to derive a stable numeric value for bar 2 from axis mapping.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_value_unresolved",
+      "message": "Unable to derive a stable numeric value for bar 3 from axis mapping.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "axis_scale_unreadable",
+      "message": "Axis scale could not be derived from the available tick evidence.",
+      "check_ids": [
+        "axis-scale-readable",
+        "bar-values-match-data"
+      ]
+    }
+  ],
+  "metadata": {
+    "chart_version": "v2",
+    "axis_mode": "zero_baseline",
+    "dataset_case": "rw-public-mutated-02",
+    "backend": "template"
+  }
+}

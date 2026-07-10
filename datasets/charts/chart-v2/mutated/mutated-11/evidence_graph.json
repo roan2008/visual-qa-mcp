@@ -76,7 +76,7 @@
           119,
           97
         ],
-        "confidence": 1.0
+        "confidence": 0.83
       },
       {
         "text": "40",
@@ -87,7 +87,7 @@
           119,
           158
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       },
       {
         "text": "20",
@@ -98,18 +98,18 @@
           119,
           219
         ],
-        "confidence": 1.0
+        "confidence": 0.89
       },
       {
         "text": "0",
         "parsed_value": 0.0,
         "bbox": [
           33,
-          255,
+          256,
           119,
-          281
+          282
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       },
       {
         "text": "-20",
@@ -120,7 +120,7 @@
           119,
           342
         ],
-        "confidence": 1.0
+        "confidence": 0.91
       },
       {
         "text": "-40",
@@ -131,13 +131,13 @@
           119,
           403
         ],
-        "confidence": 1.0
+        "confidence": 0.91
       }
     ],
     "axis_line_x": 129,
     "baseline_y": 390,
     "top_y": 84,
-    "zero_line_y": 268,
+    "zero_line_y": 269,
     "mapping": {
       "min_value": -40.0,
       "max_value": 60.0,
@@ -148,7 +148,20 @@
     },
     "backend": "template"
   },
-  "extraction_confidence": 0.96,
+  "extraction_confidence": 0.89,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
   "gaps": [],
   "metadata": {
     "chart_version": "v2",

@@ -1,0 +1,201 @@
+{
+  "spec_id": "chart-noisy-golden-02",
+  "domain": "chart",
+  "risk_level": "medium",
+  "claims": [
+    {
+      "claim_id": "claim-bar-values-match-data",
+      "rule_id": "chart-v2.bar-values-match-data",
+      "check_id": "bar-values-match-data",
+      "check_type": "chart_value_consistency",
+      "severity": "critical",
+      "target": "bars",
+      "expected": {
+        "values_by_category": {
+          "Jan": -25.0,
+          "Feb": 10.0,
+          "Mar": 35.0
+        },
+        "expected_scale_mode": "signed",
+        "expected_min_value": -50.0,
+        "expected_max_value": 50.0
+      },
+      "tolerance": {
+        "relative_tolerance": 0.05
+      },
+      "evidence_requirements": [
+        "bar_categories",
+        "bar_values",
+        "axis_mapping"
+      ],
+      "metadata": {
+        "description": "Bar heights should match the source data within tolerance.",
+        "learning_objective": "Compare rainfall across months using a numerically correct bar chart."
+      }
+    },
+    {
+      "claim_id": "claim-axis-label-present",
+      "rule_id": "chart-v2.axis-label-present",
+      "check_id": "axis-label-present",
+      "check_type": "label_present",
+      "severity": "high",
+      "target": "y_axis_label",
+      "expected": {
+        "label_text": "Rainfall (mm)"
+      },
+      "tolerance": {},
+      "evidence_requirements": [
+        "axis_label_text"
+      ],
+      "metadata": {
+        "description": "The y-axis label must be visible.",
+        "learning_objective": "Compare rainfall across months using a numerically correct bar chart."
+      }
+    },
+    {
+      "claim_id": "claim-axis-unit-present",
+      "rule_id": "chart-v2.axis-unit-present",
+      "check_id": "axis-unit-present",
+      "check_type": "axis_unit_present",
+      "severity": "high",
+      "target": "y_axis_unit",
+      "expected": {
+        "unit_text": "mm"
+      },
+      "tolerance": {},
+      "evidence_requirements": [
+        "axis_label_text",
+        "axis_unit_text"
+      ],
+      "metadata": {
+        "description": "The y-axis unit must match the expected unit.",
+        "learning_objective": "Compare rainfall across months using a numerically correct bar chart."
+      }
+    },
+    {
+      "claim_id": "claim-bar-count-matches",
+      "rule_id": "chart-v2.bar-count-matches",
+      "check_id": "bar-count-matches",
+      "check_type": "bar_count_matches",
+      "severity": "high",
+      "target": "bars",
+      "expected": {
+        "count": 3
+      },
+      "tolerance": {},
+      "evidence_requirements": [
+        "bar_geometry"
+      ],
+      "metadata": {
+        "description": "The number of bars should match the source data.",
+        "learning_objective": "Compare rainfall across months using a numerically correct bar chart."
+      }
+    },
+    {
+      "claim_id": "claim-axis-scale-readable",
+      "rule_id": "chart-v2.axis-scale-readable",
+      "check_id": "axis-scale-readable",
+      "check_type": "axis_scale_readable",
+      "severity": "high",
+      "target": "y_axis_scale",
+      "expected": {
+        "readable": true
+      },
+      "tolerance": {},
+      "evidence_requirements": [
+        "tick_labels",
+        "axis_mapping"
+      ],
+      "metadata": {
+        "description": "The chart must expose enough readable tick evidence to derive a stable numeric scale.",
+        "learning_objective": "Compare rainfall across months using a numerically correct bar chart."
+      }
+    },
+    {
+      "claim_id": "claim-axis-scale-monotonic",
+      "rule_id": "chart-v2.axis-scale-monotonic",
+      "check_id": "axis-scale-monotonic",
+      "check_type": "axis_scale_monotonic",
+      "severity": "high",
+      "target": "y_axis_scale",
+      "expected": {
+        "monotonic": true
+      },
+      "tolerance": {},
+      "evidence_requirements": [
+        "tick_labels"
+      ],
+      "metadata": {
+        "description": "Tick values must be monotonic and internally consistent.",
+        "learning_objective": "Compare rainfall across months using a numerically correct bar chart."
+      }
+    },
+    {
+      "claim_id": "claim-axis-zero-line-resolved",
+      "rule_id": "chart-v2.axis-zero-line-resolved",
+      "check_id": "axis-zero-line-resolved",
+      "check_type": "axis_zero_line_resolved",
+      "severity": "high",
+      "target": "y_axis_scale",
+      "expected": {
+        "zero_line_resolved": true,
+        "required_for_scale_mode": "signed"
+      },
+      "tolerance": {},
+      "evidence_requirements": [
+        "axis_mapping",
+        "zero_line_geometry"
+      ],
+      "metadata": {
+        "description": "Signed charts must expose a resolvable zero line.",
+        "learning_objective": "Compare rainfall across months using a numerically correct bar chart."
+      }
+    }
+  ],
+  "gaps": [],
+  "source_reference": {
+    "data": [
+      {
+        "month": "Jan",
+        "rainfall_mm": -25
+      },
+      {
+        "month": "Feb",
+        "rainfall_mm": 10
+      },
+      {
+        "month": "Mar",
+        "rainfall_mm": 35
+      }
+    ],
+    "axis": {
+      "expected_scale_mode": "signed",
+      "expected_min_value": -50.0,
+      "expected_max_value": 50.0
+    }
+  },
+  "metadata": {
+    "generator": "chart-v2",
+    "spec_path": "datasets\\charts\\chart-v2-noisy\\golden\\noisy-golden-02\\visual_spec.json",
+    "required_elements": [
+      {
+        "id": "x_axis",
+        "kind": "axis",
+        "name": "month axis",
+        "count": 1
+      },
+      {
+        "id": "y_axis",
+        "kind": "axis",
+        "name": "rainfall axis",
+        "count": 1
+      },
+      {
+        "id": "bars",
+        "kind": "bar",
+        "name": "rainfall bars",
+        "count": 3
+      }
+    ]
+  }
+}

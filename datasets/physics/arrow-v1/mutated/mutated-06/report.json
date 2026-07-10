@@ -1,0 +1,90 @@
+{
+  "image_id": "image",
+  "spec_id": "arrow-mutated-06",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-arrow-direction-weight",
+      "rule_id": "arrow-v1.arrow-directions-correct",
+      "type": "arrow_direction_wrong",
+      "severity": "critical",
+      "message": "Arrow 'weight' points at 91.3 deg but expected 270.0 deg (difference 178.7 deg).",
+      "evidence": {
+        "arrow_id": "weight",
+        "expected_direction_degrees": 270.0,
+        "detected_direction_degrees": 91.3,
+        "angle_difference_degrees": 178.7,
+        "angle_tolerance_degrees": 15.0,
+        "tail_xy": [
+          302,
+          210
+        ],
+        "head_xy": [
+          300,
+          120
+        ]
+      },
+      "recommendation": "Redraw the arrow so it points in the physically correct direction."
+    },
+    {
+      "id": "finding-arrow-direction-normal",
+      "rule_id": "arrow-v1.arrow-directions-correct",
+      "type": "arrow_direction_wrong",
+      "severity": "critical",
+      "message": "Arrow 'normal' points at 271.3 deg but expected 90.0 deg (difference 178.7 deg).",
+      "evidence": {
+        "arrow_id": "normal",
+        "expected_direction_degrees": 90.0,
+        "detected_direction_degrees": 271.3,
+        "angle_difference_degrees": 178.7,
+        "angle_tolerance_degrees": 15.0,
+        "tail_xy": [
+          298,
+          300
+        ],
+        "head_xy": [
+          300,
+          390
+        ]
+      },
+      "recommendation": "Redraw the arrow so it points in the physically correct direction."
+    }
+  ],
+  "checks_run": [
+    "arrow-count-matches",
+    "required-arrows-present",
+    "arrow-directions-correct",
+    "arrow-anchors-object"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.4,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.4,
+  "overlay_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-06\\overlay.png",
+  "evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-06\\evidence_graph.json",
+  "claim_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-06\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-arrow-direction-weight",
+      "kind": "bbox",
+      "bbox": [
+        291,
+        120,
+        309,
+        210
+      ],
+      "label": "weight: direction"
+    },
+    {
+      "finding_id": "finding-arrow-direction-normal",
+      "kind": "bbox",
+      "bbox": [
+        291,
+        300,
+        309,
+        390
+      ],
+      "label": "normal: direction"
+    }
+  ]
+}

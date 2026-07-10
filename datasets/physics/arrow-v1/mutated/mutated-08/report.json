@@ -1,0 +1,31 @@
+{
+  "image_id": "image",
+  "spec_id": "arrow-mutated-08",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [],
+  "checks_skipped": [
+    {
+      "check_id": "arrow-count-matches",
+      "reason": "1 colored component(s) were too small or lacked a readable head/tail structure to be treated as arrow evidence."
+    },
+    {
+      "check_id": "required-arrows-present",
+      "reason": "1 colored component(s) were too small or lacked a readable head/tail structure to be treated as arrow evidence."
+    },
+    {
+      "check_id": "arrow-directions-correct",
+      "reason": "1 colored component(s) were too small or lacked a readable head/tail structure to be treated as arrow evidence."
+    },
+    {
+      "check_id": "arrow-anchors-object",
+      "reason": "1 colored component(s) were too small or lacked a readable head/tail structure to be treated as arrow evidence."
+    }
+  ],
+  "confidence": 0.4,
+  "extraction_confidence": 0.7,
+  "rule_confidence": 0.4,
+  "overlay_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-08\\overlay.png",
+  "evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-08\\evidence_graph.json",
+  "claim_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-08\\claim_graph.json"
+}

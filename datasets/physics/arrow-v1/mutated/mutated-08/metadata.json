@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-08",
+  "title": "Degenerate tiny normal arrow",
+  "kind": "mutated",
+  "defect_type": "degenerate_arrow",
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "mutated-08",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

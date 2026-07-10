@@ -4,7 +4,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-from PIL import Image, ImageDraw, ImageFont
+import numpy as np
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 from .chart_layout import ChartLayout
 
@@ -98,6 +99,106 @@ def render_chart_image(
     axis_label_box = list(layout.axis_label_box)
     draw_text_centered(draw, axis_label_box, axis_config["y_label"], axis_font, fill=axis_label_fill)
 
+    image = _apply_postprocess(image, image_path, metadata)
+    image.save(image_path)
+
+
+def _apply_postprocess(image: Image.Image, image_path: Path, metadata: dict[str, Any]) -> Image.Image:
+    postprocess = metadata.get("postprocess", {})
+    downscale_factor = float(postprocess.get("downscale_factor", 1.0))
+    if downscale_factor < 1.0:
+        resized = image.resize(
+            (max(32, int(image.width * downscale_factor)), max(32, int(image.height * downscale_factor))),
+            resample=Image.Resampling.BILINEAR,
+        )
+        image = resized.resize(image.size, resample=Image.Resampling.BILINEAR)
+    blur_radius = float(postprocess.get("blur_radius", 0.0))
+    if blur_radius > 0:
+        image = image.filter(ImageFilter.GaussianBlur(radius=blur_radius))
+
+    jpeg_quality = postprocess.get("jpeg_quality")
+    if jpeg_quality is not None:
+        temp_jpeg = image_path.with_suffix(".tmp-phase2.jpg")
+        image.save(temp_jpeg, quality=int(jpeg_quality))
+        image = Image.open(temp_jpeg).convert("RGB")
+        temp_jpeg.unlink(missing_ok=True)
+    return image
+
+
+def render_matplotlib_chart_image(
+    image_path: Path,
+    data: list[dict[str, Any]],
+    axis_config: dict[str, Any],
+    metadata: dict[str, Any],
+) -> None:
+    try:
+        import matplotlib
+
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+    except ImportError as exc:  # pragma: no cover - environment guard
+        raise RuntimeError("Matplotlib is required to generate the real-world pilot dataset.") from exc
+
+    layout = ChartLayout()
+    if "layout_overrides" in metadata:
+        layout = layout.with_overrides(**metadata["layout_overrides"])
+    dpi = 100
+    fig = plt.figure(figsize=(layout.width / dpi, layout.height / dpi), dpi=dpi, facecolor="white")
+    axes_left = layout.plot_left / layout.width
+    axes_bottom = (layout.height - layout.plot_bottom) / layout.height
+    axes_width = layout.plot_width / layout.width
+    axes_height = layout.plot_height / layout.height
+    ax = fig.add_axes([axes_left, axes_bottom, axes_width, axes_height])
+
+    axis_min = float(axis_config["bar_axis"]["min"])
+    axis_max = float(axis_config["bar_axis"]["max"])
+    ticks = [float(value) for value in axis_config["display_ticks"]]
+    labels = [str(item["label"]) for item in data]
+    values = [float(item["value"]) for item in data]
+    font_family = str(metadata.get("font_family", "Arial"))
+    bar_color = tuple(channel / 255 for channel in metadata.get("bar_fill", BAR_COLOR))
+    grid_color = tuple(channel / 255 for channel in metadata.get("grid_fill", GRID_COLOR))
+    text_color = tuple(channel / 255 for channel in metadata.get("tick_label_fill", TEXT_COLOR))
+    ax.bar(range(len(values)), values, color=bar_color, width=0.62, zorder=3)
+    ax.set_xlim(-0.5, len(values) - 0.5)
+    ax.set_ylim(axis_min, axis_max)
+    ax.set_xticks(
+        range(len(labels)),
+        labels,
+        fontsize=int(metadata.get("x_label_font_size", 14)),
+        fontfamily=font_family,
+    )
+    tick_overrides = metadata.get("tick_text_overrides", {})
+    tick_labels = [str(tick_overrides.get(str(int(value)), int(value))) for value in ticks]
+    ax.set_yticks(
+        ticks,
+        tick_labels,
+        fontsize=int(metadata.get("tick_font_size", 15)),
+        fontfamily=font_family,
+    )
+    ax.grid(axis="y", color=grid_color, linewidth=1, zorder=0)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.spines["left"].set_linewidth(2)
+    ax.spines["bottom"].set_linewidth(2)
+    ax.tick_params(axis="y", colors=text_color, pad=22)
+    ax.tick_params(axis="x", colors=text_color, pad=18, length=0)
+    label_color = tuple(channel / 255 for channel in metadata.get("axis_label_fill", TEXT_COLOR))
+    fig.text(
+        0.56,
+        0.92,
+        axis_config["y_label"],
+        ha="center",
+        va="center",
+        fontsize=int(metadata.get("axis_font_size", 16)),
+        fontfamily=font_family,
+        color=label_color,
+    )
+    fig.canvas.draw()
+    rgba = np.asarray(fig.canvas.buffer_rgba())
+    image = Image.fromarray(rgba[:, :, :3].copy(), mode="RGB")
+    plt.close(fig)
+    image = _apply_postprocess(image, image_path, metadata)
     image.save(image_path)
 
 

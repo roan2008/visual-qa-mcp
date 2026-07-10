@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-04",
+  "title": "Extra undeclared arrow",
+  "kind": "mutated",
+  "defect_type": "extra_arrow",
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "mutated-04",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

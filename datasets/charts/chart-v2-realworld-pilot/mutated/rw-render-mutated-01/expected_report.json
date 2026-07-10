@@ -1,0 +1,28 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "chart_value_mismatch"
+  ],
+  "expected_evidence": {
+    "bar_count": 3,
+    "displayed_bar_values": {
+      "Jan": 20.0,
+      "Feb": 35.0,
+      "Mar": 75.0
+    },
+    "tick_values": [
+      0.0,
+      20.0,
+      40.0,
+      60.0,
+      80.0
+    ],
+    "axis_mode": "zero_baseline",
+    "labels": [
+      "Jan",
+      "Feb",
+      "Mar"
+    ],
+    "y_label": "Rainfall (mm)"
+  }
+}

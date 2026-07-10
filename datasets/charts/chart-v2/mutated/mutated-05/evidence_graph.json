@@ -76,7 +76,7 @@
           119,
           97
         ],
-        "confidence": 1.0
+        "confidence": 0.88
       },
       {
         "text": "60",
@@ -87,18 +87,18 @@
           119,
           173
         ],
-        "confidence": 1.0
+        "confidence": 0.83
       },
       {
-        "text": "45",
-        "parsed_value": 45.0,
+        "text": null,
+        "parsed_value": null,
         "bbox": [
           33,
           224,
           119,
           250
         ],
-        "confidence": 1.0
+        "confidence": 0.0
       },
       {
         "text": "20",
@@ -109,18 +109,18 @@
           119,
           327
         ],
-        "confidence": 1.0
+        "confidence": 0.89
       },
       {
         "text": "0",
         "parsed_value": 0.0,
         "bbox": [
           33,
-          377,
+          378,
           119,
-          403
+          404
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       }
     ],
     "axis_line_x": 129,
@@ -130,12 +130,26 @@
     "mapping": null,
     "backend": "template"
   },
-  "extraction_confidence": 0.95,
+  "extraction_confidence": 0.79,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
   "gaps": [
     {
-      "code": "inconsistent_tick_step",
-      "message": "Tick values do not follow a consistent numeric step.",
+      "code": "insufficient_tick_evidence",
+      "message": "Every detected gridline requires a readable tick label before deriving the axis scale.",
       "check_ids": [
+        "axis-scale-readable",
         "axis-scale-monotonic",
         "bar-values-match-data"
       ]

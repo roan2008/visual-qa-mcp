@@ -116,9 +116,9 @@
         "parsed_value": null,
         "bbox": [
           33,
-          377,
+          378,
           119,
-          403
+          404
         ],
         "confidence": 0.0
       }
@@ -131,10 +131,23 @@
     "backend": "template"
   },
   "extraction_confidence": 0.4,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
   "gaps": [
     {
       "code": "insufficient_tick_evidence",
-      "message": "Insufficient readable tick labels to derive a stable axis scale.",
+      "message": "Every detected gridline requires a readable tick label before deriving the axis scale.",
       "check_ids": [
         "axis-scale-readable",
         "axis-scale-monotonic",

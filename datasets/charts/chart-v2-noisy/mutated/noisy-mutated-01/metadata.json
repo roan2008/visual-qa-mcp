@@ -1,0 +1,22 @@
+{
+  "case_id": "noisy-mutated-01",
+  "title": "Noisy wrong bar height",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "wrong_bar_height",
+  "dataset_track": "noisy",
+  "image_id": "noisy-mutated-01",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "postprocess": {
+      "downscale_factor": 0.85,
+      "jpeg_quality": 80
+    },
+    "tick_jitter": {
+      "20": 1,
+      "40": -1,
+      "60": 1
+    }
+  }
+}

@@ -4,7 +4,7 @@ description: Index of all wiki pages for this project
 metadata:
   type: reference
   status: current
-  last_updated: 2026-07-09
+  last_updated: 2026-07-10
 ---
 
 # Wiki Index
@@ -38,6 +38,10 @@ wiki/       -> AI-maintained project memory
 
 - [impl-initial-scaffold](impl-initial-scaffold.md) - first project structure and schemas
 - [impl-chart-v2-axis-scale](impl-chart-v2-axis-scale.md) - chart-v2 baseline and limits
+- [impl-chart-v2-claim-graph](impl-chart-v2-claim-graph.md) - chart-v2 claim contract and rule-runner integration
+- [impl-chart-v2-noisy-realworld-pilot](impl-chart-v2-noisy-realworld-pilot.md) - noisy hardening and bounded pilot evidence
+- [impl-arrow-v1-free-body](impl-arrow-v1-free-body.md) - arrow-v1 free-body verifier and bounds
+- [impl-geometry-v1-mechanical](impl-geometry-v1-mechanical.md) - controlled mechanical plate verifier and bounds
 
 ## Reference
 

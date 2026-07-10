@@ -1,0 +1,33 @@
+{
+  "image_id": "image",
+  "spec_id": "arrow-mutated-11",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [
+    "arrow-count-matches"
+  ],
+  "checks_skipped": [
+    {
+      "check_id": "required-arrows-present",
+      "reason": "Arrows 'arrow-02' and 'arrow-03' share a similar color, so color-based identity matching is ambiguous."
+    },
+    {
+      "check_id": "arrow-directions-correct",
+      "reason": "Arrows 'arrow-02' and 'arrow-03' share a similar color, so color-based identity matching is ambiguous."
+    },
+    {
+      "check_id": "arrow-anchors-object",
+      "reason": "Arrows 'arrow-02' and 'arrow-03' share a similar color, so color-based identity matching is ambiguous."
+    },
+    {
+      "check_id": "force-balance-correct",
+      "reason": "Arrows 'arrow-02' and 'arrow-03' share a similar color, so color-based identity matching is ambiguous."
+    }
+  ],
+  "confidence": 0.4,
+  "extraction_confidence": 0.7,
+  "rule_confidence": 0.4,
+  "overlay_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-11\\overlay.png",
+  "evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-11\\evidence_graph.json",
+  "claim_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-11\\claim_graph.json"
+}

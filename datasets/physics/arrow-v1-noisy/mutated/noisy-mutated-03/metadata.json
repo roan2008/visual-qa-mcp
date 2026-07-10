@@ -1,0 +1,16 @@
+{
+  "case_id": "noisy-mutated-03",
+  "title": "Noisy weight arrow detached from object",
+  "kind": "mutated",
+  "defect_type": "detached_anchor",
+  "scenario": "free_body",
+  "dataset_track": "noisy",
+  "image_id": "noisy-mutated-03",
+  "diagram_version": "arrow-v1",
+  "render_options": {
+    "postprocess": {
+      "downscale_factor": 0.85,
+      "jpeg_quality": 78
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "image_id": "image",
+  "spec_id": "arrow-mutated-02",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-arrow-direction-applied",
+      "rule_id": "arrow-v1.arrow-directions-correct",
+      "type": "arrow_direction_wrong",
+      "severity": "critical",
+      "message": "Arrow 'applied' points at 41.8 deg but expected 0.0 deg (difference 41.8 deg).",
+      "evidence": {
+        "arrow_id": "applied",
+        "expected_direction_degrees": 0.0,
+        "detected_direction_degrees": 41.8,
+        "angle_difference_degrees": 41.8,
+        "angle_tolerance_degrees": 15.0,
+        "tail_xy": [
+          361,
+          257
+        ],
+        "head_xy": [
+          428,
+          197
+        ]
+      },
+      "recommendation": "Redraw the arrow so it points in the physically correct direction."
+    }
+  ],
+  "checks_run": [
+    "arrow-count-matches",
+    "required-arrows-present",
+    "arrow-directions-correct",
+    "arrow-anchors-object"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.7,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.7,
+  "overlay_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-02\\overlay.png",
+  "evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-02\\evidence_graph.json",
+  "claim_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-02\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-arrow-direction-applied",
+      "kind": "bbox",
+      "bbox": [
+        359,
+        197,
+        428,
+        257
+      ],
+      "label": "applied: direction"
+    }
+  ]
+}

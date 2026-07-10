@@ -22,8 +22,8 @@ wiki/       -> AI-maintained project memory only
 docs/       -> project briefs, problem maps, validation plans
 specs/      -> JSON schemas and example visual specs
 skills/     -> agent skill drafts for educational visual QA
-mcp-server/ -> planned MCP server contracts and implementation notes
-datasets/   -> future golden and mutated-error validation sets
+mcp-server/ -> executable Python runtime, MCP contracts, extractors, rules, and tests
+datasets/   -> controlled, noisy-transform, and provenance-backed pilot validation sets
 experiments/ -> prototypes and throwaway research scripts
 ```
 
@@ -68,11 +68,14 @@ Run this every new session:
 2. Read `wiki/project-log.md`
 3. Read `wiki/index.md`
 4. Read `wiki/impl-chart-v2-axis-scale.md` when working on charts
-5. Read relevant knowledge pages, especially:
+5. Read `wiki/impl-chart-v2-noisy-realworld-pilot.md` when working on chart-v2 readiness, noisy transforms, or the pilot dataset
+6. Read `wiki/impl-arrow-v1-free-body.md` when working on arrows or force balance
+7. Read `wiki/impl-geometry-v1-mechanical.md` when working on mechanical geometry
+8. Read relevant knowledge pages, especially:
    - `wiki/knowledge-product-direction.md`
    - `wiki/knowledge-rules-validators.md`
    - `wiki/knowledge-no-tuning-and-3d.md`
-6. Tell the user briefly what context you picked up before starting work
+7. Tell the user briefly what context you picked up before starting work
 
 ## Session End Protocol
 
@@ -81,6 +84,9 @@ Before ending a session:
 2. Update `wiki/next-steps.md`
 3. Add new wiki pages if new knowledge was produced
 4. Update `wiki/index.md`
+5. Assess `AGENTS.md` and this file against the Guide Maintenance Policy; update both automatically when a trigger is met.
+
+Perform this automatically after every meaningful implementation, validation result, design decision, blocker, or readiness change. Do not wait for the user to ask for documentation. A small read-only answer that produces no new project knowledge does not require a wiki update.
 
 ## Ingest Workflow
 
@@ -123,6 +129,12 @@ Capture knowledge immediately after each meaningful step, in this priority order
 - `chart-v2` reads Y-axis scale evidence from the image and derives bar values from that mapping.
 - The validated local default is the template backend.
 - Optional OCR is a scaffolded backend and must not be included in readiness claims until separately validated.
+- The deterministic validation baseline is 24 controlled cases and 6 configured noisy-transform cases. The recorded outcome is 9/9 controlled and 2/2 noisy typed defects detected, with no golden non-passes or unsupported passes in those sets.
+- `chart-v2-realworld-pilot` is a separately checksum-frozen 24-case pilot. It contains locally rendered Pillow/Matplotlib charts and charts backed by one frozen World Bank population-data snapshot. It is evidence for a bounded pilot, not proof of general real-world readiness.
+- `run-chart-suite-validation` reports controlled, noisy, and pilot summaries. The existing validation command remains the compatibility surface for the original chart dataset.
+- `arrow-v1` is the second executable vertical: controlled free-body diagrams with color-declared and label-declared arrow identity, validated on a 17-case controlled set (8/8 typed defects, 3/3 ambiguity guard, 0 unsupported passes) plus a 6-case noisy blur/downscale/JPEG track (4/4 typed defects, 0 unsupported passes). It includes one theory-aware check: opt-in translational force balance (`source_reference.scenario_type = "equilibrium"` plus a `force-balance-correct` check) that sums extractor pixel vectors and refuses to sum a partial force set. It has no torque/moment balance, no magnitude calibration, and no real-world images yet.
+- `geometry-v1` is the third executable vertical: controlled rectangular mechanical plates with circular holes, relative diameter-ratio checks, opt-in linear alignment/spacing, and a fixed dimension-label catalog. Its 14-case controlled dataset records 7/7 typed defects, 2/2 ambiguity guards, 13/13 hole-count evidence, 0 unsupported passes, and 0 golden non-passes. It has no noisy/real-world evidence, general OCR, unit calibration, callout-arrow extraction, or native CAD support.
+- The MCP wrapper exposes chart, arrow, and geometry claim/extraction/verification tools. The package can be installed locally with `python -m pip install -e .`, which provides the `visual-qa` console command.
 
 ## Claim Discipline
 
@@ -130,6 +142,19 @@ Capture knowledge immediately after each meaningful step, in this priority order
 - Keep milestone language bounded to the validated backend and dataset family.
 - Report typed defect recall and ambiguity guard behavior with explicit denominators.
 - Prefer `needs_review` over fallback behavior when scale evidence is unreadable, contradictory, or insufficient.
+- Keep expected evidence visual-only: never use expected values from `VisualSpec` to resolve ambiguous tick readings.
+- Freeze and verify dataset checksums before holdout or pilot validation. Do not adjust thresholds case-by-case to improve frozen-holdout results.
+
+## Model Selection
+
+- Default implementation work (extractors, rules, datasets, tests) uses Sonnet 5 at moderate effort — the coding pattern is already established from chart-v2/arrow-v1 and does not need a stronger model.
+- Reserve Fable 5 (or Opus 4.8 if Fable 5 is unavailable) for one-time, high-risk design decisions with long-lived consequences — the arrow-v1 force-balance magnitude-source and equilibrium-gating design was one such gate (resolved 2026-07-10: pixel-vector sums, opt-in `scenario_type`) — via an advisor-style gate before implementation starts, not for routine coding.
+- Do not upgrade model tier to compensate for an underspecified task; resolve the design question first, then implement at the default tier.
+- Low-effort/high-volume sourcing or curation work (e.g., real-world image gathering) can run at low effort or be delegated to a subagent.
+
+## Guide Maintenance Policy
+
+At the end of every meaningful implementation, validation, or design milestone, assess this policy. Update `AGENTS.md` and this file together automatically—without waiting for a user request—when progress changes agent operating instructions, the verified baseline, a readiness claim, required reading, a safety boundary, an important command, or repository structure. Record normal implementation progress, experiments, and non-baseline metric changes in `wiki/project-log.md` and the relevant implementation page instead. Agents must write these records as part of completing qualifying work, without waiting for a user instruction; explicitly record when no follow-up remains. This keeps the guides stable while preserving project memory in the wiki.
 
 ## Wiki Page Types and Naming
 

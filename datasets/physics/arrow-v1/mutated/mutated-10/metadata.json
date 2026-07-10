@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-10",
+  "title": "Declared equilibrium, weight arrow too short",
+  "kind": "mutated",
+  "defect_type": "force_balance_magnitude",
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "mutated-10",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

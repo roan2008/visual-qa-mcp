@@ -1,0 +1,67 @@
+{
+  "image_id": "image",
+  "spec_id": "arrow-mutated-04",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-arrow-count",
+      "rule_id": "arrow-v1.arrow-count-matches",
+      "type": "arrow_count_mismatch",
+      "severity": "high",
+      "message": "Detected 5 arrows but expected 4.",
+      "evidence": {
+        "expected_count": 4,
+        "detected_count": 5
+      },
+      "recommendation": "Regenerate the diagram with the required set of force arrows."
+    },
+    {
+      "id": "finding-unexpected-arrow-arrow-02",
+      "rule_id": "arrow-v1.required-arrows-present",
+      "type": "unexpected_arrow",
+      "severity": "high",
+      "message": "Detected arrow 'arrow-02' does not match any expected arrow color.",
+      "evidence": {
+        "arrow_id": "arrow-02",
+        "detected_rgb": [
+          142,
+          68,
+          173
+        ],
+        "bbox": [
+          359,
+          139,
+          430,
+          211
+        ]
+      },
+      "recommendation": "Remove the extra arrow or map it to a declared force in the spec."
+    }
+  ],
+  "checks_run": [
+    "arrow-count-matches",
+    "required-arrows-present",
+    "arrow-directions-correct",
+    "arrow-anchors-object"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.6,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.6,
+  "overlay_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-04\\overlay.png",
+  "evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-04\\evidence_graph.json",
+  "claim_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-04\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-unexpected-arrow-arrow-02",
+      "kind": "bbox",
+      "bbox": [
+        359,
+        139,
+        430,
+        211
+      ],
+      "label": "Unexpected arrow"
+    }
+  ]
+}

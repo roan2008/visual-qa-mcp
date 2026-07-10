@@ -1,0 +1,71 @@
+{
+  "image_id": "image",
+  "spec_id": "arrow-mutated-10",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-force-balance",
+      "rule_id": "arrow-v1.force-balance-correct",
+      "type": "force_balance_violation",
+      "severity": "critical",
+      "message": "Declared equilibrium scenario is violated: drawn force vectors sum to 44.1 px (0.49 of the longest arrow, tolerance 0.15).",
+      "evidence": {
+        "scenario_type": "equilibrium",
+        "arrow_vectors_px": {
+          "weight": {
+            "length_px": 50.0,
+            "angle_degrees": 272.3
+          },
+          "normal": {
+            "length_px": 90.0,
+            "angle_degrees": 91.3
+          },
+          "applied": {
+            "length_px": 90.0,
+            "angle_degrees": 1.3
+          },
+          "friction": {
+            "length_px": 90.0,
+            "angle_degrees": 178.7
+          }
+        },
+        "resultant_vector_px": [
+          -0.0,
+          44.1
+        ],
+        "resultant_magnitude_px": 44.1,
+        "max_arrow_length_px": 90.0,
+        "resultant_ratio": 0.49,
+        "resultant_ratio_tolerance": 0.15
+      },
+      "recommendation": "Redraw the force arrows so their vector sum is zero for the declared equilibrium scenario."
+    }
+  ],
+  "checks_run": [
+    "arrow-count-matches",
+    "required-arrows-present",
+    "arrow-directions-correct",
+    "arrow-anchors-object",
+    "force-balance-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.7,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.7,
+  "overlay_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-10\\overlay.png",
+  "evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-10\\evidence_graph.json",
+  "claim_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-10\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-force-balance",
+      "kind": "bbox",
+      "bbox": [
+        240,
+        210,
+        360,
+        300
+      ],
+      "label": "Force balance violated"
+    }
+  ]
+}

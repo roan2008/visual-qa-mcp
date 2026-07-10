@@ -1,0 +1,20 @@
+{
+  "case_id": "rw-render-golden-02",
+  "title": "Renderer-diverse pilot: alternate_renderer",
+  "kind": "golden",
+  "axis_mode": "zero_baseline",
+  "defect_type": null,
+  "dataset_track": "realworld_pilot",
+  "image_id": "rw-render-golden-02",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {},
+  "renderer": "matplotlib",
+  "transform_family": "alternate_renderer",
+  "provenance": {
+    "source_type": "project_generated",
+    "license": "repository test fixture",
+    "source_url": null,
+    "retrieved_at": "2026-07-10"
+  }
+}

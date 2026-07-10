@@ -1,0 +1,31 @@
+{
+  "image_id": "image",
+  "spec_id": "geometry-mutated-08",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [],
+  "checks_skipped": [
+    {
+      "check_id": "hole-count-correct",
+      "reason": "1 bright region(s) inside the plate were not circular enough to be counted as holes (e.g. merged or deformed features), so the hole set is not reliable evidence."
+    },
+    {
+      "check_id": "hole-diameter-ratio-correct",
+      "reason": "1 bright region(s) inside the plate were not circular enough to be counted as holes (e.g. merged or deformed features), so the hole set is not reliable evidence."
+    },
+    {
+      "check_id": "hole-alignment-correct",
+      "reason": "1 bright region(s) inside the plate were not circular enough to be counted as holes (e.g. merged or deformed features), so the hole set is not reliable evidence."
+    },
+    {
+      "check_id": "dimension-text-correct",
+      "reason": "1 bright region(s) inside the plate were not circular enough to be counted as holes (e.g. merged or deformed features), so the hole set is not reliable evidence."
+    }
+  ],
+  "confidence": 0.4,
+  "extraction_confidence": 0.5,
+  "rule_confidence": 0.4,
+  "overlay_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-08\\overlay.png",
+  "evidence_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-08\\evidence_graph.json",
+  "claim_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-08\\claim_graph.json"
+}

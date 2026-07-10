@@ -6,22 +6,38 @@ from statistics import mean
 from typing import Any
 
 import numpy as np
-from PIL import Image, ImageChops, ImageDraw, ImageStat
+from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageStat
 
 from .chart_layout import ChartLayout
 from .chart_generator import BACKGROUND_COLOR, get_font
-from .contracts import AxisMapping, EvidenceGap, EvidenceGraph, ExtractedAxis, ExtractedBar
+from .contracts import AxisMapping, EvidenceGap, EvidenceGraph, ExtractedAxis, ExtractedBar, ExtractionProvenance
+from .environment import capture_ocr_environment, capture_runtime_dependencies
 from .tick_reader import read_tick_texts
+
+
+def _source_category(item: dict[str, Any]) -> str:
+    value = item.get("category", item.get("month"))
+    if value is None:
+        raise ValueError("Chart source data item is missing 'category' (or legacy 'month').")
+    return str(value)
 
 
 def _load_image(path: Path) -> Image.Image:
     return Image.open(path).convert("RGB")
 
 
-def _render_text(text: str, size: tuple[int, int], font_size: int) -> Image.Image:
+def _render_text(
+    text: str,
+    size: tuple[int, int],
+    font_size: int,
+    font_name: str | None = None,
+) -> Image.Image:
     image = Image.new("RGB", size, BACKGROUND_COLOR)
     draw = ImageDraw.Draw(image)
-    font = get_font(font_size)
+    try:
+        font = ImageFont.truetype(font_name, font_size) if font_name else get_font(font_size)
+    except OSError:
+        font = get_font(font_size)
     bbox = draw.textbbox((0, 0), text, font=font)
     x = (size[0] - (bbox[2] - bbox[0])) / 2
     y = (size[1] - (bbox[3] - bbox[1])) / 2
@@ -55,15 +71,26 @@ def _match_text(crop: Image.Image, candidates: list[str], font_size: int = 16, t
         return None, 0.0
     scores: list[tuple[str, float]] = []
     for candidate in candidates:
-        template = _render_text(candidate, crop.size, font_size)
-        normalized_template = _normalize_foreground(template)
-        if normalized_template is None:
-            continue
-        score = float(np.mean(np.abs(normalized_crop - normalized_template)))
-        scores.append((candidate, score))
-    best_text, best_score = min(scores, key=lambda item: item[1])
-    confidence = max(0.0, 1.0 - min(best_score * 1.8, 1.0))
-    if confidence < threshold:
+        candidate_scores: list[float] = []
+        for template_size in sorted({max(10, font_size - 2), font_size, font_size + 2}):
+            for font_name in (None, "DejaVuSans.ttf"):
+                template = _render_text(candidate, crop.size, template_size, font_name=font_name)
+                normalized_template = _normalize_foreground(template)
+                if normalized_template is not None:
+                    candidate_scores.append(float(np.mean(np.abs(normalized_crop - normalized_template))))
+        if candidate_scores:
+            scores.append((candidate, min(candidate_scores)))
+    if not scores:
+        return None, 0.0
+    scores.sort(key=lambda item: item[1])
+    best_text, best_score = scores[0]
+    runner_up_score = scores[1][1] if len(scores) > 1 else 1.0
+    winner_margin = runner_up_score - best_score
+    confidence = max(0.0, 1.0 - min(best_score * 1.55, 1.0))
+    quality_limit = min(0.34, max(0.24, (1.0 - threshold) / 1.4))
+    quality_ok = best_score <= quality_limit
+    margin_ok = len(scores) == 1 or winner_margin >= 0.012
+    if not quality_ok or not margin_ok:
         return None, confidence
     return best_text, round(confidence, 2)
 
@@ -81,10 +108,14 @@ def _saturation(rgb: np.ndarray) -> np.ndarray:
 
 
 def _blue_bar_mask(rgb: np.ndarray) -> np.ndarray:
-    intensity = _intensity(rgb)
+    # Widen before adding the channel margin. Adding 15 to uint8 values can
+    # wrap light gray pixels back toward zero and classify JPEG/grid artifacts
+    # as saturated blue.
+    widened = rgb.astype(np.int16)
+    intensity = widened.mean(axis=2)
     return (
-        (rgb[:, :, 2] > rgb[:, :, 1] + 15)
-        & (rgb[:, :, 2] > rgb[:, :, 0] + 15)
+        (widened[:, :, 2] > widened[:, :, 1] + 15)
+        & (widened[:, :, 2] > widened[:, :, 0] + 15)
         & (intensity < 250)
     )
 
@@ -119,16 +150,34 @@ def detect_plot_area(rgb: np.ndarray) -> dict[str, int | list[int]]:
     left_half = width // 2
     column_scores = dark[:, 18:left_half].sum(axis=0)
     axis_line_x = int(np.argmax(column_scores) + 18)
+    vertical_indices = np.where(dark[:, axis_line_x])[0].tolist()
+    vertical_clusters = _cluster_indices(vertical_indices)
+    if vertical_clusters:
+        axis_vertical = max(vertical_clusters, key=len)
+        axis_top = axis_vertical[0]
+        axis_bottom = axis_vertical[-1]
+    else:
+        axis_top = 0
+        axis_bottom = height - 1
 
     row_scores = line[:, axis_line_x + 4 : width - 20].sum(axis=1)
     threshold = max(int((width - axis_line_x) * 0.16), 70)
     candidate_rows = [idx for idx, score in enumerate(row_scores.tolist()) if score >= threshold]
     row_clusters = _cluster_indices(candidate_rows)
     tick_rows: list[int] = []
+    minimum_line_coverage = 0.28
+    available_span = max(width - (axis_line_x + 2), 1)
     for cluster in row_clusters:
-        row = int(round(sum(cluster) / len(cluster)))
+        # Resampling often produces a two-row grid line. The rounded cluster
+        # midpoint can be the blank row between them, so use the strongest row.
+        row = max(cluster, key=lambda index: int(row_scores[index]))
+        if row < axis_top - 3 or row > axis_bottom + 3:
+            continue
         active = np.where(line[row, axis_line_x + 2 :])[0]
         if len(active) == 0:
+            continue
+        coverage = len(active) / available_span
+        if coverage < minimum_line_coverage:
             continue
         span = int(active[-1] - active[0])
         if span < int((width - axis_line_x) * 0.55):
@@ -181,11 +230,11 @@ def infer_axis_mapping(
     gaps: list[EvidenceGap] = []
     ordered = sorted(tick_detections, key=lambda tick: (tick.bbox[1] + tick.bbox[3]) / 2)
     readable = [tick for tick in ordered if tick.parsed_value is not None]
-    if len(readable) < 3:
+    if len(readable) < 3 or len(readable) != len(ordered):
         gaps.append(
             EvidenceGap(
                 code="insufficient_tick_evidence",
-                message="Insufficient readable tick labels to derive a stable axis scale.",
+                message="Every detected gridline requires a readable tick label before deriving the axis scale.",
                 check_ids=["axis-scale-readable", "axis-scale-monotonic", "bar-values-match-data"],
             )
         )
@@ -212,17 +261,6 @@ def infer_axis_mapping(
         )
         return None, None, None, gaps
 
-    deltas = [abs(values[index] - values[index + 1]) for index in range(len(values) - 1)]
-    if any(abs(delta - deltas[0]) > 0.01 for delta in deltas[1:]):
-        gaps.append(
-            EvidenceGap(
-                code="inconsistent_tick_step",
-                message="Tick values do not follow a consistent numeric step.",
-                check_ids=["axis-scale-monotonic", "bar-values-match-data"],
-            )
-        )
-        return None, None, None, gaps
-
     pixel_deltas = [abs(centers[index] - centers[index + 1]) for index in range(len(centers) - 1)]
     if any(delta <= 0 for delta in pixel_deltas):
         gaps.append(
@@ -234,6 +272,23 @@ def infer_axis_mapping(
         )
         return None, None, None, gaps
 
+    value_fit = np.polyfit(np.array(centers, dtype=float), np.array(values, dtype=float), 1)
+    predicted_values = value_fit[0] * np.array(centers, dtype=float) + value_fit[1]
+    value_span = max(max(values) - min(values), 5.0)
+    normalized_residual = float(
+        np.sqrt(np.mean((predicted_values - np.array(values, dtype=float)) ** 2)) / value_span
+    )
+    if value_fit[0] >= 0 or normalized_residual > 0.02:
+        gaps.append(
+            EvidenceGap(
+                code="inconsistent_tick_step",
+                message="Tick values and pixel positions do not support a consistent linear scale.",
+                check_ids=["axis-scale-monotonic", "bar-values-match-data"],
+            )
+        )
+        return None, None, None, gaps
+
+    deltas = [abs(values[index] - values[index + 1]) for index in range(len(values) - 1)]
     pixels_per_unit = float(mean(pixel / value for pixel, value in zip(pixel_deltas, deltas, strict=True)))
     axis_min = min(values)
     axis_max = max(values)
@@ -268,45 +323,74 @@ def _pixel_to_value(pixel_y: int, baseline_y: int, mapping: AxisMapping) -> floa
     return round(mapping.min_value + ((baseline_y - pixel_y) / mapping.pixels_per_unit), 2)
 
 
+def _maximum_true_run(values: np.ndarray) -> int:
+    padded = np.concatenate(([False], values.astype(bool), [False]))
+    changes = np.diff(padded.astype(np.int8))
+    starts = np.where(changes == 1)[0]
+    ends = np.where(changes == -1)[0]
+    if len(starts) == 0:
+        return 0
+    return int(np.max(ends - starts))
+
+
+def _contiguous_ranges(indices: list[int], maximum_gap: int = 1) -> list[tuple[int, int]]:
+    if not indices:
+        return []
+    ranges: list[tuple[int, int]] = []
+    start = previous = indices[0]
+    for index in indices[1:]:
+        if index - previous > maximum_gap:
+            ranges.append((start, previous))
+            start = index
+        previous = index
+    ranges.append((start, previous))
+    return ranges
+
+
 def _find_bar_regions(rgb: np.ndarray, plot_info: dict[str, int | list[int]]) -> list[list[int]]:
     bar_mask = _blue_bar_mask(rgb)
     axis_x = int(plot_info["axis_line_x"])
     plot_top = int(plot_info["plot_top"])
     plot_bottom = int(plot_info["plot_bottom"])
     plot_right = int(plot_info["plot_right"])
-    regions: list[list[int]] = []
-    in_region = False
-    start_x = 0
-    region_top = plot_bottom
-    region_bottom = plot_top
-    for x in range(axis_x + 6, plot_right):
-        ys = np.where(bar_mask[plot_top : plot_bottom + 1, x])[0]
-        if len(ys) > 0:
-            y_top = int(plot_top + ys.min())
-            y_bottom = int(plot_top + ys.max())
-            if not in_region:
-                start_x = x
-                in_region = True
-                region_top = y_top
-                region_bottom = y_bottom
-            else:
-                region_top = min(region_top, y_top)
-                region_bottom = max(region_bottom, y_bottom)
-        elif in_region:
-            regions.append([start_x, region_top, x - 1, region_bottom])
-            in_region = False
-    if in_region:
-        regions.append([start_x, region_top, plot_right - 1, region_bottom])
+    roi = bar_mask[plot_top : plot_bottom + 1, axis_x + 6 : plot_right]
+    if roi.size == 0:
+        return []
 
-    merged: list[list[int]] = []
-    for region in regions:
-        if merged and region[0] - merged[-1][2] <= 2:
-            merged[-1][2] = region[2]
-            merged[-1][1] = min(merged[-1][1], region[1])
-            merged[-1][3] = max(merged[-1][3], region[3])
-        else:
-            merged.append(region)
-    return merged
+    # A zero-height bar is rendered as a one-pixel blue segment at the
+    # baseline and still counts as a bar. Width/coverage filtering below keeps
+    # isolated compression artifacts from becoming regions.
+    minimum_vertical_run = 1
+    qualifying_columns = [
+        index for index in range(roi.shape[1])
+        if _maximum_true_run(roi[:, index]) >= minimum_vertical_run
+    ]
+    column_ranges = _contiguous_ranges(qualifying_columns, maximum_gap=2)
+    minimum_width = max(3, int(round(roi.shape[1] * 0.015)))
+
+    regions: list[list[int]] = []
+    for local_left, local_right in column_ranges:
+        width = local_right - local_left + 1
+        if width < minimum_width:
+            continue
+        component = roi[:, local_left : local_right + 1]
+        row_coverage = component.mean(axis=1)
+        qualifying_rows = np.where(row_coverage >= 0.45)[0].tolist()
+        row_ranges = _contiguous_ranges(qualifying_rows)
+        if not row_ranges:
+            continue
+        local_top, local_bottom = max(row_ranges, key=lambda bounds: bounds[1] - bounds[0])
+        if local_bottom - local_top + 1 < minimum_vertical_run:
+            continue
+        regions.append(
+            [
+                axis_x + 6 + local_left,
+                plot_top + local_top,
+                axis_x + 6 + local_right,
+                plot_top + local_bottom,
+            ]
+        )
+    return regions
 
 
 def _derive_bar_value(
@@ -333,17 +417,36 @@ def _derive_bar_value(
     return _pixel_to_value(top_y, baseline_y, mapping), top_y, bottom_y
 
 
-def extract_chart_evidence(image_path: Path, spec_path: Path, metadata_path: Path, backend: str | None = None) -> EvidenceGraph:
+def _default_metadata(image_path: Path) -> dict[str, Any]:
+    return {
+        "case_id": image_path.stem,
+        "image_id": image_path.stem,
+        "backend": "template",
+        "chart_version": "v2",
+        "render_options": {},
+    }
+
+
+def extract_chart_evidence(
+    image_path: Path,
+    spec_path: Path,
+    metadata_path: Path | None = None,
+    backend: str | None = None,
+) -> EvidenceGraph:
     image = _load_image(image_path)
     rgb = _to_np(image)
     spec = json.loads(spec_path.read_text(encoding="utf-8"))
-    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    metadata = _default_metadata(image_path)
+    metadata_source = "inferred"
+    if metadata_path is not None:
+        metadata.update(json.loads(metadata_path.read_text(encoding="utf-8")))
+        metadata_source = "file"
     backend = backend or metadata.get("backend", "template")
 
     source_data = spec.get("source_reference", {}).get("data", [])
-    expected_categories = [item["month"] for item in source_data]
+    expected_categories = [_source_category(item) for item in source_data]
     expected_axis_mode = spec.get("source_reference", {}).get("axis", {}).get("expected_scale_mode", "zero_baseline")
-    candidate_units = ["mm", "cm", "kg", "N"]
+    candidate_units = ["mm", "cm", "kg", "N", "millions", "thousands", "percent", "people"]
 
     plot_info = detect_plot_area(rgb)
     tick_candidates = extract_tick_candidates(image, plot_info)
@@ -368,8 +471,27 @@ def extract_chart_evidence(image_path: Path, spec_path: Path, metadata_path: Pat
     for index, region in enumerate(bar_regions):
         center_x = (region[0] + region[2]) // 2
         crop_box = layout_hint.label_box(center_x)
-        label_crop = image.crop(tuple(crop_box))
-        matched_label, label_confidence = _match_text(label_crop, expected_categories, font_size=14, threshold=0.55)
+        label_matches: list[tuple[str | None, float]] = []
+        for y_offset in (0, -4, -8, -12, 4):
+            candidate_box = [
+                crop_box[0],
+                max(0, crop_box[1] + y_offset),
+                crop_box[2],
+                min(image.height, crop_box[3] + y_offset),
+            ]
+            match = _match_text(
+                image.crop(tuple(candidate_box)),
+                expected_categories,
+                font_size=14,
+                threshold=0.55,
+            )
+            label_matches.append(match)
+            if match[0] is not None and match[1] >= 0.65:
+                break
+        matched_label, label_confidence = max(
+            label_matches,
+            key=lambda item: (item[0] is not None, item[1]),
+        )
         value, top_y, bottom_y = _derive_bar_value(region, mapping, baseline_y, expected_axis_mode, zero_line_y)
         bars.append(
             ExtractedBar(
@@ -467,6 +589,14 @@ def extract_chart_evidence(image_path: Path, spec_path: Path, metadata_path: Pat
                 + [bar.confidence for bar in bars]
             ) if tick_detections or bars else axis_confidence,
             2,
+        ),
+        provenance=ExtractionProvenance(
+            extractor_id="chart-v2",
+            extractor_version="0.2.0",
+            backend=backend,
+            metadata_source=metadata_source,
+            dependency_versions=capture_runtime_dependencies(),
+            environment=capture_ocr_environment() if backend == "optional_ocr" else {},
         ),
         gaps=gaps,
         metadata={

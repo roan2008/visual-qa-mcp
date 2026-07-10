@@ -1,0 +1,56 @@
+{
+  "image_id": "image",
+  "spec_id": "arrow-mutated-01",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-arrow-direction-friction",
+      "rule_id": "arrow-v1.arrow-directions-correct",
+      "type": "arrow_direction_wrong",
+      "severity": "critical",
+      "message": "Arrow 'friction' points at 1.3 deg but expected 180.0 deg (difference 178.7 deg).",
+      "evidence": {
+        "arrow_id": "friction",
+        "expected_direction_degrees": 180.0,
+        "detected_direction_degrees": 1.3,
+        "angle_difference_degrees": 178.7,
+        "angle_tolerance_degrees": 15.0,
+        "tail_xy": [
+          240,
+          257
+        ],
+        "head_xy": [
+          330,
+          255
+        ]
+      },
+      "recommendation": "Redraw the arrow so it points in the physically correct direction."
+    }
+  ],
+  "checks_run": [
+    "arrow-count-matches",
+    "required-arrows-present",
+    "arrow-directions-correct",
+    "arrow-anchors-object"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.7,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.7,
+  "overlay_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-01\\overlay.png",
+  "evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-01\\evidence_graph.json",
+  "claim_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-01\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-arrow-direction-friction",
+      "kind": "bbox",
+      "bbox": [
+        240,
+        246,
+        330,
+        264
+      ],
+      "label": "friction: direction"
+    }
+  ]
+}

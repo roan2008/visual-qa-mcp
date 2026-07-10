@@ -1,0 +1,162 @@
+{
+  "spec_id": "geometry-mutated-02",
+  "domain": "mechanical",
+  "risk_level": "medium",
+  "claims": [
+    {
+      "claim_id": "claim-hole-count-correct",
+      "rule_id": "geometry-v1.hole-count-correct",
+      "check_id": "hole-count-correct",
+      "check_type": "hole_count_correct",
+      "severity": "high",
+      "target": "holes",
+      "expected": {
+        "count": 3
+      },
+      "tolerance": {},
+      "evidence_requirements": [
+        "hole_geometry"
+      ],
+      "metadata": {
+        "description": "The number of detected circular holes should match the declared holes.",
+        "learning_objective": "Read a mechanical part illustration where each drilled hole has the correct count, relative diameter, position, and dimension callout."
+      }
+    },
+    {
+      "claim_id": "claim-hole-diameter-ratio-correct",
+      "rule_id": "geometry-v1.hole-diameter-ratio-correct",
+      "check_id": "hole-diameter-ratio-correct",
+      "check_type": "hole_diameter_ratio_correct",
+      "severity": "critical",
+      "target": "holes",
+      "expected": {
+        "ordered_holes": [
+          {
+            "id": "hole-a",
+            "diameter": 10
+          },
+          {
+            "id": "hole-b",
+            "diameter": 10
+          },
+          {
+            "id": "hole-c",
+            "diameter": 10
+          }
+        ]
+      },
+      "tolerance": {
+        "diameter_ratio_tolerance": 0.12
+      },
+      "evidence_requirements": [
+        "hole_geometry"
+      ],
+      "metadata": {
+        "description": "Measured hole diameter ratios must match the declared nominal diameter ratios (no pixel-to-unit calibration in v1).",
+        "learning_objective": "Read a mechanical part illustration where each drilled hole has the correct count, relative diameter, position, and dimension callout."
+      }
+    },
+    {
+      "claim_id": "claim-dimension-text-correct",
+      "rule_id": "geometry-v1.dimension-text-correct",
+      "check_id": "dimension-text-correct",
+      "check_type": "dimension_text_correct",
+      "severity": "critical",
+      "target": "holes",
+      "expected": {
+        "ordered_holes": [
+          {
+            "id": "hole-a",
+            "dimension_text": "D10"
+          },
+          {
+            "id": "hole-b",
+            "dimension_text": "D10"
+          },
+          {
+            "id": "hole-c",
+            "dimension_text": "D10"
+          }
+        ]
+      },
+      "tolerance": {},
+      "evidence_requirements": [
+        "hole_geometry",
+        "dimension_text"
+      ],
+      "metadata": {
+        "description": "Each hole's dimension callout text must match the declared dimension.",
+        "learning_objective": "Read a mechanical part illustration where each drilled hole has the correct count, relative diameter, position, and dimension callout."
+      }
+    },
+    {
+      "claim_id": "claim-hole-alignment-correct",
+      "rule_id": "geometry-v1.hole-alignment-correct",
+      "check_id": "hole-alignment-correct",
+      "check_type": "hole_alignment_correct",
+      "severity": "high",
+      "target": "holes",
+      "expected": {
+        "layout": "linear",
+        "ordered_hole_ids": [
+          "hole-a",
+          "hole-b",
+          "hole-c"
+        ]
+      },
+      "tolerance": {
+        "alignment_tolerance_px": 6.0,
+        "spacing_ratio_tolerance": 0.15
+      },
+      "evidence_requirements": [
+        "hole_geometry"
+      ],
+      "metadata": {
+        "description": "For a declared linear layout, hole centers must be collinear and evenly spaced.",
+        "learning_objective": "Read a mechanical part illustration where each drilled hole has the correct count, relative diameter, position, and dimension callout."
+      }
+    }
+  ],
+  "gaps": [],
+  "source_reference": {
+    "plate": {
+      "kind": "rectangle"
+    },
+    "holes": [
+      {
+        "id": "hole-a",
+        "diameter": 10,
+        "dimension_text": "D10"
+      },
+      {
+        "id": "hole-b",
+        "diameter": 10,
+        "dimension_text": "D10"
+      },
+      {
+        "id": "hole-c",
+        "diameter": 10,
+        "dimension_text": "D10"
+      }
+    ],
+    "layout": "linear"
+  },
+  "metadata": {
+    "generator": "geometry-v1",
+    "spec_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-02\\visual_spec.json",
+    "required_elements": [
+      {
+        "id": "plate",
+        "kind": "rectangle",
+        "name": "plate under illustration",
+        "count": 1
+      },
+      {
+        "id": "holes",
+        "kind": "circle",
+        "name": "drilled holes",
+        "count": 3
+      }
+    ]
+  }
+}

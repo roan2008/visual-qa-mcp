@@ -1,0 +1,52 @@
+{
+  "image_id": "image",
+  "diagram_type": "mechanical_plate",
+  "holes": [
+    {
+      "hole_id": "hole-01",
+      "center_xy": [
+        300,
+        225
+      ],
+      "diameter_px": 49.7,
+      "circularity": 0.012,
+      "bbox": [
+        279,
+        204,
+        321,
+        246
+      ],
+      "pixel_count": 1457,
+      "confidence": 0.9,
+      "label_text": "D12",
+      "label_confidence": 0.98
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "plate",
+      "kind": "plate",
+      "bbox": [
+        112,
+        102,
+        488,
+        348
+      ],
+      "pixel_count": 91063,
+      "confidence": 0.95
+    }
+  ],
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "geometry-v1",
+    "extractor_version": "0.1.0",
+    "backend": "component_circle",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "image_path": "datasets\\mechanical\\geometry-v1\\golden\\golden-05\\image.png"
+  }
+}

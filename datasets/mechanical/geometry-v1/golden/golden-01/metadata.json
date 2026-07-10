@@ -1,0 +1,11 @@
+{
+  "case_id": "golden-01",
+  "title": "Three equal holes on a linear layout",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "mechanical_plate",
+  "dataset_track": "controlled",
+  "image_id": "golden-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {}
+}

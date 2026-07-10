@@ -1,0 +1,20 @@
+{
+  "verdict": "needs_review",
+  "expected_finding_types": [],
+  "expected_evidence": {
+    "bar_count": 3,
+    "displayed_bar_values": {
+      "Jan": 20.0,
+      "Feb": 55.0,
+      "Mar": 75.0
+    },
+    "tick_values": null,
+    "axis_mode": "zero_baseline",
+    "labels": [
+      "Jan",
+      "Feb",
+      "Mar"
+    ],
+    "y_label": "Rainfall (mm)"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "image_id": "image",
+  "spec_id": "geometry-mutated-02",
+  "verdict": "needs_review",
+  "findings": [
+    {
+      "id": "finding-hole-count",
+      "rule_id": "geometry-v1.hole-count-correct",
+      "type": "hole_count_mismatch",
+      "severity": "high",
+      "message": "Detected 2 circular holes but expected 3.",
+      "evidence": {
+        "expected_count": 3,
+        "detected_count": 2,
+        "detected_hole_centers": [
+          [
+            180,
+            225
+          ],
+          [
+            420,
+            225
+          ]
+        ]
+      },
+      "recommendation": "Regenerate the illustration with the required number of holes."
+    }
+  ],
+  "checks_run": [
+    "hole-count-correct"
+  ],
+  "checks_skipped": [
+    {
+      "check_id": "hole-diameter-ratio-correct",
+      "reason": "Detected 2 holes but expected 3; hole identity pairing uses left-to-right order and requires the detected hole count to equal the expected hole count."
+    },
+    {
+      "check_id": "hole-alignment-correct",
+      "reason": "Detected 2 holes but expected 3; hole identity pairing uses left-to-right order and requires the detected hole count to equal the expected hole count."
+    },
+    {
+      "check_id": "dimension-text-correct",
+      "reason": "Detected 2 holes but expected 3; hole identity pairing uses left-to-right order and requires the detected hole count to equal the expected hole count."
+    }
+  ],
+  "confidence": 0.2,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.2,
+  "overlay_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-02\\overlay.png",
+  "evidence_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-02\\evidence_graph.json",
+  "claim_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-02\\claim_graph.json"
+}

@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-01",
+  "title": "Extra undeclared hole",
+  "kind": "mutated",
+  "defect_type": "extra_hole",
+  "scenario": "mechanical_plate",
+  "dataset_track": "controlled",
+  "image_id": "mutated-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {}
+}

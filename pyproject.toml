@@ -1,0 +1,31 @@
+[project]
+name = "visual-qa-mcp"
+version = "0.2.0"
+description = "Evidence-first visual QA tools for bounded chart, arrow, and geometry verification."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "anyio>=4,<5",
+  "jsonschema>=4.23,<5",
+  "mcp>=1.27,<2",
+  "numpy>=1.26,<3",
+  "pillow>=10,<12",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8,<9",
+]
+pilot = [
+  "matplotlib>=3.7,<4",
+]
+
+[project.scripts]
+visual-qa = "visual_qa_mcp.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["mcp-server/src"]

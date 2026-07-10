@@ -1,0 +1,51 @@
+{
+  "image_id": "noisy-mutated-01",
+  "spec_id": "chart-noisy-mutated-01",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-bar-value-bar-2",
+      "rule_id": "chart-v2.bar-values-match-data",
+      "type": "chart_value_mismatch",
+      "severity": "critical",
+      "message": "Bar 'Feb' value 38.44 does not match expected 55.00.",
+      "evidence": {
+        "bar_id": "bar-2",
+        "category": "Feb",
+        "expected_value": 55.0,
+        "detected_value": 38.44,
+        "relative_tolerance": 0.05,
+        "value_source": "axis_mapping"
+      },
+      "recommendation": "Update the bar height so it matches the source data within tolerance."
+    }
+  ],
+  "checks_run": [
+    "bar-count-matches",
+    "axis-scale-readable",
+    "axis-scale-monotonic",
+    "bar-values-match-data",
+    "axis-label-present",
+    "axis-unit-present"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.7,
+  "extraction_confidence": 0.72,
+  "rule_confidence": 0.7,
+  "overlay_path": "datasets\\charts\\chart-v2-noisy\\mutated\\noisy-mutated-01\\overlay.png",
+  "evidence_graph_path": "datasets\\charts\\chart-v2-noisy\\mutated\\noisy-mutated-01\\evidence_graph.json",
+  "claim_graph_path": "datasets\\charts\\chart-v2-noisy\\mutated\\noisy-mutated-01\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-bar-value-bar-2",
+      "kind": "bbox",
+      "bbox": [
+        338,
+        244,
+        450,
+        392
+      ],
+      "label": "Feb: value mismatch"
+    }
+  ]
+}

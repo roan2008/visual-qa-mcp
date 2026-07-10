@@ -76,7 +76,7 @@
           119,
           97
         ],
-        "confidence": 1.0
+        "confidence": 0.83
       },
       {
         "text": "40",
@@ -87,40 +87,40 @@
           119,
           158
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       },
       {
-        "text": "-20",
-        "parsed_value": -20.0,
+        "text": null,
+        "parsed_value": null,
         "bbox": [
           33,
           193,
           119,
           219
         ],
-        "confidence": 1.0
+        "confidence": 0.0
       },
       {
         "text": "0",
         "parsed_value": 0.0,
         "bbox": [
           33,
-          255,
+          256,
           119,
-          281
+          282
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       },
       {
-        "text": "20",
-        "parsed_value": 20.0,
+        "text": null,
+        "parsed_value": null,
         "bbox": [
           33,
           316,
           119,
           342
         ],
-        "confidence": 1.0
+        "confidence": 0.0
       },
       {
         "text": "-40",
@@ -131,7 +131,7 @@
           119,
           403
         ],
-        "confidence": 1.0
+        "confidence": 0.91
       }
     ],
     "axis_line_x": 129,
@@ -141,13 +141,35 @@
     "mapping": null,
     "backend": "template"
   },
-  "extraction_confidence": 0.96,
+  "extraction_confidence": 0.71,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
   "gaps": [
     {
-      "code": "non_monotonic_tick_values",
-      "message": "Tick values are not strictly monotonic from top to bottom.",
+      "code": "insufficient_tick_evidence",
+      "message": "Every detected gridline requires a readable tick label before deriving the axis scale.",
       "check_ids": [
+        "axis-scale-readable",
         "axis-scale-monotonic",
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "axis_zero_line_unresolved",
+      "message": "Signed axis requires a readable zero tick or resolvable zero line.",
+      "check_ids": [
+        "axis-zero-line-resolved",
         "bar-values-match-data"
       ]
     },

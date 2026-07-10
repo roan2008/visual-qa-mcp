@@ -1,0 +1,9 @@
+{
+  "verdict": "needs_review",
+  "expected_finding_types": [
+    "hole_count_mismatch"
+  ],
+  "expected_evidence": {
+    "hole_count": 2
+  }
+}

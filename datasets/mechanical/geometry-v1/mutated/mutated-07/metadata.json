@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-07",
+  "title": "Swapped dimension callouts on a mixed-diameter plate",
+  "kind": "mutated",
+  "defect_type": "swapped_dimension_text",
+  "scenario": "mechanical_plate",
+  "dataset_track": "controlled",
+  "image_id": "mutated-07",
+  "diagram_version": "geometry-v1",
+  "render_options": {}
+}

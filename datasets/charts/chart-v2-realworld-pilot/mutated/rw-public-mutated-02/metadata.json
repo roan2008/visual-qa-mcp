@@ -1,0 +1,45 @@
+{
+  "case_id": "rw-public-mutated-02",
+  "title": "World Bank reference-backed pilot: public_shifted_scale",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "public_shifted_scale",
+  "dataset_track": "realworld_pilot",
+  "image_id": "rw-public-mutated-02",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "tick_text_overrides": {
+      "30": "40",
+      "60": "80",
+      "90": "120",
+      "120": "160"
+    }
+  },
+  "renderer": "matplotlib",
+  "transform_family": "public_shifted_scale",
+  "provenance": {
+    "source_type": "public_reference_snapshot",
+    "source_url": "https://api.worldbank.org/v2/country/THA;VNM;MYS/indicator/SP.POP.TOTL?date=2023&format=json",
+    "license": "CC BY 4.0",
+    "license_url": "https://datacatalog.worldbank.org/public-licenses#cc-by",
+    "attribution": "The World Bank: World Development Indicators, Population, total (SP.POP.TOTL), 2023.",
+    "retrieved_at": "2026-07-10",
+    "source_sha256": "7133b8f5409d1b79bc257381f394a489379b3cd5f3cf2d74dc2c366d0c5a7a69",
+    "source_snapshot": {
+      "indicator": "SP.POP.TOTL",
+      "year": 2023,
+      "values": {
+        "MYS": 35126298,
+        "THA": 71702435,
+        "VNM": 100352192
+      },
+      "normalized_millions": {
+        "MYS": 35.0,
+        "THA": 72.0,
+        "VNM": 100.0
+      }
+    },
+    "normalization": "Population totals rounded to whole millions for integer tick-reader validation."
+  }
+}

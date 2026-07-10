@@ -1,0 +1,161 @@
+{
+  "image_id": "rw-public-golden-05",
+  "chart_type": "bar",
+  "bars": [
+    {
+      "bar_id": "bar-1",
+      "category": "Malaysia",
+      "value": 35.57,
+      "bbox": [
+        163,
+        300,
+        273,
+        390
+      ],
+      "confidence": 0.69,
+      "matched_label": "Malaysia",
+      "top_y": 300,
+      "bottom_y": 390,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-2",
+      "category": "Thailand",
+      "value": 72.7,
+      "bbox": [
+        339,
+        205,
+        450,
+        390
+      ],
+      "confidence": 0.74,
+      "matched_label": "Thailand",
+      "top_y": 205,
+      "bottom_y": 390,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-3",
+      "category": "Vietnam",
+      "value": 100.46,
+      "bbox": [
+        516,
+        134,
+        626,
+        390
+      ],
+      "confidence": 0.73,
+      "matched_label": "Vietnam",
+      "top_y": 134,
+      "bottom_y": 390,
+      "value_source": "axis_mapping"
+    }
+  ],
+  "x_axis_labels": [
+    "Malaysia",
+    "Thailand",
+    "Vietnam"
+  ],
+  "y_axis": {
+    "label_text": "Population (millions)",
+    "unit_text": "millions",
+    "label_bbox": [
+      170,
+      26,
+      610,
+      58
+    ],
+    "confidence": 0.73,
+    "tick_labels": [
+      {
+        "text": "120",
+        "parsed_value": 120.0,
+        "bbox": [
+          33,
+          71,
+          119,
+          97
+        ],
+        "confidence": 0.85
+      },
+      {
+        "text": "90",
+        "parsed_value": 90.0,
+        "bbox": [
+          33,
+          148,
+          119,
+          174
+        ],
+        "confidence": 0.84
+      },
+      {
+        "text": "60",
+        "parsed_value": 60.0,
+        "bbox": [
+          33,
+          224,
+          119,
+          250
+        ],
+        "confidence": 0.72
+      },
+      {
+        "text": "30",
+        "parsed_value": 30.0,
+        "bbox": [
+          33,
+          301,
+          119,
+          327
+        ],
+        "confidence": 0.7
+      },
+      {
+        "text": "0",
+        "parsed_value": 0.0,
+        "bbox": [
+          33,
+          378,
+          119,
+          404
+        ],
+        "confidence": 0.85
+      }
+    ],
+    "axis_line_x": 129,
+    "baseline_y": 391,
+    "top_y": 84,
+    "zero_line_y": null,
+    "mapping": {
+      "min_value": 0.0,
+      "max_value": 120.0,
+      "pixels_per_unit": 2.5583,
+      "scale_mode": "zero_baseline",
+      "value_direction": "positive_up",
+      "readable": true
+    },
+    "backend": "template"
+  },
+  "extraction_confidence": 0.76,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "chart_version": "v2",
+    "axis_mode": "zero_baseline",
+    "dataset_case": "rw-public-golden-05",
+    "backend": "template"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-05",
+  "title": "Middle hole shifted off the declared linear layout",
+  "kind": "mutated",
+  "defect_type": "misaligned_hole",
+  "scenario": "mechanical_plate",
+  "dataset_track": "controlled",
+  "image_id": "mutated-05",
+  "diagram_version": "geometry-v1",
+  "render_options": {}
+}

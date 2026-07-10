@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-01",
+  "title": "Friction arrow reversed",
+  "kind": "mutated",
+  "defect_type": "wrong_direction_reversed",
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "mutated-01",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

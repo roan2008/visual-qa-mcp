@@ -5,14 +5,14 @@
     {
       "bar_id": "bar-1",
       "category": "Jan",
-      "value": 24.9,
+      "value": 25.05,
       "bbox": [
         172,
         316,
         281,
         390
       ],
-      "confidence": 0.64,
+      "confidence": 0.72,
       "matched_label": "Jan",
       "top_y": 316,
       "bottom_y": 390,
@@ -21,14 +21,14 @@
     {
       "bar_id": "bar-2",
       "category": "Feb",
-      "value": 55.1,
+      "value": 55.15,
       "bbox": [
         353,
         166,
         462,
         390
       ],
-      "confidence": 0.68,
+      "confidence": 0.7,
       "matched_label": "Feb",
       "top_y": 166,
       "bottom_y": 390,
@@ -37,14 +37,14 @@
     {
       "bar_id": "bar-3",
       "category": "Mar",
-      "value": 40.0,
+      "value": 40.1,
       "bbox": [
         534,
         241,
         643,
         390
       ],
-      "confidence": 0.65,
+      "confidence": 0.7,
       "matched_label": "Mar",
       "top_y": 241,
       "bottom_y": 390,
@@ -76,7 +76,7 @@
           125,
           105
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       },
       {
         "text": "55",
@@ -87,7 +87,7 @@
           125,
           179
         ],
-        "confidence": 1.0
+        "confidence": 0.89
       },
       {
         "text": "40",
@@ -98,7 +98,7 @@
           125,
           254
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       },
       {
         "text": "25",
@@ -109,35 +109,48 @@
           125,
           329
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       },
       {
         "text": "10",
         "parsed_value": 10.0,
         "bbox": [
           39,
-          377,
+          378,
           125,
-          403
+          404
         ],
-        "confidence": 1.0
+        "confidence": 0.91
       }
     ],
     "axis_line_x": 135,
-    "baseline_y": 390,
+    "baseline_y": 391,
     "top_y": 92,
     "zero_line_y": null,
     "mapping": {
       "min_value": 10.0,
       "max_value": 70.0,
-      "pixels_per_unit": 4.9667,
+      "pixels_per_unit": 4.9833,
       "scale_mode": "non_zero_min",
       "value_direction": "positive_up",
       "readable": true
     },
     "backend": "template"
   },
-  "extraction_confidence": 0.89,
+  "extraction_confidence": 0.85,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
   "gaps": [],
   "metadata": {
     "chart_version": "v2",

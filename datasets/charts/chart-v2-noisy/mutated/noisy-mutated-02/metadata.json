@@ -1,0 +1,44 @@
+{
+  "case_id": "noisy-mutated-02",
+  "title": "Noisy unreadable ticks",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "unreadable_ticks",
+  "dataset_track": "noisy",
+  "image_id": "noisy-mutated-02",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "tick_fill_overrides": {
+      "0": [
+        236,
+        236,
+        236
+      ],
+      "20": [
+        236,
+        236,
+        236
+      ],
+      "40": [
+        236,
+        236,
+        236
+      ],
+      "60": [
+        236,
+        236,
+        236
+      ],
+      "80": [
+        236,
+        236,
+        236
+      ]
+    },
+    "postprocess": {
+      "blur_radius": 0.45,
+      "downscale_factor": 0.84
+    }
+  }
+}

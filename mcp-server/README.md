@@ -1,19 +1,26 @@
-# MCP Server Plan
+# Visual QA MCP Server
 
-This folder will hold a future MCP server that exposes visual QA tools to agents.
+This folder contains callable chart-v2, arrow-v1, and geometry-v1 verifier surfaces plus a thin MCP stdio server.
 
-## Planned Tools
+## Near-Term Tool Surface
 
-- `create_visual_spec`
-- `ocr_labels`
-- `detect_arrows`
-- `detect_geometry`
-- `detect_objects`
-- `segment_objects`
+- `build_claim_graph`
 - `parse_chart`
 - `run_rules`
+- `verify_chart`
+- `build_arrow_claim_graph`, `parse_arrow`, `verify_arrow`
+- `build_geometry_claim_graph`, `parse_geometry`, `verify_geometry`
 - `make_overlay`
-- `suggest_repair_prompt`
+
+Current bounded scope:
+
+- template-backed bar charts
+- controlled free-body arrow diagrams
+- controlled mechanical plates with circular holes and fixed-catalog dimension labels
+- template backend is the validated default
+- optional OCR remains scaffolded and unvalidated
+
+`run_rules` consumes `ClaimGraph` plus extracted evidence so validators operate on explicit checkable claims rather than re-parsing spec details ad hoc.
 
 ## Implementation Strategy
 
@@ -25,11 +32,11 @@ Start with simple local tools:
 - Objects: open-vocabulary detection where available.
 - Rules: deterministic Python functions over extracted scene JSON.
 
-The first server does not need to solve every domain. It should make small evidence-backed checks easy for an agent to call.
+The first server does not need to solve every domain. The current step is to make small evidence-backed chart checks easy for an agent or future MCP wrapper to call.
 
-## Current MVP Prototype
+## Current Callable Prototype
 
-The repository now includes a local chart-only MVP in:
+The repository now includes a local callable chart-only surface in:
 
 ```text
 mcp-server/src/visual_qa_mcp/
@@ -37,22 +44,60 @@ mcp-server/src/visual_qa_mcp/
 
 What it does:
 
-- generates a 24-case chart-v2 validation dataset
+- generates a 24-case chart-v2 validation dataset plus separate noisy and 24-case pilot tracks
+- generates chart-v2 `ClaimGraph` artifacts from chart specs
 - extracts chart evidence from image-readable axis and tick structure
 - runs deterministic chart QA rules
+- exposes reusable Python entrypoints for claim generation, evidence extraction, full verification, and artifact writing
 - emits schema-valid reports
 - creates annotated overlays
 - summarizes validation metrics
 
 ### Local Commands
 
-From the repository root:
+Install once from the repository root:
 
 ```powershell
-$env:PYTHONPATH='C:\Users\Veerapong Laptop\Documents\Codex\2026-07-09\gi\visual-qa-mcp\mcp-server\src'
-python -m visual_qa_mcp.cli generate-dataset --output datasets\charts\chart-v2
-python -m visual_qa_mcp.cli run-validation --dataset datasets\charts\chart-v2
+python -m pip install -e .
+visual-qa generate-geometry-dataset --output datasets\mechanical\geometry-v1
+visual-qa run-geometry-validation --dataset datasets\mechanical\geometry-v1
+visual-qa verify-geometry datasets\mechanical\geometry-v1\golden\golden-01\image.png datasets\mechanical\geometry-v1\golden\golden-01\visual_spec.json
+visual-qa run-arrow-validation --dataset datasets\physics\arrow-v1
+visual-qa run-chart-suite-validation --controlled-dataset datasets\charts\chart-v2 --noisy-dataset datasets\charts\chart-v2-noisy --pilot-dataset datasets\charts\chart-v2-realworld-pilot
 pytest mcp-server\tests -q
 ```
 
-This is a prototype, not yet an MCP server process. The current implementation is intentionally narrow and tuned for the controlled-to-semi-realistic chart-v2 dataset family.
+## MCP Server Wrapper
+
+The repository now includes a thin MCP stdio server wrapper over the callable chart-v2 surface:
+
+```powershell
+visual-qa serve-mcp
+```
+
+The MCP wrapper delegates to the existing service layer and does not change verifier behavior. It exposes:
+
+- `build_claim_graph`
+- `parse_chart`
+- `run_rules`
+- `verify_chart`
+- `build_arrow_claim_graph`, `parse_arrow`, `verify_arrow`
+- `build_geometry_claim_graph`, `parse_geometry`, `verify_geometry`
+
+## Phase 2 Validation
+
+Phase 2 adds:
+
+- audit provenance in `EvidenceGraph`
+- stable `rule_id` values in claims/findings
+- separate extraction versus rule confidence in reports
+- a noisy chart-v2 dataset at `datasets/charts/chart-v2-noisy`
+- a checksum-frozen 24-case pilot at `datasets/charts/chart-v2-realworld-pilot`
+- an OCR gate that captures dependency availability and reports OCR-specific metrics separately
+
+Current reality is intentionally bounded:
+
+- controlled template-backed chart-v2 still preserves its prior metrics
+- noisy chart-v2 now passes its configured six-case gate, but the claim stays bounded to those transform families
+- the real-world pilot uses locally rendered Pillow/Matplotlib images and one frozen World Bank source snapshot; it is not general publisher coverage
+- optional OCR remains unvalidated and degrades to `needs_review` when unavailable

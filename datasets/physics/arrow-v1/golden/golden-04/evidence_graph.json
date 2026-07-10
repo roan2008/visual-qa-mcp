@@ -1,0 +1,149 @@
+{
+  "image_id": "image",
+  "diagram_type": "free_body",
+  "arrows": [
+    {
+      "arrow_id": "arrow-01",
+      "rgb": [
+        30,
+        120,
+        210
+      ],
+      "bbox": [
+        291,
+        120,
+        309,
+        210
+      ],
+      "tail_xy": [
+        302,
+        210
+      ],
+      "head_xy": [
+        300,
+        120
+      ],
+      "angle_degrees": 91.3,
+      "length_px": 90.0,
+      "tail_spread_px": 1.41,
+      "head_spread_px": 3.84,
+      "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0
+    },
+    {
+      "arrow_id": "arrow-02",
+      "rgb": [
+        220,
+        130,
+        50
+      ],
+      "bbox": [
+        150,
+        246,
+        240,
+        264
+      ],
+      "tail_xy": [
+        240,
+        257
+      ],
+      "head_xy": [
+        150,
+        255
+      ],
+      "angle_degrees": 178.7,
+      "length_px": 90.0,
+      "tail_spread_px": 1.41,
+      "head_spread_px": 3.85,
+      "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0
+    },
+    {
+      "arrow_id": "arrow-03",
+      "rgb": [
+        20,
+        140,
+        70
+      ],
+      "bbox": [
+        360,
+        246,
+        450,
+        264
+      ],
+      "tail_xy": [
+        360,
+        257
+      ],
+      "head_xy": [
+        450,
+        255
+      ],
+      "angle_degrees": 1.3,
+      "length_px": 90.0,
+      "tail_spread_px": 1.41,
+      "head_spread_px": 3.85,
+      "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0
+    },
+    {
+      "arrow_id": "arrow-04",
+      "rgb": [
+        200,
+        60,
+        60
+      ],
+      "bbox": [
+        291,
+        300,
+        309,
+        390
+      ],
+      "tail_xy": [
+        298,
+        300
+      ],
+      "head_xy": [
+        300,
+        390
+      ],
+      "angle_degrees": 271.3,
+      "length_px": 90.0,
+      "tail_spread_px": 1.41,
+      "head_spread_px": 3.84,
+      "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "object",
+      "kind": "box",
+      "bbox": [
+        240,
+        210,
+        360,
+        300
+      ],
+      "pixel_count": 10991,
+      "confidence": 0.95
+    }
+  ],
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "arrow-v1",
+    "extractor_version": "0.1.0",
+    "backend": "color_component",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "image_path": "datasets\\physics\\arrow-v1\\golden\\golden-04\\image.png"
+  }
+}

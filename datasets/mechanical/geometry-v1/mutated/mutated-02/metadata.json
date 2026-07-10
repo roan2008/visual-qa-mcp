@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-02",
+  "title": "Missing declared hole",
+  "kind": "mutated",
+  "defect_type": "missing_hole",
+  "scenario": "mechanical_plate",
+  "dataset_track": "controlled",
+  "image_id": "mutated-02",
+  "diagram_version": "geometry-v1",
+  "render_options": {}
+}

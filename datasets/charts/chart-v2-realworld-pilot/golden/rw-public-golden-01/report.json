@@ -1,0 +1,21 @@
+{
+  "image_id": "rw-public-golden-01",
+  "spec_id": "chart-rw-public-golden-01",
+  "verdict": "pass",
+  "findings": [],
+  "checks_run": [
+    "bar-count-matches",
+    "axis-scale-readable",
+    "axis-scale-monotonic",
+    "bar-values-match-data",
+    "axis-label-present",
+    "axis-unit-present"
+  ],
+  "checks_skipped": [],
+  "confidence": 1.0,
+  "extraction_confidence": 0.88,
+  "rule_confidence": 1.0,
+  "overlay_path": "datasets\\charts\\chart-v2-realworld-pilot\\golden\\rw-public-golden-01\\overlay.png",
+  "evidence_graph_path": "datasets\\charts\\chart-v2-realworld-pilot\\golden\\rw-public-golden-01\\evidence_graph.json",
+  "claim_graph_path": "datasets\\charts\\chart-v2-realworld-pilot\\golden\\rw-public-golden-01\\claim_graph.json"
+}

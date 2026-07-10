@@ -1,0 +1,11 @@
+{
+  "case_id": "golden-03",
+  "title": "Two holes without a declared layout",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "mechanical_plate",
+  "dataset_track": "controlled",
+  "image_id": "golden-03",
+  "diagram_version": "geometry-v1",
+  "render_options": {}
+}

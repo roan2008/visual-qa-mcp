@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-09",
+  "title": "Color collision resolved via label, friction reversed",
+  "kind": "mutated",
+  "defect_type": "label_resolved_color_collision",
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "mutated-09",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

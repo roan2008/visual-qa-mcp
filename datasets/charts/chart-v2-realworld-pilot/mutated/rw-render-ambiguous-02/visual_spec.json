@@ -1,0 +1,107 @@
+{
+  "id": "chart-rw-render-ambiguous-02",
+  "domain": "chart",
+  "risk_level": "medium",
+  "learning_objective": "Compare rainfall across months using a numerically correct bar chart.",
+  "source_reference": {
+    "data": [
+      {
+        "month": "Jan",
+        "rainfall_mm": 25
+      },
+      {
+        "month": "Feb",
+        "rainfall_mm": 50
+      },
+      {
+        "month": "Mar",
+        "rainfall_mm": 75
+      }
+    ],
+    "axis": {
+      "expected_scale_mode": "zero_baseline",
+      "expected_min_value": 0.0,
+      "expected_max_value": 100.0
+    }
+  },
+  "required_elements": [
+    {
+      "id": "x_axis",
+      "kind": "axis",
+      "name": "category axis",
+      "count": 1
+    },
+    {
+      "id": "y_axis",
+      "kind": "axis",
+      "name": "value axis",
+      "count": 1
+    },
+    {
+      "id": "bars",
+      "kind": "bar",
+      "name": "value bars",
+      "count": 3
+    }
+  ],
+  "labels": [
+    {
+      "text": "Jan",
+      "target": "bars"
+    },
+    {
+      "text": "Feb",
+      "target": "bars"
+    },
+    {
+      "text": "Mar",
+      "target": "bars"
+    },
+    {
+      "text": "Rainfall (mm)",
+      "target": "y_axis"
+    }
+  ],
+  "relations": [],
+  "checks": [
+    {
+      "id": "bar-values-match-data",
+      "type": "chart_value_consistency",
+      "severity": "critical",
+      "description": "Bar heights should match the source data within tolerance.",
+      "params": {
+        "relative_tolerance": 0.05
+      }
+    },
+    {
+      "id": "axis-label-present",
+      "type": "label_present",
+      "severity": "high",
+      "description": "The y-axis label must be visible."
+    },
+    {
+      "id": "axis-unit-present",
+      "type": "axis_unit_present",
+      "severity": "high",
+      "description": "The y-axis unit must match the expected unit."
+    },
+    {
+      "id": "bar-count-matches",
+      "type": "bar_count_matches",
+      "severity": "high",
+      "description": "The number of bars should match the source data."
+    },
+    {
+      "id": "axis-scale-readable",
+      "type": "axis_scale_readable",
+      "severity": "high",
+      "description": "The chart must expose enough readable tick evidence to derive a stable numeric scale."
+    },
+    {
+      "id": "axis-scale-monotonic",
+      "type": "axis_scale_monotonic",
+      "severity": "high",
+      "description": "Tick values must be monotonic and internally consistent."
+    }
+  ]
+}

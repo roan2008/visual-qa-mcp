@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-04",
+  "title": "Middle hole undersized against declared ratio",
+  "kind": "mutated",
+  "defect_type": "undersized_hole",
+  "scenario": "mechanical_plate",
+  "dataset_track": "controlled",
+  "image_id": "mutated-04",
+  "diagram_version": "geometry-v1",
+  "render_options": {}
+}

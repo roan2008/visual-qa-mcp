@@ -1,0 +1,9 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "dimension_text_mismatch"
+  ],
+  "expected_evidence": {
+    "hole_count": 3
+  }
+}

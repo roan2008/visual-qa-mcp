@@ -1,0 +1,9 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "arrow_direction_wrong"
+  ],
+  "expected_evidence": {
+    "arrow_count": 4
+  }
+}

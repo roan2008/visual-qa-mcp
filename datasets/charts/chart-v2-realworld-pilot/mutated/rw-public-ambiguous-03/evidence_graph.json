@@ -1,0 +1,156 @@
+{
+  "image_id": "rw-public-ambiguous-03",
+  "chart_type": "bar",
+  "bars": [
+    {
+      "bar_id": "bar-1",
+      "category": "Malaysia",
+      "value": null,
+      "bbox": [
+        164,
+        300,
+        272,
+        391
+      ],
+      "confidence": 0.64,
+      "matched_label": "Malaysia",
+      "top_y": 300,
+      "bottom_y": 391,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-2",
+      "category": "Thailand",
+      "value": null,
+      "bbox": [
+        340,
+        205,
+        449,
+        391
+      ],
+      "confidence": 0.62,
+      "matched_label": "Thailand",
+      "top_y": 205,
+      "bottom_y": 391,
+      "value_source": "axis_mapping"
+    },
+    {
+      "bar_id": "bar-3",
+      "category": null,
+      "value": null,
+      "bbox": [
+        517,
+        134,
+        625,
+        391
+      ],
+      "confidence": 0.61,
+      "matched_label": null,
+      "top_y": 134,
+      "bottom_y": 391,
+      "value_source": "axis_mapping"
+    }
+  ],
+  "x_axis_labels": [
+    "Malaysia",
+    "Thailand",
+    null
+  ],
+  "y_axis": {
+    "label_text": "Population (millions)",
+    "unit_text": "millions",
+    "label_bbox": [
+      170,
+      26,
+      610,
+      58
+    ],
+    "confidence": 0.6,
+    "tick_labels": [
+      {
+        "text": "0",
+        "parsed_value": 0.0,
+        "bbox": [
+          33,
+          379,
+          119,
+          405
+        ],
+        "confidence": 0.76
+      }
+    ],
+    "axis_line_x": 129,
+    "baseline_y": null,
+    "top_y": 0,
+    "zero_line_y": null,
+    "mapping": null,
+    "backend": "template"
+  },
+  "extraction_confidence": 0.65,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
+  "gaps": [
+    {
+      "code": "insufficient_tick_evidence",
+      "message": "Every detected gridline requires a readable tick label before deriving the axis scale.",
+      "check_ids": [
+        "axis-scale-readable",
+        "axis-scale-monotonic",
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_value_unresolved",
+      "message": "Unable to derive a stable numeric value for bar 1 from axis mapping.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_value_unresolved",
+      "message": "Unable to derive a stable numeric value for bar 2 from axis mapping.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "missing_bar_label",
+      "message": "Unable to confidently match x-axis label for bar 3.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "bar_value_unresolved",
+      "message": "Unable to derive a stable numeric value for bar 3 from axis mapping.",
+      "check_ids": [
+        "bar-values-match-data"
+      ]
+    },
+    {
+      "code": "axis_scale_unreadable",
+      "message": "Axis scale could not be derived from the available tick evidence.",
+      "check_ids": [
+        "axis-scale-readable",
+        "bar-values-match-data"
+      ]
+    }
+  ],
+  "metadata": {
+    "chart_version": "v2",
+    "axis_mode": "zero_baseline",
+    "dataset_case": "rw-public-ambiguous-03",
+    "backend": "template"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "hole_alignment_violation"
+  ],
+  "expected_evidence": {
+    "hole_count": 3
+  }
+}

@@ -5,7 +5,7 @@
     {
       "bar_id": "bar-1",
       "category": "Jan",
-      "value": 20.03,
+      "value": 20.05,
       "bbox": [
         165,
         314,
@@ -21,23 +21,23 @@
     {
       "bar_id": "bar-2",
       "category": "Feb",
-      "value": 92.75,
+      "value": 54.95,
       "bbox": [
         341,
-        38,
+        180,
         448,
         390
       ],
       "confidence": 0.86,
       "matched_label": "Feb",
-      "top_y": 38,
+      "top_y": 180,
       "bottom_y": 390,
       "value_source": "axis_mapping"
     },
     {
       "bar_id": "bar-3",
       "category": "Mar",
-      "value": 75.63,
+      "value": 75.0,
       "bbox": [
         518,
         103,
@@ -68,17 +68,6 @@
     "confidence": 1.0,
     "tick_labels": [
       {
-        "text": "100",
-        "parsed_value": 100.0,
-        "bbox": [
-          33,
-          0,
-          119,
-          21
-        ],
-        "confidence": 1.0
-      },
-      {
         "text": "75",
         "parsed_value": 75.0,
         "bbox": [
@@ -87,7 +76,7 @@
           119,
           116
         ],
-        "confidence": 1.0
+        "confidence": 0.91
       },
       {
         "text": "50",
@@ -98,7 +87,7 @@
           119,
           212
         ],
-        "confidence": 1.0
+        "confidence": 0.89
       },
       {
         "text": "25",
@@ -109,35 +98,48 @@
           119,
           307
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       },
       {
         "text": "0",
         "parsed_value": 0.0,
         "bbox": [
           33,
-          377,
+          378,
           119,
-          403
+          404
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       }
     ],
     "axis_line_x": 129,
-    "baseline_y": 390,
-    "top_y": 8,
+    "baseline_y": 391,
+    "top_y": 103,
     "zero_line_y": null,
     "mapping": {
       "min_value": 0.0,
-      "max_value": 100.0,
-      "pixels_per_unit": 3.795,
+      "max_value": 75.0,
+      "pixels_per_unit": 3.84,
       "scale_mode": "zero_baseline",
       "value_direction": "positive_up",
       "readable": true
     },
     "backend": "template"
   },
-  "extraction_confidence": 0.95,
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
   "gaps": [],
   "metadata": {
     "chart_version": "v2",

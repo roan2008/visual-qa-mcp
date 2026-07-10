@@ -5,7 +5,7 @@
   "findings": [],
   "checks_run": [
     "bar-count-matches",
-    "axis-zero-line-resolved",
+    "axis-scale-monotonic",
     "axis-label-present",
     "axis-unit-present"
   ],
@@ -15,15 +15,18 @@
       "reason": "Axis scale could not be derived from the available tick evidence."
     },
     {
-      "check_id": "axis-scale-monotonic",
-      "reason": "Tick values are not strictly monotonic from top to bottom."
+      "check_id": "axis-zero-line-resolved",
+      "reason": "Signed axis requires a readable zero tick or resolvable zero line."
     },
     {
       "check_id": "bar-values-match-data",
-      "reason": "Tick values are not strictly monotonic from top to bottom."
+      "reason": "Every detected gridline requires a readable tick label before deriving the axis scale."
     }
   ],
-  "confidence": 0.96,
-  "overlay_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-14\\overlay.png",
-  "evidence_graph_path": "C:\\Users\\Veerapong Laptop\\Documents\\Codex\\2026-07-09\\gi\\visual-qa-mcp\\datasets\\charts\\chart-v2\\mutated\\mutated-14\\evidence_graph.json"
+  "confidence": 0.57,
+  "extraction_confidence": 0.71,
+  "rule_confidence": 0.57,
+  "overlay_path": "datasets\\charts\\chart-v2\\mutated\\mutated-14\\overlay.png",
+  "evidence_graph_path": "datasets\\charts\\chart-v2\\mutated\\mutated-14\\evidence_graph.json",
+  "claim_graph_path": "datasets\\charts\\chart-v2\\mutated\\mutated-14\\claim_graph.json"
 }

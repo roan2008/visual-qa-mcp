@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-06",
+  "title": "Weight and normal colors swapped",
+  "kind": "mutated",
+  "defect_type": "swapped_arrow_colors",
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "mutated-06",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

@@ -1,0 +1,120 @@
+{
+  "image_id": "rw-render-mutated-03",
+  "spec_id": "chart-rw-render-mutated-03",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-axis-range",
+      "rule_id": "chart-v2.bar-values-match-data",
+      "type": "chart_value_mismatch",
+      "severity": "critical",
+      "message": "Displayed axis range 0.00..100.00 does not match expected 0.00..80.00.",
+      "evidence": {
+        "expected_min_value": 0.0,
+        "expected_max_value": 80.0,
+        "detected_min_value": 0.0,
+        "detected_max_value": 100.0,
+        "value_source": "axis_mapping"
+      },
+      "recommendation": "Correct the displayed tick range so it matches the source axis specification."
+    },
+    {
+      "id": "finding-bar-value-bar-1",
+      "rule_id": "chart-v2.bar-values-match-data",
+      "type": "chart_value_mismatch",
+      "severity": "critical",
+      "message": "Bar 'Jan' value 25.08 does not match expected 20.00.",
+      "evidence": {
+        "bar_id": "bar-1",
+        "category": "Jan",
+        "expected_value": 20.0,
+        "detected_value": 25.08,
+        "relative_tolerance": 0.05,
+        "value_source": "axis_mapping"
+      },
+      "recommendation": "Update the bar height so it matches the source data within tolerance."
+    },
+    {
+      "id": "finding-bar-value-bar-2",
+      "rule_id": "chart-v2.bar-values-match-data",
+      "type": "chart_value_mismatch",
+      "severity": "critical",
+      "message": "Bar 'Feb' value 68.73 does not match expected 55.00.",
+      "evidence": {
+        "bar_id": "bar-2",
+        "category": "Feb",
+        "expected_value": 55.0,
+        "detected_value": 68.73,
+        "relative_tolerance": 0.05,
+        "value_source": "axis_mapping"
+      },
+      "recommendation": "Update the bar height so it matches the source data within tolerance."
+    },
+    {
+      "id": "finding-bar-value-bar-3",
+      "rule_id": "chart-v2.bar-values-match-data",
+      "type": "chart_value_mismatch",
+      "severity": "critical",
+      "message": "Bar 'Mar' value 93.81 does not match expected 75.00.",
+      "evidence": {
+        "bar_id": "bar-3",
+        "category": "Mar",
+        "expected_value": 75.0,
+        "detected_value": 93.81,
+        "relative_tolerance": 0.05,
+        "value_source": "axis_mapping"
+      },
+      "recommendation": "Update the bar height so it matches the source data within tolerance."
+    }
+  ],
+  "checks_run": [
+    "bar-count-matches",
+    "axis-scale-readable",
+    "axis-scale-monotonic",
+    "bar-values-match-data",
+    "axis-label-present",
+    "axis-unit-present"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.3,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.3,
+  "overlay_path": "datasets\\charts\\chart-v2-realworld-pilot\\mutated\\rw-render-mutated-03\\overlay.png",
+  "evidence_graph_path": "datasets\\charts\\chart-v2-realworld-pilot\\mutated\\rw-render-mutated-03\\evidence_graph.json",
+  "claim_graph_path": "datasets\\charts\\chart-v2-realworld-pilot\\mutated\\rw-render-mutated-03\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-bar-value-bar-1",
+      "kind": "bbox",
+      "bbox": [
+        165,
+        314,
+        271,
+        390
+      ],
+      "label": "Jan: value mismatch"
+    },
+    {
+      "finding_id": "finding-bar-value-bar-2",
+      "kind": "bbox",
+      "bbox": [
+        341,
+        180,
+        448,
+        390
+      ],
+      "label": "Feb: value mismatch"
+    },
+    {
+      "finding_id": "finding-bar-value-bar-3",
+      "kind": "bbox",
+      "bbox": [
+        518,
+        103,
+        624,
+        390
+      ],
+      "label": "Mar: value mismatch"
+    }
+  ]
+}

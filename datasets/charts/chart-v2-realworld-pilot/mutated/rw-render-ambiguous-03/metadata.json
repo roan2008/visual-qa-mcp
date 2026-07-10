@@ -1,0 +1,26 @@
+{
+  "case_id": "rw-render-ambiguous-03",
+  "title": "Renderer-diverse pilot: unreadable_axis_label",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "unreadable_axis_label",
+  "dataset_track": "realworld_pilot",
+  "image_id": "rw-render-ambiguous-03",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "axis_label_fill": [
+      238,
+      238,
+      238
+    ]
+  },
+  "renderer": "pillow",
+  "transform_family": "unreadable_axis_label",
+  "provenance": {
+    "source_type": "project_generated",
+    "license": "repository test fixture",
+    "source_url": null,
+    "retrieved_at": "2026-07-10"
+  }
+}

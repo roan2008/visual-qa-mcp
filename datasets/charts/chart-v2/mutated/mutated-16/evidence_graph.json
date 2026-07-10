@@ -12,7 +12,7 @@
         308,
         450
       ],
-      "confidence": 0.75,
+      "confidence": 0.86,
       "matched_label": "Jan",
       "top_y": 358,
       "bottom_y": 450,
@@ -28,7 +28,7 @@
         504,
         450
       ],
-      "confidence": 0.72,
+      "confidence": 0.86,
       "matched_label": "Feb",
       "top_y": 176,
       "bottom_y": 450,
@@ -44,7 +44,7 @@
         700,
         450
       ],
-      "confidence": 0.72,
+      "confidence": 0.86,
       "matched_label": "Mar",
       "top_y": 267,
       "bottom_y": 450,
@@ -116,9 +116,9 @@
         "parsed_value": null,
         "bbox": [
           55,
-          437,
+          438,
           141,
-          463
+          464
         ],
         "confidence": 0.0
       }
@@ -130,11 +130,32 @@
     "mapping": null,
     "backend": "optional_ocr"
   },
-  "extraction_confidence": 0.35,
+  "extraction_confidence": 0.4,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "optional_ocr",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {
+      "pytesseract_available": false,
+      "tesseract_binary_path": null,
+      "tesseract_available": false,
+      "dependency_versions": {
+        "python": "3.11.8",
+        "pytesseract": "unavailable"
+      }
+    }
+  },
   "gaps": [
     {
       "code": "insufficient_tick_evidence",
-      "message": "Insufficient readable tick labels to derive a stable axis scale.",
+      "message": "Every detected gridline requires a readable tick label before deriving the axis scale.",
       "check_ids": [
         "axis-scale-readable",
         "axis-scale-monotonic",

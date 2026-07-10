@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Any
 
-from .contracts import EvidenceGraph, Finding, OverlayAnnotation, VisualQaReport
+from .claim_graph import build_chart_claim_graph
+from .contracts import ClaimCheck, ClaimGraph, EvidenceGraph, Finding, OverlayAnnotation, VisualQaReport
 
 
 def _severity_rank(severity: str) -> int:
@@ -13,6 +13,7 @@ def _severity_rank(severity: str) -> int:
 
 def _make_finding(
     finding_id: str,
+    rule_id: str,
     finding_type: str,
     severity: str,
     message: str,
@@ -21,6 +22,7 @@ def _make_finding(
 ) -> Finding:
     return Finding(
         id=finding_id,
+        rule_id=rule_id,
         type=finding_type,
         severity=severity,
         message=message,
@@ -41,17 +43,28 @@ def _overall_verdict(findings: list[Finding], skipped: list[dict[str, str]]) -> 
     return "pass"
 
 
-def run_chart_rules(spec_path: Path, evidence: EvidenceGraph) -> VisualQaReport:
-    spec = json.loads(spec_path.read_text(encoding="utf-8"))
-    source_data = spec.get("source_reference", {}).get("data", [])
-    checks = {check["id"]: check for check in spec.get("checks", [])}
-    expected_y_label = next(
-        (label["text"] for label in spec.get("labels", []) if label.get("target") == "y_axis"),
-        None,
-    )
-    expected_unit = None
-    if expected_y_label and "(" in expected_y_label and ")" in expected_y_label:
-        expected_unit = expected_y_label.split("(")[1].split(")")[0]
+def _claim_by_check_id(claim_graph: ClaimGraph) -> dict[str, ClaimCheck]:
+    return {claim.check_id: claim for claim in claim_graph.claims}
+
+
+def _estimate_rule_confidence(
+    checks_run: list[str],
+    checks_skipped: list[dict[str, str]],
+    findings: list[Finding],
+) -> float:
+    total_checks = len(checks_run) + len(checks_skipped)
+    if total_checks == 0:
+        return 0.0
+    if not findings and not checks_skipped:
+        return 1.0
+    severity_weights = {"low": 0.05, "medium": 0.1, "high": 0.2, "critical": 0.3}
+    skip_penalty = min(0.6, len(checks_skipped) / total_checks)
+    finding_penalty = min(0.7, sum(severity_weights[finding.severity] for finding in findings))
+    return round(max(0.0, 1.0 - skip_penalty - finding_penalty), 2)
+
+
+def run_chart_claims(claim_graph: ClaimGraph, evidence: EvidenceGraph) -> VisualQaReport:
+    claims = _claim_by_check_id(claim_graph)
 
     findings: list[Finding] = []
     checks_run: list[str] = []
@@ -64,54 +77,93 @@ def run_chart_rules(spec_path: Path, evidence: EvidenceGraph) -> VisualQaReport:
         for check_id in gap.check_ids:
             skipped_by_check.setdefault(check_id, []).append(gap.message)
 
-    bar_count_check_id = "bar-count-matches"
-    if bar_count_check_id in checks:
-        checks_run.append(bar_count_check_id)
-        expected_count = len(source_data)
+    for claim_gap in claim_graph.gaps:
+        checks_skipped.append(
+            {
+                "check_id": claim_gap.check_id,
+                "reason": claim_gap.message,
+            }
+        )
+
+    bar_count_claim = claims.get("bar-count-matches")
+    if bar_count_claim is not None:
+        checks_run.append(bar_count_claim.check_id)
+        expected_count = int(bar_count_claim.expected["count"])
         detected_count = len(evidence.bars)
         if detected_count != expected_count:
             finding = _make_finding(
                 "finding-bar-count",
+                bar_count_claim.rule_id,
                 "bar_count_mismatch",
-                "high",
+                bar_count_claim.severity,
                 f"Detected {detected_count} bars but expected {expected_count}.",
                 {"expected_count": expected_count, "detected_count": detected_count},
                 "Regenerate the chart with the required number of bars.",
             )
             findings.append(finding)
 
-    scale_readable_check = "axis-scale-readable"
-    if scale_readable_check in checks:
+    scale_readable_claim = claims.get("axis-scale-readable")
+    if scale_readable_claim is not None:
         readable_codes = {"axis_scale_unreadable", "insufficient_tick_evidence", "optional_ocr_unavailable", "invalid_tick_geometry"}
         reasons = [gaps_by_code[code].message for code in readable_codes if code in gaps_by_code]
         if reasons:
-            checks_skipped.append({"check_id": scale_readable_check, "reason": reasons[0]})
+            checks_skipped.append({"check_id": scale_readable_claim.check_id, "reason": reasons[0]})
         else:
-            checks_run.append(scale_readable_check)
+            checks_run.append(scale_readable_claim.check_id)
 
-    monotonic_check = "axis-scale-monotonic"
-    if monotonic_check in checks:
+    monotonic_claim = claims.get("axis-scale-monotonic")
+    if monotonic_claim is not None:
         monotonic_codes = {"non_monotonic_tick_values", "inconsistent_tick_step"}
         reasons = [gaps_by_code[code].message for code in monotonic_codes if code in gaps_by_code]
         if reasons:
-            checks_skipped.append({"check_id": monotonic_check, "reason": reasons[0]})
+            checks_skipped.append({"check_id": monotonic_claim.check_id, "reason": reasons[0]})
         else:
-            checks_run.append(monotonic_check)
+            checks_run.append(monotonic_claim.check_id)
 
-    zero_line_check = "axis-zero-line-resolved"
-    if zero_line_check in checks:
+    zero_line_claim = claims.get("axis-zero-line-resolved")
+    if zero_line_claim is not None:
         if "axis_zero_line_unresolved" in gaps_by_code:
-            checks_skipped.append({"check_id": zero_line_check, "reason": gaps_by_code["axis_zero_line_unresolved"].message})
+            checks_skipped.append({"check_id": zero_line_claim.check_id, "reason": gaps_by_code["axis_zero_line_unresolved"].message})
         else:
-            checks_run.append(zero_line_check)
+            checks_run.append(zero_line_claim.check_id)
 
-    chart_check_id = "bar-values-match-data"
-    if chart_check_id in checks and chart_check_id in skipped_by_check:
-        checks_skipped.append({"check_id": chart_check_id, "reason": skipped_by_check[chart_check_id][0]})
-    elif chart_check_id in checks:
-        checks_run.append(chart_check_id)
-        tolerance = checks.get(chart_check_id, {}).get("params", {}).get("relative_tolerance", 0.05)
-        expected_by_label = {item["month"]: float(item["rainfall_mm"]) for item in source_data}
+    chart_value_claim = claims.get("bar-values-match-data")
+    if chart_value_claim is not None and chart_value_claim.check_id in skipped_by_check:
+        checks_skipped.append({"check_id": chart_value_claim.check_id, "reason": skipped_by_check[chart_value_claim.check_id][0]})
+    elif chart_value_claim is not None:
+        checks_run.append(chart_value_claim.check_id)
+        tolerance = float(chart_value_claim.tolerance.get("relative_tolerance", 0.05))
+        expected_axis_min = chart_value_claim.expected.get("expected_min_value")
+        expected_axis_max = chart_value_claim.expected.get("expected_max_value")
+        mapping = evidence.y_axis.mapping
+        if mapping is not None and expected_axis_min is not None and expected_axis_max is not None:
+            detected_bounds = (float(mapping.min_value), float(mapping.max_value))
+            expected_bounds = (float(expected_axis_min), float(expected_axis_max))
+            if any(abs(detected - expected) > 0.01 for detected, expected in zip(detected_bounds, expected_bounds, strict=True)):
+                findings.append(
+                    _make_finding(
+                        "finding-axis-range",
+                        chart_value_claim.rule_id,
+                        "chart_value_mismatch",
+                        chart_value_claim.severity,
+                        (
+                            f"Displayed axis range {detected_bounds[0]:.2f}..{detected_bounds[1]:.2f} "
+                            f"does not match expected {expected_bounds[0]:.2f}..{expected_bounds[1]:.2f}."
+                        ),
+                        {
+                            "expected_min_value": expected_bounds[0],
+                            "expected_max_value": expected_bounds[1],
+                            "detected_min_value": detected_bounds[0],
+                            "detected_max_value": detected_bounds[1],
+                            "value_source": "axis_mapping",
+                        },
+                        "Correct the displayed tick range so it matches the source axis specification.",
+                    )
+                )
+        expected_by_label = {
+            str(label): float(value)
+            for label, value in chart_value_claim.expected.get("values_by_category", {}).items()
+        }
         for bar in evidence.bars:
             if bar.category is None or bar.value is None:
                 continue
@@ -121,6 +173,7 @@ def run_chart_rules(spec_path: Path, evidence: EvidenceGraph) -> VisualQaReport:
                 findings.append(
                     _make_finding(
                         finding_id,
+                        chart_value_claim.rule_id,
                         "unexpected_category",
                         "high",
                         f"Detected bar category '{bar.category}' is not part of the source data.",
@@ -144,8 +197,9 @@ def run_chart_rules(spec_path: Path, evidence: EvidenceGraph) -> VisualQaReport:
                 findings.append(
                     _make_finding(
                         finding_id,
+                        chart_value_claim.rule_id,
                         "chart_value_mismatch",
-                        "critical",
+                        chart_value_claim.severity,
                         f"Bar '{bar.category}' value {bar.value:.2f} does not match expected {expected_value:.2f}.",
                         {
                             "bar_id": bar.bar_id,
@@ -167,17 +221,19 @@ def run_chart_rules(spec_path: Path, evidence: EvidenceGraph) -> VisualQaReport:
                     )
                 )
 
-    label_check_id = "axis-label-present"
-    if label_check_id in checks and label_check_id in skipped_by_check:
-        checks_skipped.append({"check_id": label_check_id, "reason": skipped_by_check[label_check_id][0]})
-    elif label_check_id in checks:
-        checks_run.append(label_check_id)
+    label_claim = claims.get("axis-label-present")
+    if label_claim is not None and label_claim.check_id in skipped_by_check:
+        checks_skipped.append({"check_id": label_claim.check_id, "reason": skipped_by_check[label_claim.check_id][0]})
+    elif label_claim is not None:
+        checks_run.append(label_claim.check_id)
+        expected_y_label = label_claim.expected.get("label_text")
         if evidence.y_axis.label_text != expected_y_label:
             findings.append(
                 _make_finding(
                     "finding-axis-label",
+                    label_claim.rule_id,
                     "label_missing_or_wrong",
-                    "high",
+                    label_claim.severity,
                     "The y-axis label is missing or does not match the expected text.",
                     {
                         "expected_label": expected_y_label,
@@ -195,17 +251,19 @@ def run_chart_rules(spec_path: Path, evidence: EvidenceGraph) -> VisualQaReport:
                 )
             )
 
-    unit_check_id = "axis-unit-present"
-    if unit_check_id in checks and unit_check_id in skipped_by_check:
-        checks_skipped.append({"check_id": unit_check_id, "reason": skipped_by_check[unit_check_id][0]})
-    elif unit_check_id in checks:
-        checks_run.append(unit_check_id)
+    unit_claim = claims.get("axis-unit-present")
+    if unit_claim is not None and unit_claim.check_id in skipped_by_check:
+        checks_skipped.append({"check_id": unit_claim.check_id, "reason": skipped_by_check[unit_claim.check_id][0]})
+    elif unit_claim is not None:
+        checks_run.append(unit_claim.check_id)
+        expected_unit = unit_claim.expected.get("unit_text")
         if evidence.y_axis.unit_text != expected_unit:
             findings.append(
                 _make_finding(
                     "finding-axis-unit",
+                    unit_claim.rule_id,
                     "unit_mismatch",
-                    "high",
+                    unit_claim.severity,
                     "The y-axis unit is missing or incorrect.",
                     {"expected_unit": expected_unit, "detected_unit": evidence.y_axis.unit_text},
                     "Restore the expected y-axis unit in the label.",
@@ -222,13 +280,21 @@ def run_chart_rules(spec_path: Path, evidence: EvidenceGraph) -> VisualQaReport:
 
     findings = sorted(findings, key=lambda item: _severity_rank(item.severity), reverse=True)
     verdict = _overall_verdict(findings, checks_skipped)
+    rule_confidence = _estimate_rule_confidence(checks_run, checks_skipped, findings)
     return VisualQaReport(
         image_id=evidence.image_id,
-        spec_id=spec["id"],
+        spec_id=claim_graph.spec_id,
         verdict=verdict,
         findings=findings,
         checks_run=checks_run,
         checks_skipped=checks_skipped,
-        confidence=evidence.extraction_confidence,
+        confidence=rule_confidence,
+        extraction_confidence=evidence.extraction_confidence,
+        rule_confidence=rule_confidence,
         overlay_annotations=overlay_annotations,
     )
+
+
+def run_chart_rules(spec_path: Path, evidence: EvidenceGraph) -> VisualQaReport:
+    claim_graph = build_chart_claim_graph(spec_path)
+    return run_chart_claims(claim_graph, evidence)

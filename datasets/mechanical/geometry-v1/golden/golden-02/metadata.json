@@ -1,0 +1,11 @@
+{
+  "case_id": "golden-02",
+  "title": "Four mixed-diameter holes on a linear layout",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "mechanical_plate",
+  "dataset_track": "controlled",
+  "image_id": "golden-02",
+  "diagram_version": "geometry-v1",
+  "render_options": {}
+}

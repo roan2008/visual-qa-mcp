@@ -8,13 +8,26 @@ Scope:
 
 - Domain: bar charts only
 - Input: `visual_spec.json` plus a generated image
-- Output: `EvidenceGraph`, `VisualQaReport`, annotated overlay, validation summary
+- Output: `ClaimGraph`, `EvidenceGraph`, `VisualQaReport`, annotated overlay, validation summary
 
 ## V2 Loop
 
 ```text
-visual spec -> chart image -> plot/tick extraction -> axis mapping -> bar value derivation -> rule checks -> findings report -> overlay -> validation summary
+visual spec -> claim graph -> chart image -> plot/tick extraction -> axis mapping -> bar value derivation -> rule checks -> findings report -> overlay -> validation summary
 ```
+
+## Callable Surface
+
+The current implementation is no longer only a dataset-validation loop. It now exposes a local callable chart-v2 surface that can be wrapped by a future MCP server:
+
+- `build_claim_graph_from_spec(spec_path)`
+- `extract_chart_evidence_from_inputs(image_path, spec_path, metadata_path?, backend?)`
+- `run_chart_verification(image_path, spec_path, metadata_path?, backend?)`
+- `write_verification_artifacts(result, output_dir)`
+
+This improves operability and integration readiness, but it does not expand the current bounded readiness claim and it does not make the optional OCR path ready.
+
+Phase 2 now also includes a thin MCP stdio wrapper over the callable surface plus audit schema upgrades for provenance and rule identifiers.
 
 ## Contracts
 
@@ -35,6 +48,18 @@ Key chart-v2 fields:
 - extraction provenance through `backend`
 - extraction gaps used to drive `checks_skipped`
 
+### `ClaimGraph`
+
+Defined in `specs/claim-graph.schema.json`.
+
+Key chart-v2 fields:
+
+- claim-per-check records for bar values, bar count, axis label, axis unit, and scale readability/consistency
+- claim-generation gaps for unsupported or unmapped spec checks
+- expected values grouped by category instead of being re-derived inside the rule runner
+- evidence requirements and tolerances carried with each claim
+- metadata linking claims back to the source spec and learning objective
+
 ### `VisualQaReport`
 
 Uses `specs/findings.schema.json` with these MVP-relevant fields:
@@ -45,6 +70,7 @@ Uses `specs/findings.schema.json` with these MVP-relevant fields:
 - `checks_skipped`
 - `overlay_path`
 - `evidence_graph_path`
+- `claim_graph_path`
 - `overlay_annotations`
 
 ## Advisor Gates
@@ -54,6 +80,7 @@ Uses `specs/findings.schema.json` with these MVP-relevant fields:
 Review:
 
 - whether the evidence contract is sufficient to reconstruct numeric value mapping
+- whether the claim contract preserves all checkable expectations needed by the rule runner
 - whether zero-baseline, non-zero minimum, and signed axes are separated clearly enough
 - whether any hidden fallback could reintroduce unsupported passes
 
@@ -65,6 +92,7 @@ Artifact:
 
 Review:
 
+- whether claim generation and rule execution stay aligned with the bounded chart-v2 scope
 - whether the template/OCR dual path is cleanly separated
 - whether ambiguity cases correctly escalate to `needs_review`
 - whether the dataset is broad enough for the chart-v2 claim
@@ -118,3 +146,28 @@ Coverage includes:
 - false unsupported passes = 0
 - golden fail count = 0
 - signed-axis metrics are reported separately from zero-baseline metrics
+
+## Current CLI Entry Points
+
+```powershell
+$env:PYTHONPATH='D:\visual-qa-mcp\mcp-server\src'
+python -m visual_qa_mcp.cli build-claim-graph specs\examples\chart-bar.visual-spec.json
+python -m visual_qa_mcp.cli extract-chart-evidence datasets\charts\chart-v2\golden\golden-01\image.png datasets\charts\chart-v2\golden\golden-01\visual_spec.json --metadata datasets\charts\chart-v2\golden\golden-01\metadata.json
+python -m visual_qa_mcp.cli verify-chart datasets\charts\chart-v2\golden\golden-01\image.png datasets\charts\chart-v2\golden\golden-01\visual_spec.json --metadata datasets\charts\chart-v2\golden\golden-01\metadata.json --output-dir tmp\chart-callable
+python -m visual_qa_mcp.cli serve-mcp
+python -m visual_qa_mcp.cli generate-noisy-dataset --output datasets\charts\chart-v2-noisy
+python -m visual_qa_mcp.cli generate-realworld-pilot --output datasets\charts\chart-v2-realworld-pilot
+python -m visual_qa_mcp.cli run-phase2-validation --controlled-dataset datasets\charts\chart-v2 --noisy-dataset datasets\charts\chart-v2-noisy
+python -m visual_qa_mcp.cli run-chart-suite-validation --controlled-dataset datasets\charts\chart-v2 --noisy-dataset datasets\charts\chart-v2-noisy --pilot-dataset datasets\charts\chart-v2-realworld-pilot
+python -m visual_qa_mcp.cli run-ocr-validation --controlled-dataset datasets\charts\chart-v2 --noisy-dataset datasets\charts\chart-v2-noisy
+python -m visual_qa_mcp.cli run-validation --dataset datasets\charts\chart-v2
+```
+
+## Phase 2 Validation Boundary
+
+The controlled chart-v2 dataset remains the bounded readiness baseline.
+
+The noisy dataset is a bounded robustness gate for the configured transforms. The real-world pilot is
+a separate evidence-expansion track with renderer/reference provenance and frozen checksums. Neither
+track justifies a general real-world or OCR readiness claim; all metrics must retain their own
+denominators and dataset-family labels.

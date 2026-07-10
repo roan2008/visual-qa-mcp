@@ -1,0 +1,149 @@
+{
+  "image_id": "image",
+  "diagram_type": "free_body",
+  "arrows": [
+    {
+      "arrow_id": "arrow-01",
+      "rgb": [
+        76,
+        163,
+        226
+      ],
+      "bbox": [
+        291,
+        120,
+        309,
+        212
+      ],
+      "tail_xy": [
+        300,
+        212
+      ],
+      "head_xy": [
+        299,
+        120
+      ],
+      "angle_degrees": 90.6,
+      "length_px": 92.0,
+      "tail_spread_px": 1.97,
+      "head_spread_px": 4.15,
+      "confidence": 0.9,
+      "label_text": "N",
+      "label_confidence": 0.91
+    },
+    {
+      "arrow_id": "arrow-02",
+      "rgb": [
+        202,
+        130,
+        64
+      ],
+      "bbox": [
+        240,
+        246,
+        330,
+        264
+      ],
+      "tail_xy": [
+        240,
+        252
+      ],
+      "head_xy": [
+        330,
+        255
+      ],
+      "angle_degrees": 358.1,
+      "length_px": 90.0,
+      "tail_spread_px": 2.0,
+      "head_spread_px": 4.33,
+      "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0
+    },
+    {
+      "arrow_id": "arrow-03",
+      "rgb": [
+        50,
+        162,
+        89
+      ],
+      "bbox": [
+        359,
+        247,
+        448,
+        264
+      ],
+      "tail_xy": [
+        359,
+        254
+      ],
+      "head_xy": [
+        448,
+        255
+      ],
+      "angle_degrees": 359.4,
+      "length_px": 89.0,
+      "tail_spread_px": 1.76,
+      "head_spread_px": 3.99,
+      "confidence": 0.9,
+      "label_text": "F",
+      "label_confidence": 0.97
+    },
+    {
+      "arrow_id": "arrow-04",
+      "rgb": [
+        218,
+        100,
+        102
+      ],
+      "bbox": [
+        291,
+        299,
+        309,
+        390
+      ],
+      "tail_xy": [
+        301,
+        299
+      ],
+      "head_xy": [
+        299,
+        390
+      ],
+      "angle_degrees": 268.7,
+      "length_px": 91.0,
+      "tail_spread_px": 1.96,
+      "head_spread_px": 4.01,
+      "confidence": 0.9,
+      "label_text": "W",
+      "label_confidence": 0.98
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "object",
+      "kind": "box",
+      "bbox": [
+        240,
+        210,
+        360,
+        301
+      ],
+      "pixel_count": 9655,
+      "confidence": 0.95
+    }
+  ],
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "arrow-v1",
+    "extractor_version": "0.1.0",
+    "backend": "color_component",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "image_path": "datasets\\physics\\arrow-v1-noisy\\mutated\\noisy-mutated-01\\image.png"
+  }
+}

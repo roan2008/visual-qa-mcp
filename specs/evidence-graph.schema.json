@@ -10,6 +10,7 @@
     "x_axis_labels",
     "y_axis",
     "extraction_confidence",
+    "provenance",
     "gaps",
     "metadata"
   ],
@@ -30,6 +31,7 @@
       "minimum": 0,
       "maximum": 1
     },
+    "provenance": {"$ref": "#/$defs/provenance"},
     "gaps": {
       "type": "array",
       "items": {"$ref": "#/$defs/gap"}
@@ -176,6 +178,31 @@
         "check_ids": {
           "type": "array",
           "items": {"type": "string"}
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "extractor_id",
+        "extractor_version",
+        "backend",
+        "metadata_source",
+        "dependency_versions",
+        "environment"
+      ],
+      "properties": {
+        "extractor_id": {"type": "string"},
+        "extractor_version": {"type": "string"},
+        "backend": {"type": "string"},
+        "metadata_source": {"type": "string", "enum": ["file", "inferred"]},
+        "dependency_versions": {
+          "type": "object",
+          "additionalProperties": {"type": "string"}
+        },
+        "environment": {
+          "type": "object",
+          "additionalProperties": true
         }
       }
     }

@@ -5,14 +5,14 @@
     {
       "bar_id": "bar-1",
       "category": "Jan",
-      "value": 30.18,
+      "value": 30.45,
       "bbox": [
         182,
         334,
         297,
         418
       ],
-      "confidence": 0.7,
+      "confidence": 0.76,
       "matched_label": "Jan",
       "top_y": 334,
       "bottom_y": 418,
@@ -21,14 +21,14 @@
     {
       "bar_id": "bar-2",
       "category": "Feb",
-      "value": 89.82,
+      "value": 89.91,
       "bbox": [
         374,
         168,
         489,
         418
       ],
-      "confidence": 0.73,
+      "confidence": 0.77,
       "matched_label": "Feb",
       "top_y": 168,
       "bottom_y": 418,
@@ -37,14 +37,14 @@
     {
       "bar_id": "bar-3",
       "category": "Mar",
-      "value": 60.0,
+      "value": 60.18,
       "bbox": [
         566,
         251,
         681,
         418
       ],
-      "confidence": 0.68,
+      "confidence": 0.7,
       "matched_label": "Mar",
       "top_y": 251,
       "bottom_y": 418,
@@ -87,7 +87,7 @@
           133,
           181
         ],
-        "confidence": 1.0
+        "confidence": 0.99
       },
       {
         "text": "60",
@@ -109,35 +109,48 @@
           133,
           347
         ],
-        "confidence": 1.0
+        "confidence": 0.99
       },
       {
         "text": "0",
         "parsed_value": 0.0,
         "bbox": [
           47,
-          405,
+          406,
           133,
-          431
+          432
         ],
         "confidence": 1.0
       }
     ],
     "axis_line_x": 143,
-    "baseline_y": 418,
+    "baseline_y": 419,
     "top_y": 84,
     "zero_line_y": null,
     "mapping": {
       "min_value": 0.0,
       "max_value": 120.0,
-      "pixels_per_unit": 2.7833,
+      "pixels_per_unit": 2.7917,
       "scale_mode": "zero_baseline",
       "value_direction": "positive_up",
       "readable": true
     },
     "backend": "template"
   },
-  "extraction_confidence": 0.9,
+  "extraction_confidence": 0.91,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
   "gaps": [],
   "metadata": {
     "chart_version": "v2",

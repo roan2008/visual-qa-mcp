@@ -1,0 +1,51 @@
+{
+  "image_id": "rw-render-mutated-02",
+  "spec_id": "chart-rw-render-mutated-02",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-bar-value-bar-2",
+      "rule_id": "chart-v2.bar-values-match-data",
+      "type": "chart_value_mismatch",
+      "severity": "critical",
+      "message": "Bar 'Feb' value 69.93 does not match expected 50.00.",
+      "evidence": {
+        "bar_id": "bar-2",
+        "category": "Feb",
+        "expected_value": 50.0,
+        "detected_value": 69.93,
+        "relative_tolerance": 0.05,
+        "value_source": "axis_mapping"
+      },
+      "recommendation": "Update the bar height so it matches the source data within tolerance."
+    }
+  ],
+  "checks_run": [
+    "bar-count-matches",
+    "axis-scale-readable",
+    "axis-scale-monotonic",
+    "bar-values-match-data",
+    "axis-label-present",
+    "axis-unit-present"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.7,
+  "extraction_confidence": 0.84,
+  "rule_confidence": 0.7,
+  "overlay_path": "datasets\\charts\\chart-v2-realworld-pilot\\mutated\\rw-render-mutated-02\\overlay.png",
+  "evidence_graph_path": "datasets\\charts\\chart-v2-realworld-pilot\\mutated\\rw-render-mutated-02\\evidence_graph.json",
+  "claim_graph_path": "datasets\\charts\\chart-v2-realworld-pilot\\mutated\\rw-render-mutated-02\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-bar-value-bar-2",
+      "kind": "bbox",
+      "bbox": [
+        340,
+        176,
+        449,
+        389
+      ],
+      "label": "Feb: value mismatch"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "case_id": "noisy-golden-01",
+  "title": "Noisy zero baseline compressed",
+  "kind": "golden",
+  "axis_mode": "zero_baseline",
+  "defect_type": null,
+  "dataset_track": "noisy",
+  "image_id": "noisy-golden-01",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "layout_overrides": {
+      "width": 744,
+      "height": 516,
+      "margin_left": 142,
+      "axis_label_box": [
+        196,
+        26,
+        660,
+        60
+      ]
+    },
+    "tick_font_size": 17,
+    "x_label_font_size": 15,
+    "postprocess": {
+      "downscale_factor": 0.82,
+      "jpeg_quality": 82
+    }
+  }
+}

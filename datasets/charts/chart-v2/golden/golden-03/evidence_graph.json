@@ -5,7 +5,7 @@
     {
       "bar_id": "bar-1",
       "category": "Jan",
-      "value": 24.84,
+      "value": 25.08,
       "bbox": [
         165,
         314,
@@ -21,7 +21,7 @@
     {
       "bar_id": "bar-2",
       "category": "Feb",
-      "value": 50.0,
+      "value": 50.16,
       "bbox": [
         341,
         237,
@@ -37,7 +37,7 @@
     {
       "bar_id": "bar-3",
       "category": "Mar",
-      "value": 84.97,
+      "value": 85.02,
       "bbox": [
         518,
         130,
@@ -76,7 +76,7 @@
           119,
           97
         ],
-        "confidence": 1.0
+        "confidence": 0.89
       },
       {
         "text": "75",
@@ -87,7 +87,7 @@
           119,
           173
         ],
-        "confidence": 1.0
+        "confidence": 0.91
       },
       {
         "text": "50",
@@ -98,7 +98,7 @@
           119,
           250
         ],
-        "confidence": 1.0
+        "confidence": 0.89
       },
       {
         "text": "25",
@@ -109,35 +109,48 @@
           119,
           327
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       },
       {
         "text": "0",
         "parsed_value": 0.0,
         "bbox": [
           33,
-          377,
+          378,
           119,
-          403
+          404
         ],
-        "confidence": 1.0
+        "confidence": 0.9
       }
     ],
     "axis_line_x": 129,
-    "baseline_y": 390,
+    "baseline_y": 391,
     "top_y": 84,
     "zero_line_y": null,
     "mapping": {
       "min_value": 0.0,
       "max_value": 100.0,
-      "pixels_per_unit": 3.06,
+      "pixels_per_unit": 3.07,
       "scale_mode": "zero_baseline",
       "value_direction": "positive_up",
       "readable": true
     },
     "backend": "template"
   },
-  "extraction_confidence": 0.95,
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "chart-v2",
+    "extractor_version": "0.2.0",
+    "backend": "template",
+    "metadata_source": "file",
+    "dependency_versions": {
+      "mcp": "1.0.0",
+      "jsonschema": "4.25.1",
+      "numpy": "1.24.3",
+      "pillow": "12.2.0"
+    },
+    "environment": {}
+  },
   "gaps": [],
   "metadata": {
     "chart_version": "v2",

@@ -6,11 +6,71 @@ from typing import Any
 
 
 @dataclass
+class ClaimCheck:
+    claim_id: str
+    rule_id: str
+    check_id: str
+    check_type: str
+    severity: str
+    target: str
+    expected: dict[str, Any]
+    tolerance: dict[str, Any] = field(default_factory=dict)
+    evidence_requirements: list[str] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ClaimGap:
+    check_id: str
+    code: str
+    message: str
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ClaimGraph:
+    spec_id: str
+    domain: str
+    risk_level: str
+    claims: list[ClaimCheck]
+    gaps: list[ClaimGap] = field(default_factory=list)
+    source_reference: dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "spec_id": self.spec_id,
+            "domain": self.domain,
+            "risk_level": self.risk_level,
+            "claims": [claim.to_dict() for claim in self.claims],
+            "gaps": [gap.to_dict() for gap in self.gaps],
+            "source_reference": self.source_reference,
+            "metadata": self.metadata,
+        }
+
+
+@dataclass
 class TickLabel:
     text: str | None
     parsed_value: float | None
     bbox: list[int]
     confidence: float
+
+
+@dataclass
+class ExtractionProvenance:
+    extractor_id: str
+    extractor_version: str
+    backend: str
+    metadata_source: str
+    dependency_versions: dict[str, str] = field(default_factory=dict)
+    environment: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -66,6 +126,75 @@ class EvidenceGraph:
     x_axis_labels: list[str | None]
     y_axis: ExtractedAxis
     extraction_confidence: float
+    provenance: ExtractionProvenance
+    gaps: list[EvidenceGap] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ExtractedArrow:
+    arrow_id: str
+    rgb: list[int]
+    bbox: list[int]
+    tail_xy: list[int]
+    head_xy: list[int]
+    angle_degrees: float
+    length_px: float
+    tail_spread_px: float
+    head_spread_px: float
+    confidence: float
+    label_text: str | None = None
+    label_confidence: float = 0.0
+
+
+@dataclass
+class ExtractedRegion:
+    region_id: str
+    kind: str
+    bbox: list[int]
+    pixel_count: int
+    confidence: float
+
+
+@dataclass
+class ArrowEvidenceGraph:
+    image_id: str
+    diagram_type: str
+    arrows: list[ExtractedArrow]
+    regions: list[ExtractedRegion]
+    extraction_confidence: float
+    provenance: ExtractionProvenance
+    gaps: list[EvidenceGap] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ExtractedHole:
+    hole_id: str
+    center_xy: list[int]
+    diameter_px: float
+    circularity: float
+    bbox: list[int]
+    pixel_count: int
+    confidence: float
+    label_text: str | None = None
+    label_confidence: float = 0.0
+
+
+@dataclass
+class GeometryEvidenceGraph:
+    image_id: str
+    diagram_type: str
+    holes: list[ExtractedHole]
+    regions: list[ExtractedRegion]
+    extraction_confidence: float
+    provenance: ExtractionProvenance
     gaps: list[EvidenceGap] = field(default_factory=list)
     metadata: dict[str, Any] = field(default_factory=dict)
 
@@ -76,6 +205,7 @@ class EvidenceGraph:
 @dataclass
 class Finding:
     id: str
+    rule_id: str
     type: str
     severity: str
     message: str
@@ -109,8 +239,11 @@ class VisualQaReport:
     checks_run: list[str]
     checks_skipped: list[dict[str, str]]
     confidence: float | None = None
+    extraction_confidence: float | None = None
+    rule_confidence: float | None = None
     overlay_path: str | None = None
     evidence_graph_path: str | None = None
+    claim_graph_path: str | None = None
     overlay_annotations: list[OverlayAnnotation] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -124,10 +257,16 @@ class VisualQaReport:
         }
         if self.confidence is not None:
             data["confidence"] = self.confidence
+        if self.extraction_confidence is not None:
+            data["extraction_confidence"] = self.extraction_confidence
+        if self.rule_confidence is not None:
+            data["rule_confidence"] = self.rule_confidence
         if self.overlay_path is not None:
             data["overlay_path"] = self.overlay_path
         if self.evidence_graph_path is not None:
             data["evidence_graph_path"] = self.evidence_graph_path
+        if self.claim_graph_path is not None:
+            data["claim_graph_path"] = self.claim_graph_path
         if self.overlay_annotations:
             data["overlay_annotations"] = [
                 annotation.to_dict() for annotation in self.overlay_annotations
@@ -147,3 +286,72 @@ class ChartDatasetCase:
     spec_path: Path
     metadata_path: Path
     expected_report_path: Path
+    dataset_track: str = "controlled"
+
+
+@dataclass
+class ArrowDatasetCase:
+    case_id: str
+    title: str
+    kind: str
+    defect_type: str | None
+    scenario: str
+    image_path: Path
+    spec_path: Path
+    metadata_path: Path
+    expected_report_path: Path
+    dataset_track: str = "controlled"
+
+
+@dataclass
+class GeometryDatasetCase:
+    case_id: str
+    title: str
+    kind: str
+    defect_type: str | None
+    scenario: str
+    image_path: Path
+    spec_path: Path
+    metadata_path: Path
+    expected_report_path: Path
+    dataset_track: str = "controlled"
+
+
+@dataclass
+class ArtifactPaths:
+    output_dir: Path
+    overlay_path: Path
+    evidence_graph_path: Path
+    claim_graph_path: Path
+    report_path: Path
+
+    def to_dict(self) -> dict[str, str]:
+        return {
+            "output_dir": str(self.output_dir),
+            "overlay_path": str(self.overlay_path),
+            "evidence_graph_path": str(self.evidence_graph_path),
+            "claim_graph_path": str(self.claim_graph_path),
+            "report_path": str(self.report_path),
+        }
+
+
+@dataclass
+class VerificationResult:
+    image_path: Path
+    spec_path: Path
+    metadata_path: Path | None
+    backend: str
+    claim_graph: ClaimGraph
+    evidence_graph: EvidenceGraph | ArrowEvidenceGraph | GeometryEvidenceGraph
+    report: VisualQaReport
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "image_path": str(self.image_path),
+            "spec_path": str(self.spec_path),
+            "metadata_path": str(self.metadata_path) if self.metadata_path is not None else None,
+            "backend": self.backend,
+            "claim_graph": self.claim_graph.to_dict(),
+            "evidence_graph": self.evidence_graph.to_dict(),
+            "report": self.report.to_dict(),
+        }
