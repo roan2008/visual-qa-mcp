@@ -33,7 +33,8 @@ Read these files before making project decisions:
 7. `wiki/impl-arrow-v1-free-body.md` when working on arrows or force balance
 8. `wiki/impl-geometry-v1-mechanical.md` when working on mechanical geometry
 9. `wiki/impl-primitive-evidence-foundation.md` when working on shared primitives, relationships, or new verticals
-10. Any relevant `docs/` or `specs/` file
+10. `wiki/impl-coordinate-graph-v1-dual-axis.md` when working on coordinate graphs or dual-axis extraction
+11. Any relevant `docs/` or `specs/` file
 
 Then briefly tell the user what context you picked up.
 
@@ -65,6 +66,7 @@ Do this automatically after each meaningful implementation, validation, design d
 - `wiki/impl-chart-v2-noisy-realworld-pilot.md` - noisy hardening and bounded real-world-pilot results.
 - `wiki/impl-geometry-v1-mechanical.md` - geometry-v1 design, evidence, validation, and bounds.
 - `wiki/impl-primitive-evidence-foundation.md` - shared primitive graph, geometry noisy gate, and composition order.
+- `wiki/impl-coordinate-graph-v1-dual-axis.md` - coordinate-graph-v1 dual-axis design, evidence, validation, and bounds.
 
 ## QA Philosophy
 
@@ -85,8 +87,9 @@ lesson objective -> visual spec -> generated image -> evidence graph -> claim gr
 - `chart-v2-realworld-pilot` is a separate, checksum-frozen 24-case pilot of locally rendered Pillow/Matplotlib charts, including a frozen World Bank population-data snapshot. It is pilot evidence only, not a general real-world readiness claim.
 - `arrow-v1` is the second executable vertical: a free-body diagram verifier for controlled synthetic diagrams with color-declared and label-declared arrow identity. Validated on a 17-case controlled set (8/8 typed defects, 3/3 ambiguity guard, 0 unsupported passes, 0 golden non-passes) plus a 6-case noisy blur/downscale/JPEG track (4/4 typed defects, 0 unsupported passes). It includes one theory-aware check: opt-in translational force balance (`scenario_type: "equilibrium"` + `force-balance-correct`), which sums extractor pixel vectors and never sums a partial force set. No torque/moment balance, no magnitude calibration, and no real-world images yet. Read `wiki/impl-arrow-v1-free-body.md` when working on arrows.
 - `geometry-v1` is the third executable vertical: controlled top-view rectangular mechanical plates with circular holes, relative diameter ratios, declared linear alignment/spacing, and fixed-catalog dimension labels. Its 14-case controlled set records 7/7 typed defects and 2/2 ambiguity guards. Its separate checksum-frozen 20-case noisy track records 10/10 golden passes, 5/5 typed hits, 5/5 ambiguity guards, and 0 unsupported passes across configured blur/downscale/JPEG/low-contrast/label-degradation transforms. It has no independently authored images, general OCR, unit calibration, callout-arrow extraction, or CAD-native validation. Read `wiki/impl-geometry-v1-mechanical.md` when working on geometry.
-- `PrimitiveEvidenceGraph` v1 is an additive audit layer for explicit chart/arrow/geometry profiles. It records type-discriminated primitives, relationships, provenance, gaps, and domain traceability. Current domain rules do not consume it; standalone chart primitive parsing stays spec-blind. Read `wiki/impl-primitive-evidence-foundation.md` before changing shared evidence or starting a new vertical.
-- The unified 85-test suite passes in about 63 seconds on the milestone machine; chart end-to-end passes 16/16 in about 35 seconds.
+- `coordinate-graph-v1` is the fourth executable vertical: controlled coordinate planes with independent numeric X and Y axes, color-identified scatter points, and one connected polyline. Its 11-case controlled set records 5/5 typed defects and 2/2 ambiguity guards; pixel-to-data round-trip error was measured near zero across zero-baseline/non-zero-min/signed axis configurations (including mismatched X/Y pixel scale) before the position tolerance (3% of declared axis range) was set. No noisy/real-world track, multi-series, curve fitting, general topology extraction, or label-based point identity yet. Read `wiki/impl-coordinate-graph-v1-dual-axis.md` when working on coordinate graphs.
+- `PrimitiveEvidenceGraph` v1 is an additive audit layer for explicit chart/arrow/geometry/coordinate profiles. It records type-discriminated primitives, relationships, provenance, gaps, and domain traceability. Current domain rules do not consume it; standalone chart primitive parsing stays spec-blind. Read `wiki/impl-primitive-evidence-foundation.md` before changing shared evidence or starting a new vertical.
+- The unified 106-test suite passes in about 65 seconds on the milestone machine; chart end-to-end passes 16/16 in about 35 seconds.
 - The installable console entrypoint is `visual-qa`; editable local setup is `python -m pip install -e .`.
 
 ## Readiness And Claims

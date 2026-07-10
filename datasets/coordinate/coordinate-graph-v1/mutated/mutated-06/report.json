@@ -1,0 +1,31 @@
+{
+  "image_id": "image",
+  "spec_id": "coordinate-mutated-06",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [
+    "point-count-matches",
+    "axis-scale-correct"
+  ],
+  "checks_skipped": [
+    {
+      "check_id": "required-points-present",
+      "reason": "Points 'point-02' and 'point-03' share a similar color, so color-based identity matching is ambiguous."
+    },
+    {
+      "check_id": "point-positions-correct",
+      "reason": "Points 'point-02' and 'point-03' share a similar color, so color-based identity matching is ambiguous."
+    },
+    {
+      "check_id": "polyline-connections-correct",
+      "reason": "Points 'point-02' and 'point-03' share a similar color, so color-based identity matching is ambiguous."
+    }
+  ],
+  "confidence": 0.4,
+  "extraction_confidence": 0.7,
+  "rule_confidence": 0.4,
+  "overlay_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-06\\overlay.png",
+  "evidence_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-06\\evidence_graph.json",
+  "claim_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-06\\claim_graph.json",
+  "primitive_evidence_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-06\\primitive_evidence_graph.json"
+}

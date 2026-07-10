@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visual-qa-mcp.local/schemas/coordinate-evidence-graph.schema.json",
+  "title": "CoordinateEvidenceGraph",
+  "type": "object",
+  "required": [
+    "image_id",
+    "diagram_type",
+    "x_axis",
+    "y_axis",
+    "points",
+    "polyline_edges",
+    "extraction_confidence",
+    "provenance",
+    "gaps",
+    "metadata"
+  ],
+  "properties": {
+    "image_id": {"type": "string"},
+    "diagram_type": {"type": "string"},
+    "x_axis": {"$ref": "#/$defs/axis"},
+    "y_axis": {"$ref": "#/$defs/axis"},
+    "points": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/point"}
+    },
+    "polyline_edges": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/polyline_edge"}
+    },
+    "extraction_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "provenance": {
+      "type": "object",
+      "required": ["extractor_id", "extractor_version", "backend", "metadata_source"],
+      "properties": {
+        "extractor_id": {"type": "string"},
+        "extractor_version": {"type": "string"},
+        "backend": {"type": "string"},
+        "metadata_source": {"type": "string"},
+        "dependency_versions": {"type": "object", "additionalProperties": {"type": "string"}},
+        "environment": {"type": "object", "additionalProperties": true}
+      }
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "message", "check_ids"],
+        "properties": {
+          "code": {"type": "string"},
+          "message": {"type": "string"},
+          "check_ids": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "metadata": {"type": "object", "additionalProperties": true}
+  },
+  "$defs": {
+    "tick_label": {
+      "type": "object",
+      "required": ["text", "parsed_value", "bbox", "confidence"],
+      "properties": {
+        "text": {"type": ["string", "null"]},
+        "parsed_value": {"type": ["number", "null"]},
+        "bbox": {"type": "array", "items": {"type": "integer"}, "minItems": 4, "maxItems": 4},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "primitive_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "mapping": {
+      "type": ["object", "null"],
+      "properties": {
+        "min_value": {"type": "number"},
+        "max_value": {"type": "number"},
+        "pixels_per_unit": {"type": "number"},
+        "scale_mode": {"type": "string"},
+        "value_direction": {"type": "string"},
+        "readable": {"type": "boolean"}
+      }
+    },
+    "axis": {
+      "type": "object",
+      "required": [
+        "orientation",
+        "tick_labels",
+        "axis_pixel_position",
+        "reference_pixel",
+        "fit_slope",
+        "fit_intercept",
+        "mapping",
+        "confidence"
+      ],
+      "properties": {
+        "orientation": {"type": "string", "enum": ["x", "y"]},
+        "tick_labels": {"type": "array", "items": {"$ref": "#/$defs/tick_label"}},
+        "axis_pixel_position": {"type": ["integer", "null"]},
+        "reference_pixel": {"type": ["integer", "null"]},
+        "fit_slope": {"type": ["number", "null"]},
+        "fit_intercept": {"type": ["number", "null"]},
+        "mapping": {"$ref": "#/$defs/mapping"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "backend": {"type": "string"},
+        "primitive_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "point": {
+      "type": "object",
+      "required": ["point_id", "rgb", "pixel_xy", "data_xy", "bbox", "pixel_count", "confidence"],
+      "properties": {
+        "point_id": {"type": "string"},
+        "rgb": {"type": "array", "items": {"type": "integer"}, "minItems": 3, "maxItems": 3},
+        "pixel_xy": {"type": "array", "items": {"type": "integer"}, "minItems": 2, "maxItems": 2},
+        "data_xy": {
+          "type": ["array", "null"],
+          "items": {"type": "number"},
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "bbox": {"type": "array", "items": {"type": "integer"}, "minItems": 4, "maxItems": 4},
+        "pixel_count": {"type": "integer", "minimum": 0},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "primitive_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "polyline_edge": {
+      "type": "object",
+      "required": ["from_point_id", "to_point_id", "coverage"],
+      "properties": {
+        "from_point_id": {"type": "string"},
+        "to_point_id": {"type": "string"},
+        "coverage": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    }
+  }
+}

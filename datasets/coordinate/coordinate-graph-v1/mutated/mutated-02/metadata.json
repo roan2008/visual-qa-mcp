@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-02",
+  "title": "Extra undeclared point",
+  "kind": "mutated",
+  "defect_type": "extra_point",
+  "scenario": "coordinate_plane",
+  "dataset_track": "controlled",
+  "image_id": "mutated-02",
+  "diagram_version": "coordinate-graph-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

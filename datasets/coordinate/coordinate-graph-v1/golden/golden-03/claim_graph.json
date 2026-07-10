@@ -1,0 +1,306 @@
+{
+  "spec_id": "coordinate-golden-03",
+  "domain": "mathematics",
+  "risk_level": "medium",
+  "claims": [
+    {
+      "claim_id": "claim-point-count-matches",
+      "rule_id": "coordinate-graph-v1.point-count-matches",
+      "check_id": "point-count-matches",
+      "check_type": "point_count_matches",
+      "severity": "high",
+      "target": "points",
+      "expected": {
+        "count": 4
+      },
+      "tolerance": {},
+      "evidence_requirements": [
+        "point_geometry"
+      ],
+      "metadata": {
+        "description": "The number of detected scatter points should match the declared points.",
+        "learning_objective": "Read a coordinate plane where each scatter point has the correct position and color identity, and the connecting polyline links the declared points in order."
+      }
+    },
+    {
+      "claim_id": "claim-required-points-present",
+      "rule_id": "coordinate-graph-v1.required-points-present",
+      "check_id": "required-points-present",
+      "check_type": "required_points_present",
+      "severity": "critical",
+      "target": "points",
+      "expected": {
+        "points_by_id": {
+          "p1": {
+            "rgb": [
+              214,
+              48,
+              49
+            ],
+            "name": "Point 1"
+          },
+          "p2": {
+            "rgb": [
+              9,
+              132,
+              227
+            ],
+            "name": "Point 2"
+          },
+          "p3": {
+            "rgb": [
+              0,
+              148,
+              50
+            ],
+            "name": "Point 3"
+          },
+          "p4": {
+            "rgb": [
+              142,
+              68,
+              173
+            ],
+            "name": "Point 4"
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "point_geometry",
+        "point_color"
+      ],
+      "metadata": {
+        "description": "Every required point must be present with its declared color identity.",
+        "learning_objective": "Read a coordinate plane where each scatter point has the correct position and color identity, and the connecting polyline links the declared points in order."
+      }
+    },
+    {
+      "claim_id": "claim-point-positions-correct",
+      "rule_id": "coordinate-graph-v1.point-positions-correct",
+      "check_id": "point-positions-correct",
+      "check_type": "point_positions_correct",
+      "severity": "critical",
+      "target": "points",
+      "expected": {
+        "points_by_id": {
+          "p1": {
+            "rgb": [
+              214,
+              48,
+              49
+            ],
+            "x": -90,
+            "y": -45
+          },
+          "p2": {
+            "rgb": [
+              9,
+              132,
+              227
+            ],
+            "x": -30,
+            "y": -10
+          },
+          "p3": {
+            "rgb": [
+              0,
+              148,
+              50
+            ],
+            "x": 20,
+            "y": 15
+          },
+          "p4": {
+            "rgb": [
+              142,
+              68,
+              173
+            ],
+            "x": 85,
+            "y": 40
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0,
+        "position_tolerance_x": 6.0,
+        "position_tolerance_y": 3.0
+      },
+      "evidence_requirements": [
+        "point_geometry",
+        "point_color",
+        "axis_mapping"
+      ],
+      "metadata": {
+        "description": "Each point's data-space position, derived from independent X/Y axis scales, must match its declared position within tolerance.",
+        "learning_objective": "Read a coordinate plane where each scatter point has the correct position and color identity, and the connecting polyline links the declared points in order."
+      }
+    },
+    {
+      "claim_id": "claim-axis-scale-correct",
+      "rule_id": "coordinate-graph-v1.axis-scale-correct",
+      "check_id": "axis-scale-correct",
+      "check_type": "axis_scale_correct",
+      "severity": "critical",
+      "target": "axes",
+      "expected": {
+        "x_axis": {
+          "expected_min": -100,
+          "expected_max": 100
+        },
+        "y_axis": {
+          "expected_min": -50,
+          "expected_max": 50
+        }
+      },
+      "tolerance": {
+        "axis_value_tolerance": 0.5
+      },
+      "evidence_requirements": [
+        "axis_mapping"
+      ],
+      "metadata": {
+        "description": "The displayed X and Y axis ranges must match the declared spec ranges.",
+        "learning_objective": "Read a coordinate plane where each scatter point has the correct position and color identity, and the connecting polyline links the declared points in order."
+      }
+    },
+    {
+      "claim_id": "claim-polyline-connections-correct",
+      "rule_id": "coordinate-graph-v1.polyline-connections-correct",
+      "check_id": "polyline-connections-correct",
+      "check_type": "polyline_connections_correct",
+      "severity": "high",
+      "target": "polyline",
+      "expected": {
+        "ordered_point_ids": [
+          "p1",
+          "p2",
+          "p3",
+          "p4"
+        ],
+        "points_by_id": {
+          "p1": {
+            "rgb": [
+              214,
+              48,
+              49
+            ]
+          },
+          "p2": {
+            "rgb": [
+              9,
+              132,
+              227
+            ]
+          },
+          "p3": {
+            "rgb": [
+              0,
+              148,
+              50
+            ]
+          },
+          "p4": {
+            "rgb": [
+              142,
+              68,
+              173
+            ]
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "point_geometry",
+        "point_color",
+        "polyline_edges"
+      ],
+      "metadata": {
+        "description": "The declared ordered polyline must connect its points in the declared order, verified against rendered line-pixel evidence.",
+        "learning_objective": "Read a coordinate plane where each scatter point has the correct position and color identity, and the connecting polyline links the declared points in order."
+      }
+    }
+  ],
+  "gaps": [],
+  "source_reference": {
+    "x_axis": {
+      "min": -100,
+      "max": 100
+    },
+    "y_axis": {
+      "min": -50,
+      "max": 50
+    },
+    "points": [
+      {
+        "id": "p1",
+        "name": "Point 1",
+        "rgb": [
+          214,
+          48,
+          49
+        ],
+        "x": -90,
+        "y": -45
+      },
+      {
+        "id": "p2",
+        "name": "Point 2",
+        "rgb": [
+          9,
+          132,
+          227
+        ],
+        "x": -30,
+        "y": -10
+      },
+      {
+        "id": "p3",
+        "name": "Point 3",
+        "rgb": [
+          0,
+          148,
+          50
+        ],
+        "x": 20,
+        "y": 15
+      },
+      {
+        "id": "p4",
+        "name": "Point 4",
+        "rgb": [
+          142,
+          68,
+          173
+        ],
+        "x": 85,
+        "y": 40
+      }
+    ],
+    "polyline": {
+      "ordered_point_ids": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ]
+    }
+  },
+  "metadata": {
+    "generator": "coordinate-graph-v1",
+    "spec_path": "datasets\\coordinate\\coordinate-graph-v1\\golden\\golden-03\\visual_spec.json",
+    "required_elements": [
+      {
+        "id": "points",
+        "kind": "point",
+        "name": "scatter points",
+        "count": 4
+      }
+    ]
+  }
+}

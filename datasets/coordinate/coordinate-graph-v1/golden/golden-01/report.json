@@ -1,0 +1,21 @@
+{
+  "image_id": "image",
+  "spec_id": "coordinate-golden-01",
+  "verdict": "pass",
+  "findings": [],
+  "checks_run": [
+    "point-count-matches",
+    "required-points-present",
+    "point-positions-correct",
+    "polyline-connections-correct",
+    "axis-scale-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 1.0,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 1.0,
+  "overlay_path": "datasets\\coordinate\\coordinate-graph-v1\\golden\\golden-01\\overlay.png",
+  "evidence_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\golden\\golden-01\\evidence_graph.json",
+  "claim_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\golden\\golden-01\\claim_graph.json",
+  "primitive_evidence_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\golden\\golden-01\\primitive_evidence_graph.json"
+}

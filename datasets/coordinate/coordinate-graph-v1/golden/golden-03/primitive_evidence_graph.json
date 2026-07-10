@@ -1,0 +1,265 @@
+{
+  "schema_version": "1.0",
+  "image_id": "image",
+  "profile": "coordinate-graph-v1",
+  "coordinate_system": {
+    "origin": "top_left",
+    "x_direction": "right",
+    "y_direction": "down",
+    "unit": "pixel",
+    "image_width": 700,
+    "image_height": 550,
+    "bbox_format": "left_top_right_bottom_inclusive"
+  },
+  "primitives": [
+    {
+      "primitive_id": "coordinate.line.x-axis",
+      "type": "line",
+      "bbox": {
+        "left": 90,
+        "top": 460,
+        "right": 650,
+        "bottom": 460
+      },
+      "geometry": {
+        "start": [
+          90,
+          460
+        ],
+        "end": [
+          650,
+          460
+        ]
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "role": "x_axis"
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "x_axis",
+          "object_id": "x-axis"
+        }
+      ]
+    },
+    {
+      "primitive_id": "coordinate.line.y-axis",
+      "type": "line",
+      "bbox": {
+        "left": 90,
+        "top": 40,
+        "right": 90,
+        "bottom": 460
+      },
+      "geometry": {
+        "start": [
+          90,
+          40
+        ],
+        "end": [
+          90,
+          460
+        ]
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "role": "y_axis"
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "y_axis",
+          "object_id": "y-axis"
+        }
+      ]
+    },
+    {
+      "primitive_id": "coordinate.point.point-01",
+      "type": "point",
+      "bbox": {
+        "left": 601,
+        "top": 75,
+        "right": 615,
+        "bottom": 89
+      },
+      "geometry": {
+        "point": [
+          608,
+          82
+        ]
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "rgb": [
+          142,
+          68,
+          173
+        ],
+        "data_xy": [
+          85.0,
+          40.0
+        ]
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "points",
+          "object_id": "point-01"
+        }
+      ]
+    },
+    {
+      "primitive_id": "coordinate.point.point-02",
+      "type": "point",
+      "bbox": {
+        "left": 419,
+        "top": 180,
+        "right": 433,
+        "bottom": 194
+      },
+      "geometry": {
+        "point": [
+          426,
+          187
+        ]
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "rgb": [
+          0,
+          148,
+          50
+        ],
+        "data_xy": [
+          20.0,
+          15.0
+        ]
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "points",
+          "object_id": "point-02"
+        }
+      ]
+    },
+    {
+      "primitive_id": "coordinate.point.point-03",
+      "type": "point",
+      "bbox": {
+        "left": 279,
+        "top": 285,
+        "right": 293,
+        "bottom": 299
+      },
+      "geometry": {
+        "point": [
+          286,
+          292
+        ]
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "rgb": [
+          9,
+          132,
+          227
+        ],
+        "data_xy": [
+          -30.0,
+          -10.0
+        ]
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "points",
+          "object_id": "point-03"
+        }
+      ]
+    },
+    {
+      "primitive_id": "coordinate.point.point-04",
+      "type": "point",
+      "bbox": {
+        "left": 111,
+        "top": 432,
+        "right": 125,
+        "bottom": 446
+      },
+      "geometry": {
+        "point": [
+          118,
+          439
+        ]
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "rgb": [
+          214,
+          48,
+          49
+        ],
+        "data_xy": [
+          -90.0,
+          -45.0
+        ]
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "points",
+          "object_id": "point-04"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "relationship_id": "coordinate.connected_to.point-01.point-02",
+      "type": "connected_to",
+      "source_primitive_id": "coordinate.point.point-01",
+      "target_primitive_id": "coordinate.point.point-02",
+      "confidence": 1.0,
+      "measurements": {
+        "coverage": 1.0
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "coordinate.connected_to.point-02.point-03",
+      "type": "connected_to",
+      "source_primitive_id": "coordinate.point.point-02",
+      "target_primitive_id": "coordinate.point.point-03",
+      "confidence": 1.0,
+      "measurements": {
+        "coverage": 1.0
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "coordinate.connected_to.point-03.point-04",
+      "type": "connected_to",
+      "source_primitive_id": "coordinate.point.point-03",
+      "target_primitive_id": "coordinate.point.point-04",
+      "confidence": 1.0,
+      "measurements": {
+        "coverage": 1.0
+      },
+      "supporting_primitive_ids": []
+    }
+  ],
+  "gaps": [],
+  "provenance": {
+    "extractor_id": "primitive-evidence-adapter",
+    "extractor_version": "1.0.0",
+    "backend": "coordinate-graph-v1:dual_axis_template",
+    "metadata_source": "domain_evidence_or_image_detection",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "metadata": {
+    "source_extractor": "coordinate-graph-v1"
+  }
+}

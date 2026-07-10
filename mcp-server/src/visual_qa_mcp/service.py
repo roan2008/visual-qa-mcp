@@ -8,14 +8,18 @@ from .arrow_rules import run_arrow_claims
 from .claim_graph import (
     build_arrow_claim_graph,
     build_chart_claim_graph,
+    build_coordinate_claim_graph,
     build_geometry_claim_graph,
 )
 from .chart_extractor import extract_chart_evidence
 from .chart_rules import run_chart_claims
+from .coordinate_extractor import extract_coordinate_evidence
+from .coordinate_rules import run_coordinate_claims
 from .geometry_extractor import extract_geometry_evidence
 from .geometry_rules import run_geometry_claims
 from .contracts import (
     ArrowEvidenceGraph,
+    CoordinateEvidenceGraph,
     GeometryEvidenceGraph,
     ArtifactPaths,
     AxisMapping,
@@ -35,6 +39,7 @@ from .primitive_evidence import (
     extract_primitive_evidence,
     primitive_graph_from_arrows,
     primitive_graph_from_chart,
+    primitive_graph_from_coordinates,
     primitive_graph_from_geometry,
 )
 
@@ -223,6 +228,37 @@ def run_geometry_verification(
     evidence_graph = extract_geometry_evidence(image_path)
     report = run_geometry_claims(claim_graph, evidence_graph)
     primitive_graph = primitive_graph_from_geometry(evidence_graph, image_path)
+    return VerificationResult(
+        image_path=image_path,
+        spec_path=spec_path,
+        metadata_path=metadata_path,
+        backend=evidence_graph.provenance.backend,
+        claim_graph=claim_graph,
+        evidence_graph=evidence_graph,
+        report=report,
+        primitive_graph=primitive_graph,
+    )
+
+
+def build_coordinate_claim_graph_from_spec(spec_path: Path) -> ClaimGraph:
+    return build_coordinate_claim_graph(spec_path)
+
+
+def extract_coordinate_evidence_from_inputs(image_path: Path) -> CoordinateEvidenceGraph:
+    evidence = extract_coordinate_evidence(image_path)
+    primitive_graph_from_coordinates(evidence, image_path)
+    return evidence
+
+
+def run_coordinate_verification(
+    image_path: Path,
+    spec_path: Path,
+    metadata_path: Path | None = None,
+) -> VerificationResult:
+    claim_graph = build_coordinate_claim_graph(spec_path)
+    evidence_graph = extract_coordinate_evidence(image_path)
+    report = run_coordinate_claims(claim_graph, evidence_graph)
+    primitive_graph = primitive_graph_from_coordinates(evidence_graph, image_path)
     return VerificationResult(
         image_path=image_path,
         spec_path=spec_path,

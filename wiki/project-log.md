@@ -4,10 +4,77 @@ description: Chronological record of completed sessions
 metadata:
   type: reference
   status: current
-  last_updated: 2026-07-10
+  last_updated: 2026-07-11
 ---
 
 # Project Log
+
+## 2026-07-11 session 16 - Coordinate-graph-v1 dual-axis verifier (fourth vertical)
+
+- Implemented `coordinate-graph-v1`, following the fourth-vertical plan: scatter points
+  (color-identified) plus one connected polyline on a coordinate plane with independent numeric
+  X and Y axes. The advisor-flagged new capability (dual-axis mapping, versus chart-v2's single
+  Y-axis) was the implementation's central risk.
+- Added `coordinate_generator.py` (deterministic Pillow renderer: independent X/Y tick axes,
+  colored scatter points, one polyline), `coordinate_extractor.py` (spec-blind dual-axis tick
+  reader, point color-component extraction, per-pair polyline edge coverage), `coordinate_rules.py`
+  (`run_coordinate_claims`: count/presence/position/polyline/axis-scale checks with color-match +
+  collision-guard, mirroring `arrow_rules._match_arrows_by_color`), and `build_coordinate_claim_graph`
+  in `claim_graph.py` with the same unsupported-check gap guardrail as the other three verticals.
+- The dual-axis tick reader reuses `tick_reader.rank_numeric_text_templates` (the numeric glyph
+  matcher) but implements its own local sequence-fit search (`_fit_axis_sequence`) rather than
+  calling `tick_reader.read_tick_texts`/`_decode_tick_sequence_result` directly, because that
+  function is hard-coded to a decreasing Y-axis (position increases -> value decreases) and the
+  X-axis needs the opposite monotonicity. This kept the validated chart-v2 tick reader completely
+  unmodified.
+- Added `specs/coordinate-evidence-graph.schema.json`, coordinate service entrypoints
+  (`run_coordinate_verification`), CLI commands `generate-coordinate-dataset`,
+  `verify-coordinate`, `run-coordinate-validation`, three new MCP tools
+  (`build_coordinate_claim_graph`, `parse_coordinate`, `verify_coordinate`), and
+  `primitive_graph_from_coordinates` (points -> `point` primitives, axes -> `line` primitives,
+  detected polyline edges -> `connected_to` relationships) registered as the `coordinate-graph-v1`
+  profile in `SUPPORTED_PRIMITIVE_PROFILES`.
+- Added `datasets/coordinate/coordinate-graph-v1/` with 11 cases (4 golden, 7 mutated: 5 typed +
+  2 ambiguous), including `golden-03`, a signed-axis case with deliberately mismatched X/Y pixel
+  scale (X: 2.8 px/unit, Y: 4.2 px/unit) designed so a naive single-axis or identity-mapped
+  extractor would silently produce a wrong-but-plausible point position.
+- Measured pixel->data round-trip extraction error *before* setting any position tolerance (per
+  the project's no-guessed-tolerance discipline), across zero-baseline, non-zero-minimum, and
+  signed axis configurations with X-scale != Y-scale. Set position tolerance to 3% of each axis's
+  declared range, well above the measured margin.
+- Found and fixed a real extraction bug during that measurement pass: the Y-axis's minimum-value
+  tick sits at the same pixel row as the X-axis line (the two axes meet at the plot's bottom-left
+  corner), so its label-text crop box vertically overlapped the row scanned for X-axis tick
+  marks — and symmetrically for the X-axis's minimum-value tick against the Y-tick-mark scan
+  column. This injected phantom tick candidates that corrupted the linear fit on one golden case
+  (a false `axis_scale_misread`). Fixed by bounding each tick-mark search to the correct side of
+  the opposite axis line in `coordinate_extractor._tick_positions`.
+- Also fixed a verdict-interaction bug found while writing tests: the polyline check originally
+  skipped the *entire* check (forcing `needs_review` via `checks_skipped`) if any declared point
+  was unresolved, which would have wrongly overridden a plain `missing_point` case's correct
+  `fail` verdict. Changed to a per-edge `continue`, mirroring arrow-v1's per-arrow skip pattern in
+  the direction/anchor checks.
+
+Verification:
+
+- coordinate-graph-v1 controlled (11 cases): typed hits `5/5`, ambiguous guard `2/2`, point-count
+  evidence `11/11`, false unsupported passes `0`, golden failures `0`, golden non-passes `0`,
+  verdict mismatches `0`.
+- Full test suite: 106 passing (85 prior + 21 new: 20 in `test_coordinate_graph_v1.py` plus one
+  new MCP `verify_coordinate` schema-validity test).
+- chart-v2, arrow-v1, and geometry-v1 controlled metrics re-verified unchanged: chart `9/9`
+  (guard `1.0`), arrow `8/8` (guard `1.0`), geometry `7/7` (guard `1.0`), all `0` unsupported
+  passes and `0` golden failures.
+- Environment note (not a code change): the local matplotlib install was binary-incompatible
+  with the installed numpy 2.x (pre-existing, unrelated to this session's code), which blocked
+  the chart-v2 realworld-pilot test fixture. Reinstalling matplotlib fixed it; pillow was then
+  re-pinned to the project's declared `<12` constraint since the matplotlib reinstall had pulled
+  in a newer, non-conforming pillow.
+
+Bounds: controlled Pillow renders only; single connected polyline (no multi-series, no curve
+fitting, no general topology/connectivity checks); tick value catalog restricted to multiples of
+5 in [-150, 150] (reuses chart-v2's numeric templates); no noisy-image robustness track or
+independently authored/real-world images yet; point identity is color-only (no label reading).
 
 ## 2026-07-10 session 15 - Basic-to-complex primitive evidence foundation
 

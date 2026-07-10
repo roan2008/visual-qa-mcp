@@ -11,6 +11,8 @@ from .contracts import (
     ArrowDatasetCase,
     ArrowEvidenceGraph,
     ChartDatasetCase,
+    CoordinateDatasetCase,
+    CoordinateEvidenceGraph,
     EvidenceGraph,
     GeometryDatasetCase,
     GeometryEvidenceGraph,
@@ -20,6 +22,7 @@ from .environment import capture_ocr_environment
 from .service import (
     run_arrow_verification,
     run_chart_verification,
+    run_coordinate_verification,
     run_geometry_verification,
     write_verification_artifacts,
 )
@@ -638,4 +641,130 @@ def summarize_chart_validation_suite(
         "noisy": summarize_validation_results(noisy_root),
         "realworld_pilot": summarize_validation_results(pilot_root),
         "pilot_manifest": verify_dataset_manifest(pilot_root),
+    }
+
+
+def discover_coordinate_cases(dataset_root: Path) -> list[CoordinateDatasetCase]:
+    cases: list[CoordinateDatasetCase] = []
+    for metadata_path in sorted(dataset_root.glob("**/metadata.json")):
+        metadata = load_json(metadata_path)
+        case_dir = metadata_path.parent
+        cases.append(
+            CoordinateDatasetCase(
+                case_id=metadata["case_id"],
+                title=metadata["title"],
+                kind=metadata["kind"],
+                defect_type=metadata.get("defect_type"),
+                scenario=metadata.get("scenario", "coordinate_plane"),
+                image_path=case_dir / "image.png",
+                spec_path=case_dir / "visual_spec.json",
+                metadata_path=metadata_path,
+                expected_report_path=case_dir / "expected_report.json",
+                dataset_track=metadata.get("dataset_track", "controlled"),
+            )
+        )
+    return cases
+
+
+def run_coordinate_case(
+    case: CoordinateDatasetCase,
+    evidence_schema: Draft202012Validator | None = None,
+    write_artifacts: bool = True,
+) -> tuple[CoordinateEvidenceGraph, VisualQaReport]:
+    result = run_coordinate_verification(
+        image_path=case.image_path,
+        spec_path=case.spec_path,
+        metadata_path=case.metadata_path,
+    )
+    claim_schema = load_schema(REPO_ROOT / "specs" / "claim-graph.schema.json")
+    claim_errors = validate_json(claim_schema, result.claim_graph.to_dict())
+    if claim_errors:
+        raise ValueError(f"Claim schema validation failed for {case.case_id}: {claim_errors}")
+    if evidence_schema is not None:
+        errors = validate_json(evidence_schema, result.evidence_graph.to_dict())
+        if errors:
+            raise ValueError(f"Evidence schema validation failed for {case.case_id}: {errors}")
+    if write_artifacts:
+        write_verification_artifacts(result, case.image_path.parent)
+    return result.evidence_graph, result.report
+
+
+def summarize_coordinate_validation_results(dataset_root: Path) -> dict[str, Any]:
+    findings_schema = load_schema(REPO_ROOT / "specs" / "findings.schema.json")
+    evidence_schema = load_schema(REPO_ROOT / "specs" / "coordinate-evidence-graph.schema.json")
+    cases = discover_coordinate_cases(dataset_root)
+    results: list[dict[str, Any]] = []
+    typed_mutated = 0
+    typed_mutated_hits = 0
+    unsupported_passes = 0
+    golden_failures = 0
+    golden_non_passes = 0
+    ambiguous_cases = 0
+    ambiguous_guarded = 0
+    verdict_mismatches = 0
+    point_count_cases = 0
+    point_count_hits = 0
+
+    for case in cases:
+        evidence, report = run_coordinate_case(case, evidence_schema, write_artifacts=False)
+        report_errors = validate_json(findings_schema, report.to_dict())
+        if report_errors:
+            raise ValueError(f"Report schema validation failed for {case.case_id}: {report_errors}")
+        expected = load_json(case.expected_report_path)
+        expected_evidence = expected.get("expected_evidence", {})
+        if expected_evidence.get("point_count") is not None:
+            point_count_cases += 1
+            if len(evidence.points) == int(expected_evidence["point_count"]):
+                point_count_hits += 1
+        matched_types = {finding.type for finding in report.findings}
+        expected_types = set(expected.get("expected_finding_types", []))
+        results.append(
+            {
+                "case_id": case.case_id,
+                "kind": case.kind,
+                "defect_type": case.defect_type,
+                "expected_verdict": expected["verdict"],
+                "actual_verdict": report.verdict,
+                "expected_types": sorted(expected_types),
+                "actual_types": sorted(matched_types),
+            }
+        )
+        if case.kind == "golden" and report.verdict == "fail":
+            golden_failures += 1
+        if case.kind == "golden" and report.verdict != "pass":
+            golden_non_passes += 1
+        if case.kind == "mutated":
+            if expected_types:
+                typed_mutated += 1
+                if expected_types.issubset(matched_types):
+                    typed_mutated_hits += 1
+            else:
+                ambiguous_cases += 1
+                if report.verdict != "pass":
+                    ambiguous_guarded += 1
+        if expected["verdict"] != "pass" and report.verdict == "pass":
+            unsupported_passes += 1
+        if expected["verdict"] != report.verdict:
+            verdict_mismatches += 1
+
+    return {
+        "total_cases": len(cases),
+        "golden_cases": sum(1 for case in cases if case.kind == "golden"),
+        "mutated_cases": sum(1 for case in cases if case.kind == "mutated"),
+        "critical_error_recall": round(typed_mutated_hits / max(typed_mutated, 1), 2),
+        "typed_mutated_cases": typed_mutated,
+        "typed_mutated_hits": typed_mutated_hits,
+        "ambiguous_cases": ambiguous_cases,
+        "ambiguous_guard_rate": round(ambiguous_guarded / max(ambiguous_cases, 1), 2),
+        "false_unsupported_passes": unsupported_passes,
+        "golden_failures": golden_failures,
+        "golden_non_passes": golden_non_passes,
+        "verdict_mismatches": verdict_mismatches,
+        "verdict_accuracy": round((len(cases) - verdict_mismatches) / max(len(cases), 1), 2),
+        "evidence_metrics": {
+            "point_count_cases": point_count_cases,
+            "point_count_hits": point_count_hits,
+            "point_count_accuracy": round(point_count_hits / max(point_count_cases, 1), 2),
+        },
+        "results": results,
     }

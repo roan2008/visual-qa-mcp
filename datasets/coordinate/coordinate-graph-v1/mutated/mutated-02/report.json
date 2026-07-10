@@ -1,0 +1,69 @@
+{
+  "image_id": "image",
+  "spec_id": "coordinate-mutated-02",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-point-count",
+      "rule_id": "coordinate-graph-v1.point-count-matches",
+      "type": "point_count_mismatch",
+      "severity": "high",
+      "message": "Detected 5 points but expected 4.",
+      "evidence": {
+        "expected_count": 4,
+        "detected_count": 5
+      },
+      "recommendation": "Regenerate the plot with the required number of points."
+    },
+    {
+      "id": "finding-unexpected-point-point-02",
+      "rule_id": "coordinate-graph-v1.required-points-present",
+      "type": "extra_point",
+      "severity": "high",
+      "message": "Detected point 'point-02' does not match any expected point color.",
+      "evidence": {
+        "point_id": "point-02",
+        "detected_rgb": [
+          230,
+          126,
+          34
+        ],
+        "bbox": [
+          293,
+          93,
+          307,
+          107
+        ]
+      },
+      "recommendation": "Remove the extra point or map it to a declared point in the spec."
+    }
+  ],
+  "checks_run": [
+    "point-count-matches",
+    "required-points-present",
+    "point-positions-correct",
+    "polyline-connections-correct",
+    "axis-scale-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.6,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.6,
+  "overlay_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-02\\overlay.png",
+  "evidence_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-02\\evidence_graph.json",
+  "claim_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-02\\claim_graph.json",
+  "primitive_evidence_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-02\\primitive_evidence_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-unexpected-point-point-02",
+      "kind": "bbox",
+      "bbox": [
+        293,
+        93,
+        307,
+        107
+      ],
+      "label": "Unexpected point"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "case_id": "golden-03",
+  "title": "Signed axis with mismatched X/Y scale, four points on a polyline",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "coordinate_plane",
+  "dataset_track": "controlled",
+  "image_id": "golden-03",
+  "diagram_version": "coordinate-graph-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

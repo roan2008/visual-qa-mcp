@@ -4,7 +4,7 @@ description: Index of all wiki pages for this project
 metadata:
   type: reference
   status: current
-  last_updated: 2026-07-10
+  last_updated: 2026-07-11
 ---
 
 # Wiki Index
@@ -43,6 +43,7 @@ wiki/       -> AI-maintained project memory
 - [impl-arrow-v1-free-body](impl-arrow-v1-free-body.md) - arrow-v1 free-body verifier and bounds
 - [impl-geometry-v1-mechanical](impl-geometry-v1-mechanical.md) - controlled mechanical plate verifier and bounds
 - [impl-primitive-evidence-foundation](impl-primitive-evidence-foundation.md) - shared primitives, relationships, geometry noisy gate, and compatibility bounds
+- [impl-coordinate-graph-v1-dual-axis](impl-coordinate-graph-v1-dual-axis.md) - dual-axis scatter/polyline verifier and bounds
 
 ## Reference
 
