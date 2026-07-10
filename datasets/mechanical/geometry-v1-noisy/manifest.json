@@ -1,0 +1,387 @@
+{
+  "dataset": "geometry-v1-noisy",
+  "version": "1.0",
+  "case_count": 20,
+  "cases": [
+    {
+      "case_id": "noisy-blur-golden-01",
+      "relative_path": "golden/noisy-blur-golden-01",
+      "kind": "golden",
+      "defect_type": null,
+      "transform_family": "blur",
+      "expected_verdict": "pass",
+      "checksums": {
+        "image.png": "b47f4bba7270fb751fdba458b18fd4f77d8f4017d22a67b91dd61979fc990f82",
+        "visual_spec.json": "4909c7813fd61a7d3ac125e1f2dea2caf2ea889cdf4c14b3f120e4c3eaa0e100",
+        "metadata.json": "80638c4c7053aef86e0cfe5f80d934f09746a7fd8e1e878bc5236f664019c71b",
+        "expected_report.json": "dbb8632b86898ac2d6237864ed35efd2632826ab910d563fde4db679f252c3dc"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-blur-golden-02",
+      "relative_path": "golden/noisy-blur-golden-02",
+      "kind": "golden",
+      "defect_type": null,
+      "transform_family": "blur",
+      "expected_verdict": "pass",
+      "checksums": {
+        "image.png": "6e44aed725b064342e5f711078c613432917873a4b7e5a2aa7dd2d32c7ca905b",
+        "visual_spec.json": "ae48c776f483cf32dc0057522eb4b2bdc32026c51ac88920c8d4c63c119d8dbe",
+        "metadata.json": "16925aa2db74727fdc9b3f135615e82ae758d3000e89ab0f6ca84f5d48daeed8",
+        "expected_report.json": "495fb24c6b8d59d0c2c415aff9a50cc1b72856d9938486461586cb942f99117e"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-contrast-golden-01",
+      "relative_path": "golden/noisy-contrast-golden-01",
+      "kind": "golden",
+      "defect_type": null,
+      "transform_family": "low_contrast",
+      "expected_verdict": "pass",
+      "checksums": {
+        "image.png": "bb61b44a2f736c4bee8d833c18c6ef4352e24fd8a77624fae0024f77ac9cae3c",
+        "visual_spec.json": "bf295ef8d6ef7ec72bd08ba990a39029fe2cdbd375a8876fe6ea53d6960e5211",
+        "metadata.json": "61f345f0e94170c40ee3609c642021b554d818923bb68aa72c4892dbbdfc7ddf",
+        "expected_report.json": "dbb8632b86898ac2d6237864ed35efd2632826ab910d563fde4db679f252c3dc"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-contrast-golden-02",
+      "relative_path": "golden/noisy-contrast-golden-02",
+      "kind": "golden",
+      "defect_type": null,
+      "transform_family": "low_contrast",
+      "expected_verdict": "pass",
+      "checksums": {
+        "image.png": "e29b99fd299ff4c91327b4071c8ffc8276cb38e6137ab8969721c676a8e34589",
+        "visual_spec.json": "d8e455ee5d73a7620ed7d4f643362cf8d3d056e27af6b2c6007702b4faa56ce2",
+        "metadata.json": "114bad7b8dfcc190b94de09cbd1b7987e5fa60ac5c9d6be3cada73bc36b541f7",
+        "expected_report.json": "495fb24c6b8d59d0c2c415aff9a50cc1b72856d9938486461586cb942f99117e"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-downscale-golden-01",
+      "relative_path": "golden/noisy-downscale-golden-01",
+      "kind": "golden",
+      "defect_type": null,
+      "transform_family": "downscale",
+      "expected_verdict": "pass",
+      "checksums": {
+        "image.png": "40c76fd598ba8d5377b89d149f5a0c20a92e7ab878289662db6661fcabf4e501",
+        "visual_spec.json": "7b0ea9272d21bad7ba097784934467a279a019fa52a7297c094737a324a25da8",
+        "metadata.json": "c6c284f4991a32f88b735dfff23c30f4d30e6ba20b09e01fb05278fbb84df15b",
+        "expected_report.json": "585289fd0c60edca93aea521e3377de809f35f13bcdd07f0c637df8cdf857bf9"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-downscale-golden-02",
+      "relative_path": "golden/noisy-downscale-golden-02",
+      "kind": "golden",
+      "defect_type": null,
+      "transform_family": "downscale",
+      "expected_verdict": "pass",
+      "checksums": {
+        "image.png": "a47aa9e6dc0d1d2b1532606ce8fe9c48a3f80429ad273426a2dfb38b1ea2e601",
+        "visual_spec.json": "22d4d5fb172a0beeffc7da64fcc28672f7738ddc7ca77785572f770bade97262",
+        "metadata.json": "a865647ef78a13eeee07db46d026bcd834c77b000e104d64157d9a3117b59955",
+        "expected_report.json": "495fb24c6b8d59d0c2c415aff9a50cc1b72856d9938486461586cb942f99117e"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-jpeg-golden-01",
+      "relative_path": "golden/noisy-jpeg-golden-01",
+      "kind": "golden",
+      "defect_type": null,
+      "transform_family": "jpeg",
+      "expected_verdict": "pass",
+      "checksums": {
+        "image.png": "bb38691f505c41a3ac296f5cae844a5da2efdc21275624e33d01233d51b64b6a",
+        "visual_spec.json": "1d0086524f9cb33bfa06ee284bdc2e8eea5d26b9a0656d2678ce2bb60336714a",
+        "metadata.json": "6136d957965d0f9d00399983eee1f2fc92401bfe0690b1597986b9ca6b908f38",
+        "expected_report.json": "dbb8632b86898ac2d6237864ed35efd2632826ab910d563fde4db679f252c3dc"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-jpeg-golden-02",
+      "relative_path": "golden/noisy-jpeg-golden-02",
+      "kind": "golden",
+      "defect_type": null,
+      "transform_family": "jpeg",
+      "expected_verdict": "pass",
+      "checksums": {
+        "image.png": "64af27541d3da21b91342584347e6d17ab69299c1b85b6ded7850f95ff9ade80",
+        "visual_spec.json": "9c4a63cbf4232c89c3f84ab0883c01e11bedd8d2e380b1f85a658581a3fad4c3",
+        "metadata.json": "fe09fa9dfe03776f9118a0afb90550cc7d61bd37130821ffa564f1d90f15fab1",
+        "expected_report.json": "495fb24c6b8d59d0c2c415aff9a50cc1b72856d9938486461586cb942f99117e"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-label-golden-01",
+      "relative_path": "golden/noisy-label-golden-01",
+      "kind": "golden",
+      "defect_type": null,
+      "transform_family": "label_degradation",
+      "expected_verdict": "pass",
+      "checksums": {
+        "image.png": "f5552e911027ec1baabf112efe25de14d0d0b69e16e0b4fd052195546a46f4ee",
+        "visual_spec.json": "bfccb8cdb6dbb564c9a75c66302ca78c6fd28e0c829047951a5d6378b6004936",
+        "metadata.json": "f7183343d2dea25e2d06fb95fd142382e9b80b1c31863d8f144ea889b0b57d28",
+        "expected_report.json": "dbb8632b86898ac2d6237864ed35efd2632826ab910d563fde4db679f252c3dc"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-label-golden-02",
+      "relative_path": "golden/noisy-label-golden-02",
+      "kind": "golden",
+      "defect_type": null,
+      "transform_family": "label_degradation",
+      "expected_verdict": "pass",
+      "checksums": {
+        "image.png": "c6c4dd981ee57761a974637629ece15f70e1abd42f6290aa1c133f0b9b41defc",
+        "visual_spec.json": "e126fe39325063d0b004fd148730c45b8f364f121bde3f660dcbb62ec77dd35e",
+        "metadata.json": "a08d3e4088bc10cd2f344311cb2c9b35c7cc9e04c517e2f6dccf9cb801028abf",
+        "expected_report.json": "495fb24c6b8d59d0c2c415aff9a50cc1b72856d9938486461586cb942f99117e"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-blur-ambiguous-01",
+      "relative_path": "mutated/noisy-blur-ambiguous-01",
+      "kind": "mutated",
+      "defect_type": "unreadable_dimension_text",
+      "transform_family": "blur",
+      "expected_verdict": "needs_review",
+      "checksums": {
+        "image.png": "3b75748b50c2b37338aad0715c9fa46f9a5d564fb6e50aacf5e59daaec677099",
+        "visual_spec.json": "e12bd54c4aed504edcfe36e92f7c6868192284c5ade5e76911c17da842120442",
+        "metadata.json": "89bd693a26b9a356acf56960e5a3012563550a1b3be5244a56c4d810ba75ebed",
+        "expected_report.json": "cb73b675a6179ee1c9577234f1b8bd1d716cc506c6b47f53ef94376cb461d2ec"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-blur-mutated-01",
+      "relative_path": "mutated/noisy-blur-mutated-01",
+      "kind": "mutated",
+      "defect_type": "oversized_hole",
+      "transform_family": "blur",
+      "expected_verdict": "needs_review",
+      "checksums": {
+        "image.png": "afb03b856c4f8a2bf6f15db085ff5f27234a75b831f0b66a8ec055165c0983e8",
+        "visual_spec.json": "eeb7831a8a73c5e626dc3130d791bb3a1b006847a7c67619f0919e676ccf9842",
+        "metadata.json": "ae72576dd30c664f547cd7ebc2341a8e85be8ea86c03940845e78f947177fd6a",
+        "expected_report.json": "ac719d63b3f26edec58445ab1b45055d7f987547ed14864eacedd4e06199703e"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-contrast-ambiguous-01",
+      "relative_path": "mutated/noisy-contrast-ambiguous-01",
+      "kind": "mutated",
+      "defect_type": "plate_not_found",
+      "transform_family": "low_contrast",
+      "expected_verdict": "needs_review",
+      "checksums": {
+        "image.png": "fe071603e6f8f7756993a54a1ba7ab4b01c2697887b8b58e6e63785039909979",
+        "visual_spec.json": "3e570322144a03430c61ed24362b248066600b23e392052c10fe6c4aa1c6830b",
+        "metadata.json": "7a14bdf49b304df0bc50d723d95c9f0dede00af40318e4c6cdf1ccdf1da48428",
+        "expected_report.json": "490d94b175fc8857f5f012269fa38256c6010dd99af152b86c8838bb346ddf39"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-contrast-mutated-01",
+      "relative_path": "mutated/noisy-contrast-mutated-01",
+      "kind": "mutated",
+      "defect_type": "extra_hole",
+      "transform_family": "low_contrast",
+      "expected_verdict": "needs_review",
+      "checksums": {
+        "image.png": "5d9ad3fa6ac476f7ad6b451176af60c95e8876d9d9dc12d3361c8e8cc73667d7",
+        "visual_spec.json": "6af55ab1c9f54650f25ea8a5dd9d04059f6ecd2c3c3fcdd940c0509279ba2281",
+        "metadata.json": "8ba75aa70d7b80d72b3645460b75268158c30a7ab2291d75258634753425cd70",
+        "expected_report.json": "6102ca516d60e28bd6ced773ce3267f2931ea02441cd5d2da4ee01abfe17bbdf"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-downscale-ambiguous-01",
+      "relative_path": "mutated/noisy-downscale-ambiguous-01",
+      "kind": "mutated",
+      "defect_type": "unreadable_dimension_text",
+      "transform_family": "downscale",
+      "expected_verdict": "needs_review",
+      "checksums": {
+        "image.png": "3e937f1169350443c8bdab82f5ec8c0bbca02c9322fa6590aca9c967099c211e",
+        "visual_spec.json": "fcca5f4a1dd3ab4ff845b74bb430d73806e44e6a4aa612a8855e7c063777a1c1",
+        "metadata.json": "d40274e8b28fe6d331d9150fb0fb16ba7ead085d97cf92a01b73a2a0c02c9664",
+        "expected_report.json": "cb73b675a6179ee1c9577234f1b8bd1d716cc506c6b47f53ef94376cb461d2ec"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-downscale-mutated-01",
+      "relative_path": "mutated/noisy-downscale-mutated-01",
+      "kind": "mutated",
+      "defect_type": "misaligned_hole",
+      "transform_family": "downscale",
+      "expected_verdict": "needs_review",
+      "checksums": {
+        "image.png": "19e3ee44cacc68882399d3f87d5c7ca806949a4b10e339bce0945d948ba80698",
+        "visual_spec.json": "a822bfa04231a73de3b9251df2a79de4b05c30885f6f0b9e13b85b3a158466af",
+        "metadata.json": "94e0e4c673b765ae5753a8ed1af22f2719b0ce22b1813f2b5ba907a72a0e5bc7",
+        "expected_report.json": "4131dd154e47724b244eaef4cdf951064b0106a26871c681b7b10988083f719c"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-jpeg-ambiguous-01",
+      "relative_path": "mutated/noisy-jpeg-ambiguous-01",
+      "kind": "mutated",
+      "defect_type": "unreadable_dimension_text",
+      "transform_family": "jpeg",
+      "expected_verdict": "needs_review",
+      "checksums": {
+        "image.png": "ff236fecb65e10a6a0b6debf9327910f92bcf8116090918fb5f3cdf41191f2a0",
+        "visual_spec.json": "8e1bf38d06d9b4f8635c9297af9924ce257d16cfbb9755990a7f60ac97079917",
+        "metadata.json": "48dda4d9f2ae1e451d5170133dadd133c4eee575b7533c1dd8d7ae088ddc97c7",
+        "expected_report.json": "cb73b675a6179ee1c9577234f1b8bd1d716cc506c6b47f53ef94376cb461d2ec"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-jpeg-mutated-01",
+      "relative_path": "mutated/noisy-jpeg-mutated-01",
+      "kind": "mutated",
+      "defect_type": "wrong_dimension_text",
+      "transform_family": "jpeg",
+      "expected_verdict": "fail",
+      "checksums": {
+        "image.png": "fcbb8c72e4eaf3a2fd1cb912e22f39f6cb7aae6777dcd11439d8b56b8d09ceec",
+        "visual_spec.json": "41892dbb3e670ffae36f815f2d2c1d7b95450a50c434598ae6debf305106d62e",
+        "metadata.json": "13dce315ff04e12ba70014c8a0f6d4a77748a8d45871e1b6b00a87b341ef68dd",
+        "expected_report.json": "15c7ffca7f309399cc4bad7145c5d3c65b4fac84e64d51afd8997093dd0d27e4"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-label-ambiguous-01",
+      "relative_path": "mutated/noisy-label-ambiguous-01",
+      "kind": "mutated",
+      "defect_type": "unreadable_dimension_text",
+      "transform_family": "label_degradation",
+      "expected_verdict": "needs_review",
+      "checksums": {
+        "image.png": "35a85e0433be6fefe845948228093078481184ba9a8f7906592b6cf6d49695a2",
+        "visual_spec.json": "b8b136417ae6143524afdaa39c5864d82f10df7811b829bb3f6f9213976c08ac",
+        "metadata.json": "aa370ee7cefd9011e3122557c98b7b13487c1fe5665a38e67db09664655e364c",
+        "expected_report.json": "cb73b675a6179ee1c9577234f1b8bd1d716cc506c6b47f53ef94376cb461d2ec"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    },
+    {
+      "case_id": "noisy-label-mutated-01",
+      "relative_path": "mutated/noisy-label-mutated-01",
+      "kind": "mutated",
+      "defect_type": "wrong_dimension_text",
+      "transform_family": "label_degradation",
+      "expected_verdict": "fail",
+      "checksums": {
+        "image.png": "71508be5b3765831991a037ce14e196cc69976a7512aae6ed48267c25ff713e2",
+        "visual_spec.json": "b8ab636b4ac998951fc132d2d28a79b41f279189cc928514bea112ce3f28c248",
+        "metadata.json": "bc28a04fdfbfb44b76e159248638bace00c92a36153a6b8a0eabcd291d7d74e9",
+        "expected_report.json": "15c7ffca7f309399cc4bad7145c5d3c65b4fac84e64d51afd8997093dd0d27e4"
+      },
+      "provenance": {
+        "source_type": "project_generated",
+        "license": "project_internal",
+        "retrieved_at": "2026-07-10"
+      }
+    }
+  ]
+}

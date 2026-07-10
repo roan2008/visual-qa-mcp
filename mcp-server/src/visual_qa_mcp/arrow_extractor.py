@@ -14,6 +14,7 @@ from .contracts import (
     ExtractedRegion,
     ExtractionProvenance,
 )
+from .spatial import connected_components
 
 ARROW_EXTRACTOR_ID = "arrow-v1"
 ARROW_EXTRACTOR_VERSION = "0.1.0"
@@ -50,32 +51,6 @@ def _gray_object_mask(pixels: np.ndarray) -> np.ndarray:
     return (spread <= GRAY_CHANNEL_TOLERANCE) & (value >= GRAY_MIN_VALUE) & (value <= GRAY_MAX_VALUE)
 
 
-def _connected_components(mask: np.ndarray) -> list[np.ndarray]:
-    """Return per-component arrays of (y, x) coordinates using 8-connectivity."""
-    visited = np.zeros(mask.shape, dtype=bool)
-    height, width = mask.shape
-    components: list[np.ndarray] = []
-    candidate_ys, candidate_xs = np.nonzero(mask)
-    for start_y, start_x in zip(candidate_ys.tolist(), candidate_xs.tolist()):
-        if visited[start_y, start_x]:
-            continue
-        stack = [(start_y, start_x)]
-        visited[start_y, start_x] = True
-        points: list[tuple[int, int]] = []
-        while stack:
-            y, x = stack.pop()
-            points.append((y, x))
-            y_low, y_high = max(0, y - 1), min(height - 1, y + 1)
-            x_low, x_high = max(0, x - 1), min(width - 1, x + 1)
-            for ny in range(y_low, y_high + 1):
-                for nx in range(x_low, x_high + 1):
-                    if mask[ny, nx] and not visited[ny, nx]:
-                        visited[ny, nx] = True
-                        stack.append((ny, nx))
-        components.append(np.array(points, dtype=np.int32))
-    return components
-
-
 def _principal_axis(points_xy: np.ndarray) -> tuple[float, float]:
     centered = points_xy - points_xy.mean(axis=0)
     sxx = float(np.mean(centered[:, 0] * centered[:, 0]))
@@ -95,16 +70,17 @@ def _end_statistics(
     window = max(span * END_WINDOW_FRACTION, 4.0)
     if low_end:
         selector = projections <= projections.min() + window
-        extreme_index = int(np.argmin(projections))
+        extreme_value = projections.min()
     else:
         selector = projections >= projections.max() - window
-        extreme_index = int(np.argmax(projections))
+        extreme_value = projections.max()
     spread = float(perpendicular[selector].std()) if selector.sum() > 1 else 0.0
     # Use the true geometric extremity rather than the window average: the average
     # is biased inward by roughly half the window width, which is small enough to
     # not affect direction/anchor checks but large enough to misalign the label
     # crop region computed from tail_xy.
-    return points_xy[extreme_index], spread
+    extreme_selector = np.abs(projections - extreme_value) <= 0.5
+    return points_xy[extreme_selector].mean(axis=0), spread
 
 
 def _analyze_component(points_yx: np.ndarray, component_index: int, mean_rgb: list[int]) -> ExtractedArrow | None:
@@ -169,7 +145,7 @@ def extract_arrow_evidence(image_path: Path) -> ArrowEvidenceGraph:
     regions: list[ExtractedRegion] = []
 
     object_mask = _gray_object_mask(pixels)
-    object_components = sorted(_connected_components(object_mask), key=len, reverse=True)
+    object_components = sorted(connected_components(object_mask), key=len, reverse=True)
     largest_object_component = object_components[0] if object_components else None
     if largest_object_component is not None and len(largest_object_component) >= 400:
         # Use only the largest connected blob, not the global extent of every
@@ -203,7 +179,7 @@ def extract_arrow_evidence(image_path: Path) -> ArrowEvidenceGraph:
 
     arrows: list[ExtractedArrow] = []
     degenerate_components = 0
-    for index, points_yx in enumerate(_connected_components(_saturation_mask(pixels))):
+    for index, points_yx in enumerate(connected_components(_saturation_mask(pixels))):
         mean_rgb = [
             int(round(value))
             for value in pixels[points_yx[:, 0], points_yx[:, 1]].mean(axis=0)

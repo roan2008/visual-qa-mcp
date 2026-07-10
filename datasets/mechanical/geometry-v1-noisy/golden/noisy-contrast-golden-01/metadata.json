@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-contrast-golden-01",
+  "title": "Low-contrast equal holes",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-contrast-golden-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {
+    "postprocess": {
+      "contrast_factor": 0.8
+    }
+  },
+  "renderer": "pillow",
+  "transform_family": "low_contrast"
+}

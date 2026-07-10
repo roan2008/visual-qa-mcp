@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-downscale-ambiguous-01",
+  "title": "Heavy resampling loses label evidence",
+  "kind": "mutated",
+  "defect_type": "unreadable_dimension_text",
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-downscale-ambiguous-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {
+    "postprocess": {
+      "downscale_factor": 0.55
+    }
+  },
+  "renderer": "pillow",
+  "transform_family": "downscale"
+}

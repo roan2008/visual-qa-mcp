@@ -60,6 +60,9 @@
     "claim_graph_path": {
       "type": "string"
     },
+    "primitive_evidence_graph_path": {
+      "type": "string"
+    },
     "overlay_annotations": {
       "type": "array",
       "items": {

@@ -9,6 +9,36 @@ metadata:
 
 # Project Log
 
+## 2026-07-10 session 15 - Basic-to-complex primitive evidence foundation
+
+- Added strict `PrimitiveEvidenceGraph` v1 with type-discriminated point/line/polyline/arrow/circle/
+  region geometry, deterministic IDs, relationships, source references, semantic validation, and
+  explicit spec-blind profiles for chart, arrow, and geometry.
+- Added additive primitive links to domain evidence, `primitive_evidence_graph.json` verification
+  artifacts, `extract-primitives` CLI, and `parse_primitives` MCP tool. Domain rules remain unchanged.
+- Added the checksum-frozen 20-case `geometry-v1-noisy` track: two golden, one typed defect, and one
+  ambiguity case for each of blur, downscale, JPEG, low contrast, and label degradation.
+- Replaced per-pixel component flood fill with deterministic run-length union-find and cached font/
+  text templates. Validation summaries no longer write into immutable dataset fixtures.
+- Advisor gates froze the schema as an additive audit layer and required standalone chart primitives
+  to remain spec-blind.
+
+Verification:
+
+- Geometry noisy: golden `10/10`, typed `5/5`, ambiguity `5/5`, false unsupported passes `0`,
+  verdict mismatches `0`, manifest valid `20/20`.
+- Controlled baselines unchanged: chart `9/9`, arrow `8/8`, geometry `7/7`; chart noisy `2/2`,
+  arrow noisy `4/4`; chart pilot remains `6/7` typed hits.
+- Unified suite: `85/85` passing in about 63 seconds. Chart end-to-end: `16/16` in about 35 seconds
+  versus about 4m19s before the performance refactor.
+
+Cross-graph validation enforces that domain links resolve for chart bars/axis/ticks, arrow regions/
+arrows, and geometry plates/holes; a typed geometry finding traces through detected domain evidence
+to its primitive support.
+
+Bounds: primitive evidence is audit-only in this milestone; no coordinate-graph, flowchart, circuit,
+general OCR, independently authored geometry, native CAD, or teaching-intent readiness claim.
+
 ## 2026-07-10 session 14 - Geometry-v1 controlled mechanical plate verifier
 
 - Recovered the five partially authored `geometry_*` modules and completed their runtime seams:

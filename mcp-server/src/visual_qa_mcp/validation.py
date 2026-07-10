@@ -67,6 +67,7 @@ def run_case(
     case: ChartDatasetCase,
     evidence_schema: Draft202012Validator | None = None,
     backend_override: str | None = None,
+    write_artifacts: bool = True,
 ) -> tuple[EvidenceGraph, VisualQaReport]:
     backend = backend_override or case.backend
     result = run_chart_verification(
@@ -83,7 +84,8 @@ def run_case(
         errors = validate_json(evidence_schema, result.evidence_graph.to_dict())
         if errors:
             raise ValueError(f"Evidence schema validation failed for {case.case_id}: {errors}")
-    write_verification_artifacts(result, case.image_path.parent)
+    if write_artifacts:
+        write_verification_artifacts(result, case.image_path.parent)
     return result.evidence_graph, result.report
 
 
@@ -117,7 +119,12 @@ def summarize_validation_results_for_cases(
     }
 
     for case in cases:
-        evidence, report = run_case(case, evidence_schema, backend_override=backend_override)
+        evidence, report = run_case(
+            case,
+            evidence_schema,
+            backend_override=backend_override,
+            write_artifacts=False,
+        )
         report_errors = validate_json(findings_schema, report.to_dict())
         if report_errors:
             raise ValueError(f"Report schema validation failed for {case.case_id}: {report_errors}")
@@ -251,6 +258,7 @@ def discover_arrow_cases(dataset_root: Path) -> list[ArrowDatasetCase]:
 def run_arrow_case(
     case: ArrowDatasetCase,
     evidence_schema: Draft202012Validator | None = None,
+    write_artifacts: bool = True,
 ) -> tuple[ArrowEvidenceGraph, VisualQaReport]:
     result = run_arrow_verification(
         image_path=case.image_path,
@@ -265,7 +273,8 @@ def run_arrow_case(
         errors = validate_json(evidence_schema, result.evidence_graph.to_dict())
         if errors:
             raise ValueError(f"Evidence schema validation failed for {case.case_id}: {errors}")
-    write_verification_artifacts(result, case.image_path.parent)
+    if write_artifacts:
+        write_verification_artifacts(result, case.image_path.parent)
     return result.evidence_graph, result.report
 
 
@@ -288,7 +297,7 @@ def summarize_arrow_validation_results(dataset_root: Path) -> dict[str, Any]:
     force_balance_hits = 0
 
     for case in cases:
-        evidence, report = run_arrow_case(case, evidence_schema)
+        evidence, report = run_arrow_case(case, evidence_schema, write_artifacts=False)
         report_errors = validate_json(findings_schema, report.to_dict())
         if report_errors:
             raise ValueError(f"Report schema validation failed for {case.case_id}: {report_errors}")
@@ -378,6 +387,7 @@ def discover_geometry_cases(dataset_root: Path) -> list[GeometryDatasetCase]:
                 metadata_path=metadata_path,
                 expected_report_path=case_dir / "expected_report.json",
                 dataset_track=metadata.get("dataset_track", "controlled"),
+                transform_family=metadata.get("transform_family", "controlled"),
             )
         )
     return cases
@@ -386,6 +396,7 @@ def discover_geometry_cases(dataset_root: Path) -> list[GeometryDatasetCase]:
 def run_geometry_case(
     case: GeometryDatasetCase,
     evidence_schema: Draft202012Validator | None = None,
+    write_artifacts: bool = True,
 ) -> tuple[GeometryEvidenceGraph, VisualQaReport]:
     result = run_geometry_verification(
         image_path=case.image_path,
@@ -400,7 +411,8 @@ def run_geometry_case(
         errors = validate_json(evidence_schema, result.evidence_graph.to_dict())
         if errors:
             raise ValueError(f"Evidence schema validation failed for {case.case_id}: {errors}")
-    write_verification_artifacts(result, case.image_path.parent)
+    if write_artifacts:
+        write_verification_artifacts(result, case.image_path.parent)
     return result.evidence_graph, result.report
 
 
@@ -419,9 +431,10 @@ def summarize_geometry_validation_results(dataset_root: Path) -> dict[str, Any]:
     verdict_mismatches = 0
     hole_count_cases = 0
     hole_count_hits = 0
+    transform_metrics: dict[str, dict[str, int]] = {}
 
     for case in cases:
-        evidence, report = run_geometry_case(case, evidence_schema)
+        evidence, report = run_geometry_case(case, evidence_schema, write_artifacts=False)
         report_errors = validate_json(findings_schema, report.to_dict())
         if report_errors:
             raise ValueError(f"Report schema validation failed for {case.case_id}: {report_errors}")
@@ -442,8 +455,16 @@ def summarize_geometry_validation_results(dataset_root: Path) -> dict[str, Any]:
                 "actual_verdict": report.verdict,
                 "expected_types": sorted(expected_types),
                 "actual_types": sorted(matched_types),
+                "transform_family": case.transform_family,
             }
         )
+        family = transform_metrics.setdefault(
+            case.transform_family,
+            {"total": 0, "golden": 0, "typed": 0, "typed_hits": 0, "ambiguous": 0, "guarded": 0},
+        )
+        family["total"] += 1
+        if case.kind == "golden":
+            family["golden"] += 1
         if case.kind == "golden" and report.verdict == "fail":
             golden_failures += 1
         if case.kind == "golden" and report.verdict != "pass":
@@ -451,12 +472,16 @@ def summarize_geometry_validation_results(dataset_root: Path) -> dict[str, Any]:
         if case.kind == "mutated":
             if expected_types:
                 typed_mutated += 1
+                family["typed"] += 1
                 if expected_types.issubset(matched_types):
                     typed_mutated_hits += 1
+                    family["typed_hits"] += 1
             else:
                 ambiguous_cases += 1
+                family["ambiguous"] += 1
                 if report.verdict != "pass":
                     ambiguous_guarded += 1
+                    family["guarded"] += 1
         if expected["verdict"] != "pass" and report.verdict == "pass":
             unsupported_passes += 1
         if expected["verdict"] != report.verdict:
@@ -481,7 +506,19 @@ def summarize_geometry_validation_results(dataset_root: Path) -> dict[str, Any]:
             "hole_count_hits": hole_count_hits,
             "hole_count_accuracy": round(hole_count_hits / max(hole_count_cases, 1), 2),
         },
+        "transform_metrics": transform_metrics,
         "results": results,
+    }
+
+
+def summarize_geometry_validation_suite(
+    controlled_root: Path,
+    noisy_root: Path,
+) -> dict[str, Any]:
+    return {
+        "controlled": summarize_geometry_validation_results(controlled_root),
+        "noisy": summarize_geometry_validation_results(noisy_root),
+        "noisy_manifest": verify_dataset_manifest(noisy_root),
     }
 
 
@@ -522,6 +559,10 @@ def verify_dataset_manifest(dataset_root: Path) -> dict[str, Any]:
         mismatches.append("manifest:case_count_does_not_match_list")
     if manifest.get("dataset") == "chart-v2-realworld-pilot" and declared_count != 24:
         mismatches.append("manifest:pilot_case_count_must_be_24")
+    if manifest.get("dataset") == "geometry-v1-noisy" and declared_count != 20:
+        mismatches.append("manifest:geometry_noisy_case_count_must_be_20")
+    if manifest.get("dataset") == "geometry-v1-noisy" and not manifest.get("version"):
+        mismatches.append("manifest:version_missing")
 
     case_ids = [str(case.get("case_id")) for case in manifest_cases]
     relative_paths = [str(case.get("relative_path")) for case in manifest_cases]
@@ -542,7 +583,14 @@ def verify_dataset_manifest(dataset_root: Path) -> dict[str, Any]:
 
     required_checksums = {"image.png", "visual_spec.json", "expected_report.json", "metadata.json"}
     for case in manifest_cases:
-        case_root = dataset_root / case["relative_path"]
+        relative_path = Path(str(case["relative_path"]))
+        if relative_path.is_absolute() or ".." in relative_path.parts:
+            mismatches.append(f"{case['case_id']}:relative_path:unsafe")
+            continue
+        case_root = dataset_root / relative_path
+        if not case_root.resolve().is_relative_to(dataset_root.resolve()):
+            mismatches.append(f"{case['case_id']}:relative_path:outside_dataset")
+            continue
         checksums = case.get("checksums", {})
         missing_checksum_keys = required_checksums - set(checksums)
         for name in sorted(missing_checksum_keys):
@@ -557,6 +605,14 @@ def verify_dataset_manifest(dataset_root: Path) -> dict[str, Any]:
             for field in ("renderer", "transform_family"):
                 if not metadata.get(field):
                     mismatches.append(f"{case['case_id']}:metadata:{field}_missing")
+            for field in ("case_id", "kind", "defect_type", "transform_family"):
+                if field in case and case.get(field) != metadata.get(field):
+                    mismatches.append(f"{case['case_id']}:metadata:{field}_mismatch")
+        expected_report_path = case_root / "expected_report.json"
+        if expected_report_path.exists() and "expected_verdict" in case:
+            expected_report = load_json(expected_report_path)
+            if case["expected_verdict"] != expected_report.get("verdict"):
+                mismatches.append(f"{case['case_id']}:expected_verdict_mismatch")
         for name, expected_sha in checksums.items():
             path = case_root / name
             if not path.exists():

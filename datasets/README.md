@@ -60,6 +60,9 @@ integer tick-reader boundary. Passing the pilot is not a general real-world read
 - `physics/arrow-v1/`: 6 golden and 11 mutated controlled free-body cases.
 - `physics/arrow-v1-noisy/`: 2 golden and 4 mutated blur/downscale/JPEG cases.
 - `mechanical/geometry-v1/`: 5 golden and 9 mutated controlled mechanical plate cases.
+- `mechanical/geometry-v1-noisy/`: 10 golden and 10 mutated cases. Blur, downscale, JPEG,
+  low contrast, and label degradation each contribute two golden, one typed defect, and one
+  ambiguity guard. Its manifest freezes image/spec/metadata/expected-report checksums.
 
-Geometry-v1 currently has no noisy or independently sourced track. Its results apply only to the
-controlled renderer, circular-hole, ordered-pairing, and fixed-label-catalog family.
+Geometry-v1 still has no independently sourced track. Its results apply only to the controlled
+renderer, configured noisy transforms, circular-hole, ordered-pairing, and fixed-label-catalog family.

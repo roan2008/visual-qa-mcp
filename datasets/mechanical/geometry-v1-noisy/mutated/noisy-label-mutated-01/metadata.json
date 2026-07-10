@@ -1,0 +1,13 @@
+{
+  "case_id": "noisy-label-mutated-01",
+  "title": "Faded wrong dimension label",
+  "kind": "mutated",
+  "defect_type": "wrong_dimension_text",
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-label-mutated-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {},
+  "renderer": "pillow",
+  "transform_family": "label_degradation"
+}

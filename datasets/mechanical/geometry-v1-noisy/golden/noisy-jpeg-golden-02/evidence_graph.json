@@ -1,0 +1,128 @@
+{
+  "image_id": "image",
+  "diagram_type": "mechanical_plate",
+  "holes": [
+    {
+      "hole_id": "hole-01",
+      "center_xy": [
+        170,
+        200
+      ],
+      "diameter_px": 33.4,
+      "circularity": 0.083,
+      "bbox": [
+        157,
+        187,
+        183,
+        213
+      ],
+      "pixel_count": 567,
+      "confidence": 0.9,
+      "label_text": "D8",
+      "label_confidence": 0.94,
+      "primitive_ids": [
+        "geometry.circle.hole-01",
+        "geometry.text.hole-01"
+      ]
+    },
+    {
+      "hole_id": "hole-02",
+      "center_xy": [
+        260,
+        200
+      ],
+      "diameter_px": 33.2,
+      "circularity": 0.096,
+      "bbox": [
+        247,
+        187,
+        273,
+        213
+      ],
+      "pixel_count": 572,
+      "confidence": 0.9,
+      "label_text": "D8",
+      "label_confidence": 0.92,
+      "primitive_ids": [
+        "geometry.circle.hole-02",
+        "geometry.text.hole-02"
+      ]
+    },
+    {
+      "hole_id": "hole-03",
+      "center_xy": [
+        350,
+        200
+      ],
+      "diameter_px": 49.4,
+      "circularity": 0.061,
+      "bbox": [
+        329,
+        179,
+        371,
+        221
+      ],
+      "pixel_count": 1437,
+      "confidence": 0.9,
+      "label_text": "D12",
+      "label_confidence": 0.97,
+      "primitive_ids": [
+        "geometry.circle.hole-03",
+        "geometry.text.hole-03"
+      ]
+    },
+    {
+      "hole_id": "hole-04",
+      "center_xy": [
+        440,
+        200
+      ],
+      "diameter_px": 33.3,
+      "circularity": 0.076,
+      "bbox": [
+        427,
+        187,
+        453,
+        213
+      ],
+      "pixel_count": 568,
+      "confidence": 0.9,
+      "label_text": "D8",
+      "label_confidence": 0.92,
+      "primitive_ids": [
+        "geometry.circle.hole-04",
+        "geometry.text.hole-04"
+      ]
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "plate",
+      "kind": "plate",
+      "bbox": [
+        112,
+        102,
+        488,
+        348
+      ],
+      "pixel_count": 87952,
+      "confidence": 0.95,
+      "primitive_ids": [
+        "geometry.rectangle.plate"
+      ]
+    }
+  ],
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "geometry-v1",
+    "extractor_version": "0.1.0",
+    "backend": "component_circle",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "image_path": "datasets\\mechanical\\geometry-v1-noisy\\golden\\noisy-jpeg-golden-02\\image.png"
+  }
+}

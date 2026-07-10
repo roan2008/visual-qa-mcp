@@ -35,6 +35,7 @@
   "overlay_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-06\\overlay.png",
   "evidence_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-06\\evidence_graph.json",
   "claim_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-06\\claim_graph.json",
+  "primitive_evidence_graph_path": "datasets\\mechanical\\geometry-v1\\mutated\\mutated-06\\primitive_evidence_graph.json",
   "overlay_annotations": [
     {
       "finding_id": "finding-dimension-text-hole-b",

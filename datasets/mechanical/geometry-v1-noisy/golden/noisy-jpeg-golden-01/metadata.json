@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-jpeg-golden-01",
+  "title": "JPEG equal holes",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-jpeg-golden-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {
+    "postprocess": {
+      "jpeg_quality": 92
+    }
+  },
+  "renderer": "pillow",
+  "transform_family": "jpeg"
+}

@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-blur-golden-01",
+  "title": "Mild blur on equal holes",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-blur-golden-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {
+    "postprocess": {
+      "blur_radius": 0.15
+    }
+  },
+  "renderer": "pillow",
+  "transform_family": "blur"
+}

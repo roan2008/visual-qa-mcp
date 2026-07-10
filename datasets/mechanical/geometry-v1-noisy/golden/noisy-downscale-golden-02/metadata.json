@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-downscale-golden-02",
+  "title": "Mild resampling on mixed holes",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-downscale-golden-02",
+  "diagram_version": "geometry-v1",
+  "render_options": {
+    "postprocess": {
+      "downscale_factor": 0.96
+    }
+  },
+  "renderer": "pillow",
+  "transform_family": "downscale"
+}

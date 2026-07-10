@@ -10,6 +10,7 @@ This folder contains callable chart-v2, arrow-v1, and geometry-v1 verifier surfa
 - `verify_chart`
 - `build_arrow_claim_graph`, `parse_arrow`, `verify_arrow`
 - `build_geometry_claim_graph`, `parse_geometry`, `verify_geometry`
+- `parse_primitives`
 - `make_overlay`
 
 Current bounded scope:
@@ -60,7 +61,10 @@ Install once from the repository root:
 ```powershell
 python -m pip install -e .
 visual-qa generate-geometry-dataset --output datasets\mechanical\geometry-v1
+visual-qa generate-noisy-geometry-dataset --output datasets\mechanical\geometry-v1-noisy
 visual-qa run-geometry-validation --dataset datasets\mechanical\geometry-v1
+visual-qa run-geometry-suite-validation --controlled-dataset datasets\mechanical\geometry-v1 --noisy-dataset datasets\mechanical\geometry-v1-noisy
+visual-qa extract-primitives datasets\mechanical\geometry-v1\golden\golden-01\image.png --profile geometry-v1
 visual-qa verify-geometry datasets\mechanical\geometry-v1\golden\golden-01\image.png datasets\mechanical\geometry-v1\golden\golden-01\visual_spec.json
 visual-qa run-arrow-validation --dataset datasets\physics\arrow-v1
 visual-qa run-chart-suite-validation --controlled-dataset datasets\charts\chart-v2 --noisy-dataset datasets\charts\chart-v2-noisy --pilot-dataset datasets\charts\chart-v2-realworld-pilot
@@ -83,6 +87,7 @@ The MCP wrapper delegates to the existing service layer and does not change veri
 - `verify_chart`
 - `build_arrow_claim_graph`, `parse_arrow`, `verify_arrow`
 - `build_geometry_claim_graph`, `parse_geometry`, `verify_geometry`
+- `parse_primitives` for explicit `chart-v2`, `arrow-v1`, or `geometry-v1` profiles
 
 ## Phase 2 Validation
 

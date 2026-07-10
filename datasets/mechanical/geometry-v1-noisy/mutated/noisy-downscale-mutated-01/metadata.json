@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-downscale-mutated-01",
+  "title": "Resampled misaligned middle hole",
+  "kind": "mutated",
+  "defect_type": "misaligned_hole",
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-downscale-mutated-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {
+    "postprocess": {
+      "downscale_factor": 0.86
+    }
+  },
+  "renderer": "pillow",
+  "transform_family": "downscale"
+}

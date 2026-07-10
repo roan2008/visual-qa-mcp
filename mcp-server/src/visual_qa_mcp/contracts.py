@@ -61,6 +61,7 @@ class TickLabel:
     parsed_value: float | None
     bbox: list[int]
     confidence: float
+    primitive_ids: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -94,6 +95,7 @@ class ExtractedBar:
     top_y: int | None = None
     bottom_y: int | None = None
     value_source: str = "axis_mapping"
+    primitive_ids: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -109,6 +111,7 @@ class ExtractedAxis:
     zero_line_y: int | None = None
     mapping: AxisMapping | None = None
     backend: str = "template"
+    primitive_ids: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -148,6 +151,7 @@ class ExtractedArrow:
     confidence: float
     label_text: str | None = None
     label_confidence: float = 0.0
+    primitive_ids: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -157,6 +161,7 @@ class ExtractedRegion:
     bbox: list[int]
     pixel_count: int
     confidence: float
+    primitive_ids: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -185,6 +190,52 @@ class ExtractedHole:
     confidence: float
     label_text: str | None = None
     label_confidence: float = 0.0
+    primitive_ids: list[str] = field(default_factory=list)
+
+
+@dataclass
+class PrimitiveSourceRef:
+    graph: str
+    collection: str
+    object_id: str
+
+
+@dataclass
+class Primitive:
+    primitive_id: str
+    type: str
+    bbox: dict[str, int]
+    geometry: dict[str, Any]
+    confidence: float
+    attributes: dict[str, Any] = field(default_factory=dict)
+    source_refs: list[PrimitiveSourceRef] = field(default_factory=list)
+
+
+@dataclass
+class PrimitiveRelationship:
+    relationship_id: str
+    type: str
+    source_primitive_id: str
+    target_primitive_id: str
+    confidence: float
+    measurements: dict[str, Any] = field(default_factory=dict)
+    supporting_primitive_ids: list[str] = field(default_factory=list)
+
+
+@dataclass
+class PrimitiveEvidenceGraph:
+    schema_version: str
+    image_id: str
+    profile: str
+    coordinate_system: dict[str, Any]
+    primitives: list[Primitive]
+    relationships: list[PrimitiveRelationship]
+    gaps: list[EvidenceGap]
+    provenance: ExtractionProvenance
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
 
 
 @dataclass
@@ -244,6 +295,7 @@ class VisualQaReport:
     overlay_path: str | None = None
     evidence_graph_path: str | None = None
     claim_graph_path: str | None = None
+    primitive_evidence_graph_path: str | None = None
     overlay_annotations: list[OverlayAnnotation] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -267,6 +319,8 @@ class VisualQaReport:
             data["evidence_graph_path"] = self.evidence_graph_path
         if self.claim_graph_path is not None:
             data["claim_graph_path"] = self.claim_graph_path
+        if self.primitive_evidence_graph_path is not None:
+            data["primitive_evidence_graph_path"] = self.primitive_evidence_graph_path
         if self.overlay_annotations:
             data["overlay_annotations"] = [
                 annotation.to_dict() for annotation in self.overlay_annotations
@@ -315,6 +369,7 @@ class GeometryDatasetCase:
     metadata_path: Path
     expected_report_path: Path
     dataset_track: str = "controlled"
+    transform_family: str = "controlled"
 
 
 @dataclass
@@ -324,6 +379,7 @@ class ArtifactPaths:
     evidence_graph_path: Path
     claim_graph_path: Path
     report_path: Path
+    primitive_evidence_graph_path: Path | None = None
 
     def to_dict(self) -> dict[str, str]:
         return {
@@ -332,6 +388,11 @@ class ArtifactPaths:
             "evidence_graph_path": str(self.evidence_graph_path),
             "claim_graph_path": str(self.claim_graph_path),
             "report_path": str(self.report_path),
+            **(
+                {"primitive_evidence_graph_path": str(self.primitive_evidence_graph_path)}
+                if self.primitive_evidence_graph_path is not None
+                else {}
+            ),
         }
 
 
@@ -344,9 +405,10 @@ class VerificationResult:
     claim_graph: ClaimGraph
     evidence_graph: EvidenceGraph | ArrowEvidenceGraph | GeometryEvidenceGraph
     report: VisualQaReport
+    primitive_graph: PrimitiveEvidenceGraph | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        payload = {
             "image_path": str(self.image_path),
             "spec_path": str(self.spec_path),
             "metadata_path": str(self.metadata_path) if self.metadata_path is not None else None,
@@ -355,3 +417,6 @@ class VerificationResult:
             "evidence_graph": self.evidence_graph.to_dict(),
             "report": self.report.to_dict(),
         }
+        if self.primitive_graph is not None:
+            payload["primitive_graph"] = self.primitive_graph.to_dict()
+        return payload

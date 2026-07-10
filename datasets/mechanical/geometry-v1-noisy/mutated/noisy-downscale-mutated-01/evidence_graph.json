@@ -1,0 +1,111 @@
+{
+  "image_id": "image",
+  "diagram_type": "mechanical_plate",
+  "holes": [
+    {
+      "hole_id": "hole-01",
+      "center_xy": [
+        180,
+        225
+      ],
+      "diameter_px": 41.1,
+      "circularity": 0.017,
+      "bbox": [
+        164,
+        209,
+        196,
+        241
+      ],
+      "pixel_count": 870,
+      "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0,
+      "primitive_ids": [
+        "geometry.circle.hole-01"
+      ]
+    },
+    {
+      "hole_id": "hole-02",
+      "center_xy": [
+        300,
+        195
+      ],
+      "diameter_px": 41.1,
+      "circularity": 0.017,
+      "bbox": [
+        284,
+        179,
+        316,
+        211
+      ],
+      "pixel_count": 870,
+      "confidence": 0.9,
+      "label_text": "D10",
+      "label_confidence": 0.8,
+      "primitive_ids": [
+        "geometry.circle.hole-02",
+        "geometry.text.hole-02"
+      ]
+    },
+    {
+      "hole_id": "hole-03",
+      "center_xy": [
+        420,
+        225
+      ],
+      "diameter_px": 41.2,
+      "circularity": 0.018,
+      "bbox": [
+        404,
+        209,
+        436,
+        241
+      ],
+      "pixel_count": 867,
+      "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0,
+      "primitive_ids": [
+        "geometry.circle.hole-03"
+      ]
+    }
+  ],
+  "regions": [
+    {
+      "region_id": "plate",
+      "kind": "plate",
+      "bbox": [
+        112,
+        102,
+        488,
+        348
+      ],
+      "pixel_count": 88265,
+      "confidence": 0.95,
+      "primitive_ids": [
+        "geometry.rectangle.plate"
+      ]
+    }
+  ],
+  "extraction_confidence": 0.7,
+  "provenance": {
+    "extractor_id": "geometry-v1",
+    "extractor_version": "0.1.0",
+    "backend": "component_circle",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [
+    {
+      "code": "unreadable_dimension_text",
+      "message": "Dimension text for 'hole-01', 'hole-03' could not be decoded against the fixed dimension catalog.",
+      "check_ids": [
+        "dimension-text-correct"
+      ]
+    }
+  ],
+  "metadata": {
+    "image_path": "datasets\\mechanical\\geometry-v1-noisy\\mutated\\noisy-downscale-mutated-01\\image.png"
+  }
+}

@@ -73,7 +73,8 @@
         "matched_label": {"type": ["string", "null"]},
         "top_y": {"type": ["integer", "null"]},
         "bottom_y": {"type": ["integer", "null"]},
-        "value_source": {"type": "string"}
+        "value_source": {"type": "string"},
+        "primitive_ids": {"type": "array", "items": {"type": "string"}}
       }
     },
     "axis": {
@@ -122,7 +123,8 @@
         "backend": {
           "type": "string",
           "enum": ["template", "optional_ocr"]
-        }
+        },
+        "primitive_ids": {"type": "array", "items": {"type": "string"}}
       }
     },
     "tick_label": {
@@ -141,7 +143,8 @@
           "type": "number",
           "minimum": 0,
           "maximum": 1
-        }
+        },
+        "primitive_ids": {"type": "array", "items": {"type": "string"}}
       }
     },
     "axis_mapping": {

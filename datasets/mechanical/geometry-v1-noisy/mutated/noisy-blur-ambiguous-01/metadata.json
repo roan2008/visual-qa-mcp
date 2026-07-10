@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-blur-ambiguous-01",
+  "title": "Heavy blur makes labels unreadable",
+  "kind": "mutated",
+  "defect_type": "unreadable_dimension_text",
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-blur-ambiguous-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {
+    "postprocess": {
+      "blur_radius": 1.25
+    }
+  },
+  "renderer": "pillow",
+  "transform_family": "blur"
+}

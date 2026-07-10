@@ -7,11 +7,12 @@ from pathlib import Path
 
 from .arrow_dataset import build_arrow_dataset, build_noisy_arrow_dataset
 from .generate_dataset import build_dataset, build_noisy_dataset, build_realworld_pilot_dataset
-from .geometry_dataset import build_geometry_dataset
+from .geometry_dataset import build_geometry_dataset, build_noisy_geometry_dataset
 from .server import main as server_main
 from .service import (
     build_claim_graph_from_spec,
     extract_chart_evidence_from_inputs,
+    extract_primitive_evidence_from_inputs,
     run_arrow_verification,
     run_chart_rules_from_graphs,
     run_chart_verification,
@@ -26,6 +27,7 @@ from .validation import (
     summarize_ocr_validation,
     summarize_chart_validation_suite,
     summarize_geometry_validation_results,
+    summarize_geometry_validation_suite,
     summarize_phase2_validation,
     summarize_validation_results,
 )
@@ -115,16 +117,43 @@ def main(argv: list[str] | None = None) -> int:
         default=Path("datasets") / "mechanical" / "geometry-v1",
     )
 
+    geometry_noisy_generate_parser = subparsers.add_parser("generate-noisy-geometry-dataset")
+    geometry_noisy_generate_parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path("datasets") / "mechanical" / "geometry-v1-noisy",
+    )
+
     geometry_verify_parser = subparsers.add_parser("verify-geometry")
     geometry_verify_parser.add_argument("image_path", type=Path)
     geometry_verify_parser.add_argument("spec_path", type=Path)
     geometry_verify_parser.add_argument("--output-dir", type=Path, default=None)
+
+    primitive_parser = subparsers.add_parser("extract-primitives")
+    primitive_parser.add_argument("image_path", type=Path)
+    primitive_parser.add_argument(
+        "--profile",
+        required=True,
+        choices=["chart-v2", "arrow-v1", "geometry-v1"],
+    )
 
     geometry_validate_parser = subparsers.add_parser("run-geometry-validation")
     geometry_validate_parser.add_argument(
         "--dataset",
         type=Path,
         default=Path("datasets") / "mechanical" / "geometry-v1",
+    )
+
+    geometry_suite_parser = subparsers.add_parser("run-geometry-suite-validation")
+    geometry_suite_parser.add_argument(
+        "--controlled-dataset",
+        type=Path,
+        default=Path("datasets") / "mechanical" / "geometry-v1",
+    )
+    geometry_suite_parser.add_argument(
+        "--noisy-dataset",
+        type=Path,
+        default=Path("datasets") / "mechanical" / "geometry-v1-noisy",
     )
 
     serve_parser = subparsers.add_parser("serve-mcp")
@@ -260,6 +289,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Geometry dataset generated at {args.output}")
         return 0
 
+    if args.command == "generate-noisy-geometry-dataset":
+        build_noisy_geometry_dataset(args.output)
+        print(f"Noisy geometry dataset generated at {args.output}")
+        return 0
+
     if args.command == "verify-geometry":
         result = run_geometry_verification(
             image_path=args.image_path,
@@ -272,8 +306,22 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(payload, indent=2))
         return 0
 
+    if args.command == "extract-primitives":
+        graph = extract_primitive_evidence_from_inputs(args.image_path, args.profile)
+        print(json.dumps(graph.to_dict(), indent=2))
+        return 0
+
     if args.command == "run-geometry-validation":
         summary = summarize_geometry_validation_results(args.dataset)
+        print(json.dumps(summary, indent=2))
+        return 0
+
+
+    if args.command == "run-geometry-suite-validation":
+        summary = summarize_geometry_validation_suite(
+            controlled_root=args.controlled_dataset,
+            noisy_root=args.noisy_dataset,
+        )
         print(json.dumps(summary, indent=2))
         return 0
 

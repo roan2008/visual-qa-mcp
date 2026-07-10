@@ -71,7 +71,8 @@ Run this every new session:
 5. Read `wiki/impl-chart-v2-noisy-realworld-pilot.md` when working on chart-v2 readiness, noisy transforms, or the pilot dataset
 6. Read `wiki/impl-arrow-v1-free-body.md` when working on arrows or force balance
 7. Read `wiki/impl-geometry-v1-mechanical.md` when working on mechanical geometry
-8. Read relevant knowledge pages, especially:
+8. Read `wiki/impl-primitive-evidence-foundation.md` when working on shared primitives, relationships, or new verticals
+9. Read relevant knowledge pages, especially:
    - `wiki/knowledge-product-direction.md`
    - `wiki/knowledge-rules-validators.md`
    - `wiki/knowledge-no-tuning-and-3d.md`
@@ -133,8 +134,10 @@ Capture knowledge immediately after each meaningful step, in this priority order
 - `chart-v2-realworld-pilot` is a separately checksum-frozen 24-case pilot. It contains locally rendered Pillow/Matplotlib charts and charts backed by one frozen World Bank population-data snapshot. It is evidence for a bounded pilot, not proof of general real-world readiness.
 - `run-chart-suite-validation` reports controlled, noisy, and pilot summaries. The existing validation command remains the compatibility surface for the original chart dataset.
 - `arrow-v1` is the second executable vertical: controlled free-body diagrams with color-declared and label-declared arrow identity, validated on a 17-case controlled set (8/8 typed defects, 3/3 ambiguity guard, 0 unsupported passes) plus a 6-case noisy blur/downscale/JPEG track (4/4 typed defects, 0 unsupported passes). It includes one theory-aware check: opt-in translational force balance (`source_reference.scenario_type = "equilibrium"` plus a `force-balance-correct` check) that sums extractor pixel vectors and refuses to sum a partial force set. It has no torque/moment balance, no magnitude calibration, and no real-world images yet.
-- `geometry-v1` is the third executable vertical: controlled rectangular mechanical plates with circular holes, relative diameter-ratio checks, opt-in linear alignment/spacing, and a fixed dimension-label catalog. Its 14-case controlled dataset records 7/7 typed defects, 2/2 ambiguity guards, 13/13 hole-count evidence, 0 unsupported passes, and 0 golden non-passes. It has no noisy/real-world evidence, general OCR, unit calibration, callout-arrow extraction, or native CAD support.
-- The MCP wrapper exposes chart, arrow, and geometry claim/extraction/verification tools. The package can be installed locally with `python -m pip install -e .`, which provides the `visual-qa` console command.
+- `geometry-v1` is the third executable vertical: controlled rectangular mechanical plates with circular holes, relative diameter-ratio checks, opt-in linear alignment/spacing, and a fixed dimension-label catalog. Its 14-case controlled dataset records 7/7 typed defects and 2/2 ambiguity guards. A separate checksum-frozen 20-case noisy track records 10/10 golden passes, 5/5 typed hits, 5/5 ambiguity guards, and 0 unsupported passes across configured blur/downscale/JPEG/low-contrast/label-degradation transforms. It has no independently authored images, general OCR, unit calibration, callout-arrow extraction, or native CAD support.
+- `PrimitiveEvidenceGraph` v1 is an additive audit layer for explicit chart/arrow/geometry profiles. It records type-discriminated primitives, relationships, provenance, gaps, and domain traceability. Current domain rules do not consume it; standalone chart primitive parsing remains spec-blind.
+- The MCP wrapper exposes chart, arrow, geometry, and `parse_primitives` tools. The package can be installed locally with `python -m pip install -e .`, which provides the `visual-qa` console command.
+- The unified 85-test suite passes in about 63 seconds on the milestone machine; chart end-to-end passes 16/16 in about 35 seconds.
 
 ## Claim Discipline
 

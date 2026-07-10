@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-jpeg-mutated-01",
+  "title": "JPEG wrong dimension label",
+  "kind": "mutated",
+  "defect_type": "wrong_dimension_text",
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-jpeg-mutated-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {
+    "postprocess": {
+      "jpeg_quality": 92
+    }
+  },
+  "renderer": "pillow",
+  "transform_family": "jpeg"
+}

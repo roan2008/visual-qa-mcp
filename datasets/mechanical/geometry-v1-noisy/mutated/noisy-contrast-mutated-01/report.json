@@ -1,0 +1,61 @@
+{
+  "image_id": "image",
+  "spec_id": "geometry-noisy-contrast-mutated-01",
+  "verdict": "needs_review",
+  "findings": [
+    {
+      "id": "finding-hole-count",
+      "rule_id": "geometry-v1.hole-count-correct",
+      "type": "hole_count_mismatch",
+      "severity": "high",
+      "message": "Detected 4 circular holes but expected 3.",
+      "evidence": {
+        "expected_count": 3,
+        "detected_count": 4,
+        "detected_hole_centers": [
+          [
+            180,
+            225
+          ],
+          [
+            240,
+            300
+          ],
+          [
+            300,
+            225
+          ],
+          [
+            420,
+            225
+          ]
+        ]
+      },
+      "recommendation": "Regenerate the illustration with the required number of holes."
+    }
+  ],
+  "checks_run": [
+    "hole-count-correct"
+  ],
+  "checks_skipped": [
+    {
+      "check_id": "hole-diameter-ratio-correct",
+      "reason": "Detected 4 holes but expected 3; hole identity pairing uses left-to-right order and requires the detected hole count to equal the expected hole count."
+    },
+    {
+      "check_id": "hole-alignment-correct",
+      "reason": "Detected 4 holes but expected 3; hole identity pairing uses left-to-right order and requires the detected hole count to equal the expected hole count."
+    },
+    {
+      "check_id": "dimension-text-correct",
+      "reason": "Dimension text for 'hole-02' could not be decoded against the fixed dimension catalog."
+    }
+  ],
+  "confidence": 0.2,
+  "extraction_confidence": 0.7,
+  "rule_confidence": 0.2,
+  "overlay_path": "datasets\\mechanical\\geometry-v1-noisy\\mutated\\noisy-contrast-mutated-01\\overlay.png",
+  "evidence_graph_path": "datasets\\mechanical\\geometry-v1-noisy\\mutated\\noisy-contrast-mutated-01\\evidence_graph.json",
+  "claim_graph_path": "datasets\\mechanical\\geometry-v1-noisy\\mutated\\noisy-contrast-mutated-01\\claim_graph.json",
+  "primitive_evidence_graph_path": "datasets\\mechanical\\geometry-v1-noisy\\mutated\\noisy-contrast-mutated-01\\primitive_evidence_graph.json"
+}

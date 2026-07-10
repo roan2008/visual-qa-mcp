@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-contrast-mutated-01",
+  "title": "Low-contrast extra hole",
+  "kind": "mutated",
+  "defect_type": "extra_hole",
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-contrast-mutated-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {
+    "postprocess": {
+      "contrast_factor": 0.75
+    }
+  },
+  "renderer": "pillow",
+  "transform_family": "low_contrast"
+}

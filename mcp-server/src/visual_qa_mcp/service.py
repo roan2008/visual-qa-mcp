@@ -31,6 +31,12 @@ from .contracts import (
     VerificationResult,
 )
 from .overlay import make_overlay
+from .primitive_evidence import (
+    extract_primitive_evidence,
+    primitive_graph_from_arrows,
+    primitive_graph_from_chart,
+    primitive_graph_from_geometry,
+)
 
 
 def build_claim_graph_from_spec(spec_path: Path) -> ClaimGraph:
@@ -71,6 +77,7 @@ def load_evidence_graph(payload_or_path: dict | str | Path) -> EvidenceGraph:
             zero_line_y=axis["zero_line_y"],
             mapping=AxisMapping(**mapping) if mapping is not None else None,
             backend=axis["backend"],
+            primitive_ids=axis.get("primitive_ids", []),
         ),
         extraction_confidence=payload["extraction_confidence"],
         provenance=ExtractionProvenance(**payload["provenance"]),
@@ -85,12 +92,18 @@ def extract_chart_evidence_from_inputs(
     metadata_path: Path | None = None,
     backend: str | None = None,
 ) -> EvidenceGraph:
-    return extract_chart_evidence(
+    evidence = extract_chart_evidence(
         image_path=image_path,
         spec_path=spec_path,
         metadata_path=metadata_path,
         backend=backend,
     )
+    primitive_graph_from_chart(evidence, image_path)
+    return evidence
+
+
+def extract_primitive_evidence_from_inputs(image_path: Path, profile: str):
+    return extract_primitive_evidence(image_path, profile)
 
 
 def run_chart_verification(
@@ -107,6 +120,7 @@ def run_chart_verification(
         backend=backend,
     )
     report = run_chart_claims(claim_graph, evidence_graph)
+    primitive_graph = primitive_graph_from_chart(evidence_graph, image_path)
     return VerificationResult(
         image_path=image_path,
         spec_path=spec_path,
@@ -115,6 +129,7 @@ def run_chart_verification(
         claim_graph=claim_graph,
         evidence_graph=evidence_graph,
         report=report,
+        primitive_graph=primitive_graph,
     )
 
 
@@ -126,11 +141,18 @@ def write_verification_artifacts(result: VerificationResult, output_dir: Path) -
         evidence_graph_path=output_dir / "evidence_graph.json",
         claim_graph_path=output_dir / "claim_graph.json",
         report_path=output_dir / "report.json",
+        primitive_evidence_graph_path=(
+            output_dir / "primitive_evidence_graph.json"
+            if result.primitive_graph is not None
+            else None
+        ),
     )
 
     make_overlay(result.image_path, result.report, paths.overlay_path)
     result.report.evidence_graph_path = str(paths.evidence_graph_path)
     result.report.claim_graph_path = str(paths.claim_graph_path)
+    if paths.primitive_evidence_graph_path is not None:
+        result.report.primitive_evidence_graph_path = str(paths.primitive_evidence_graph_path)
     paths.evidence_graph_path.write_text(
         json.dumps(result.evidence_graph.to_dict(), indent=2),
         encoding="utf-8",
@@ -139,6 +161,11 @@ def write_verification_artifacts(result: VerificationResult, output_dir: Path) -
         json.dumps(result.claim_graph.to_dict(), indent=2),
         encoding="utf-8",
     )
+    if paths.primitive_evidence_graph_path is not None and result.primitive_graph is not None:
+        paths.primitive_evidence_graph_path.write_text(
+            json.dumps(result.primitive_graph.to_dict(), indent=2),
+            encoding="utf-8",
+        )
     paths.report_path.write_text(
         json.dumps(result.report.to_dict(), indent=2),
         encoding="utf-8",
@@ -151,7 +178,9 @@ def build_arrow_claim_graph_from_spec(spec_path: Path) -> ClaimGraph:
 
 
 def extract_arrow_evidence_from_inputs(image_path: Path) -> ArrowEvidenceGraph:
-    return extract_arrow_evidence(image_path)
+    evidence = extract_arrow_evidence(image_path)
+    primitive_graph_from_arrows(evidence, image_path)
+    return evidence
 
 
 def run_arrow_verification(
@@ -162,6 +191,7 @@ def run_arrow_verification(
     claim_graph = build_arrow_claim_graph(spec_path)
     evidence_graph = extract_arrow_evidence(image_path)
     report = run_arrow_claims(claim_graph, evidence_graph)
+    primitive_graph = primitive_graph_from_arrows(evidence_graph, image_path)
     return VerificationResult(
         image_path=image_path,
         spec_path=spec_path,
@@ -170,6 +200,7 @@ def run_arrow_verification(
         claim_graph=claim_graph,
         evidence_graph=evidence_graph,
         report=report,
+        primitive_graph=primitive_graph,
     )
 
 
@@ -178,7 +209,9 @@ def build_geometry_claim_graph_from_spec(spec_path: Path) -> ClaimGraph:
 
 
 def extract_geometry_evidence_from_inputs(image_path: Path) -> GeometryEvidenceGraph:
-    return extract_geometry_evidence(image_path)
+    evidence = extract_geometry_evidence(image_path)
+    primitive_graph_from_geometry(evidence, image_path)
+    return evidence
 
 
 def run_geometry_verification(
@@ -189,6 +222,7 @@ def run_geometry_verification(
     claim_graph = build_geometry_claim_graph(spec_path)
     evidence_graph = extract_geometry_evidence(image_path)
     report = run_geometry_claims(claim_graph, evidence_graph)
+    primitive_graph = primitive_graph_from_geometry(evidence_graph, image_path)
     return VerificationResult(
         image_path=image_path,
         spec_path=spec_path,
@@ -197,6 +231,7 @@ def run_geometry_verification(
         claim_graph=claim_graph,
         evidence_graph=evidence_graph,
         report=report,
+        primitive_graph=primitive_graph,
     )
 
 

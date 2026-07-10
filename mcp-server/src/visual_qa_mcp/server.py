@@ -16,6 +16,7 @@ from .service import (
     extract_arrow_evidence_from_inputs,
     extract_chart_evidence_from_inputs,
     extract_geometry_evidence_from_inputs,
+    extract_primitive_evidence_from_inputs,
     run_arrow_verification,
     run_chart_rules_from_graphs,
     run_chart_verification,
@@ -30,6 +31,21 @@ def create_server() -> Server:
     @server.list_tools()
     async def list_tools() -> list[types.Tool]:
         return [
+            types.Tool(
+                name="parse_primitives",
+                description="Extract a spec-blind PrimitiveEvidenceGraph using an explicit bounded profile.",
+                inputSchema={
+                    "type": "object",
+                    "required": ["image_path", "profile"],
+                    "properties": {
+                        "image_path": {"type": "string"},
+                        "profile": {
+                            "type": "string",
+                            "enum": ["chart-v2", "arrow-v1", "geometry-v1"],
+                        },
+                    },
+                },
+            ),
             types.Tool(
                 name="build_claim_graph",
                 description="Build a chart-v2 ClaimGraph from a visual spec JSON file path.",
@@ -151,6 +167,13 @@ def create_server() -> Server:
 
     @server.call_tool()
     async def call_tool(name: str, arguments: dict[str, Any]) -> list[types.TextContent]:
+        if name == "parse_primitives":
+            graph = extract_primitive_evidence_from_inputs(
+                Path(arguments["image_path"]),
+                str(arguments["profile"]),
+            )
+            return [_json_content(graph.to_dict())]
+
         if name == "build_claim_graph":
             claim_graph = build_claim_graph_from_spec(Path(arguments["spec_path"]))
             return [_json_content(claim_graph.to_dict())]

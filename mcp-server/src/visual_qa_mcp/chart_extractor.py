@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from functools import lru_cache
 from pathlib import Path
 from statistics import mean
 from typing import Any
@@ -63,6 +64,16 @@ def _normalize_foreground(image: Image.Image, size: tuple[int, int] = (92, 26)) 
     return (np.array(resized) > 127).astype(float)
 
 
+@lru_cache(maxsize=4096)
+def _normalized_text_template(
+    text: str,
+    size: tuple[int, int],
+    font_size: int,
+    font_name: str | None,
+) -> np.ndarray | None:
+    return _normalize_foreground(_render_text(text, size, font_size, font_name=font_name))
+
+
 def _match_text(crop: Image.Image, candidates: list[str], font_size: int = 16, threshold: float = 0.72) -> tuple[str | None, float]:
     if not candidates:
         return None, 0.0
@@ -74,8 +85,12 @@ def _match_text(crop: Image.Image, candidates: list[str], font_size: int = 16, t
         candidate_scores: list[float] = []
         for template_size in sorted({max(10, font_size - 2), font_size, font_size + 2}):
             for font_name in (None, "DejaVuSans.ttf"):
-                template = _render_text(candidate, crop.size, template_size, font_name=font_name)
-                normalized_template = _normalize_foreground(template)
+                normalized_template = _normalized_text_template(
+                    candidate,
+                    crop.size,
+                    template_size,
+                    font_name,
+                )
                 if normalized_template is not None:
                     candidate_scores.append(float(np.mean(np.abs(normalized_crop - normalized_template))))
         if candidate_scores:

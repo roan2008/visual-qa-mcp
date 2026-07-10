@@ -32,6 +32,7 @@ def test_mcp_server_lists_expected_tools() -> None:
 
     payload = anyio.run(run)
     assert [tool["name"] for tool in payload["tools"]] == [
+        "parse_primitives",
         "build_claim_graph",
         "parse_chart",
         "run_rules",
@@ -45,6 +46,29 @@ def test_mcp_server_lists_expected_tools() -> None:
     ]
 
 
+def test_mcp_parse_primitives_returns_schema_valid_payload() -> None:
+    image_path = ROOT / "datasets" / "mechanical" / "geometry-v1" / "golden" / "golden-01" / "image.png"
+    schema = load_schema(ROOT / "specs" / "primitive-evidence-graph.schema.json")
+    server = create_server()
+
+    async def run() -> dict:
+        handler = server.request_handlers[types.CallToolRequest]
+        result = await handler(
+            types.CallToolRequest(
+                method="tools/call",
+                params=types.CallToolRequestParams(
+                    name="parse_primitives",
+                    arguments={"image_path": str(image_path), "profile": "geometry-v1"},
+                ),
+            )
+        )
+        return json.loads(result.model_dump()["content"][0]["text"])
+
+    payload = anyio.run(run)
+    assert validate_json(schema, payload) == []
+    assert payload["profile"] == "geometry-v1"
+
+
 def test_mcp_verify_chart_returns_schema_valid_payload(tmp_path: Path) -> None:
     dataset_root = tmp_path / "chart-v2"
     build_dataset(dataset_root)
@@ -52,6 +76,7 @@ def test_mcp_verify_chart_returns_schema_valid_payload(tmp_path: Path) -> None:
     claim_schema = load_schema(ROOT / "specs" / "claim-graph.schema.json")
     evidence_schema = load_schema(ROOT / "specs" / "evidence-graph.schema.json")
     findings_schema = load_schema(ROOT / "specs" / "findings.schema.json")
+    primitive_schema = load_schema(ROOT / "specs" / "primitive-evidence-graph.schema.json")
     server = create_server()
 
     async def run() -> dict:
@@ -75,6 +100,7 @@ def test_mcp_verify_chart_returns_schema_valid_payload(tmp_path: Path) -> None:
     assert validate_json(claim_schema, payload["claim_graph"]) == []
     assert validate_json(evidence_schema, payload["evidence_graph"]) == []
     assert validate_json(findings_schema, payload["report"]) == []
+    assert validate_json(primitive_schema, payload["primitive_graph"]) == []
     assert payload["report"]["verdict"] == "fail"
 
 
@@ -85,6 +111,7 @@ def test_mcp_verify_arrow_returns_schema_valid_payload(tmp_path: Path) -> None:
     claim_schema = load_schema(ROOT / "specs" / "claim-graph.schema.json")
     evidence_schema = load_schema(ROOT / "specs" / "arrow-evidence-graph.schema.json")
     findings_schema = load_schema(ROOT / "specs" / "findings.schema.json")
+    primitive_schema = load_schema(ROOT / "specs" / "primitive-evidence-graph.schema.json")
     server = create_server()
 
     async def run() -> dict:
@@ -108,6 +135,7 @@ def test_mcp_verify_arrow_returns_schema_valid_payload(tmp_path: Path) -> None:
     assert validate_json(claim_schema, payload["claim_graph"]) == []
     assert validate_json(evidence_schema, payload["evidence_graph"]) == []
     assert validate_json(findings_schema, payload["report"]) == []
+    assert validate_json(primitive_schema, payload["primitive_graph"]) == []
     assert payload["report"]["verdict"] == "fail"
 
 
@@ -120,6 +148,7 @@ def test_mcp_verify_geometry_returns_schema_valid_payload(tmp_path: Path) -> Non
     claim_schema = load_schema(ROOT / "specs" / "claim-graph.schema.json")
     evidence_schema = load_schema(ROOT / "specs" / "geometry-evidence-graph.schema.json")
     findings_schema = load_schema(ROOT / "specs" / "findings.schema.json")
+    primitive_schema = load_schema(ROOT / "specs" / "primitive-evidence-graph.schema.json")
     server = create_server()
 
     async def run() -> dict:
@@ -143,4 +172,5 @@ def test_mcp_verify_geometry_returns_schema_valid_payload(tmp_path: Path) -> Non
     assert validate_json(claim_schema, payload["claim_graph"]) == []
     assert validate_json(evidence_schema, payload["evidence_graph"]) == []
     assert validate_json(findings_schema, payload["report"]) == []
+    assert validate_json(primitive_schema, payload["primitive_graph"]) == []
     assert payload["report"]["verdict"] == "fail"

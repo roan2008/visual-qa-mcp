@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visual-qa-mcp.local/schemas/primitive-evidence-graph.schema.json",
+  "title": "PrimitiveEvidenceGraph",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "image_id", "profile", "coordinate_system", "primitives", "relationships", "gaps", "provenance", "metadata"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "image_id": {"type": "string", "minLength": 1},
+    "profile": {"enum": ["chart-v2", "arrow-v1", "geometry-v1"]},
+    "coordinate_system": {"$ref": "#/$defs/coordinateSystem"},
+    "primitives": {"type": "array", "items": {"$ref": "#/$defs/primitive"}},
+    "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship"}},
+    "gaps": {"type": "array", "items": {"$ref": "#/$defs/gap"}},
+    "provenance": {"$ref": "#/$defs/provenance"},
+    "metadata": {"type": "object", "additionalProperties": true}
+  },
+  "$defs": {
+    "point": {
+      "type": "array",
+      "prefixItems": [{"type": "number"}, {"type": "number"}],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "bbox": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["left", "top", "right", "bottom"],
+      "properties": {
+        "left": {"type": "integer", "minimum": 0},
+        "top": {"type": "integer", "minimum": 0},
+        "right": {"type": "integer", "minimum": 0},
+        "bottom": {"type": "integer", "minimum": 0}
+      }
+    },
+    "coordinateSystem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "x_direction", "y_direction", "unit", "image_width", "image_height", "bbox_format"],
+      "properties": {
+        "origin": {"const": "top_left"},
+        "x_direction": {"const": "right"},
+        "y_direction": {"const": "down"},
+        "unit": {"const": "pixel"},
+        "image_width": {"type": "integer", "minimum": 1},
+        "image_height": {"type": "integer", "minimum": 1},
+        "bbox_format": {"const": "left_top_right_bottom_inclusive"}
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["graph", "collection", "object_id"],
+      "properties": {
+        "graph": {"enum": ["domain_evidence", "image_detection"]},
+        "collection": {"type": "string", "minLength": 1},
+        "object_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "primitiveBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primitive_id", "type", "bbox", "geometry", "confidence", "attributes", "source_refs"],
+      "properties": {
+        "primitive_id": {"type": "string", "minLength": 1},
+        "type": {"enum": ["point", "line", "polyline", "arrow", "circle", "rectangle", "text_region", "symbol", "color_region"]},
+        "bbox": {"$ref": "#/$defs/bbox"},
+        "geometry": {"type": "object"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "attributes": {"type": "object", "additionalProperties": true},
+        "source_refs": {"type": "array", "items": {"$ref": "#/$defs/sourceRef"}}
+      }
+    },
+    "primitive": {
+      "oneOf": [
+        {"$ref": "#/$defs/pointPrimitive"},
+        {"$ref": "#/$defs/linePrimitive"},
+        {"$ref": "#/$defs/polylinePrimitive"},
+        {"$ref": "#/$defs/arrowPrimitive"},
+        {"$ref": "#/$defs/circlePrimitive"},
+        {"$ref": "#/$defs/regionPrimitive"}
+      ]
+    },
+    "pointPrimitive": {
+      "allOf": [
+        {"$ref": "#/$defs/primitiveBase"},
+        {"properties": {"type": {"const": "point"}, "geometry": {"type": "object", "additionalProperties": false, "required": ["point"], "properties": {"point": {"$ref": "#/$defs/point"}}}}}
+      ]
+    },
+    "linePrimitive": {
+      "allOf": [
+        {"$ref": "#/$defs/primitiveBase"},
+        {"properties": {"type": {"const": "line"}, "geometry": {"type": "object", "additionalProperties": false, "required": ["start", "end"], "properties": {"start": {"$ref": "#/$defs/point"}, "end": {"$ref": "#/$defs/point"}}}}}
+      ]
+    },
+    "polylinePrimitive": {
+      "allOf": [
+        {"$ref": "#/$defs/primitiveBase"},
+        {"properties": {"type": {"const": "polyline"}, "geometry": {"type": "object", "additionalProperties": false, "required": ["points"], "properties": {"points": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/point"}}}}}}
+      ]
+    },
+    "arrowPrimitive": {
+      "allOf": [
+        {"$ref": "#/$defs/primitiveBase"},
+        {"properties": {"type": {"const": "arrow"}, "geometry": {"type": "object", "additionalProperties": false, "required": ["tail", "head"], "properties": {"tail": {"$ref": "#/$defs/point"}, "head": {"$ref": "#/$defs/point"}}}}}
+      ]
+    },
+    "circlePrimitive": {
+      "allOf": [
+        {"$ref": "#/$defs/primitiveBase"},
+        {"properties": {"type": {"const": "circle"}, "geometry": {"type": "object", "additionalProperties": false, "required": ["center", "radius"], "properties": {"center": {"$ref": "#/$defs/point"}, "radius": {"type": "number", "exclusiveMinimum": 0}}}}}
+      ]
+    },
+    "regionPrimitive": {
+      "allOf": [
+        {"$ref": "#/$defs/primitiveBase"},
+        {"properties": {"type": {"enum": ["rectangle", "text_region", "symbol", "color_region"]}, "geometry": {"type": "object", "additionalProperties": false, "required": ["bounds"], "properties": {"bounds": {"$ref": "#/$defs/bbox"}}}}}
+      ]
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relationship_id", "type", "source_primitive_id", "target_primitive_id", "confidence", "measurements", "supporting_primitive_ids"],
+      "properties": {
+        "relationship_id": {"type": "string", "minLength": 1},
+        "type": {"enum": ["inside", "touches", "connected_to", "aligned_with", "parallel_to", "perpendicular_to", "above", "below", "left_of", "right_of", "approximately_equal"]},
+        "source_primitive_id": {"type": "string", "minLength": 1},
+        "target_primitive_id": {"type": "string", "minLength": 1},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "measurements": {"type": "object", "additionalProperties": true},
+        "supporting_primitive_ids": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message", "check_ids"],
+      "properties": {
+        "code": {"type": "string", "minLength": 1},
+        "message": {"type": "string", "minLength": 1},
+        "check_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["extractor_id", "extractor_version", "backend", "metadata_source", "dependency_versions", "environment"],
+      "properties": {
+        "extractor_id": {"type": "string", "minLength": 1},
+        "extractor_version": {"type": "string", "minLength": 1},
+        "backend": {"type": "string", "minLength": 1},
+        "metadata_source": {"type": "string", "minLength": 1},
+        "dependency_versions": {"type": "object", "additionalProperties": {"type": "string"}},
+        "environment": {"type": "object", "additionalProperties": true}
+      }
+    }
+  }
+}

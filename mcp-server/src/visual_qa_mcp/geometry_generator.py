@@ -55,7 +55,8 @@ def render_geometry_diagram(
         label_text = hole.get("label_text")
         if label_text:
             label_box = dimension_label_box((center_x, center_y), radius)
-            draw_text_centered(draw, label_box, str(label_text), get_font(16), fill=(0, 0, 0))
+            label_fill = tuple(int(value) for value in hole.get("label_fill", (0, 0, 0)))
+            draw_text_centered(draw, label_box, str(label_text), get_font(16), fill=label_fill)
 
     image_path.parent.mkdir(parents=True, exist_ok=True)
     image = _apply_postprocess(image, image_path, options)

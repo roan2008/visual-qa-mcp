@@ -75,6 +75,10 @@ The current runtime has three bounded executable verticals:
 - `arrow-v1`: controlled free-body diagrams with arrow identity, direction, anchor, and opt-in translational force balance
 - `geometry-v1`: controlled mechanical plates with circular-hole count, relative diameter, linear alignment/spacing, and fixed-catalog dimension labels
 
+All three can also project into an additive `PrimitiveEvidenceGraph` audit layer containing basic
+shapes, arrows, text regions, spatial relationships, provenance, and links back to domain evidence.
+Domain rules still consume the established domain graphs.
+
 Implemented pieces:
 
 - `EvidenceGraph` schema with tick detections, axis mapping, and bar geometry.
@@ -82,6 +86,7 @@ Implemented pieces:
 - claim-generation gaps and `claim_graph.json` audit artifacts so unsupported checks degrade to `needs_review` instead of disappearing silently.
 - Local callable Python tool surface in `mcp-server/src/visual_qa_mcp/` for claim generation, evidence extraction, verification, and artifact writing.
 - MCP server wrapper over chart, arrow, and geometry claim/extraction/verification surfaces.
+- Spec-blind `parse_primitives` MCP and `extract-primitives` CLI surfaces for the three bounded profiles.
 - Audit-oriented provenance and confidence separation:
   - extractor provenance in `EvidenceGraph`
   - stable `rule_id` values in claims and findings
@@ -100,9 +105,10 @@ Implemented pieces:
 - Overlay generation for flagged findings.
 - Verification tests, validation summary artifacts, and advisor-gate evidence packs.
 
-Geometry-v1 is validated only on its 14-case controlled Pillow-rendered family: typed defects `7/7`,
-ambiguity guards `2/2`, false unsupported passes `0`, and golden non-passes `0`. This does not cover
-arbitrary mechanical drawings, real-world images, general OCR, calibrated units, or native CAD.
+Geometry-v1 has a 14-case controlled Pillow-rendered family (`7/7` typed, `2/2` ambiguity) and a
+separate checksum-frozen 20-case noisy family (`5/5` typed, `5/5` ambiguity, `10/10` golden). This
+does not cover arbitrary mechanical drawings, independently authored images, general OCR,
+calibrated units, or native CAD.
 
 The bounded readiness claim remains narrow: the validated default is the template backend on the
 controlled chart-v2 family and the configured noisy transform family. The real-world pilot is an

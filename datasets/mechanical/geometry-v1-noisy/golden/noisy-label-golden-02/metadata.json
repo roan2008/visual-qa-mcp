@@ -1,0 +1,13 @@
+{
+  "case_id": "noisy-label-golden-02",
+  "title": "Faded mixed dimension labels",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-label-golden-02",
+  "diagram_version": "geometry-v1",
+  "render_options": {},
+  "renderer": "pillow",
+  "transform_family": "label_degradation"
+}

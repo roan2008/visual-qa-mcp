@@ -8,6 +8,13 @@ Chart-v2 only.
 
 Returns a `ClaimGraph` artifact derived from the provided visual spec.
 
+## `parse_primitives(image_path, profile)`
+
+Returns a spec-blind `PrimitiveEvidenceGraph` for an explicit `chart-v2`, `arrow-v1`, or
+`geometry-v1` profile. The graph is an additive audit artifact; current domain rules do not consume
+it. Chart parsing exposes low-level candidates and explicit gaps rather than conditioning primitive
+evidence on a visual spec.
+
 ## `parse_chart(image_path, visual_spec_json, metadata_json?, backend?)`
 
 Chart-v2 only.
@@ -49,11 +56,16 @@ These tools retain arrow-v1's controlled/noisy synthetic bounds and do not imply
 
 These tools are bounded to controlled rectangular plate renders. They are not general OCR, arbitrary drawing interpretation, unit calibration, or native CAD inspection.
 
+The separately checksum-frozen geometry noisy track covers only its configured blur, downscale,
+JPEG, low-contrast, and label-degradation transforms.
+
 ## Validation CLI Surfaces
 
 - `generate-realworld-pilot` builds the 24-case pilot and checksum manifest.
 - `run-chart-suite-validation` reports controlled, noisy, and pilot metrics separately and verifies
   the pilot manifest.
+- `generate-noisy-geometry-dataset` and `run-geometry-suite-validation` build and validate the
+  separate 20-case geometry robustness gate and manifest.
 
 These are local CLI validation surfaces, not additional MCP tools. They do not widen the four MCP
 tool contracts or the template-backend readiness boundary.

@@ -47,11 +47,23 @@ cases have typed expected findings and two exercise ambiguity guards.
 - golden non-passes: `0`
 - verdict mismatches: `0`
 
+## Noisy Gate
+
+`datasets/mechanical/geometry-v1-noisy` contains 20 checksum-frozen cases across blur, downscale,
+JPEG, low contrast, and dimension-label degradation. Each family has two golden, one typed defect,
+and one ambiguity guard.
+
+- golden passes: `10/10`
+- typed defect hits: `5/5`
+- ambiguity guards: `5/5`
+- false unsupported passes: `0`
+- manifest: valid `20/20`
+
 ## Bounds
 
-This evidence applies only to the controlled Pillow-rendered family: one rectangular plate,
+This evidence applies only to the controlled Pillow-rendered family and the separately reported
+configured noisy transforms: one rectangular plate,
 circular through-hole symbols, unobstructed top views, the closed label catalog, and the declared
-linear-layout semantics. There is no noisy track, independent real-world dataset, arbitrary OCR,
-unit calibration, general line/callout-arrow extraction, CAD-source inspection, or professional
-engineering certification claim.
-
+linear-layout semantics. There is no independently authored dataset, arbitrary OCR, unit calibration,
+general line/callout-arrow extraction, CAD-source inspection, or professional engineering
+certification claim.

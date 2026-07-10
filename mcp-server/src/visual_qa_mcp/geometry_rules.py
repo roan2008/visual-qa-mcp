@@ -154,6 +154,7 @@ def run_geometry_claims(
                             ),
                             {
                                 "hole_id": expected["id"],
+                                "detected_hole_id": hole.hole_id,
                                 "declared_diameter": float(expected["diameter"]),
                                 "measured_diameter_px": hole.diameter_px,
                                 "reference_hole_id": reference["id"],
@@ -225,6 +226,7 @@ def run_geometry_claims(
                             ),
                             {
                                 "hole_id": expected_ids[worst_index],
+                                "detected_hole_id": hole.hole_id,
                                 "center_xy": hole.center_xy,
                                 "line_residuals_px": [round(value, 1) for value in residuals],
                                 "alignment_tolerance_px": alignment_tolerance,
@@ -314,6 +316,7 @@ def run_geometry_claims(
                             ),
                             {
                                 "hole_id": expected["id"],
+                                "detected_hole_id": hole.hole_id,
                                 "expected_dimension_text": expected_text,
                                 "decoded_dimension_text": hole.label_text,
                                 "label_confidence": hole.label_confidence,

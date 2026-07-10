@@ -19,7 +19,11 @@
       "pixel_count": 577,
       "confidence": 0.9,
       "label_text": "D8",
-      "label_confidence": 0.92
+      "label_confidence": 0.92,
+      "primitive_ids": [
+        "geometry.circle.hole-01",
+        "geometry.text.hole-01"
+      ]
     },
     {
       "hole_id": "hole-02",
@@ -38,7 +42,11 @@
       "pixel_count": 577,
       "confidence": 0.9,
       "label_text": "D8",
-      "label_confidence": 0.92
+      "label_confidence": 0.92,
+      "primitive_ids": [
+        "geometry.circle.hole-02",
+        "geometry.text.hole-02"
+      ]
     },
     {
       "hole_id": "hole-03",
@@ -57,7 +65,11 @@
       "pixel_count": 1457,
       "confidence": 0.9,
       "label_text": "D12",
-      "label_confidence": 0.98
+      "label_confidence": 0.98,
+      "primitive_ids": [
+        "geometry.circle.hole-03",
+        "geometry.text.hole-03"
+      ]
     },
     {
       "hole_id": "hole-04",
@@ -76,7 +88,11 @@
       "pixel_count": 577,
       "confidence": 0.9,
       "label_text": "D8",
-      "label_confidence": 0.92
+      "label_confidence": 0.92,
+      "primitive_ids": [
+        "geometry.circle.hole-04",
+        "geometry.text.hole-04"
+      ]
     }
   ],
   "regions": [
@@ -90,7 +106,10 @@
         348
       ],
       "pixel_count": 87958,
-      "confidence": 0.95
+      "confidence": 0.95,
+      "primitive_ids": [
+        "geometry.rectangle.plate"
+      ]
     }
   ],
   "extraction_confidence": 0.9,

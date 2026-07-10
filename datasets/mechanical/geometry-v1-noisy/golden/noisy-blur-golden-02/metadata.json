@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-blur-golden-02",
+  "title": "Mild blur on mixed holes",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-blur-golden-02",
+  "diagram_version": "geometry-v1",
+  "render_options": {
+    "postprocess": {
+      "blur_radius": 0.35
+    }
+  },
+  "renderer": "pillow",
+  "transform_family": "blur"
+}

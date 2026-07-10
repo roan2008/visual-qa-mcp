@@ -10,6 +10,9 @@ dependencies = [
   "mcp>=1.27,<2",
   "numpy>=1.26,<3",
   "pillow>=10,<12",
+  # Pydantic Core imports Sentinel and declares this minimum; pinning it here
+  # prevents an older transitive typing-extensions install from breaking MCP startup.
+  "typing-extensions>=4.14.1",
 ]
 
 [project.optional-dependencies]

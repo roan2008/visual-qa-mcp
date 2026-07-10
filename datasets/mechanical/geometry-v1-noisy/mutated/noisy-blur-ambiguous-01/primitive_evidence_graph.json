@@ -1,0 +1,209 @@
+{
+  "schema_version": "1.0",
+  "image_id": "image",
+  "profile": "geometry-v1",
+  "coordinate_system": {
+    "origin": "top_left",
+    "x_direction": "right",
+    "y_direction": "down",
+    "unit": "pixel",
+    "image_width": 600,
+    "image_height": 450,
+    "bbox_format": "left_top_right_bottom_inclusive"
+  },
+  "primitives": [
+    {
+      "primitive_id": "geometry.rectangle.plate",
+      "type": "rectangle",
+      "bbox": {
+        "left": 113,
+        "top": 103,
+        "right": 487,
+        "bottom": 347
+      },
+      "geometry": {
+        "bounds": {
+          "left": 113,
+          "top": 103,
+          "right": 487,
+          "bottom": 347
+        }
+      },
+      "confidence": 0.95,
+      "attributes": {
+        "kind": "plate",
+        "pixel_count": 86775
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "regions",
+          "object_id": "plate"
+        }
+      ]
+    },
+    {
+      "primitive_id": "geometry.circle.hole-01",
+      "type": "circle",
+      "bbox": {
+        "left": 165,
+        "top": 210,
+        "right": 195,
+        "bottom": 240
+      },
+      "geometry": {
+        "center": [
+          180,
+          225
+        ],
+        "radius": 20.7
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "diameter_px": 41.4,
+        "circularity": 0.016,
+        "pixel_count": 765
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "holes",
+          "object_id": "hole-01"
+        }
+      ]
+    },
+    {
+      "primitive_id": "geometry.circle.hole-02",
+      "type": "circle",
+      "bbox": {
+        "left": 285,
+        "top": 210,
+        "right": 315,
+        "bottom": 240
+      },
+      "geometry": {
+        "center": [
+          300,
+          225
+        ],
+        "radius": 20.7
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "diameter_px": 41.4,
+        "circularity": 0.016,
+        "pixel_count": 765
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "holes",
+          "object_id": "hole-02"
+        }
+      ]
+    },
+    {
+      "primitive_id": "geometry.circle.hole-03",
+      "type": "circle",
+      "bbox": {
+        "left": 405,
+        "top": 210,
+        "right": 435,
+        "bottom": 240
+      },
+      "geometry": {
+        "center": [
+          420,
+          225
+        ],
+        "radius": 20.7
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "diameter_px": 41.4,
+        "circularity": 0.016,
+        "pixel_count": 765
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "holes",
+          "object_id": "hole-03"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "relationship_id": "geometry.inside.hole-01.plate",
+      "type": "inside",
+      "source_primitive_id": "geometry.circle.hole-01",
+      "target_primitive_id": "geometry.rectangle.plate",
+      "confidence": 0.9,
+      "measurements": {},
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "geometry.inside.hole-02.plate",
+      "type": "inside",
+      "source_primitive_id": "geometry.circle.hole-02",
+      "target_primitive_id": "geometry.rectangle.plate",
+      "confidence": 0.9,
+      "measurements": {},
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "geometry.inside.hole-03.plate",
+      "type": "inside",
+      "source_primitive_id": "geometry.circle.hole-03",
+      "target_primitive_id": "geometry.rectangle.plate",
+      "confidence": 0.9,
+      "measurements": {},
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "geometry.aligned.hole-01.hole-02",
+      "type": "aligned_with",
+      "source_primitive_id": "geometry.circle.hole-01",
+      "target_primitive_id": "geometry.circle.hole-02",
+      "confidence": 1.0,
+      "measurements": {
+        "axis": "horizontal",
+        "deviation_px": 0
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "geometry.aligned.hole-02.hole-03",
+      "type": "aligned_with",
+      "source_primitive_id": "geometry.circle.hole-02",
+      "target_primitive_id": "geometry.circle.hole-03",
+      "confidence": 1.0,
+      "measurements": {
+        "axis": "horizontal",
+        "deviation_px": 0
+      },
+      "supporting_primitive_ids": []
+    }
+  ],
+  "gaps": [
+    {
+      "code": "unreadable_dimension_text",
+      "message": "Dimension text for 'hole-01', 'hole-02', 'hole-03' could not be decoded against the fixed dimension catalog.",
+      "check_ids": [
+        "dimension-text-correct"
+      ]
+    }
+  ],
+  "provenance": {
+    "extractor_id": "primitive-evidence-adapter",
+    "extractor_version": "1.0.0",
+    "backend": "geometry-v1:component_circle",
+    "metadata_source": "domain_evidence_or_image_detection",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "metadata": {
+    "source_extractor": "geometry-v1"
+  }
+}

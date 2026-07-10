@@ -42,6 +42,7 @@ wiki/       -> AI-maintained project memory
 - [impl-chart-v2-noisy-realworld-pilot](impl-chart-v2-noisy-realworld-pilot.md) - noisy hardening and bounded pilot evidence
 - [impl-arrow-v1-free-body](impl-arrow-v1-free-body.md) - arrow-v1 free-body verifier and bounds
 - [impl-geometry-v1-mechanical](impl-geometry-v1-mechanical.md) - controlled mechanical plate verifier and bounds
+- [impl-primitive-evidence-foundation](impl-primitive-evidence-foundation.md) - shared primitives, relationships, geometry noisy gate, and compatibility bounds
 
 ## Reference
 

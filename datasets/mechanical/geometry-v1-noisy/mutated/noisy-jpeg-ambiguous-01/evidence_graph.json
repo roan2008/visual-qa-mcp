@@ -1,0 +1,46 @@
+{
+  "image_id": "image",
+  "diagram_type": "mechanical_plate",
+  "holes": [],
+  "regions": [
+    {
+      "region_id": "plate",
+      "kind": "plate",
+      "bbox": [
+        112,
+        102,
+        488,
+        348
+      ],
+      "pixel_count": 88240,
+      "confidence": 0.95,
+      "primitive_ids": [
+        "geometry.rectangle.plate"
+      ]
+    }
+  ],
+  "extraction_confidence": 0.7,
+  "provenance": {
+    "extractor_id": "geometry-v1",
+    "extractor_version": "0.1.0",
+    "backend": "component_circle",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [
+    {
+      "code": "ambiguous_hole_geometry",
+      "message": "3 bright region(s) inside the plate were not circular enough to be counted as holes (e.g. merged or deformed features), so the hole set is not reliable evidence.",
+      "check_ids": [
+        "hole-count-correct",
+        "hole-diameter-ratio-correct",
+        "hole-alignment-correct",
+        "dimension-text-correct"
+      ]
+    }
+  ],
+  "metadata": {
+    "image_path": "datasets\\mechanical\\geometry-v1-noisy\\mutated\\noisy-jpeg-ambiguous-01\\image.png"
+  }
+}

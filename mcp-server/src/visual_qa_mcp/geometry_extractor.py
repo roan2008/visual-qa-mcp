@@ -5,7 +5,6 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from .arrow_extractor import _connected_components
 from .contracts import (
     EvidenceGap,
     ExtractedHole,
@@ -14,6 +13,7 @@ from .contracts import (
     GeometryEvidenceGraph,
 )
 from .geometry_labels import read_dimension_text, dimension_label_box
+from .spatial import connected_components
 
 GEOMETRY_EXTRACTOR_ID = "geometry-v1"
 GEOMETRY_EXTRACTOR_VERSION = "0.1.0"
@@ -173,7 +173,7 @@ def extract_geometry_evidence(image_path: Path) -> GeometryEvidenceGraph:
     regions: list[ExtractedRegion] = []
     holes: list[ExtractedHole] = []
 
-    plate_components = sorted(_connected_components(_plate_mask(pixels)), key=len, reverse=True)
+    plate_components = sorted(connected_components(_plate_mask(pixels)), key=len, reverse=True)
     plate_bbox: list[int] | None = None
     if plate_components and len(plate_components[0]) >= PLATE_MIN_PIXELS:
         plate_points = plate_components[0]
@@ -204,7 +204,7 @@ def extract_geometry_evidence(image_path: Path) -> GeometryEvidenceGraph:
     ambiguous_components = 0
     if plate_bbox is not None:
         hole_mask = _hole_fill_mask(pixels)
-        for points_yx in _connected_components(hole_mask):
+        for points_yx in connected_components(hole_mask):
             if len(points_yx) < MIN_HOLE_PIXELS:
                 continue
             if not _component_inside_bbox(points_yx, plate_bbox):

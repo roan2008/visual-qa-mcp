@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import json
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 from .chart_layout import ChartLayout
 
@@ -16,6 +17,7 @@ BACKGROUND_COLOR = (255, 255, 255)
 GRID_COLOR = (222, 226, 234)
 
 
+@lru_cache(maxsize=16)
 def get_font(size: int = 16) -> ImageFont.ImageFont:
     try:
         return ImageFont.truetype("arial.ttf", size)
@@ -105,6 +107,9 @@ def render_chart_image(
 
 def _apply_postprocess(image: Image.Image, image_path: Path, metadata: dict[str, Any]) -> Image.Image:
     postprocess = metadata.get("postprocess", {})
+    contrast_factor = float(postprocess.get("contrast_factor", 1.0))
+    if contrast_factor != 1.0:
+        image = ImageEnhance.Contrast(image).enhance(contrast_factor)
     downscale_factor = float(postprocess.get("downscale_factor", 1.0))
     if downscale_factor < 1.0:
         resized = image.resize(

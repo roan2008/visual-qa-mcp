@@ -1,0 +1,13 @@
+{
+  "case_id": "noisy-label-ambiguous-01",
+  "title": "Labels faded beyond catalog evidence",
+  "kind": "mutated",
+  "defect_type": "unreadable_dimension_text",
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-label-ambiguous-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {},
+  "renderer": "pillow",
+  "transform_family": "label_degradation"
+}

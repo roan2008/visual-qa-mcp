@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-blur-mutated-01",
+  "title": "Blurred oversized middle hole",
+  "kind": "mutated",
+  "defect_type": "oversized_hole",
+  "scenario": "mechanical_plate",
+  "dataset_track": "noisy",
+  "image_id": "noisy-blur-mutated-01",
+  "diagram_version": "geometry-v1",
+  "render_options": {
+    "postprocess": {
+      "blur_radius": 0.35
+    }
+  },
+  "renderer": "pillow",
+  "transform_family": "blur"
+}

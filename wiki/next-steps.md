@@ -11,6 +11,27 @@ metadata:
 
 ## Current Priority
 
+### 2026-07-10 session 15 - COMPLETE
+
+Completed the additive basic-to-complex foundation.
+
+Delivered:
+
+- strict shared primitive/relationship graph with semantic validation and domain traceability
+- spec-blind `extract-primitives` CLI and `parse_primitives` MCP surface
+- checksum-frozen 20-case geometry noisy gate across five transform families
+- immutable validation summaries and shared test fixtures
+- run-length connected components plus cached chart text/font templates
+
+Verified:
+
+- geometry noisy: golden `10/10`, typed `5/5`, ambiguity `5/5`, unsupported passes `0`, manifest `20/20`
+- all prior controlled/noisy vertical metrics preserved
+- unified tests `85/85` in about 63 seconds; chart end-to-end `16/16` in about 35 seconds
+
+Bounds: shared primitives are an additive audit layer. Domain rules still use their existing evidence
+graphs; new coordinate, flowchart, and circuit verticals remain follow-up work.
+
 ### 2026-07-10 session 14 - COMPLETE
 
 Completed `geometry-v1`, the third executable vertical, from the partially implemented state left
@@ -308,11 +329,11 @@ Verified:
 
 ## Suggested Next Work
 
-1. Add a separate noisy geometry track, including blur/downscale/JPEG, low contrast, and label
-   degradation; do not widen the controlled readiness claim before that gate passes.
-2. Reduce end-to-end test runtime by sharing immutable generated fixtures and separating generator
-   tests from verifier regression tests.
-3. Add independently authored or publisher-sourced open-license chart images; the current pilot images
+1. Build `coordinate-graph-v1` as the first new vertical composed from shared axes, ticks, points,
+   lines/curves, and spatial relationships.
+2. Build `flowchart-v1` after coordinate graphs, using shapes, text regions, connectors, arrow
+   direction, and topology; then build `circuit-v1` with separately gated symbol/connectivity rules.
+3. Add independently authored or publisher-sourced open-license chart and geometry images; current images
    are still locally rendered and should not be treated as general real-world coverage.
    Install and validate the optional OCR backend in a configured environment so OCR gets its own
    evidence-backed readiness gate.
@@ -334,3 +355,4 @@ Verified:
 - 2026-07-10: Arrow-v1 free-body verifier added as the second executable vertical with a 12-case controlled dataset.
 - 2026-07-10: Arrow-v1 label-based identity and noisy track added (14-case controlled, 6-case noisy, 7/7 and 4/4 typed hits).
 - 2026-07-10: Arrow-v1 translational force-balance rule added (first theory-aware check; 17-case controlled set, 8/8 typed hits, force-balance 1/1).
+- 2026-07-10: PrimitiveEvidenceGraph v1, geometry noisy gate, and sub-minute unified regression baseline added.
