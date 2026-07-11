@@ -16,20 +16,23 @@
         240
       ],
       "tail_xy": [
-        372,
+        370,
         240
       ],
       "head_xy": [
         370,
         130
       ],
-      "angle_degrees": 91.0,
+      "angle_degrees": 90.0,
       "length_px": 110.0,
       "tail_spread_px": 1.41,
       "head_spread_px": 3.67,
       "confidence": 0.9,
       "label_text": null,
-      "label_confidence": 0.0
+      "label_confidence": 0.0,
+      "primitive_ids": [
+        "arrow.arrow.arrow-01"
+      ]
     },
     {
       "arrow_id": "arrow-02",
@@ -46,19 +49,22 @@
       ],
       "tail_xy": [
         300,
-        292
+        290
       ],
       "head_xy": [
         190,
         290
       ],
-      "angle_degrees": 179.0,
+      "angle_degrees": 180.0,
       "length_px": 110.0,
       "tail_spread_px": 1.41,
       "head_spread_px": 3.67,
       "confidence": 0.9,
       "label_text": null,
-      "label_confidence": 0.0
+      "label_confidence": 0.0,
+      "primitive_ids": [
+        "arrow.arrow.arrow-02"
+      ]
     },
     {
       "arrow_id": "arrow-03",
@@ -75,19 +81,22 @@
       ],
       "tail_xy": [
         440,
-        292
+        290
       ],
       "head_xy": [
         550,
         290
       ],
-      "angle_degrees": 1.0,
+      "angle_degrees": 0.0,
       "length_px": 110.0,
       "tail_spread_px": 1.41,
       "head_spread_px": 3.67,
       "confidence": 0.9,
       "label_text": null,
-      "label_confidence": 0.0
+      "label_confidence": 0.0,
+      "primitive_ids": [
+        "arrow.arrow.arrow-03"
+      ]
     },
     {
       "arrow_id": "arrow-04",
@@ -103,20 +112,23 @@
         450
       ],
       "tail_xy": [
-        368,
+        370,
         340
       ],
       "head_xy": [
         370,
         450
       ],
-      "angle_degrees": 271.0,
+      "angle_degrees": 270.0,
       "length_px": 110.0,
       "tail_spread_px": 1.41,
       "head_spread_px": 3.67,
       "confidence": 0.9,
       "label_text": null,
-      "label_confidence": 0.0
+      "label_confidence": 0.0,
+      "primitive_ids": [
+        "arrow.arrow.arrow-04"
+      ]
     }
   ],
   "regions": [
@@ -130,7 +142,10 @@
         340
       ],
       "pixel_count": 14221,
-      "confidence": 0.95
+      "confidence": 0.95,
+      "primitive_ids": [
+        "arrow.rectangle.object"
+      ]
     }
   ],
   "extraction_confidence": 0.9,

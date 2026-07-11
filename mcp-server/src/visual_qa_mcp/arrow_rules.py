@@ -340,51 +340,122 @@ def run_arrow_claims(claim_graph: ClaimGraph, evidence: ArrowEvidenceGraph) -> V
             )
             resultant_magnitude = math.hypot(resultant_x, resultant_y)
             max_length = max(vector["length_px"] for vector in arrow_vectors.values())
-            resultant_ratio = resultant_magnitude / max_length if max_length > 0 else 0.0
-            if resultant_ratio > ratio_tolerance:
-                finding_id = "finding-force-balance"
-                findings.append(
-                    _make_finding(
-                        finding_id,
-                        balance_claim.rule_id,
-                        "force_balance_violation",
-                        balance_claim.severity,
-                        (
-                            "Declared equilibrium scenario is violated: drawn force vectors "
-                            f"sum to {resultant_magnitude:.1f} px "
-                            f"({resultant_ratio:.2f} of the longest arrow, tolerance "
-                            f"{ratio_tolerance:.2f})."
-                        ),
-                        {
-                            "scenario_type": balance_claim.expected.get("scenario_type"),
-                            "arrow_vectors_px": {
-                                arrow_id: {
-                                    "length_px": round(vector["length_px"], 1),
-                                    "angle_degrees": round(vector["angle_degrees"], 1),
-                                }
-                                for arrow_id, vector in arrow_vectors.items()
-                            },
-                            "resultant_vector_px": [
-                                round(resultant_x, 1),
-                                round(resultant_y, 1),
-                            ],
-                            "resultant_magnitude_px": round(resultant_magnitude, 1),
-                            "max_arrow_length_px": round(max_length, 1),
-                            "resultant_ratio": round(resultant_ratio, 3),
-                            "resultant_ratio_tolerance": ratio_tolerance,
-                        },
-                        "Redraw the force arrows so their vector sum is zero for the declared equilibrium scenario.",
-                    )
+            scenario_type = balance_claim.expected.get("scenario_type")
+            expected_resultant = balance_claim.expected.get("expected_resultant")
+
+            if scenario_type == "net-force" and expected_resultant is not None:
+                expected_magnitude = float(expected_resultant["magnitude_px"])
+                expected_direction = float(expected_resultant["direction_degrees"])
+                angle_tolerance = float(
+                    balance_claim.tolerance.get("resultant_angle_tolerance_degrees", 15.0)
                 )
-                if object_region is not None:
-                    overlay_annotations.append(
-                        OverlayAnnotation(
-                            finding_id=finding_id,
-                            kind="bbox",
-                            bbox=object_region.bbox,
-                            label="Force balance violated",
+                magnitude_ratio = (
+                    abs(resultant_magnitude - expected_magnitude) / expected_magnitude
+                    if expected_magnitude > 0
+                    else (0.0 if resultant_magnitude == 0 else 1.0)
+                )
+                resultant_direction = math.degrees(math.atan2(resultant_y, resultant_x))
+                direction_difference = (
+                    _angle_difference(resultant_direction, expected_direction)
+                    if expected_magnitude > 0
+                    else 0.0
+                )
+                if magnitude_ratio > ratio_tolerance or direction_difference > angle_tolerance:
+                    finding_id = "finding-force-balance"
+                    findings.append(
+                        _make_finding(
+                            finding_id,
+                            balance_claim.rule_id,
+                            "net_force_resultant_mismatch",
+                            balance_claim.severity,
+                            (
+                                "Declared net-force scenario does not match the drawn force "
+                                f"vectors: computed resultant {resultant_magnitude:.1f} px at "
+                                f"{resultant_direction:.1f} deg, expected {expected_magnitude:.1f} "
+                                f"px at {expected_direction:.1f} deg."
+                            ),
+                            {
+                                "scenario_type": scenario_type,
+                                "arrow_vectors_px": {
+                                    arrow_id: {
+                                        "length_px": round(vector["length_px"], 1),
+                                        "angle_degrees": round(vector["angle_degrees"], 1),
+                                    }
+                                    for arrow_id, vector in arrow_vectors.items()
+                                },
+                                "resultant_vector_px": [
+                                    round(resultant_x, 1),
+                                    round(resultant_y, 1),
+                                ],
+                                "resultant_magnitude_px": round(resultant_magnitude, 1),
+                                "resultant_direction_degrees": round(resultant_direction, 1),
+                                "expected_resultant": expected_resultant,
+                                "resultant_magnitude_ratio": round(magnitude_ratio, 3),
+                                "resultant_ratio_tolerance": ratio_tolerance,
+                                "resultant_direction_difference_degrees": round(
+                                    direction_difference, 1
+                                ),
+                                "resultant_angle_tolerance_degrees": angle_tolerance,
+                            },
+                            "Redraw the force arrows so their vector sum matches the declared "
+                            "net force magnitude and direction.",
                         )
                     )
+                    if object_region is not None:
+                        overlay_annotations.append(
+                            OverlayAnnotation(
+                                finding_id=finding_id,
+                                kind="bbox",
+                                bbox=object_region.bbox,
+                                label="Net force mismatch",
+                            )
+                        )
+            else:
+                resultant_ratio = resultant_magnitude / max_length if max_length > 0 else 0.0
+                if resultant_ratio > ratio_tolerance:
+                    finding_id = "finding-force-balance"
+                    findings.append(
+                        _make_finding(
+                            finding_id,
+                            balance_claim.rule_id,
+                            "force_balance_violation",
+                            balance_claim.severity,
+                            (
+                                "Declared equilibrium scenario is violated: drawn force vectors "
+                                f"sum to {resultant_magnitude:.1f} px "
+                                f"({resultant_ratio:.2f} of the longest arrow, tolerance "
+                                f"{ratio_tolerance:.2f})."
+                            ),
+                            {
+                                "scenario_type": scenario_type,
+                                "arrow_vectors_px": {
+                                    arrow_id: {
+                                        "length_px": round(vector["length_px"], 1),
+                                        "angle_degrees": round(vector["angle_degrees"], 1),
+                                    }
+                                    for arrow_id, vector in arrow_vectors.items()
+                                },
+                                "resultant_vector_px": [
+                                    round(resultant_x, 1),
+                                    round(resultant_y, 1),
+                                ],
+                                "resultant_magnitude_px": round(resultant_magnitude, 1),
+                                "max_arrow_length_px": round(max_length, 1),
+                                "resultant_ratio": round(resultant_ratio, 3),
+                                "resultant_ratio_tolerance": ratio_tolerance,
+                            },
+                            "Redraw the force arrows so their vector sum is zero for the declared equilibrium scenario.",
+                        )
+                    )
+                    if object_region is not None:
+                        overlay_annotations.append(
+                            OverlayAnnotation(
+                                finding_id=finding_id,
+                                kind="bbox",
+                                bbox=object_region.bbox,
+                                label="Force balance violated",
+                            )
+                        )
 
     findings = sorted(findings, key=lambda item: _severity_rank(item.severity), reverse=True)
     verdict = _overall_verdict(findings, checks_skipped)

@@ -8,20 +8,20 @@
       "rule_id": "arrow-v1.arrow-directions-correct",
       "type": "arrow_direction_wrong",
       "severity": "critical",
-      "message": "Arrow 'friction' points at 358.1 deg but expected 180.0 deg (difference 178.1 deg).",
+      "message": "Arrow 'friction' points at 0.0 deg but expected 180.0 deg (difference 180.0 deg).",
       "evidence": {
         "arrow_id": "friction",
         "expected_direction_degrees": 180.0,
-        "detected_direction_degrees": 358.1,
-        "angle_difference_degrees": 178.1,
+        "detected_direction_degrees": 0.0,
+        "angle_difference_degrees": 180.0,
         "angle_tolerance_degrees": 15.0,
         "tail_xy": [
           240,
-          252
+          254
         ],
         "head_xy": [
           330,
-          255
+          254
         ]
       },
       "recommendation": "Redraw the arrow so it points in the physically correct direction."
@@ -40,6 +40,7 @@
   "overlay_path": "datasets\\physics\\arrow-v1-noisy\\mutated\\noisy-mutated-01\\overlay.png",
   "evidence_graph_path": "datasets\\physics\\arrow-v1-noisy\\mutated\\noisy-mutated-01\\evidence_graph.json",
   "claim_graph_path": "datasets\\physics\\arrow-v1-noisy\\mutated\\noisy-mutated-01\\claim_graph.json",
+  "primitive_evidence_graph_path": "datasets\\physics\\arrow-v1-noisy\\mutated\\noisy-mutated-01\\primitive_evidence_graph.json",
   "overlay_annotations": [
     {
       "finding_id": "finding-arrow-direction-friction",

@@ -8,15 +8,15 @@
       "rule_id": "arrow-v1.arrow-directions-correct",
       "type": "arrow_direction_wrong",
       "severity": "critical",
-      "message": "Arrow 'weight' points at 91.3 deg but expected 270.0 deg (difference 178.7 deg).",
+      "message": "Arrow 'weight' points at 90.0 deg but expected 270.0 deg (difference 180.0 deg).",
       "evidence": {
         "arrow_id": "weight",
         "expected_direction_degrees": 270.0,
-        "detected_direction_degrees": 91.3,
-        "angle_difference_degrees": 178.7,
+        "detected_direction_degrees": 90.0,
+        "angle_difference_degrees": 180.0,
         "angle_tolerance_degrees": 15.0,
         "tail_xy": [
-          302,
+          300,
           210
         ],
         "head_xy": [
@@ -31,15 +31,15 @@
       "rule_id": "arrow-v1.arrow-directions-correct",
       "type": "arrow_direction_wrong",
       "severity": "critical",
-      "message": "Arrow 'normal' points at 271.3 deg but expected 90.0 deg (difference 178.7 deg).",
+      "message": "Arrow 'normal' points at 270.0 deg but expected 90.0 deg (difference 180.0 deg).",
       "evidence": {
         "arrow_id": "normal",
         "expected_direction_degrees": 90.0,
-        "detected_direction_degrees": 271.3,
-        "angle_difference_degrees": 178.7,
+        "detected_direction_degrees": 270.0,
+        "angle_difference_degrees": 180.0,
         "angle_tolerance_degrees": 15.0,
         "tail_xy": [
-          298,
+          300,
           300
         ],
         "head_xy": [
@@ -63,6 +63,7 @@
   "overlay_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-06\\overlay.png",
   "evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-06\\evidence_graph.json",
   "claim_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-06\\claim_graph.json",
+  "primitive_evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-06\\primitive_evidence_graph.json",
   "overlay_annotations": [
     {
       "finding_id": "finding-arrow-direction-weight",

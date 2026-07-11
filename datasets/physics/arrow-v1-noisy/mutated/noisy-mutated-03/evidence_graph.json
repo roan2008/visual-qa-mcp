@@ -16,20 +16,23 @@
         211
       ],
       "tail_xy": [
-        302,
+        300,
         211
       ],
       "head_xy": [
-        299,
+        300,
         120
       ],
-      "angle_degrees": 91.9,
+      "angle_degrees": 89.7,
       "length_px": 91.0,
       "tail_spread_px": 2.01,
       "head_spread_px": 4.2,
       "confidence": 0.9,
       "label_text": "N",
-      "label_confidence": 0.92
+      "label_confidence": 0.92,
+      "primitive_ids": [
+        "arrow.arrow.arrow-01"
+      ]
     },
     {
       "arrow_id": "arrow-02",
@@ -46,19 +49,22 @@
       ],
       "tail_xy": [
         240,
-        253
+        255
       ],
       "head_xy": [
         151,
-        256
+        255
       ],
-      "angle_degrees": 181.9,
+      "angle_degrees": 180.0,
       "length_px": 89.0,
       "tail_spread_px": 1.7,
       "head_spread_px": 4.21,
       "confidence": 0.9,
       "label_text": "f",
-      "label_confidence": 0.92
+      "label_confidence": 0.92,
+      "primitive_ids": [
+        "arrow.arrow.arrow-02"
+      ]
     },
     {
       "arrow_id": "arrow-03",
@@ -75,19 +81,22 @@
       ],
       "tail_xy": [
         359,
-        254
+        256
       ],
       "head_xy": [
         447,
-        257
+        255
       ],
-      "angle_degrees": 358.0,
+      "angle_degrees": 0.3,
       "length_px": 88.0,
       "tail_spread_px": 1.8,
       "head_spread_px": 4.05,
       "confidence": 0.9,
       "label_text": "F",
-      "label_confidence": 0.99
+      "label_confidence": 0.99,
+      "primitive_ids": [
+        "arrow.arrow.arrow-03"
+      ]
     },
     {
       "arrow_id": "arrow-04",
@@ -103,20 +112,23 @@
         430
       ],
       "tail_xy": [
-        389,
+        390,
         339
       ],
       "head_xy": [
-        391,
+        390,
         430
       ],
-      "angle_degrees": 271.3,
+      "angle_degrees": 270.0,
       "length_px": 91.0,
       "tail_spread_px": 1.67,
       "head_spread_px": 4.21,
       "confidence": 0.9,
       "label_text": "W",
-      "label_confidence": 0.96
+      "label_confidence": 0.96,
+      "primitive_ids": [
+        "arrow.arrow.arrow-04"
+      ]
     }
   ],
   "regions": [
@@ -130,7 +142,10 @@
         300
       ],
       "pixel_count": 10835,
-      "confidence": 0.95
+      "confidence": 0.95,
+      "primitive_ids": [
+        "arrow.rectangle.object"
+      ]
     }
   ],
   "extraction_confidence": 0.9,

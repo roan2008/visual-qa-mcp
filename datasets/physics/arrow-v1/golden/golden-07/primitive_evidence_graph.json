@@ -1,0 +1,260 @@
+{
+  "schema_version": "1.0",
+  "image_id": "image",
+  "profile": "arrow-v1",
+  "coordinate_system": {
+    "origin": "top_left",
+    "x_direction": "right",
+    "y_direction": "down",
+    "unit": "pixel",
+    "image_width": 600,
+    "image_height": 450,
+    "bbox_format": "left_top_right_bottom_inclusive"
+  },
+  "primitives": [
+    {
+      "primitive_id": "arrow.rectangle.object",
+      "type": "rectangle",
+      "bbox": {
+        "left": 240,
+        "top": 210,
+        "right": 360,
+        "bottom": 300
+      },
+      "geometry": {
+        "bounds": {
+          "left": 240,
+          "top": 210,
+          "right": 360,
+          "bottom": 300
+        }
+      },
+      "confidence": 0.95,
+      "attributes": {
+        "kind": "box",
+        "pixel_count": 10991
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "regions",
+          "object_id": "object"
+        }
+      ]
+    },
+    {
+      "primitive_id": "arrow.arrow.arrow-01",
+      "type": "arrow",
+      "bbox": {
+        "left": 291,
+        "top": 120,
+        "right": 309,
+        "bottom": 210
+      },
+      "geometry": {
+        "tail": [
+          300,
+          210
+        ],
+        "head": [
+          300,
+          120
+        ]
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "rgb": [
+          9,
+          132,
+          227
+        ],
+        "angle_degrees": 90.0,
+        "length_px": 90.0,
+        "label_text": "N",
+        "label_confidence": 1.0
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "arrows",
+          "object_id": "arrow-01"
+        }
+      ]
+    },
+    {
+      "primitive_id": "arrow.arrow.arrow-02",
+      "type": "arrow",
+      "bbox": {
+        "left": 150,
+        "top": 246,
+        "right": 240,
+        "bottom": 264
+      },
+      "geometry": {
+        "tail": [
+          240,
+          255
+        ],
+        "head": [
+          150,
+          255
+        ]
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "rgb": [
+          230,
+          126,
+          34
+        ],
+        "angle_degrees": 180.0,
+        "length_px": 90.0,
+        "label_text": "f",
+        "label_confidence": 1.0
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "arrows",
+          "object_id": "arrow-02"
+        }
+      ]
+    },
+    {
+      "primitive_id": "arrow.arrow.arrow-03",
+      "type": "arrow",
+      "bbox": {
+        "left": 360,
+        "top": 246,
+        "right": 490,
+        "bottom": 264
+      },
+      "geometry": {
+        "tail": [
+          360,
+          255
+        ],
+        "head": [
+          490,
+          255
+        ]
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "rgb": [
+          0,
+          148,
+          50
+        ],
+        "angle_degrees": 0.0,
+        "length_px": 130.0,
+        "label_text": "F",
+        "label_confidence": 1.0
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "arrows",
+          "object_id": "arrow-03"
+        }
+      ]
+    },
+    {
+      "primitive_id": "arrow.arrow.arrow-04",
+      "type": "arrow",
+      "bbox": {
+        "left": 291,
+        "top": 300,
+        "right": 309,
+        "bottom": 390
+      },
+      "geometry": {
+        "tail": [
+          300,
+          300
+        ],
+        "head": [
+          300,
+          390
+        ]
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "rgb": [
+          214,
+          48,
+          49
+        ],
+        "angle_degrees": 270.0,
+        "length_px": 90.0,
+        "label_text": "W",
+        "label_confidence": 1.0
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "arrows",
+          "object_id": "arrow-04"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "relationship_id": "arrow.touches.arrow-01.object",
+      "type": "touches",
+      "source_primitive_id": "arrow.arrow.arrow-01",
+      "target_primitive_id": "arrow.rectangle.object",
+      "confidence": 1.0,
+      "measurements": {
+        "tail_distance_px": 0.0
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "arrow.touches.arrow-02.object",
+      "type": "touches",
+      "source_primitive_id": "arrow.arrow.arrow-02",
+      "target_primitive_id": "arrow.rectangle.object",
+      "confidence": 1.0,
+      "measurements": {
+        "tail_distance_px": 0.0
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "arrow.touches.arrow-03.object",
+      "type": "touches",
+      "source_primitive_id": "arrow.arrow.arrow-03",
+      "target_primitive_id": "arrow.rectangle.object",
+      "confidence": 1.0,
+      "measurements": {
+        "tail_distance_px": 0.0
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "arrow.touches.arrow-04.object",
+      "type": "touches",
+      "source_primitive_id": "arrow.arrow.arrow-04",
+      "target_primitive_id": "arrow.rectangle.object",
+      "confidence": 1.0,
+      "measurements": {
+        "tail_distance_px": 0.0
+      },
+      "supporting_primitive_ids": []
+    }
+  ],
+  "gaps": [],
+  "provenance": {
+    "extractor_id": "primitive-evidence-adapter",
+    "extractor_version": "1.0.0",
+    "backend": "arrow-v1:color_component",
+    "metadata_source": "domain_evidence_or_image_detection",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "metadata": {
+    "source_extractor": "arrow-v1"
+  }
+}

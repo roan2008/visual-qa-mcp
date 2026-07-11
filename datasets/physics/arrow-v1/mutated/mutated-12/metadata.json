@@ -1,0 +1,11 @@
+{
+  "case_id": "mutated-12",
+  "title": "Declared net force, drawn resultant does not match declared magnitude",
+  "kind": "mutated",
+  "defect_type": "net_force_magnitude_mismatch",
+  "scenario": "free_body",
+  "dataset_track": "controlled",
+  "image_id": "mutated-12",
+  "diagram_version": "arrow-v1",
+  "render_options": {}
+}

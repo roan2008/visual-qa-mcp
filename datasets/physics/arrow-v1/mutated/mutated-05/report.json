@@ -8,11 +8,11 @@
       "rule_id": "arrow-v1.arrow-anchors-object",
       "type": "arrow_anchor_detached",
       "severity": "high",
-      "message": "Arrow 'weight' tail at [388, 340] is not attached to the object region [240, 210, 360, 300] within 14 px.",
+      "message": "Arrow 'weight' tail at [390, 340] is not attached to the object region [240, 210, 360, 300] within 14 px.",
       "evidence": {
         "arrow_id": "weight",
         "tail_xy": [
-          388,
+          390,
           340
         ],
         "object_bbox": [
@@ -39,6 +39,7 @@
   "overlay_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-05\\overlay.png",
   "evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-05\\evidence_graph.json",
   "claim_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-05\\claim_graph.json",
+  "primitive_evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-05\\primitive_evidence_graph.json",
   "overlay_annotations": [
     {
       "finding_id": "finding-arrow-anchor-weight",

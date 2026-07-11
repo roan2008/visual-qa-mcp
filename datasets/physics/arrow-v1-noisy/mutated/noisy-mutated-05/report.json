@@ -1,0 +1,72 @@
+{
+  "image_id": "image",
+  "spec_id": "arrow-noisy-mutated-05",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-force-balance",
+      "rule_id": "arrow-v1.force-balance-correct",
+      "type": "force_balance_violation",
+      "severity": "critical",
+      "message": "Declared equilibrium scenario is violated: drawn force vectors sum to 41.5 px (0.45 of the longest arrow, tolerance 0.15).",
+      "evidence": {
+        "scenario_type": "equilibrium",
+        "arrow_vectors_px": {
+          "weight": {
+            "length_px": 51.0,
+            "angle_degrees": 270.0
+          },
+          "normal": {
+            "length_px": 92.0,
+            "angle_degrees": 89.7
+          },
+          "applied": {
+            "length_px": 89.0,
+            "angle_degrees": 0.3
+          },
+          "friction": {
+            "length_px": 90.0,
+            "angle_degrees": 180.0
+          }
+        },
+        "resultant_vector_px": [
+          -0.5,
+          41.5
+        ],
+        "resultant_magnitude_px": 41.5,
+        "max_arrow_length_px": 92.0,
+        "resultant_ratio": 0.451,
+        "resultant_ratio_tolerance": 0.15
+      },
+      "recommendation": "Redraw the force arrows so their vector sum is zero for the declared equilibrium scenario."
+    }
+  ],
+  "checks_run": [
+    "arrow-count-matches",
+    "required-arrows-present",
+    "arrow-directions-correct",
+    "arrow-anchors-object",
+    "force-balance-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.7,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.7,
+  "overlay_path": "datasets\\physics\\arrow-v1-noisy\\mutated\\noisy-mutated-05\\overlay.png",
+  "evidence_graph_path": "datasets\\physics\\arrow-v1-noisy\\mutated\\noisy-mutated-05\\evidence_graph.json",
+  "claim_graph_path": "datasets\\physics\\arrow-v1-noisy\\mutated\\noisy-mutated-05\\claim_graph.json",
+  "primitive_evidence_graph_path": "datasets\\physics\\arrow-v1-noisy\\mutated\\noisy-mutated-05\\primitive_evidence_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-force-balance",
+      "kind": "bbox",
+      "bbox": [
+        240,
+        210,
+        360,
+        300
+      ],
+      "label": "Force balance violated"
+    }
+  ]
+}

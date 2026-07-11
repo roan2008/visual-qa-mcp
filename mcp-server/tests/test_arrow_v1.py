@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from visual_qa_mcp.arrow_dataset import build_arrow_dataset
+from visual_qa_mcp.arrow_dataset import build_arrow_dataset, build_noisy_arrow_dataset
 from visual_qa_mcp.arrow_extractor import extract_arrow_evidence
 from visual_qa_mcp.arrow_generator import render_arrow_diagram
 from visual_qa_mcp.arrow_rules import run_arrow_claims
@@ -295,6 +295,49 @@ def test_balance_check_refuses_partial_force_set(tmp_path: Path) -> None:
     assert "force_balance_violation" not in types
 
 
+def test_declared_net_force_matching_resultant_passes(tmp_path: Path) -> None:
+    arrows = [dict(arrow) for arrow in BASIC_ARROWS]
+    arrows[2]["length_px"] = 130  # applied force stronger than friction: net +x resultant
+    spec_path = _basic_spec(tmp_path, checks_extra=[dict(BALANCE_CHECK)], scenario_type="net-force")
+    spec = json.loads(spec_path.read_text(encoding="utf-8"))
+    spec["source_reference"]["expected_resultant"] = {"magnitude_px": 40.0, "direction_degrees": 0.0}
+    spec_path.write_text(json.dumps(spec), encoding="utf-8")
+    image_path = _render(tmp_path, arrows)
+    result = run_arrow_verification(image_path=image_path, spec_path=spec_path)
+    assert result.report.verdict == "pass"
+    assert "force-balance-correct" in result.report.checks_run
+
+
+def test_declared_net_force_mismatched_resultant_fails(tmp_path: Path) -> None:
+    arrows = [dict(arrow) for arrow in BASIC_ARROWS]
+    arrows[2]["length_px"] = 130  # applied stronger
+    arrows[3]["length_px"] = 40  # friction weaker than declared: actual resultant is bigger
+    spec_path = _basic_spec(tmp_path, checks_extra=[dict(BALANCE_CHECK)], scenario_type="net-force")
+    spec = json.loads(spec_path.read_text(encoding="utf-8"))
+    spec["source_reference"]["expected_resultant"] = {"magnitude_px": 40.0, "direction_degrees": 0.0}
+    spec_path.write_text(json.dumps(spec), encoding="utf-8")
+    image_path = _render(tmp_path, arrows)
+    result = run_arrow_verification(image_path=image_path, spec_path=spec_path)
+    assert result.report.verdict == "fail"
+    types = {finding.type for finding in result.report.findings}
+    assert types == {"net_force_resultant_mismatch"}
+    finding = result.report.findings[0]
+    assert finding.evidence["resultant_magnitude_ratio"] > finding.evidence["resultant_ratio_tolerance"]
+
+
+def test_net_force_without_expected_resultant_is_gapped(tmp_path: Path) -> None:
+    spec_path = _basic_spec(tmp_path, checks_extra=[dict(BALANCE_CHECK)], scenario_type="net-force")
+    claim_graph = build_arrow_claim_graph(spec_path)
+    assert any(
+        gap.check_id == "force-balance-correct" and gap.code == "expected_resultant_not_declared"
+        for gap in claim_graph.gaps
+    )
+    image_path = _render(tmp_path, BASIC_ARROWS)
+    evidence = extract_arrow_evidence(image_path)
+    report = run_arrow_claims(claim_graph, evidence)
+    assert report.verdict == "needs_review"
+
+
 @pytest.fixture(scope="module")
 def arrow_dataset(tmp_path_factory: pytest.TempPathFactory) -> Path:
     dataset_root = tmp_path_factory.mktemp("arrow-v1")
@@ -304,19 +347,51 @@ def arrow_dataset(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 def test_arrow_dataset_structure(arrow_dataset: Path) -> None:
     cases = discover_arrow_cases(arrow_dataset)
-    assert len(cases) == 17
-    assert sum(1 for case in cases if case.kind == "golden") == 6
-    assert sum(1 for case in cases if case.kind == "mutated") == 11
+    assert len(cases) == 19
+    assert sum(1 for case in cases if case.kind == "golden") == 7
+    assert sum(1 for case in cases if case.kind == "mutated") == 12
 
 
 def test_arrow_dataset_validation_summary(arrow_dataset: Path) -> None:
     summary = summarize_arrow_validation_results(arrow_dataset)
-    assert summary["total_cases"] == 17
-    assert summary["typed_mutated_cases"] == 8
-    assert summary["typed_mutated_hits"] == 8
+    assert summary["total_cases"] == 19
+    assert summary["typed_mutated_cases"] == 9
+    assert summary["typed_mutated_hits"] == 9
     assert summary["critical_error_recall"] == 1.0
     assert summary["ambiguous_cases"] == 3
     assert summary["ambiguous_guard_rate"] == 1.0
+    assert summary["false_unsupported_passes"] == 0
+    assert summary["golden_failures"] == 0
+    assert summary["golden_non_passes"] == 0
+    assert summary["verdict_mismatches"] == 0
+    assert summary["force_balance_metrics"] == {
+        "typed_cases": 2,
+        "typed_hits": 2,
+        "typed_hit_rate": 1.0,
+    }
+
+
+@pytest.fixture(scope="module")
+def arrow_noisy_dataset(tmp_path_factory: pytest.TempPathFactory) -> Path:
+    dataset_root = tmp_path_factory.mktemp("arrow-v1-noisy")
+    build_noisy_arrow_dataset(dataset_root)
+    return dataset_root
+
+
+def test_arrow_noisy_dataset_structure(arrow_noisy_dataset: Path) -> None:
+    cases = discover_arrow_cases(arrow_noisy_dataset)
+    assert len(cases) == 8
+    assert sum(1 for case in cases if case.kind == "golden") == 3
+    assert sum(1 for case in cases if case.kind == "mutated") == 5
+    assert all(case.dataset_track == "noisy" for case in cases)
+
+
+def test_arrow_noisy_dataset_validation_summary(arrow_noisy_dataset: Path) -> None:
+    summary = summarize_arrow_validation_results(arrow_noisy_dataset)
+    assert summary["total_cases"] == 8
+    assert summary["typed_mutated_cases"] == 5
+    assert summary["typed_mutated_hits"] == 5
+    assert summary["critical_error_recall"] == 1.0
     assert summary["false_unsupported_passes"] == 0
     assert summary["golden_failures"] == 0
     assert summary["golden_non_passes"] == 0

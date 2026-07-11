@@ -212,6 +212,7 @@
       "target": "arrows",
       "expected": {
         "scenario_type": "equilibrium",
+        "expected_resultant": null,
         "arrows_by_id": {
           "weight": {
             "rgb": [
@@ -253,6 +254,7 @@
       },
       "tolerance": {
         "resultant_ratio_tolerance": 0.15,
+        "resultant_angle_tolerance_degrees": 15.0,
         "color_match_distance": 60.0
       },
       "evidence_requirements": [

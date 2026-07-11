@@ -1,0 +1,9 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "net_force_resultant_mismatch"
+  ],
+  "expected_evidence": {
+    "arrow_count": 4
+  }
+}

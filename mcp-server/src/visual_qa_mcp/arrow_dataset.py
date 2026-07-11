@@ -130,6 +130,7 @@ def _base_spec(
     force_ids: list[str],
     forces: dict[str, dict[str, Any]],
     scenario_type: str | None = None,
+    expected_resultant: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     source_reference: dict[str, Any] = {
         "arrows": _spec_arrows(force_ids, forces),
@@ -139,6 +140,8 @@ def _base_spec(
     if scenario_type is not None:
         source_reference["scenario_type"] = scenario_type
         checks.append(deepcopy(FORCE_BALANCE_CHECK))
+        if expected_resultant is not None:
+            source_reference["expected_resultant"] = expected_resultant
     return {
         "id": f"arrow-{case_id}",
         "domain": "physics",
@@ -173,6 +176,7 @@ def _case(
     length_px: float = 90.0,
     include_labels: bool = False,
     scenario_type: str | None = None,
+    expected_resultant: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     spec_force_ids = spec_force_ids or list(BASE_FORCES)
     render_force_ids = render_force_ids if render_force_ids is not None else list(spec_force_ids)
@@ -191,6 +195,7 @@ def _case(
         "defect_type": defect_type,
         "spec_force_ids": spec_force_ids,
         "scenario_type": scenario_type,
+        "expected_resultant": expected_resultant,
         "render_arrows": render_arrows,
         "render_options": render_options or {},
         "expected_report": expected_report,
@@ -413,6 +418,31 @@ def dataset_cases() -> list[dict[str, Any]]:
             render_forces=duplicate_forces,
             scenario_type="equilibrium",
         ),
+        _case(
+            "golden-07",
+            "Declared net force, resultant matches expectation",
+            "golden",
+            golden_expected,
+            render_overrides={"applied": {"length_px": 130.0}},
+            include_labels=True,
+            scenario_type="net-force",
+            expected_resultant={"magnitude_px": 40.0, "direction_degrees": 0.0},
+        ),
+        _case(
+            "mutated-12",
+            "Declared net force, drawn resultant does not match declared magnitude",
+            "mutated",
+            {
+                "verdict": "fail",
+                "expected_finding_types": ["net_force_resultant_mismatch"],
+                "expected_evidence": {"arrow_count": 4},
+            },
+            defect_type="net_force_magnitude_mismatch",
+            render_overrides={"applied": {"length_px": 130.0}, "friction": {"length_px": 40.0}},
+            include_labels=True,
+            scenario_type="net-force",
+            expected_resultant={"magnitude_px": 40.0, "direction_degrees": 0.0},
+        ),
     ]
 
 
@@ -499,6 +529,34 @@ def noisy_dataset_cases() -> list[dict[str, Any]]:
             include_labels=True,
             render_options={"postprocess": {"blur_radius": 0.3, "downscale_factor": 0.9}},
         ),
+        _case(
+            "noisy-golden-03",
+            "Noisy declared equilibrium, forces balanced",
+            "golden",
+            {
+                "verdict": "pass",
+                "expected_finding_types": [],
+                "expected_evidence": {"arrow_count": 4},
+            },
+            include_labels=True,
+            scenario_type="equilibrium",
+            render_options={"postprocess": {"blur_radius": 0.4, "downscale_factor": 0.92}},
+        ),
+        _case(
+            "noisy-mutated-05",
+            "Noisy declared equilibrium, weight arrow too short",
+            "mutated",
+            {
+                "verdict": "fail",
+                "expected_finding_types": ["force_balance_violation"],
+                "expected_evidence": {"arrow_count": 4},
+            },
+            defect_type="force_balance_magnitude",
+            render_overrides={"weight": {"length_px": 50.0}},
+            include_labels=True,
+            scenario_type="equilibrium",
+            render_options={"postprocess": {"downscale_factor": 0.88, "jpeg_quality": 82}},
+        ),
     ]
 
 
@@ -534,6 +592,7 @@ def build_arrow_cases_dataset(
             case["spec_force_ids"],
             BASE_FORCES,
             scenario_type=case.get("scenario_type"),
+            expected_resultant=case.get("expected_resultant"),
         )
         metadata = {
             "case_id": case["case_id"],

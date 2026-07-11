@@ -17,19 +17,22 @@
       ],
       "tail_xy": [
         240,
-        253
+        255
       ],
       "head_xy": [
         150,
         255
       ],
-      "angle_degrees": 181.3,
+      "angle_degrees": 180.0,
       "length_px": 90.0,
       "tail_spread_px": 1.47,
       "head_spread_px": 4.04,
       "confidence": 0.9,
       "label_text": "f",
-      "label_confidence": 0.93
+      "label_confidence": 0.93,
+      "primitive_ids": [
+        "arrow.arrow.arrow-01"
+      ]
     },
     {
       "arrow_id": "arrow-02",
@@ -46,19 +49,22 @@
       ],
       "tail_xy": [
         360,
-        257
+        255
       ],
       "head_xy": [
         450,
         255
       ],
-      "angle_degrees": 1.3,
+      "angle_degrees": 0.0,
       "length_px": 90.0,
       "tail_spread_px": 1.42,
       "head_spread_px": 4.0,
       "confidence": 0.9,
       "label_text": "F",
-      "label_confidence": 0.98
+      "label_confidence": 0.98,
+      "primitive_ids": [
+        "arrow.arrow.arrow-02"
+      ]
     },
     {
       "arrow_id": "arrow-03",
@@ -74,20 +80,23 @@
         390
       ],
       "tail_xy": [
-        298,
+        300,
         300
       ],
       "head_xy": [
         300,
         390
       ],
-      "angle_degrees": 271.3,
+      "angle_degrees": 270.0,
       "length_px": 90.0,
       "tail_spread_px": 1.41,
       "head_spread_px": 4.05,
       "confidence": 0.9,
       "label_text": "W",
-      "label_confidence": 0.98
+      "label_confidence": 0.98,
+      "primitive_ids": [
+        "arrow.arrow.arrow-03"
+      ]
     }
   ],
   "regions": [
@@ -101,7 +110,10 @@
         300
       ],
       "pixel_count": 10975,
-      "confidence": 0.95
+      "confidence": 0.95,
+      "primitive_ids": [
+        "arrow.rectangle.object"
+      ]
     }
   ],
   "extraction_confidence": 0.9,

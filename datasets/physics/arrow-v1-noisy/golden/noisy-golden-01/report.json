@@ -15,5 +15,6 @@
   "rule_confidence": 1.0,
   "overlay_path": "datasets\\physics\\arrow-v1-noisy\\golden\\noisy-golden-01\\overlay.png",
   "evidence_graph_path": "datasets\\physics\\arrow-v1-noisy\\golden\\noisy-golden-01\\evidence_graph.json",
-  "claim_graph_path": "datasets\\physics\\arrow-v1-noisy\\golden\\noisy-golden-01\\claim_graph.json"
+  "claim_graph_path": "datasets\\physics\\arrow-v1-noisy\\golden\\noisy-golden-01\\claim_graph.json",
+  "primitive_evidence_graph_path": "datasets\\physics\\arrow-v1-noisy\\golden\\noisy-golden-01\\primitive_evidence_graph.json"
 }

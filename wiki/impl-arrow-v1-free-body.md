@@ -215,3 +215,69 @@ equilibrium scenario's drawn force vectors sum to approximately zero.
 - Absolute magnitude calibration (px-to-newton scale references).
 - Torque/moment balance (needs points of application).
 - Non-zero declared expected resultant (unbalanced-scenario verification).
+
+## Non-Zero Declared Expected Resultant (2026-07-11, session 21)
+
+Closed the "non-zero declared expected resultant" deferred item: `force-balance-correct`
+now supports a second `source_reference.scenario_type` value, `"net-force"`, alongside the
+existing `"equilibrium"`.
+
+### Design
+
+- `net-force` requires a declared `source_reference.expected_resultant =
+  {"magnitude_px": float, "direction_degrees": float}`. Declaring `scenario_type = "net-force"`
+  without `expected_resultant` becomes a new `ClaimGraph` gap (`expected_resultant_not_declared`),
+  same guard pattern as the existing `scenario_type_not_declared` /
+  `scenario_without_balance_check` gaps. [source: mcp-server/src/visual_qa_mcp/claim_graph.py:build_arrow_claim_graph]
+- Rule mechanics reuse the same pixel-vector-sum resultant computation as equilibrium; only the
+  pass/fail criterion differs: magnitude relative error `|computed - expected| / expected` vs.
+  the existing `resultant_ratio_tolerance` (default 0.15), and direction difference vs. a new
+  `resultant_angle_tolerance_degrees` tolerance (default 15 deg, evaluated only when the expected
+  magnitude is non-zero — direction is undefined at zero magnitude).
+  [source: mcp-server/src/visual_qa_mcp/arrow_rules.py (force-balance block)]
+- New finding type `net_force_resultant_mismatch`, kept distinct from `force_balance_violation`
+  so consumers can tell "resultant should be zero and isn't" from "resultant doesn't match the
+  declared non-zero vector" apart.
+- The partial-force-set refusal (an unmatched/ambiguous arrow skips the whole check) is
+  unchanged and applies to both scenario types.
+
+### Dataset growth
+
+`datasets/physics/arrow-v1/` regenerated to 19 cases (7 golden + 12 mutated):
+- `golden-07`: declared `net-force`, applied-force arrow lengthened to 130px (friction stays at
+  90px default) so the resultant is exactly 40px along 0deg, matching the declared
+  `expected_resultant` -> pass.
+- `mutated-12` (`net_force_magnitude_mismatch`): same declared expected resultant (40px @ 0deg),
+  but friction is also shortened to 40px so the actual drawn resultant becomes 90px, well outside
+  tolerance -> `net_force_resultant_mismatch`.
+
+### Validation Result (2026-07-11, session 21)
+
+- arrow-v1 controlled (19 cases): typed hits `9/9`, ambiguous guard `3/3`, force-balance typed
+  hits `2/2` (one equilibrium, one net-force), false unsupported passes `0`, golden failures `0`,
+  verdict mismatches `0` — passed on the first empirical measurement, no threshold tuning needed.
+- Full test suite: 135 passing (132 prior + 3 new: matching net-force pass, mismatched net-force
+  fail, missing-`expected_resultant` gap).
+- chart-v2/geometry-v1/coordinate-graph-v1/flowchart-v1 unaffected by construction (no shared
+  files modified beyond `validation.py`'s `force_balance_metrics` counter, which now also counts
+  `net_force_resultant_mismatch`).
+
+### Updated Deferred List
+
+- Absolute magnitude calibration (px-to-newton scale references).
+- Torque/moment balance (needs points of application).
+
+## Noisy-Track Equilibrium Case (2026-07-11, session 20)
+
+Closed one item from the deferred list above: `arrow-v1-noisy` grew from 6 to 8 cases, adding
+`noisy-golden-03` (declared equilibrium, balanced, `blur_radius=0.4` + `downscale_factor=0.92`)
+and `noisy-mutated-05` (declared equilibrium, weight arrow shortened to 50px —
+`force_balance_magnitude`, `downscale_factor=0.88` + `jpeg_quality=82`), both reusing the same
+mild postprocess settings already validated for the other noisy cases. No extractor or rule
+changes were needed; per the project's measure-before-claim discipline, both cases were run once
+before writing any test assertions and passed on the first measurement.
+
+Verification: `arrow-v1-noisy` (8 cases): typed hits `5/5`, force-balance typed hits `1/1`, false
+unsupported passes `0`, golden failures `0`, verdict mismatches `0`. Full suite: 132 passing (130
+prior + 2 new noisy-dataset structure/summary tests, the first pytest coverage the noisy arrow
+dataset has had — previously it was only exercised via CLI).

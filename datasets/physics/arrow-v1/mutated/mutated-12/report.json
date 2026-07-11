@@ -1,0 +1,78 @@
+{
+  "image_id": "image",
+  "spec_id": "arrow-mutated-12",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-force-balance",
+      "rule_id": "arrow-v1.force-balance-correct",
+      "type": "net_force_resultant_mismatch",
+      "severity": "critical",
+      "message": "Declared net-force scenario does not match the drawn force vectors: computed resultant 90.0 px at 0.0 deg, expected 40.0 px at 0.0 deg.",
+      "evidence": {
+        "scenario_type": "net-force",
+        "arrow_vectors_px": {
+          "weight": {
+            "length_px": 90.0,
+            "angle_degrees": 270.0
+          },
+          "normal": {
+            "length_px": 90.0,
+            "angle_degrees": 90.0
+          },
+          "applied": {
+            "length_px": 130.0,
+            "angle_degrees": 0.0
+          },
+          "friction": {
+            "length_px": 40.0,
+            "angle_degrees": 180.0
+          }
+        },
+        "resultant_vector_px": [
+          90.0,
+          0.0
+        ],
+        "resultant_magnitude_px": 90.0,
+        "resultant_direction_degrees": 0.0,
+        "expected_resultant": {
+          "magnitude_px": 40.0,
+          "direction_degrees": 0.0
+        },
+        "resultant_magnitude_ratio": 1.25,
+        "resultant_ratio_tolerance": 0.15,
+        "resultant_direction_difference_degrees": 0.0,
+        "resultant_angle_tolerance_degrees": 15.0
+      },
+      "recommendation": "Redraw the force arrows so their vector sum matches the declared net force magnitude and direction."
+    }
+  ],
+  "checks_run": [
+    "arrow-count-matches",
+    "required-arrows-present",
+    "arrow-directions-correct",
+    "arrow-anchors-object",
+    "force-balance-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.7,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.7,
+  "overlay_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-12\\overlay.png",
+  "evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-12\\evidence_graph.json",
+  "claim_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-12\\claim_graph.json",
+  "primitive_evidence_graph_path": "datasets\\physics\\arrow-v1\\mutated\\mutated-12\\primitive_evidence_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-force-balance",
+      "kind": "bbox",
+      "bbox": [
+        240,
+        210,
+        360,
+        300
+      ],
+      "label": "Net force mismatch"
+    }
+  ]
+}
