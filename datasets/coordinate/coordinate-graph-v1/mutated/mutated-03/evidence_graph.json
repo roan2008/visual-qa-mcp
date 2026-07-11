@@ -213,6 +213,8 @@
       ],
       "pixel_count": 177,
       "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0,
       "primitive_ids": [
         "coordinate.point.point-01"
       ]
@@ -240,6 +242,8 @@
       ],
       "pixel_count": 177,
       "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0,
       "primitive_ids": [
         "coordinate.point.point-02"
       ]
@@ -267,6 +271,8 @@
       ],
       "pixel_count": 177,
       "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0,
       "primitive_ids": [
         "coordinate.point.point-03"
       ]
@@ -294,6 +300,8 @@
       ],
       "pixel_count": 177,
       "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0,
       "primitive_ids": [
         "coordinate.point.point-04"
       ]
@@ -327,6 +335,6 @@
   },
   "gaps": [],
   "metadata": {
-    "image_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-03\\image.png"
+    "image_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-03\\image.png"
   }
 }

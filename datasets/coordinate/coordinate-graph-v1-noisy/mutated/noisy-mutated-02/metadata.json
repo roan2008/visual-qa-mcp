@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-mutated-02",
+  "title": "Extra undeclared point under downscale/JPEG",
+  "kind": "mutated",
+  "defect_type": "extra_point",
+  "scenario": "coordinate_plane",
+  "dataset_track": "noisy",
+  "image_id": "noisy-mutated-02",
+  "diagram_version": "coordinate-graph-v1",
+  "render_options": {
+    "postprocess": {
+      "downscale_factor": 0.88,
+      "jpeg_quality": 82
+    }
+  },
+  "renderer": "pillow"
+}

@@ -30,12 +30,13 @@
       "recommendation": "Redraw the point at its declared data-space position."
     },
     {
-      "id": "finding-polyline-connection-p1-p2",
+      "id": "finding-polyline-connection-series-1-p1-p2",
       "rule_id": "coordinate-graph-v1.polyline-connections-correct",
       "type": "polyline_connection_wrong",
       "severity": "high",
-      "message": "The declared polyline connection between 'p1' and 'p2' was not found in the rendered line evidence.",
+      "message": "The declared polyline connection between 'p1' and 'p2' in series 'series-1' was not found in the rendered line evidence.",
       "evidence": {
+        "series_id": "series-1",
         "expected_edge": [
           "p1",
           "p2"
@@ -58,12 +59,13 @@
       "recommendation": "Redraw the polyline so it connects the declared points in order."
     },
     {
-      "id": "finding-polyline-connection-p2-p3",
+      "id": "finding-polyline-connection-series-1-p2-p3",
       "rule_id": "coordinate-graph-v1.polyline-connections-correct",
       "type": "polyline_connection_wrong",
       "severity": "high",
-      "message": "The declared polyline connection between 'p2' and 'p3' was not found in the rendered line evidence.",
+      "message": "The declared polyline connection between 'p2' and 'p3' in series 'series-1' was not found in the rendered line evidence.",
       "evidence": {
+        "series_id": "series-1",
         "expected_edge": [
           "p2",
           "p3"
@@ -97,10 +99,10 @@
   "confidence": 0.3,
   "extraction_confidence": 0.9,
   "rule_confidence": 0.3,
-  "overlay_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-03\\overlay.png",
-  "evidence_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-03\\evidence_graph.json",
-  "claim_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-03\\claim_graph.json",
-  "primitive_evidence_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-03\\primitive_evidence_graph.json",
+  "overlay_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-03\\overlay.png",
+  "evidence_graph_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-03\\evidence_graph.json",
+  "claim_graph_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-03\\claim_graph.json",
+  "primitive_evidence_graph_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-03\\primitive_evidence_graph.json",
   "overlay_annotations": [
     {
       "finding_id": "finding-point-position-p2",
@@ -114,7 +116,7 @@
       "label": "p2: position"
     },
     {
-      "finding_id": "finding-polyline-connection-p1-p2",
+      "finding_id": "finding-polyline-connection-series-1-p1-p2",
       "kind": "bbox",
       "bbox": [
         139,
@@ -122,10 +124,10 @@
         153,
         425
       ],
-      "label": "p1-p2: polyline"
+      "label": "p1-p2: polyline (series-1)"
     },
     {
-      "finding_id": "finding-polyline-connection-p2-p3",
+      "finding_id": "finding-polyline-connection-series-1-p2-p3",
       "kind": "bbox",
       "bbox": [
         559,
@@ -133,7 +135,7 @@
         573,
         341
       ],
-      "label": "p2-p3: polyline"
+      "label": "p2-p3: polyline (series-1)"
     }
   ]
 }

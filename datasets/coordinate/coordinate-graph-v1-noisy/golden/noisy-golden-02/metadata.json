@@ -1,0 +1,17 @@
+{
+  "case_id": "noisy-golden-02",
+  "title": "Downscaled and JPEG-compressed diagram, points correct",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "coordinate_plane",
+  "dataset_track": "noisy",
+  "image_id": "noisy-golden-02",
+  "diagram_version": "coordinate-graph-v1",
+  "render_options": {
+    "postprocess": {
+      "downscale_factor": 0.88,
+      "jpeg_quality": 82
+    }
+  },
+  "renderer": "pillow"
+}

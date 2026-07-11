@@ -1,0 +1,9 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "axis_scale_misread"
+  ],
+  "expected_evidence": {
+    "point_count": 4
+  }
+}

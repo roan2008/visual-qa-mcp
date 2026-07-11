@@ -7,6 +7,7 @@ import numpy as np
 from PIL import Image
 
 from .arrow_extractor import _saturation_mask
+from .arrow_labels import read_label_text
 from .chart_extractor import _cluster_indices, _maximum_true_run
 from .contracts import (
     AxisMapping,
@@ -20,6 +21,10 @@ from .contracts import (
 )
 from .spatial import connected_components
 from .tick_reader import NumericTemplateCandidate, rank_numeric_text_templates
+
+POINT_LABEL_CATALOG: tuple[str, ...] = ("A", "B", "C", "D", "E", "F")
+POINT_LABEL_OFFSET_PX = (12, -26)
+POINT_LABEL_SIZE_PX = (56, 20)
 
 COORDINATE_EXTRACTOR_ID = "coordinate-graph-v1"
 COORDINATE_EXTRACTOR_VERSION = "0.1.0"
@@ -278,6 +283,20 @@ def _extract_axis(
     return axis, None
 
 
+def point_label_box(pixel_xy: list[int], image_size: tuple[int, int]) -> list[int]:
+    width, height = image_size
+    dx, dy = POINT_LABEL_OFFSET_PX
+    box_width, box_height = POINT_LABEL_SIZE_PX
+    left = pixel_xy[0] + dx
+    top = pixel_xy[1] + dy
+    return [
+        max(0, min(width, left)),
+        max(0, min(height, top)),
+        max(0, min(width, left + box_width)),
+        max(0, min(height, top + box_height)),
+    ]
+
+
 def _line_mask(pixels: np.ndarray) -> np.ndarray:
     channels = pixels.astype(np.int16)
     spread = channels.max(axis=2) - channels.min(axis=2)
@@ -324,6 +343,8 @@ def extract_coordinate_evidence(image_path: Path) -> CoordinateEvidenceGraph:
     if x_gap is not None:
         gaps.append(x_gap)
 
+    line_mask = _line_mask(pixels)
+
     points: list[ExtractedPoint] = []
     for points_yx in connected_components(_saturation_mask(pixels)):
         if len(points_yx) < MIN_POINT_PIXELS:
@@ -345,15 +366,30 @@ def extract_coordinate_evidence(image_path: Path) -> CoordinateEvidenceGraph:
                 round(x_axis.fit_slope * centroid_x + x_axis.fit_intercept, 3),
                 round(y_axis.fit_slope * centroid_y + y_axis.fit_intercept, 3),
             ]
+        pixel_xy = [int(round(centroid_x)), int(round(centroid_y))]
+        label_box = point_label_box(pixel_xy, (image.width, image.height))
+        # The polyline can pass directly through a point's label box (it runs
+        # between consecutive points, and the box sits at a fixed offset from
+        # each point regardless of the line's direction). Blank out line-mask
+        # pixels within the crop first so the polyline's gray stroke is never
+        # mistaken for glyph foreground.
+        crop_array = pixels[label_box[1] : label_box[3], label_box[0] : label_box[2]].copy()
+        crop_line_mask = line_mask[label_box[1] : label_box[3], label_box[0] : label_box[2]]
+        crop_array[crop_line_mask] = 255
+        label_text, label_confidence = read_label_text(
+            Image.fromarray(crop_array), catalog=POINT_LABEL_CATALOG
+        )
         points.append(
             ExtractedPoint(
                 point_id=f"point-{len(points) + 1:02d}",
                 rgb=mean_rgb,
-                pixel_xy=[int(round(centroid_x)), int(round(centroid_y))],
+                pixel_xy=pixel_xy,
                 data_xy=data_xy,
                 bbox=bbox,
                 pixel_count=len(points_yx),
                 confidence=0.9,
+                label_text=label_text,
+                label_confidence=label_confidence,
             )
         )
 
@@ -361,7 +397,15 @@ def extract_coordinate_evidence(image_path: Path) -> CoordinateEvidenceGraph:
         for second_index in range(first_index + 1, len(points)):
             first_rgb = np.array(points[first_index].rgb, dtype=np.float64)
             second_rgb = np.array(points[second_index].rgb, dtype=np.float64)
-            if float(np.linalg.norm(first_rgb - second_rgb)) < COLOR_AMBIGUITY_DISTANCE:
+            first_label = points[first_index].label_text
+            second_label = points[second_index].label_text
+            labels_resolve_identity = (
+                first_label is not None and second_label is not None and first_label != second_label
+            )
+            if (
+                float(np.linalg.norm(first_rgb - second_rgb)) < COLOR_AMBIGUITY_DISTANCE
+                and not labels_resolve_identity
+            ):
                 gaps.append(
                     EvidenceGap(
                         code="ambiguous_point_colors",
@@ -378,7 +422,6 @@ def extract_coordinate_evidence(image_path: Path) -> CoordinateEvidenceGraph:
                     )
                 )
 
-    line_mask = _line_mask(pixels)
     polyline_edges: list[DetectedPolylineEdge] = []
     for first_index in range(len(points)):
         for second_index in range(first_index + 1, len(points)):

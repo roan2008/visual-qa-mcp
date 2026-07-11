@@ -1,0 +1,61 @@
+{
+  "image_id": "image",
+  "spec_id": "coordinate-mutated-08",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-point-position-p3",
+      "rule_id": "coordinate-graph-v1.point-positions-correct",
+      "type": "point_position_wrong",
+      "severity": "critical",
+      "message": "Point 'p3' measures data position (85.00, 15.00) but the spec declares (70.00, 35.00).",
+      "evidence": {
+        "point_id": "p3",
+        "detected_point_id": "point-03",
+        "expected_xy": [
+          70.0,
+          35.0
+        ],
+        "detected_data_xy": [
+          85.0,
+          15.0
+        ],
+        "detected_pixel_xy": [
+          566,
+          334
+        ],
+        "position_tolerance_x": 3.0,
+        "position_tolerance_y": 1.5
+      },
+      "recommendation": "Redraw the point at its declared data-space position."
+    }
+  ],
+  "checks_run": [
+    "point-count-matches",
+    "required-points-present",
+    "point-positions-correct",
+    "polyline-connections-correct",
+    "axis-scale-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.7,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.7,
+  "overlay_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-08\\overlay.png",
+  "evidence_graph_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-08\\evidence_graph.json",
+  "claim_graph_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-08\\claim_graph.json",
+  "primitive_evidence_graph_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-08\\primitive_evidence_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-point-position-p3",
+      "kind": "bbox",
+      "bbox": [
+        559,
+        327,
+        573,
+        341
+      ],
+      "label": "p3: position"
+    }
+  ]
+}

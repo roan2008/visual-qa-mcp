@@ -1,0 +1,56 @@
+{
+  "image_id": "image",
+  "spec_id": "coordinate-mutated-09",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-polyline-connection-series-2-p3-p4",
+      "rule_id": "coordinate-graph-v1.polyline-connections-correct",
+      "type": "polyline_connection_wrong",
+      "severity": "high",
+      "message": "The declared polyline connection between 'p3' and 'p4' in series 'series-2' was not found in the rendered line evidence.",
+      "evidence": {
+        "series_id": "series-2",
+        "expected_edge": [
+          "p3",
+          "p4"
+        ],
+        "detected_edges": [
+          [
+            "point-03",
+            "point-04"
+          ]
+        ]
+      },
+      "recommendation": "Redraw the polyline so it connects the declared points in order."
+    }
+  ],
+  "checks_run": [
+    "point-count-matches",
+    "required-points-present",
+    "point-positions-correct",
+    "polyline-connections-correct",
+    "axis-scale-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.8,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.8,
+  "overlay_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-09\\overlay.png",
+  "evidence_graph_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-09\\evidence_graph.json",
+  "claim_graph_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-09\\claim_graph.json",
+  "primitive_evidence_graph_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-09\\primitive_evidence_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-polyline-connection-series-2-p3-p4",
+      "kind": "bbox",
+      "bbox": [
+        475,
+        159,
+        489,
+        173
+      ],
+      "label": "p3-p4: polyline (series-2)"
+    }
+  ]
+}

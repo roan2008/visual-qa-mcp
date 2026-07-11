@@ -37,7 +37,8 @@
               48,
               49
             ],
-            "name": "Point 1"
+            "name": "Point 1",
+            "label_text": null
           },
           "p2": {
             "rgb": [
@@ -45,7 +46,8 @@
               132,
               227
             ],
-            "name": "Point 2"
+            "name": "Point 2",
+            "label_text": null
           },
           "p3": {
             "rgb": [
@@ -53,7 +55,8 @@
               148,
               50
             ],
-            "name": "Point 3"
+            "name": "Point 3",
+            "label_text": null
           }
         }
       },
@@ -85,7 +88,8 @@
               49
             ],
             "x": 5,
-            "y": 25
+            "y": 25,
+            "label_text": null
           },
           "p2": {
             "rgb": [
@@ -94,7 +98,8 @@
               227
             ],
             "x": 30,
-            "y": 10
+            "y": 10,
+            "label_text": null
           },
           "p3": {
             "rgb": [
@@ -103,7 +108,8 @@
               50
             ],
             "x": 55,
-            "y": 28
+            "y": 28,
+            "label_text": null
           }
         }
       },
@@ -171,7 +177,8 @@
           49
         ],
         "x": 5,
-        "y": 25
+        "y": 25,
+        "label_text": null
       },
       {
         "id": "p2",
@@ -182,7 +189,8 @@
           227
         ],
         "x": 30,
-        "y": 10
+        "y": 10,
+        "label_text": null
       },
       {
         "id": "p3",
@@ -193,13 +201,14 @@
           50
         ],
         "x": 55,
-        "y": 28
+        "y": 28,
+        "label_text": null
       }
     ]
   },
   "metadata": {
     "generator": "coordinate-graph-v1",
-    "spec_path": "datasets\\coordinate\\coordinate-graph-v1\\golden\\golden-04\\visual_spec.json",
+    "spec_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\golden\\golden-04\\visual_spec.json",
     "required_elements": [
       {
         "id": "points",

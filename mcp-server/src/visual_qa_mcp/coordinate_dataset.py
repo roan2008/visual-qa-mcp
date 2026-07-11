@@ -66,7 +66,14 @@ POLYLINE_CHECK: dict[str, Any] = {
 
 def _spec_points(points: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [
-        {"id": point["id"], "name": point.get("name", point["id"]), "rgb": point["rgb"], "x": point["x"], "y": point["y"]}
+        {
+            "id": point["id"],
+            "name": point.get("name", point["id"]),
+            "rgb": point["rgb"],
+            "x": point["x"],
+            "y": point["y"],
+            "label_text": point.get("label_text"),
+        }
         for point in points
     ]
 
@@ -85,6 +92,7 @@ def _render_points(
     y_axis: dict[str, Any],
     plot_box: list[float],
     render_overrides: dict[str, dict[str, Any]] | None = None,
+    include_labels: bool = False,
 ) -> list[dict[str, Any]]:
     overrides = render_overrides or {}
     rendered = []
@@ -94,6 +102,8 @@ def _render_points(
             y_value_to_pixel(float(point["y"]), y_axis, plot_box),
         ]
         item = {"id": point["id"], "center_px": center_px, "rgb": point["rgb"]}
+        if include_labels:
+            item["label_text"] = point.get("label_text")
         item.update(overrides.get(point["id"], {}))
         rendered.append(item)
     return rendered
@@ -105,6 +115,7 @@ def _base_spec(
     x_axis: dict[str, Any],
     y_axis: dict[str, Any],
     ordered_point_ids: list[str] | None,
+    series: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     source_reference: dict[str, Any] = {
         "x_axis": {"min": x_axis["min"], "max": x_axis["max"]},
@@ -112,7 +123,10 @@ def _base_spec(
         "points": _spec_points(points),
     }
     checks = deepcopy(COORDINATE_CHECKS)
-    if ordered_point_ids is not None:
+    if series is not None:
+        source_reference["polylines"] = deepcopy(series)
+        checks.append(deepcopy(POLYLINE_CHECK))
+    elif ordered_point_ids is not None:
         source_reference["polyline"] = {"ordered_point_ids": ordered_point_ids}
         checks.append(deepcopy(POLYLINE_CHECK))
     return {
@@ -150,12 +164,17 @@ def _case(
     x_tick_text_offset: int = 0,
     y_tick_text_offset: int = 0,
     render_options: dict[str, Any] | None = None,
+    include_labels: bool = False,
+    series: list[dict[str, Any]] | None = None,
+    render_series: list[list[str]] | None = None,
 ) -> dict[str, Any]:
     plot_box = [float(value) for value in (render_options or {}).get("plot_box", DEFAULT_PLOT_BOX)]
     render_source = points
     if drop_render_point_ids:
         render_source = [point for point in render_source if point["id"] not in drop_render_point_ids]
-    rendered_points = _render_points(render_source, x_axis, y_axis, plot_box, render_overrides)
+    rendered_points = _render_points(
+        render_source, x_axis, y_axis, plot_box, render_overrides, include_labels=include_labels
+    )
     if extra_render_points:
         rendered_points.extend(deepcopy(extra_render_points))
 
@@ -163,6 +182,11 @@ def _case(
     render_y_axis = {**y_axis, "ticks": _ticks(y_axis, y_tick_text_offset)}
     render_polyline_ids = (
         render_ordered_point_ids if render_ordered_point_ids is not None else ordered_point_ids
+    )
+    render_polylines = (
+        render_series
+        if render_series is not None
+        else ([entry["ordered_point_ids"] for entry in series] if series is not None else None)
     )
 
     expected_report = deepcopy(expected_report)
@@ -176,10 +200,12 @@ def _case(
         "x_axis": x_axis,
         "y_axis": y_axis,
         "ordered_point_ids": ordered_point_ids,
+        "series": series,
         "render_points": rendered_points,
         "render_x_axis": render_x_axis,
         "render_y_axis": render_y_axis,
         "render_polyline_ids": render_polyline_ids,
+        "render_polylines": render_polylines,
         "render_options": render_options or {},
         "expected_report": expected_report,
     }
@@ -192,6 +218,13 @@ def _linear_points() -> list[dict[str, Any]]:
         {"id": "p3", "name": "Point 3", "rgb": GREEN, "x": 70, "y": 35},
         {"id": "p4", "name": "Point 4", "rgb": PURPLE, "x": 95, "y": 48},
     ]
+
+
+def _labeled_points() -> list[dict[str, Any]]:
+    points = deepcopy(_linear_points())
+    for point, label in zip(points, ("A", "B", "C", "D")):
+        point["label_text"] = label
+    return points
 
 
 ZERO_BASELINE_X = {"min": 0, "max": 100, "step": 20}
@@ -397,11 +430,194 @@ def dataset_cases() -> list[dict[str, Any]]:
             defect_type="unreadable_axis",
             ordered_point_ids=["p1", "p2", "p3", "p4"],
         ),
+        _case(
+            "golden-05",
+            "Labeled points, all correct",
+            "golden",
+            _labeled_points(),
+            ZERO_BASELINE_X,
+            ZERO_BASELINE_Y,
+            golden(4),
+            ordered_point_ids=["p1", "p2", "p3", "p4"],
+            include_labels=True,
+        ),
+        _case(
+            "mutated-08",
+            "Labeled color collision resolved, point position wrong",
+            "mutated",
+            _labeled_points(),
+            ZERO_BASELINE_X,
+            ZERO_BASELINE_Y,
+            {
+                "verdict": "fail",
+                "expected_finding_types": ["point_position_wrong"],
+                "expected_evidence": {"point_count": 4},
+            },
+            defect_type="label_resolved_color_collision",
+            ordered_point_ids=["p1", "p2", "p3", "p4"],
+            render_overrides={
+                "p3": {
+                    "rgb": BLUE,
+                    "center_px": [
+                        x_value_to_pixel(85.0, ZERO_BASELINE_X, DEFAULT_PLOT_BOX),
+                        y_value_to_pixel(15.0, ZERO_BASELINE_Y, DEFAULT_PLOT_BOX),
+                    ],
+                }
+            },
+            include_labels=True,
+        ),
+        _case(
+            "golden-06",
+            "Two independent series, each with its own polyline, all correct",
+            "golden",
+            _linear_points(),
+            ZERO_BASELINE_X,
+            ZERO_BASELINE_Y,
+            golden(4),
+            series=[
+                {"series_id": "series-1", "ordered_point_ids": ["p1", "p2"]},
+                {"series_id": "series-2", "ordered_point_ids": ["p3", "p4"]},
+            ],
+        ),
+        _case(
+            "mutated-09",
+            "Two-series diagram, one series' polyline connection missing",
+            "mutated",
+            _linear_points(),
+            ZERO_BASELINE_X,
+            ZERO_BASELINE_Y,
+            {
+                "verdict": "fail",
+                "expected_finding_types": ["polyline_connection_wrong"],
+                "expected_evidence": {"point_count": 4},
+            },
+            defect_type="series_polyline_connection_wrong",
+            series=[
+                {"series_id": "series-1", "ordered_point_ids": ["p1", "p2"]},
+                {"series_id": "series-2", "ordered_point_ids": ["p3", "p4"]},
+            ],
+            render_series=[["p1", "p2"], ["p3"]],
+        ),
+    ]
+
+
+def noisy_dataset_cases() -> list[dict[str, Any]]:
+    def golden(point_count: int) -> dict[str, Any]:
+        return {
+            "verdict": "pass",
+            "expected_finding_types": [],
+            "expected_evidence": {"point_count": point_count},
+        }
+
+    return [
+        _case(
+            "noisy-golden-01",
+            "Mildly blurred diagram, points and polyline correct",
+            "golden",
+            _linear_points(),
+            ZERO_BASELINE_X,
+            ZERO_BASELINE_Y,
+            golden(4),
+            ordered_point_ids=["p1", "p2", "p3", "p4"],
+            render_options={"postprocess": {"blur_radius": 0.6}},
+        ),
+        _case(
+            "noisy-golden-02",
+            "Downscaled and JPEG-compressed diagram, points correct",
+            "golden",
+            _linear_points(),
+            ZERO_BASELINE_X,
+            ZERO_BASELINE_Y,
+            golden(4),
+            ordered_point_ids=["p1", "p2", "p3", "p4"],
+            render_options={"postprocess": {"downscale_factor": 0.88, "jpeg_quality": 82}},
+        ),
+        _case(
+            "noisy-mutated-01",
+            "Missing declared point under blur",
+            "mutated",
+            _linear_points(),
+            ZERO_BASELINE_X,
+            ZERO_BASELINE_Y,
+            {
+                "verdict": "fail",
+                "expected_finding_types": ["point_count_mismatch", "missing_point"],
+                "expected_evidence": {"point_count": 3},
+            },
+            defect_type="missing_point",
+            ordered_point_ids=["p1", "p2", "p3", "p4"],
+            drop_render_point_ids=["p3"],
+            render_ordered_point_ids=["p1", "p2", "p4"],
+            render_options={"postprocess": {"blur_radius": 0.6}},
+        ),
+        _case(
+            "noisy-mutated-02",
+            "Extra undeclared point under downscale/JPEG",
+            "mutated",
+            _linear_points(),
+            ZERO_BASELINE_X,
+            ZERO_BASELINE_Y,
+            {
+                "verdict": "fail",
+                "expected_finding_types": ["point_count_mismatch", "extra_point"],
+                "expected_evidence": {"point_count": 5},
+            },
+            defect_type="extra_point",
+            ordered_point_ids=["p1", "p2", "p3", "p4"],
+            extra_render_points=[{"id": "extra", "center_px": [300, 100], "rgb": ORANGE}],
+            render_options={"postprocess": {"downscale_factor": 0.88, "jpeg_quality": 82}},
+        ),
+        _case(
+            "noisy-mutated-03",
+            "Point rendered at the wrong position under blur",
+            "mutated",
+            _linear_points(),
+            ZERO_BASELINE_X,
+            ZERO_BASELINE_Y,
+            {
+                "verdict": "fail",
+                "expected_finding_types": ["point_position_wrong"],
+                "expected_evidence": {"point_count": 4},
+            },
+            defect_type="point_position_wrong",
+            ordered_point_ids=["p1", "p2", "p3", "p4"],
+            render_overrides={
+                "p2": {
+                    "center_px": [
+                        x_value_to_pixel(85.0, ZERO_BASELINE_X, DEFAULT_PLOT_BOX),
+                        y_value_to_pixel(15.0, ZERO_BASELINE_Y, DEFAULT_PLOT_BOX),
+                    ]
+                }
+            },
+            render_ordered_point_ids=["p1", "p3", "p4"],
+            render_options={"postprocess": {"blur_radius": 0.6}},
+        ),
+        _case(
+            "noisy-mutated-04",
+            "Y-axis tick labels shifted under downscale/JPEG",
+            "mutated",
+            _linear_points(),
+            ZERO_BASELINE_X,
+            ZERO_BASELINE_Y,
+            {
+                "verdict": "fail",
+                "expected_finding_types": ["axis_scale_misread"],
+                "expected_evidence": {"point_count": 4},
+            },
+            defect_type="axis_scale_misread",
+            ordered_point_ids=["p1", "p2", "p3", "p4"],
+            y_tick_text_offset=10,
+            render_options={"postprocess": {"downscale_factor": 0.88, "jpeg_quality": 82}},
+        ),
     ]
 
 
 def build_coordinate_dataset(output_root: Path) -> None:
     build_coordinate_cases_dataset(output_root, dataset_cases(), dataset_track="controlled")
+
+
+def build_noisy_coordinate_dataset(output_root: Path) -> None:
+    build_coordinate_cases_dataset(output_root, noisy_dataset_cases(), dataset_track="noisy")
 
 
 def build_coordinate_cases_dataset(
@@ -423,6 +639,7 @@ def build_coordinate_cases_dataset(
             case["x_axis"],
             case["y_axis"],
             ordered_point_ids=case["ordered_point_ids"],
+            series=case.get("series"),
         )
         metadata = {
             "case_id": case["case_id"],
@@ -447,4 +664,5 @@ def build_coordinate_cases_dataset(
             x_axis=case["render_x_axis"],
             y_axis=case["render_y_axis"],
             render_options=case["render_options"],
+            polylines=case.get("render_polylines"),
         )

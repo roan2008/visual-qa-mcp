@@ -135,10 +135,10 @@
   "confidence": 0.3,
   "extraction_confidence": 0.9,
   "rule_confidence": 0.3,
-  "overlay_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-04\\overlay.png",
-  "evidence_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-04\\evidence_graph.json",
-  "claim_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-04\\claim_graph.json",
-  "primitive_evidence_graph_path": "datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-04\\primitive_evidence_graph.json",
+  "overlay_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-04\\overlay.png",
+  "evidence_graph_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-04\\evidence_graph.json",
+  "claim_graph_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-04\\claim_graph.json",
+  "primitive_evidence_graph_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\mutated\\mutated-04\\primitive_evidence_graph.json",
   "overlay_annotations": [
     {
       "finding_id": "finding-point-position-p1",

@@ -37,7 +37,8 @@
               48,
               49
             ],
-            "name": "Point 1"
+            "name": "Point 1",
+            "label_text": null
           },
           "p2": {
             "rgb": [
@@ -45,7 +46,8 @@
               132,
               227
             ],
-            "name": "Point 2"
+            "name": "Point 2",
+            "label_text": null
           },
           "p3": {
             "rgb": [
@@ -53,7 +55,8 @@
               148,
               50
             ],
-            "name": "Point 3"
+            "name": "Point 3",
+            "label_text": null
           },
           "p4": {
             "rgb": [
@@ -61,7 +64,8 @@
               68,
               173
             ],
-            "name": "Point 4"
+            "name": "Point 4",
+            "label_text": null
           }
         }
       },
@@ -93,7 +97,8 @@
               49
             ],
             "x": 25,
-            "y": 35
+            "y": 35,
+            "label_text": null
           },
           "p2": {
             "rgb": [
@@ -102,7 +107,8 @@
               227
             ],
             "x": 60,
-            "y": 55
+            "y": 55,
+            "label_text": null
           },
           "p3": {
             "rgb": [
@@ -111,7 +117,8 @@
               50
             ],
             "x": 90,
-            "y": 70
+            "y": 70,
+            "label_text": null
           },
           "p4": {
             "rgb": [
@@ -120,7 +127,8 @@
               173
             ],
             "x": 115,
-            "y": 88
+            "y": 88,
+            "label_text": null
           }
         }
       },
@@ -175,11 +183,16 @@
       "severity": "high",
       "target": "polyline",
       "expected": {
-        "ordered_point_ids": [
-          "p1",
-          "p2",
-          "p3",
-          "p4"
+        "series": [
+          {
+            "series_id": "series-1",
+            "ordered_point_ids": [
+              "p1",
+              "p2",
+              "p3",
+              "p4"
+            ]
+          }
         ],
         "points_by_id": {
           "p1": {
@@ -187,28 +200,32 @@
               214,
               48,
               49
-            ]
+            ],
+            "label_text": null
           },
           "p2": {
             "rgb": [
               9,
               132,
               227
-            ]
+            ],
+            "label_text": null
           },
           "p3": {
             "rgb": [
               0,
               148,
               50
-            ]
+            ],
+            "label_text": null
           },
           "p4": {
             "rgb": [
               142,
               68,
               173
-            ]
+            ],
+            "label_text": null
           }
         }
       },
@@ -246,7 +263,8 @@
           49
         ],
         "x": 25,
-        "y": 35
+        "y": 35,
+        "label_text": null
       },
       {
         "id": "p2",
@@ -257,7 +275,8 @@
           227
         ],
         "x": 60,
-        "y": 55
+        "y": 55,
+        "label_text": null
       },
       {
         "id": "p3",
@@ -268,7 +287,8 @@
           50
         ],
         "x": 90,
-        "y": 70
+        "y": 70,
+        "label_text": null
       },
       {
         "id": "p4",
@@ -279,7 +299,8 @@
           173
         ],
         "x": 115,
-        "y": 88
+        "y": 88,
+        "label_text": null
       }
     ],
     "polyline": {
@@ -293,7 +314,7 @@
   },
   "metadata": {
     "generator": "coordinate-graph-v1",
-    "spec_path": "datasets\\coordinate\\coordinate-graph-v1\\golden\\golden-02\\visual_spec.json",
+    "spec_path": "..\\datasets\\coordinate\\coordinate-graph-v1\\golden\\golden-02\\visual_spec.json",
     "required_elements": [
       {
         "id": "points",

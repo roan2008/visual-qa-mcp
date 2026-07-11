@@ -32,10 +32,37 @@ def _match_points_by_color(
     detected: list[ExtractedPoint],
     color_match_distance: float,
 ) -> tuple[dict[str, ExtractedPoint], list[ExtractedPoint]]:
+    """Match detected points to expected point ids.
+
+    Labels are decoded independently of color and take priority when a detected
+    point's label exactly matches an expected label: this lets two points with
+    colliding colors still be identified correctly. Remaining ids fall back to
+    greedy nearest-color matching, mirroring arrow-v1's `_match_arrows_by_color`.
+    """
     matched: dict[str, ExtractedPoint] = {}
     remaining = list(detected)
+
+    label_pairs: list[tuple[str, ExtractedPoint]] = [
+        (point_id, point)
+        for point_id, expected in expected_by_id.items()
+        for point in remaining
+        if expected.get("label_text") is not None and point.label_text == expected["label_text"]
+    ]
+    ambiguous_ids = {
+        point_id
+        for point_id in {pair[0] for pair in label_pairs}
+        if sum(1 for pair_id, _ in label_pairs if pair_id == point_id) > 1
+    }
+    for point_id, point in label_pairs:
+        if point_id in ambiguous_ids or point_id in matched or point not in remaining:
+            continue
+        matched[point_id] = point
+        remaining.remove(point)
+
     pairs: list[tuple[float, str, ExtractedPoint]] = []
     for point_id, expected in expected_by_id.items():
+        if point_id in matched:
+            continue
         for point in remaining:
             distance = _color_distance(expected["rgb"], point.rgb)
             if distance <= color_match_distance:
@@ -206,7 +233,6 @@ def run_coordinate_claims(
             }
         )
     elif polyline_claim is not None:
-        expected_order = polyline_claim.expected["ordered_point_ids"]
         expected_by_id = polyline_claim.expected["points_by_id"]
         color_match_distance = float(polyline_claim.tolerance.get("color_match_distance", 60.0))
         if not matched:
@@ -215,43 +241,48 @@ def run_coordinate_claims(
         detected_edges = {
             frozenset((edge.from_point_id, edge.to_point_id)) for edge in evidence.polyline_edges
         }
-        for first_id, second_id in zip(expected_order, expected_order[1:]):
-            first_point = matched.get(first_id)
-            second_point = matched.get(second_id)
-            # An unresolved endpoint is already reported by the presence
-            # check (or an evidence gap); silently skip judging this one
-            # edge rather than discarding the whole polyline check.
-            if first_point is None or second_point is None:
-                continue
-            if frozenset((first_point.point_id, second_point.point_id)) not in detected_edges:
-                finding_id = f"finding-polyline-connection-{first_id}-{second_id}"
-                findings.append(
-                    _make_finding(
-                        finding_id,
-                        polyline_claim.rule_id,
-                        "polyline_connection_wrong",
-                        polyline_claim.severity,
-                        (
-                            f"The declared polyline connection between '{first_id}' and "
-                            f"'{second_id}' was not found in the rendered line evidence."
-                        ),
-                        {
-                            "expected_edge": [first_id, second_id],
-                            "detected_edges": sorted(
-                                tuple(sorted(edge)) for edge in detected_edges
+        for series in polyline_claim.expected["series"]:
+            series_id = series["series_id"]
+            expected_order = series["ordered_point_ids"]
+            for first_id, second_id in zip(expected_order, expected_order[1:]):
+                first_point = matched.get(first_id)
+                second_point = matched.get(second_id)
+                # An unresolved endpoint is already reported by the presence
+                # check (or an evidence gap); silently skip judging this one
+                # edge rather than discarding the whole polyline check.
+                if first_point is None or second_point is None:
+                    continue
+                if frozenset((first_point.point_id, second_point.point_id)) not in detected_edges:
+                    finding_id = f"finding-polyline-connection-{series_id}-{first_id}-{second_id}"
+                    findings.append(
+                        _make_finding(
+                            finding_id,
+                            polyline_claim.rule_id,
+                            "polyline_connection_wrong",
+                            polyline_claim.severity,
+                            (
+                                f"The declared polyline connection between '{first_id}' and "
+                                f"'{second_id}' in series '{series_id}' was not found in the "
+                                "rendered line evidence."
                             ),
-                        },
-                        "Redraw the polyline so it connects the declared points in order.",
+                            {
+                                "series_id": series_id,
+                                "expected_edge": [first_id, second_id],
+                                "detected_edges": sorted(
+                                    tuple(sorted(edge)) for edge in detected_edges
+                                ),
+                            },
+                            "Redraw the polyline so it connects the declared points in order.",
+                        )
                     )
-                )
-                overlay_annotations.append(
-                    OverlayAnnotation(
-                        finding_id=finding_id,
-                        kind="bbox",
-                        bbox=first_point.bbox,
-                        label=f"{first_id}-{second_id}: polyline",
+                    overlay_annotations.append(
+                        OverlayAnnotation(
+                            finding_id=finding_id,
+                            kind="bbox",
+                            bbox=first_point.bbox,
+                            label=f"{first_id}-{second_id}: polyline ({series_id})",
+                        )
                     )
-                )
 
     axis_claim = claims.get("axis-scale-correct")
     if axis_claim is not None and axis_claim.check_id in skipped_by_check:

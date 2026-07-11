@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from visual_qa_mcp.claim_graph import build_coordinate_claim_graph
-from visual_qa_mcp.coordinate_dataset import build_coordinate_dataset
+from visual_qa_mcp.coordinate_dataset import build_coordinate_dataset, build_noisy_coordinate_dataset
 from visual_qa_mcp.coordinate_extractor import extract_coordinate_evidence
 from visual_qa_mcp.coordinate_generator import (
     DEFAULT_PLOT_BOX,
@@ -43,13 +43,24 @@ def _ticks(axis: dict) -> list[dict]:
     return [{"value": value} for value in range(axis["min"], axis["max"] + 1, axis["step"])]
 
 
-def _render(tmp_path: Path, points: list[dict], polyline_ids: list[str] | None, name: str = "image.png") -> Path:
+def _render(
+    tmp_path: Path,
+    points: list[dict],
+    polyline_ids: list[str] | None,
+    name: str = "image.png",
+    series: list[list[str]] | None = None,
+) -> Path:
     image_path = tmp_path / name
     rendered_points = [
-        {"id": point["id"], "center_px": [
-            x_value_to_pixel(float(point["x"]), X_AXIS, DEFAULT_PLOT_BOX),
-            y_value_to_pixel(float(point["y"]), Y_AXIS, DEFAULT_PLOT_BOX),
-        ], "rgb": point["rgb"]}
+        {
+            "id": point["id"],
+            "center_px": [
+                x_value_to_pixel(float(point["x"]), X_AXIS, DEFAULT_PLOT_BOX),
+                y_value_to_pixel(float(point["y"]), Y_AXIS, DEFAULT_PLOT_BOX),
+            ],
+            "rgb": point["rgb"],
+            **({"label_text": point["label_text"]} if "label_text" in point else {}),
+        }
         for point in points
     ]
     render_coordinate_diagram(
@@ -58,16 +69,31 @@ def _render(tmp_path: Path, points: list[dict], polyline_ids: list[str] | None, 
         polyline_ids,
         {**X_AXIS, "ticks": _ticks(X_AXIS)},
         {**Y_AXIS, "ticks": _ticks(Y_AXIS)},
+        polylines=series,
     )
     return image_path
 
 
-def _spec(tmp_path: Path, points: list[dict], polyline_ids: list[str] | None = None, checks_extra: list[dict] | None = None) -> Path:
+def _spec(
+    tmp_path: Path,
+    points: list[dict],
+    polyline_ids: list[str] | None = None,
+    checks_extra: list[dict] | None = None,
+    series: list[dict] | None = None,
+) -> Path:
     source_reference: dict = {
         "x_axis": {"min": X_AXIS["min"], "max": X_AXIS["max"]},
         "y_axis": {"min": Y_AXIS["min"], "max": Y_AXIS["max"]},
         "points": [
-            {"id": p["id"], "name": p["name"], "rgb": p["rgb"], "x": p["x"], "y": p["y"]} for p in points
+            {
+                "id": p["id"],
+                "name": p["name"],
+                "rgb": p["rgb"],
+                "x": p["x"],
+                "y": p["y"],
+                "label_text": p.get("label_text"),
+            }
+            for p in points
         ],
     }
     checks = [
@@ -76,7 +102,12 @@ def _spec(tmp_path: Path, points: list[dict], polyline_ids: list[str] | None = N
         {"id": "point-positions-correct", "type": "point_positions_correct", "severity": "critical"},
         {"id": "axis-scale-correct", "type": "axis_scale_correct", "severity": "critical"},
     ]
-    if polyline_ids is not None:
+    if series is not None:
+        source_reference["polylines"] = series
+        checks.append(
+            {"id": "polyline-connections-correct", "type": "polyline_connections_correct", "severity": "high"}
+        )
+    elif polyline_ids is not None:
         source_reference["polyline"] = {"ordered_point_ids": polyline_ids}
         checks.append(
             {"id": "polyline-connections-correct", "type": "polyline_connections_correct", "severity": "high"}
@@ -229,6 +260,59 @@ def test_ambiguous_point_colors_guarded_as_needs_review(tmp_path: Path) -> None:
     assert "point-positions-correct" in skipped_ids
 
 
+def test_labeled_points_pass_when_correct(tmp_path: Path) -> None:
+    labeled = [dict(point) for point in POINTS]
+    for point, label in zip(labeled, ("A", "B", "C", "D")):
+        point["label_text"] = label
+    spec_path = _spec(tmp_path, labeled, ["p1", "p2", "p3", "p4"])
+    image_path = _render(tmp_path, labeled, ["p1", "p2", "p3", "p4"])
+    result = run_coordinate_verification(image_path=image_path, spec_path=spec_path)
+    assert result.report.verdict == "pass"
+
+
+def test_label_resolves_color_collision_and_position_defect_surfaces(tmp_path: Path) -> None:
+    labeled = [dict(point) for point in POINTS]
+    for point, label in zip(labeled, ("A", "B", "C", "D")):
+        point["label_text"] = label
+    spec_path = _spec(tmp_path, labeled, ["p1", "p2", "p3", "p4"])
+    colliding = [dict(point) for point in labeled]
+    colliding[2]["rgb"] = [9, 132, 227]  # p3 collides with p2's color but keeps a distinct label
+    colliding[2]["x"] = 85  # actual rendered position diverges from the declared 70
+    image_path = _render(tmp_path, colliding, ["p1", "p2", "p3", "p4"])
+    result = run_coordinate_verification(image_path=image_path, spec_path=spec_path)
+    assert result.report.verdict == "fail"
+    types = {finding.type for finding in result.report.findings}
+    assert types == {"point_position_wrong"}
+    skipped_ids = {item["check_id"] for item in result.report.checks_skipped}
+    assert "required-points-present" not in skipped_ids
+
+
+def test_multi_series_polylines_pass_when_both_correct(tmp_path: Path) -> None:
+    series = [
+        {"series_id": "series-1", "ordered_point_ids": ["p1", "p2"]},
+        {"series_id": "series-2", "ordered_point_ids": ["p3", "p4"]},
+    ]
+    spec_path = _spec(tmp_path, POINTS, series=series)
+    image_path = _render(tmp_path, POINTS, None, series=[["p1", "p2"], ["p3", "p4"]])
+    result = run_coordinate_verification(image_path=image_path, spec_path=spec_path)
+    assert result.report.verdict == "pass"
+
+
+def test_multi_series_reports_series_scoped_connection_failure(tmp_path: Path) -> None:
+    series = [
+        {"series_id": "series-1", "ordered_point_ids": ["p1", "p2"]},
+        {"series_id": "series-2", "ordered_point_ids": ["p3", "p4"]},
+    ]
+    spec_path = _spec(tmp_path, POINTS, series=series)
+    image_path = _render(tmp_path, POINTS, None, series=[["p1", "p2"], ["p3"]])
+    result = run_coordinate_verification(image_path=image_path, spec_path=spec_path)
+    assert result.report.verdict == "fail"
+    types = {finding.type for finding in result.report.findings}
+    assert types == {"polyline_connection_wrong"}
+    finding = next(f for f in result.report.findings if f.type == "polyline_connection_wrong")
+    assert finding.evidence["series_id"] == "series-2"
+
+
 def test_unreadable_axis_guarded_as_needs_review(tmp_path: Path) -> None:
     spec_path = _spec(tmp_path, POINTS)
     image_path = tmp_path / "image.png"
@@ -338,19 +422,46 @@ def coordinate_dataset(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 def test_coordinate_dataset_structure(coordinate_dataset: Path) -> None:
     cases = discover_coordinate_cases(coordinate_dataset)
-    assert len(cases) == 11
-    assert sum(1 for case in cases if case.kind == "golden") == 4
-    assert sum(1 for case in cases if case.kind == "mutated") == 7
+    assert len(cases) == 15
+    assert sum(1 for case in cases if case.kind == "golden") == 6
+    assert sum(1 for case in cases if case.kind == "mutated") == 9
 
 
 def test_coordinate_dataset_validation_summary(coordinate_dataset: Path) -> None:
     summary = summarize_coordinate_validation_results(coordinate_dataset)
-    assert summary["total_cases"] == 11
-    assert summary["typed_mutated_cases"] == 5
-    assert summary["typed_mutated_hits"] == 5
+    assert summary["total_cases"] == 15
+    assert summary["typed_mutated_cases"] == 7
+    assert summary["typed_mutated_hits"] == 7
     assert summary["critical_error_recall"] == 1.0
     assert summary["ambiguous_cases"] == 2
     assert summary["ambiguous_guard_rate"] == 1.0
+    assert summary["false_unsupported_passes"] == 0
+    assert summary["golden_failures"] == 0
+    assert summary["golden_non_passes"] == 0
+    assert summary["verdict_mismatches"] == 0
+
+
+@pytest.fixture(scope="module")
+def coordinate_noisy_dataset(tmp_path_factory: pytest.TempPathFactory) -> Path:
+    dataset_root = tmp_path_factory.mktemp("coordinate-v1-noisy")
+    build_noisy_coordinate_dataset(dataset_root)
+    return dataset_root
+
+
+def test_coordinate_noisy_dataset_structure(coordinate_noisy_dataset: Path) -> None:
+    cases = discover_coordinate_cases(coordinate_noisy_dataset)
+    assert len(cases) == 6
+    assert sum(1 for case in cases if case.kind == "golden") == 2
+    assert sum(1 for case in cases if case.kind == "mutated") == 4
+    assert all(case.dataset_track == "noisy" for case in cases)
+
+
+def test_coordinate_noisy_dataset_validation_summary(coordinate_noisy_dataset: Path) -> None:
+    summary = summarize_coordinate_validation_results(coordinate_noisy_dataset)
+    assert summary["total_cases"] == 6
+    assert summary["typed_mutated_cases"] == 4
+    assert summary["typed_mutated_hits"] == 4
+    assert summary["critical_error_recall"] == 1.0
     assert summary["false_unsupported_passes"] == 0
     assert summary["golden_failures"] == 0
     assert summary["golden_non_passes"] == 0

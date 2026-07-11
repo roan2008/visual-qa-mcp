@@ -1,0 +1,16 @@
+{
+  "case_id": "noisy-golden-01",
+  "title": "Mildly blurred diagram, points and polyline correct",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "coordinate_plane",
+  "dataset_track": "noisy",
+  "image_id": "noisy-golden-01",
+  "diagram_version": "coordinate-graph-v1",
+  "render_options": {
+    "postprocess": {
+      "blur_radius": 0.6
+    }
+  },
+  "renderer": "pillow"
+}

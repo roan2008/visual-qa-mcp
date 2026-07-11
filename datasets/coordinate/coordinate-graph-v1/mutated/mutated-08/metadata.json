@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-08",
+  "title": "Labeled color collision resolved, point position wrong",
+  "kind": "mutated",
+  "defect_type": "label_resolved_color_collision",
+  "scenario": "coordinate_plane",
+  "dataset_track": "controlled",
+  "image_id": "mutated-08",
+  "diagram_version": "coordinate-graph-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

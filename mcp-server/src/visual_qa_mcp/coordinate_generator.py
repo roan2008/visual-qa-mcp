@@ -6,6 +6,7 @@ from typing import Any
 from PIL import Image, ImageDraw
 
 from .chart_generator import _apply_postprocess, draw_text_centered, get_font
+from .coordinate_extractor import point_label_box
 
 BACKGROUND_COLOR = (255, 255, 255)
 AXIS_COLOR = (30, 30, 30)
@@ -46,6 +47,7 @@ def render_coordinate_diagram(
     x_axis: dict[str, Any],
     y_axis: dict[str, Any],
     render_options: dict[str, Any] | None = None,
+    polylines: list[list[str]] | None = None,
 ) -> None:
     """Render a controlled dual-numeric-axis coordinate plane.
 
@@ -86,11 +88,13 @@ def render_coordinate_diagram(
         draw_text_centered(draw, label_box, text, tick_font, fill=fill)
 
     id_to_point = {point["id"]: point for point in points}
-    if polyline_point_ids:
-        coords = [tuple(id_to_point[point_id]["center_px"]) for point_id in polyline_point_ids if point_id in id_to_point]
+    series_list = polylines if polylines is not None else ([polyline_point_ids] if polyline_point_ids else [])
+    for series_point_ids in series_list:
+        coords = [tuple(id_to_point[point_id]["center_px"]) for point_id in series_point_ids if point_id in id_to_point]
         if len(coords) >= 2:
             draw.line(coords, fill=POLYLINE_COLOR, width=3, joint="curve")
 
+    label_font = get_font(14)
     for point in points:
         center_x, center_y = (float(value) for value in point["center_px"])
         radius = float(point.get("radius_px", DEFAULT_POINT_RADIUS_PX))
@@ -98,6 +102,10 @@ def render_coordinate_diagram(
             [center_x - radius, center_y - radius, center_x + radius, center_y + radius],
             fill=tuple(point["rgb"]),
         )
+        label_text = point.get("label_text")
+        if label_text:
+            label_box = point_label_box([int(center_x), int(center_y)], (width, height))
+            draw_text_centered(draw, label_box, str(label_text), label_font, fill=TEXT_COLOR)
 
     image_path.parent.mkdir(parents=True, exist_ok=True)
     image = _apply_postprocess(image, image_path, options)

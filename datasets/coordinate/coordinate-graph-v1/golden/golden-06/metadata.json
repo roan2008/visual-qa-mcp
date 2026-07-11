@@ -1,0 +1,12 @@
+{
+  "case_id": "golden-06",
+  "title": "Two independent series, each with its own polyline, all correct",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "coordinate_plane",
+  "dataset_track": "controlled",
+  "image_id": "golden-06",
+  "diagram_version": "coordinate-graph-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}
