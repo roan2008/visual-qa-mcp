@@ -1,0 +1,69 @@
+{
+  "image_id": "image",
+  "spec_id": "flowchart-mutated-02",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-node-count",
+      "rule_id": "flowchart-v1.node-count-matches",
+      "type": "node_count_mismatch",
+      "severity": "high",
+      "message": "Detected 6 nodes but expected 5.",
+      "evidence": {
+        "expected_count": 5,
+        "detected_count": 6
+      },
+      "recommendation": "Regenerate the diagram with the required number of nodes."
+    },
+    {
+      "id": "finding-unexpected-node-node-06",
+      "rule_id": "flowchart-v1.required-nodes-present",
+      "type": "extra_node",
+      "severity": "high",
+      "message": "Detected node 'node-06' does not match any expected node color.",
+      "evidence": {
+        "node_id": "node-06",
+        "detected_rgb": [
+          40,
+          200,
+          200
+        ],
+        "bbox": [
+          10,
+          620,
+          70,
+          660
+        ]
+      },
+      "recommendation": "Remove the extra node or map it to a declared node in the spec."
+    }
+  ],
+  "checks_run": [
+    "node-count-matches",
+    "required-nodes-present",
+    "node-shape-correct",
+    "node-label-correct",
+    "connector-links-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.6,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.6,
+  "overlay_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-02\\overlay.png",
+  "evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-02\\evidence_graph.json",
+  "claim_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-02\\claim_graph.json",
+  "primitive_evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-02\\primitive_evidence_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-unexpected-node-node-06",
+      "kind": "bbox",
+      "bbox": [
+        10,
+        620,
+        70,
+        660
+      ],
+      "label": "Unexpected node"
+    }
+  ]
+}

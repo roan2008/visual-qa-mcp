@@ -1,0 +1,101 @@
+{
+  "image_id": "image",
+  "diagram_type": "flowchart",
+  "nodes": [
+    {
+      "node_id": "node-01",
+      "shape": "rectangle",
+      "rgb": [
+        214,
+        48,
+        49
+      ],
+      "bbox": [
+        140,
+        70,
+        280,
+        150
+      ],
+      "center_xy": [
+        210,
+        110
+      ],
+      "pixel_count": 11421,
+      "fill_ratio": 1.0,
+      "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0,
+      "primitive_ids": [
+        "flowchart.rectangle.node-01"
+      ]
+    },
+    {
+      "node_id": "node-02",
+      "shape": "diamond",
+      "rgb": [
+        230,
+        126,
+        34
+      ],
+      "bbox": [
+        140,
+        320,
+        280,
+        400
+      ],
+      "center_xy": [
+        210,
+        360
+      ],
+      "pixel_count": 5661,
+      "fill_ratio": 0.496,
+      "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0,
+      "primitive_ids": [
+        "flowchart.symbol.node-02"
+      ]
+    },
+    {
+      "node_id": "node-03",
+      "shape": "rectangle",
+      "rgb": [
+        142,
+        68,
+        173
+      ],
+      "bbox": [
+        140,
+        570,
+        280,
+        650
+      ],
+      "center_xy": [
+        210,
+        610
+      ],
+      "pixel_count": 11421,
+      "fill_ratio": 1.0,
+      "confidence": 0.9,
+      "label_text": null,
+      "label_confidence": 0.0,
+      "primitive_ids": [
+        "flowchart.rectangle.node-03"
+      ]
+    }
+  ],
+  "connectors": [],
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "flowchart-v1",
+    "extractor_version": "0.1.0",
+    "backend": "shape_and_connector_component",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "image_path": "..\\datasets\\flowchart\\flowchart-v1\\golden\\golden-02\\image.png"
+  }
+}

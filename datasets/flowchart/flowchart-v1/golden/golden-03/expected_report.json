@@ -1,0 +1,7 @@
+{
+  "verdict": "pass",
+  "expected_finding_types": [],
+  "expected_evidence": {
+    "node_count": 4
+  }
+}

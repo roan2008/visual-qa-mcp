@@ -1,0 +1,383 @@
+{
+  "spec_id": "flowchart-mutated-05",
+  "domain": "computer_science",
+  "risk_level": "medium",
+  "claims": [
+    {
+      "claim_id": "claim-node-count-matches",
+      "rule_id": "flowchart-v1.node-count-matches",
+      "check_id": "node-count-matches",
+      "check_type": "node_count_matches",
+      "severity": "high",
+      "target": "nodes",
+      "expected": {
+        "count": 5
+      },
+      "tolerance": {},
+      "evidence_requirements": [
+        "node_geometry"
+      ],
+      "metadata": {
+        "description": "The number of detected nodes should match the declared nodes.",
+        "learning_objective": "Read a vertical-chain flowchart where each node has the correct shape, color identity, and label, and each directed connector links the declared nodes."
+      }
+    },
+    {
+      "claim_id": "claim-required-nodes-present",
+      "rule_id": "flowchart-v1.required-nodes-present",
+      "check_id": "required-nodes-present",
+      "check_type": "required_nodes_present",
+      "severity": "critical",
+      "target": "nodes",
+      "expected": {
+        "nodes_by_id": {
+          "start": {
+            "rgb": [
+              214,
+              48,
+              49
+            ],
+            "name": "Start"
+          },
+          "input": {
+            "rgb": [
+              9,
+              132,
+              227
+            ],
+            "name": "Input"
+          },
+          "decision": {
+            "rgb": [
+              230,
+              126,
+              34
+            ],
+            "name": "Decision"
+          },
+          "process": {
+            "rgb": [
+              0,
+              148,
+              50
+            ],
+            "name": "Process"
+          },
+          "end": {
+            "rgb": [
+              142,
+              68,
+              173
+            ],
+            "name": "End"
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "node_geometry",
+        "node_color"
+      ],
+      "metadata": {
+        "description": "Every required node must be present with its declared color identity.",
+        "learning_objective": "Read a vertical-chain flowchart where each node has the correct shape, color identity, and label, and each directed connector links the declared nodes."
+      }
+    },
+    {
+      "claim_id": "claim-node-shape-correct",
+      "rule_id": "flowchart-v1.node-shape-correct",
+      "check_id": "node-shape-correct",
+      "check_type": "node_shape_correct",
+      "severity": "critical",
+      "target": "nodes",
+      "expected": {
+        "nodes_by_id": {
+          "start": {
+            "rgb": [
+              214,
+              48,
+              49
+            ],
+            "shape": "rectangle"
+          },
+          "input": {
+            "rgb": [
+              9,
+              132,
+              227
+            ],
+            "shape": "rectangle"
+          },
+          "decision": {
+            "rgb": [
+              230,
+              126,
+              34
+            ],
+            "shape": "diamond"
+          },
+          "process": {
+            "rgb": [
+              0,
+              148,
+              50
+            ],
+            "shape": "rectangle"
+          },
+          "end": {
+            "rgb": [
+              142,
+              68,
+              173
+            ],
+            "shape": "rectangle"
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "node_geometry",
+        "node_color"
+      ],
+      "metadata": {
+        "description": "Each node must render with its declared shape (rectangle or diamond).",
+        "learning_objective": "Read a vertical-chain flowchart where each node has the correct shape, color identity, and label, and each directed connector links the declared nodes."
+      }
+    },
+    {
+      "claim_id": "claim-node-label-correct",
+      "rule_id": "flowchart-v1.node-label-correct",
+      "check_id": "node-label-correct",
+      "check_type": "node_label_correct",
+      "severity": "high",
+      "target": "nodes",
+      "expected": {
+        "nodes_by_id": {
+          "start": {
+            "rgb": [
+              214,
+              48,
+              49
+            ],
+            "label_text": "Start"
+          },
+          "input": {
+            "rgb": [
+              9,
+              132,
+              227
+            ],
+            "label_text": "Input"
+          },
+          "decision": {
+            "rgb": [
+              230,
+              126,
+              34
+            ],
+            "label_text": "Decision"
+          },
+          "process": {
+            "rgb": [
+              0,
+              148,
+              50
+            ],
+            "label_text": "Process"
+          },
+          "end": {
+            "rgb": [
+              142,
+              68,
+              173
+            ],
+            "label_text": "End"
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "node_geometry",
+        "node_color",
+        "node_label_text"
+      ],
+      "metadata": {
+        "description": "Each labeled node's decoded text must match its declared label.",
+        "learning_objective": "Read a vertical-chain flowchart where each node has the correct shape, color identity, and label, and each directed connector links the declared nodes."
+      }
+    },
+    {
+      "claim_id": "claim-connector-links-correct",
+      "rule_id": "flowchart-v1.connector-links-correct",
+      "check_id": "connector-links-correct",
+      "check_type": "connector_links_correct",
+      "severity": "critical",
+      "target": "connectors",
+      "expected": {
+        "ordered_edges": [
+          [
+            "start",
+            "input"
+          ],
+          [
+            "input",
+            "decision"
+          ],
+          [
+            "decision",
+            "process"
+          ],
+          [
+            "process",
+            "end"
+          ]
+        ],
+        "nodes_by_id": {
+          "start": {
+            "rgb": [
+              214,
+              48,
+              49
+            ]
+          },
+          "input": {
+            "rgb": [
+              9,
+              132,
+              227
+            ]
+          },
+          "decision": {
+            "rgb": [
+              230,
+              126,
+              34
+            ]
+          },
+          "process": {
+            "rgb": [
+              0,
+              148,
+              50
+            ]
+          },
+          "end": {
+            "rgb": [
+              142,
+              68,
+              173
+            ]
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "node_geometry",
+        "node_color",
+        "connector_geometry"
+      ],
+      "metadata": {
+        "description": "Every declared directed connector must be found in the rendered arrow evidence.",
+        "learning_objective": "Read a vertical-chain flowchart where each node has the correct shape, color identity, and label, and each directed connector links the declared nodes."
+      }
+    }
+  ],
+  "gaps": [],
+  "source_reference": {
+    "nodes": [
+      {
+        "id": "start",
+        "name": "Start",
+        "rgb": [
+          214,
+          48,
+          49
+        ],
+        "shape": "rectangle",
+        "label_text": "Start"
+      },
+      {
+        "id": "input",
+        "name": "Input",
+        "rgb": [
+          9,
+          132,
+          227
+        ],
+        "shape": "rectangle",
+        "label_text": "Input"
+      },
+      {
+        "id": "decision",
+        "name": "Decision",
+        "rgb": [
+          230,
+          126,
+          34
+        ],
+        "shape": "diamond",
+        "label_text": "Decision"
+      },
+      {
+        "id": "process",
+        "name": "Process",
+        "rgb": [
+          0,
+          148,
+          50
+        ],
+        "shape": "rectangle",
+        "label_text": "Process"
+      },
+      {
+        "id": "end",
+        "name": "End",
+        "rgb": [
+          142,
+          68,
+          173
+        ],
+        "shape": "rectangle",
+        "label_text": "End"
+      }
+    ],
+    "connectors": [
+      {
+        "from_id": "start",
+        "to_id": "input"
+      },
+      {
+        "from_id": "input",
+        "to_id": "decision"
+      },
+      {
+        "from_id": "decision",
+        "to_id": "process"
+      },
+      {
+        "from_id": "process",
+        "to_id": "end"
+      }
+    ]
+  },
+  "metadata": {
+    "generator": "flowchart-v1",
+    "spec_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-05\\visual_spec.json",
+    "required_elements": [
+      {
+        "id": "nodes",
+        "kind": "node",
+        "name": "flowchart nodes",
+        "count": 5
+      }
+    ]
+  }
+}

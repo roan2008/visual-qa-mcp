@@ -1,0 +1,9 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "missing_connector"
+  ],
+  "expected_evidence": {
+    "node_count": 4
+  }
+}

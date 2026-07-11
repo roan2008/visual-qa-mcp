@@ -1,0 +1,34 @@
+{
+  "image_id": "image",
+  "spec_id": "flowchart-mutated-07",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [
+    "node-count-matches"
+  ],
+  "checks_skipped": [
+    {
+      "check_id": "required-nodes-present",
+      "reason": "Nodes 'node-01' and 'node-04' share a similar color, so color-based identity matching is ambiguous."
+    },
+    {
+      "check_id": "node-shape-correct",
+      "reason": "Nodes 'node-01' and 'node-04' share a similar color, so color-based identity matching is ambiguous."
+    },
+    {
+      "check_id": "node-label-correct",
+      "reason": "Nodes 'node-01' and 'node-04' share a similar color, so color-based identity matching is ambiguous."
+    },
+    {
+      "check_id": "connector-links-correct",
+      "reason": "Nodes 'node-01' and 'node-04' share a similar color, so color-based identity matching is ambiguous."
+    }
+  ],
+  "confidence": 0.4,
+  "extraction_confidence": 0.7,
+  "rule_confidence": 0.4,
+  "overlay_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-07\\overlay.png",
+  "evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-07\\evidence_graph.json",
+  "claim_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-07\\claim_graph.json",
+  "primitive_evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-07\\primitive_evidence_graph.json"
+}

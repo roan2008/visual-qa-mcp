@@ -1,0 +1,36 @@
+{
+  "image_id": "image",
+  "spec_id": "flowchart-mutated-08",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [],
+  "checks_skipped": [
+    {
+      "check_id": "node-count-matches",
+      "reason": "1 colored component(s) were too small or did not match a recognized rectangle/diamond fill ratio."
+    },
+    {
+      "check_id": "required-nodes-present",
+      "reason": "1 colored component(s) were too small or did not match a recognized rectangle/diamond fill ratio."
+    },
+    {
+      "check_id": "node-shape-correct",
+      "reason": "1 colored component(s) were too small or did not match a recognized rectangle/diamond fill ratio."
+    },
+    {
+      "check_id": "node-label-correct",
+      "reason": "1 colored component(s) were too small or did not match a recognized rectangle/diamond fill ratio."
+    },
+    {
+      "check_id": "connector-links-correct",
+      "reason": "1 colored component(s) were too small or did not match a recognized rectangle/diamond fill ratio."
+    }
+  ],
+  "confidence": 0.4,
+  "extraction_confidence": 0.3,
+  "rule_confidence": 0.4,
+  "overlay_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-08\\overlay.png",
+  "evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-08\\evidence_graph.json",
+  "claim_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-08\\claim_graph.json",
+  "primitive_evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-08\\primitive_evidence_graph.json"
+}

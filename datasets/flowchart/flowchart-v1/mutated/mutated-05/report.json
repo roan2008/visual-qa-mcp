@@ -1,0 +1,49 @@
+{
+  "image_id": "image",
+  "spec_id": "flowchart-mutated-05",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-connector-missing-decision-process",
+      "rule_id": "flowchart-v1.connector-links-correct",
+      "type": "missing_connector",
+      "severity": "critical",
+      "message": "The declared connector from 'decision' to 'process' was not found in the rendered arrow evidence.",
+      "evidence": {
+        "expected_edge": [
+          "decision",
+          "process"
+        ]
+      },
+      "recommendation": "Draw a connector arrow from the declared source node to the target node."
+    }
+  ],
+  "checks_run": [
+    "node-count-matches",
+    "required-nodes-present",
+    "node-shape-correct",
+    "node-label-correct",
+    "connector-links-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.7,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.7,
+  "overlay_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-05\\overlay.png",
+  "evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-05\\evidence_graph.json",
+  "claim_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-05\\claim_graph.json",
+  "primitive_evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-05\\primitive_evidence_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-connector-missing-decision-process",
+      "kind": "bbox",
+      "bbox": [
+        140,
+        320,
+        280,
+        400
+      ],
+      "label": "decision-process: connector"
+    }
+  ]
+}

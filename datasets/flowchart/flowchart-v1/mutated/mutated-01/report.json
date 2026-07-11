@@ -1,0 +1,50 @@
+{
+  "image_id": "image",
+  "spec_id": "flowchart-mutated-01",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-node-missing-process",
+      "rule_id": "flowchart-v1.required-nodes-present",
+      "type": "missing_node",
+      "severity": "critical",
+      "message": "Required node 'Process' was not detected.",
+      "evidence": {
+        "node_id": "process",
+        "expected_rgb": [
+          0,
+          148,
+          50
+        ]
+      },
+      "recommendation": "Add the missing node with its expected color and shape."
+    },
+    {
+      "id": "finding-node-count",
+      "rule_id": "flowchart-v1.node-count-matches",
+      "type": "node_count_mismatch",
+      "severity": "high",
+      "message": "Detected 4 nodes but expected 5.",
+      "evidence": {
+        "expected_count": 5,
+        "detected_count": 4
+      },
+      "recommendation": "Regenerate the diagram with the required number of nodes."
+    }
+  ],
+  "checks_run": [
+    "node-count-matches",
+    "required-nodes-present",
+    "node-shape-correct",
+    "node-label-correct",
+    "connector-links-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.5,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.5,
+  "overlay_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-01\\overlay.png",
+  "evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-01\\evidence_graph.json",
+  "claim_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-01\\claim_graph.json",
+  "primitive_evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-01\\primitive_evidence_graph.json"
+}

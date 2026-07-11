@@ -1,0 +1,12 @@
+{
+  "case_id": "golden-01",
+  "title": "Five-node chain with labels and connectors, all correct",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "flowchart",
+  "dataset_track": "controlled",
+  "image_id": "golden-01",
+  "diagram_version": "flowchart-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

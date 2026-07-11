@@ -1,0 +1,21 @@
+{
+  "image_id": "image",
+  "spec_id": "flowchart-golden-03",
+  "verdict": "pass",
+  "findings": [],
+  "checks_run": [
+    "node-count-matches",
+    "required-nodes-present",
+    "node-shape-correct",
+    "node-label-correct",
+    "connector-links-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 1.0,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 1.0,
+  "overlay_path": "..\\datasets\\flowchart\\flowchart-v1\\golden\\golden-03\\overlay.png",
+  "evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\golden\\golden-03\\evidence_graph.json",
+  "claim_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\golden\\golden-03\\claim_graph.json",
+  "primitive_evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\golden\\golden-03\\primitive_evidence_graph.json"
+}

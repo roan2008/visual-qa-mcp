@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-03",
+  "title": "The decision node renders as a rectangle instead of a diamond",
+  "kind": "mutated",
+  "defect_type": "node_shape_wrong",
+  "scenario": "flowchart",
+  "dataset_track": "controlled",
+  "image_id": "mutated-03",
+  "diagram_version": "flowchart-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

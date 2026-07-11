@@ -1,0 +1,12 @@
+{
+  "case_id": "golden-02",
+  "title": "Three-node chain, no labels or connector check declared",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "flowchart",
+  "dataset_track": "controlled",
+  "image_id": "golden-02",
+  "diagram_version": "flowchart-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

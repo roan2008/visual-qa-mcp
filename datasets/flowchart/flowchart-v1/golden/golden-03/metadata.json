@@ -1,0 +1,14 @@
+{
+  "case_id": "golden-03",
+  "title": "Branching diagram: one decision node with two diagonal out-edges, all correct",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "flowchart",
+  "dataset_track": "controlled",
+  "image_id": "golden-03",
+  "diagram_version": "flowchart-v1",
+  "render_options": {
+    "width": 620
+  },
+  "renderer": "pillow"
+}

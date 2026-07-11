@@ -1,0 +1,14 @@
+{
+  "case_id": "mutated-09",
+  "title": "Branching diagram, one of the two diagonal branch connectors is missing",
+  "kind": "mutated",
+  "defect_type": "missing_connector",
+  "scenario": "flowchart",
+  "dataset_track": "controlled",
+  "image_id": "mutated-09",
+  "diagram_version": "flowchart-v1",
+  "render_options": {
+    "width": 620
+  },
+  "renderer": "pillow"
+}

@@ -1,0 +1,215 @@
+{
+  "image_id": "image",
+  "diagram_type": "flowchart",
+  "nodes": [
+    {
+      "node_id": "node-01",
+      "shape": "rectangle",
+      "rgb": [
+        214,
+        48,
+        49
+      ],
+      "bbox": [
+        140,
+        40,
+        280,
+        120
+      ],
+      "center_xy": [
+        210,
+        80
+      ],
+      "pixel_count": 11421,
+      "fill_ratio": 1.0,
+      "confidence": 0.9,
+      "label_text": "Start",
+      "label_confidence": 0.83,
+      "primitive_ids": [
+        "flowchart.rectangle.node-01",
+        "flowchart.text.node-01"
+      ]
+    },
+    {
+      "node_id": "node-02",
+      "shape": "rectangle",
+      "rgb": [
+        9,
+        132,
+        227
+      ],
+      "bbox": [
+        140,
+        180,
+        280,
+        260
+      ],
+      "center_xy": [
+        210,
+        220
+      ],
+      "pixel_count": 11421,
+      "fill_ratio": 1.0,
+      "confidence": 0.9,
+      "label_text": "Input",
+      "label_confidence": 0.86,
+      "primitive_ids": [
+        "flowchart.rectangle.node-02",
+        "flowchart.text.node-02"
+      ]
+    },
+    {
+      "node_id": "node-03",
+      "shape": "diamond",
+      "rgb": [
+        230,
+        126,
+        34
+      ],
+      "bbox": [
+        140,
+        320,
+        280,
+        400
+      ],
+      "center_xy": [
+        210,
+        360
+      ],
+      "pixel_count": 5661,
+      "fill_ratio": 0.496,
+      "confidence": 0.9,
+      "label_text": "Decision",
+      "label_confidence": 0.89,
+      "primitive_ids": [
+        "flowchart.symbol.node-03",
+        "flowchart.text.node-03"
+      ]
+    },
+    {
+      "node_id": "node-04",
+      "shape": "rectangle",
+      "rgb": [
+        0,
+        148,
+        50
+      ],
+      "bbox": [
+        140,
+        460,
+        280,
+        540
+      ],
+      "center_xy": [
+        210,
+        500
+      ],
+      "pixel_count": 11421,
+      "fill_ratio": 1.0,
+      "confidence": 0.9,
+      "label_text": "Process",
+      "label_confidence": 0.87,
+      "primitive_ids": [
+        "flowchart.rectangle.node-04",
+        "flowchart.text.node-04"
+      ]
+    },
+    {
+      "node_id": "node-05",
+      "shape": "rectangle",
+      "rgb": [
+        142,
+        68,
+        173
+      ],
+      "bbox": [
+        140,
+        600,
+        280,
+        680
+      ],
+      "center_xy": [
+        210,
+        640
+      ],
+      "pixel_count": 11421,
+      "fill_ratio": 1.0,
+      "confidence": 0.9,
+      "label_text": "End",
+      "label_confidence": 0.89,
+      "primitive_ids": [
+        "flowchart.rectangle.node-05",
+        "flowchart.text.node-05"
+      ]
+    }
+  ],
+  "connectors": [
+    {
+      "connector_id": "connector-01",
+      "tail_xy": [
+        210,
+        126
+      ],
+      "head_xy": [
+        210,
+        174
+      ],
+      "from_node_id": "node-01",
+      "to_node_id": "node-02",
+      "length_px": 48.0,
+      "confidence": 0.85,
+      "primitive_ids": [
+        "flowchart.arrow.connector-01"
+      ]
+    },
+    {
+      "connector_id": "connector-02",
+      "tail_xy": [
+        210,
+        266
+      ],
+      "head_xy": [
+        210,
+        314
+      ],
+      "from_node_id": "node-02",
+      "to_node_id": "node-03",
+      "length_px": 48.0,
+      "confidence": 0.85,
+      "primitive_ids": [
+        "flowchart.arrow.connector-02"
+      ]
+    },
+    {
+      "connector_id": "connector-03",
+      "tail_xy": [
+        210,
+        546
+      ],
+      "head_xy": [
+        210,
+        594
+      ],
+      "from_node_id": "node-04",
+      "to_node_id": "node-05",
+      "length_px": 48.0,
+      "confidence": 0.85,
+      "primitive_ids": [
+        "flowchart.arrow.connector-03"
+      ]
+    }
+  ],
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "flowchart-v1",
+    "extractor_version": "0.1.0",
+    "backend": "shape_and_connector_component",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "image_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-05\\image.png"
+  }
+}

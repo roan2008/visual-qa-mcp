@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-08",
+  "title": "A node is too small to classify its shape",
+  "kind": "mutated",
+  "defect_type": "degenerate_node_geometry",
+  "scenario": "flowchart",
+  "dataset_track": "controlled",
+  "image_id": "mutated-08",
+  "diagram_version": "flowchart-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

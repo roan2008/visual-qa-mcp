@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-05",
+  "title": "A declared connector is missing from the rendered image",
+  "kind": "mutated",
+  "defect_type": "missing_connector",
+  "scenario": "flowchart",
+  "dataset_track": "controlled",
+  "image_id": "mutated-05",
+  "diagram_version": "flowchart-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

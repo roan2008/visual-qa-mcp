@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-06",
+  "title": "An extra undeclared connector is rendered",
+  "kind": "mutated",
+  "defect_type": "extra_connector",
+  "scenario": "flowchart",
+  "dataset_track": "controlled",
+  "image_id": "mutated-06",
+  "diagram_version": "flowchart-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

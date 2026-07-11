@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-02",
+  "title": "An undeclared extra node is rendered",
+  "kind": "mutated",
+  "defect_type": "extra_node",
+  "scenario": "flowchart",
+  "dataset_track": "controlled",
+  "image_id": "mutated-02",
+  "diagram_version": "flowchart-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

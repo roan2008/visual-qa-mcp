@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-07",
+  "title": "Two nodes share an ambiguous color",
+  "kind": "mutated",
+  "defect_type": "ambiguous_node_colors",
+  "scenario": "flowchart",
+  "dataset_track": "controlled",
+  "image_id": "mutated-07",
+  "diagram_version": "flowchart-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

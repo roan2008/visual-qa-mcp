@@ -1,0 +1,622 @@
+{
+  "schema_version": "1.0",
+  "image_id": "image",
+  "profile": "flowchart-v1",
+  "coordinate_system": {
+    "origin": "top_left",
+    "x_direction": "right",
+    "y_direction": "down",
+    "unit": "pixel",
+    "image_width": 420,
+    "image_height": 700,
+    "bbox_format": "left_top_right_bottom_inclusive"
+  },
+  "primitives": [
+    {
+      "primitive_id": "flowchart.rectangle.node-01",
+      "type": "rectangle",
+      "bbox": {
+        "left": 140,
+        "top": 40,
+        "right": 280,
+        "bottom": 120
+      },
+      "geometry": {
+        "bounds": {
+          "left": 140,
+          "top": 40,
+          "right": 280,
+          "bottom": 120
+        }
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "shape": "rectangle",
+        "rgb": [
+          214,
+          48,
+          49
+        ],
+        "fill_ratio": 1.0,
+        "pixel_count": 11421
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "nodes",
+          "object_id": "node-01"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.text.node-01",
+      "type": "text_region",
+      "bbox": {
+        "left": 290,
+        "top": 69,
+        "right": 366,
+        "bottom": 91
+      },
+      "geometry": {
+        "bounds": {
+          "left": 290,
+          "top": 69,
+          "right": 366,
+          "bottom": 91
+        }
+      },
+      "confidence": 0.83,
+      "attributes": {
+        "text": "Start"
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "nodes",
+          "object_id": "node-01"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.rectangle.node-02",
+      "type": "rectangle",
+      "bbox": {
+        "left": 140,
+        "top": 180,
+        "right": 280,
+        "bottom": 260
+      },
+      "geometry": {
+        "bounds": {
+          "left": 140,
+          "top": 180,
+          "right": 280,
+          "bottom": 260
+        }
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "shape": "rectangle",
+        "rgb": [
+          9,
+          132,
+          227
+        ],
+        "fill_ratio": 1.0,
+        "pixel_count": 11421
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "nodes",
+          "object_id": "node-02"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.text.node-02",
+      "type": "text_region",
+      "bbox": {
+        "left": 290,
+        "top": 209,
+        "right": 366,
+        "bottom": 231
+      },
+      "geometry": {
+        "bounds": {
+          "left": 290,
+          "top": 209,
+          "right": 366,
+          "bottom": 231
+        }
+      },
+      "confidence": 0.86,
+      "attributes": {
+        "text": "Input"
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "nodes",
+          "object_id": "node-02"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.symbol.node-03",
+      "type": "symbol",
+      "bbox": {
+        "left": 140,
+        "top": 320,
+        "right": 280,
+        "bottom": 400
+      },
+      "geometry": {
+        "bounds": {
+          "left": 140,
+          "top": 320,
+          "right": 280,
+          "bottom": 400
+        }
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "shape": "diamond",
+        "rgb": [
+          230,
+          126,
+          34
+        ],
+        "fill_ratio": 0.496,
+        "pixel_count": 5661
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "nodes",
+          "object_id": "node-03"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.text.node-03",
+      "type": "text_region",
+      "bbox": {
+        "left": 290,
+        "top": 349,
+        "right": 366,
+        "bottom": 371
+      },
+      "geometry": {
+        "bounds": {
+          "left": 290,
+          "top": 349,
+          "right": 366,
+          "bottom": 371
+        }
+      },
+      "confidence": 0.87,
+      "attributes": {
+        "text": "Process"
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "nodes",
+          "object_id": "node-03"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.rectangle.node-04",
+      "type": "rectangle",
+      "bbox": {
+        "left": 140,
+        "top": 460,
+        "right": 280,
+        "bottom": 540
+      },
+      "geometry": {
+        "bounds": {
+          "left": 140,
+          "top": 460,
+          "right": 280,
+          "bottom": 540
+        }
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "shape": "rectangle",
+        "rgb": [
+          0,
+          148,
+          50
+        ],
+        "fill_ratio": 1.0,
+        "pixel_count": 11421
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "nodes",
+          "object_id": "node-04"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.text.node-04",
+      "type": "text_region",
+      "bbox": {
+        "left": 290,
+        "top": 489,
+        "right": 366,
+        "bottom": 511
+      },
+      "geometry": {
+        "bounds": {
+          "left": 290,
+          "top": 489,
+          "right": 366,
+          "bottom": 511
+        }
+      },
+      "confidence": 0.87,
+      "attributes": {
+        "text": "Process"
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "nodes",
+          "object_id": "node-04"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.rectangle.node-05",
+      "type": "rectangle",
+      "bbox": {
+        "left": 140,
+        "top": 600,
+        "right": 280,
+        "bottom": 680
+      },
+      "geometry": {
+        "bounds": {
+          "left": 140,
+          "top": 600,
+          "right": 280,
+          "bottom": 680
+        }
+      },
+      "confidence": 0.9,
+      "attributes": {
+        "shape": "rectangle",
+        "rgb": [
+          142,
+          68,
+          173
+        ],
+        "fill_ratio": 1.0,
+        "pixel_count": 11421
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "nodes",
+          "object_id": "node-05"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.text.node-05",
+      "type": "text_region",
+      "bbox": {
+        "left": 290,
+        "top": 629,
+        "right": 366,
+        "bottom": 651
+      },
+      "geometry": {
+        "bounds": {
+          "left": 290,
+          "top": 629,
+          "right": 366,
+          "bottom": 651
+        }
+      },
+      "confidence": 0.89,
+      "attributes": {
+        "text": "End"
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "nodes",
+          "object_id": "node-05"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.arrow.connector-01",
+      "type": "arrow",
+      "bbox": {
+        "left": 210,
+        "top": 126,
+        "right": 210,
+        "bottom": 174
+      },
+      "geometry": {
+        "tail": [
+          210,
+          126
+        ],
+        "head": [
+          210,
+          174
+        ]
+      },
+      "confidence": 0.85,
+      "attributes": {
+        "length_px": 48.0
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "connectors",
+          "object_id": "connector-01"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.arrow.connector-02",
+      "type": "arrow",
+      "bbox": {
+        "left": 210,
+        "top": 266,
+        "right": 210,
+        "bottom": 314
+      },
+      "geometry": {
+        "tail": [
+          210,
+          266
+        ],
+        "head": [
+          210,
+          314
+        ]
+      },
+      "confidence": 0.85,
+      "attributes": {
+        "length_px": 48.0
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "connectors",
+          "object_id": "connector-02"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.arrow.connector-03",
+      "type": "arrow",
+      "bbox": {
+        "left": 210,
+        "top": 406,
+        "right": 210,
+        "bottom": 454
+      },
+      "geometry": {
+        "tail": [
+          210,
+          406
+        ],
+        "head": [
+          210,
+          454
+        ]
+      },
+      "confidence": 0.85,
+      "attributes": {
+        "length_px": 48.0
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "connectors",
+          "object_id": "connector-03"
+        }
+      ]
+    },
+    {
+      "primitive_id": "flowchart.arrow.connector-04",
+      "type": "arrow",
+      "bbox": {
+        "left": 210,
+        "top": 546,
+        "right": 210,
+        "bottom": 594
+      },
+      "geometry": {
+        "tail": [
+          210,
+          546
+        ],
+        "head": [
+          210,
+          594
+        ]
+      },
+      "confidence": 0.85,
+      "attributes": {
+        "length_px": 48.0
+      },
+      "source_refs": [
+        {
+          "graph": "domain_evidence",
+          "collection": "connectors",
+          "object_id": "connector-04"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "relationship_id": "flowchart.connected_to.node-01.label",
+      "type": "connected_to",
+      "source_primitive_id": "flowchart.text.node-01",
+      "target_primitive_id": "flowchart.rectangle.node-01",
+      "confidence": 0.83,
+      "measurements": {
+        "role": "node_label"
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "flowchart.connected_to.node-02.label",
+      "type": "connected_to",
+      "source_primitive_id": "flowchart.text.node-02",
+      "target_primitive_id": "flowchart.rectangle.node-02",
+      "confidence": 0.86,
+      "measurements": {
+        "role": "node_label"
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "flowchart.connected_to.node-03.label",
+      "type": "connected_to",
+      "source_primitive_id": "flowchart.text.node-03",
+      "target_primitive_id": "flowchart.symbol.node-03",
+      "confidence": 0.87,
+      "measurements": {
+        "role": "node_label"
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "flowchart.connected_to.node-04.label",
+      "type": "connected_to",
+      "source_primitive_id": "flowchart.text.node-04",
+      "target_primitive_id": "flowchart.rectangle.node-04",
+      "confidence": 0.87,
+      "measurements": {
+        "role": "node_label"
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "flowchart.connected_to.node-05.label",
+      "type": "connected_to",
+      "source_primitive_id": "flowchart.text.node-05",
+      "target_primitive_id": "flowchart.rectangle.node-05",
+      "confidence": 0.89,
+      "measurements": {
+        "role": "node_label"
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "flowchart.touches.connector-01.from.node-01",
+      "type": "touches",
+      "source_primitive_id": "flowchart.arrow.connector-01",
+      "target_primitive_id": "flowchart.rectangle.node-01",
+      "confidence": 0.85,
+      "measurements": {
+        "role": "from"
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "flowchart.touches.connector-01.to.node-02",
+      "type": "touches",
+      "source_primitive_id": "flowchart.arrow.connector-01",
+      "target_primitive_id": "flowchart.rectangle.node-02",
+      "confidence": 0.85,
+      "measurements": {
+        "role": "to"
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "flowchart.touches.connector-02.from.node-02",
+      "type": "touches",
+      "source_primitive_id": "flowchart.arrow.connector-02",
+      "target_primitive_id": "flowchart.rectangle.node-02",
+      "confidence": 0.85,
+      "measurements": {
+        "role": "from"
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "flowchart.touches.connector-02.to.node-03",
+      "type": "touches",
+      "source_primitive_id": "flowchart.arrow.connector-02",
+      "target_primitive_id": "flowchart.symbol.node-03",
+      "confidence": 0.85,
+      "measurements": {
+        "role": "to"
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "flowchart.touches.connector-03.from.node-03",
+      "type": "touches",
+      "source_primitive_id": "flowchart.arrow.connector-03",
+      "target_primitive_id": "flowchart.symbol.node-03",
+      "confidence": 0.85,
+      "measurements": {
+        "role": "from"
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "flowchart.touches.connector-03.to.node-04",
+      "type": "touches",
+      "source_primitive_id": "flowchart.arrow.connector-03",
+      "target_primitive_id": "flowchart.rectangle.node-04",
+      "confidence": 0.85,
+      "measurements": {
+        "role": "to"
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "flowchart.touches.connector-04.from.node-04",
+      "type": "touches",
+      "source_primitive_id": "flowchart.arrow.connector-04",
+      "target_primitive_id": "flowchart.rectangle.node-04",
+      "confidence": 0.85,
+      "measurements": {
+        "role": "from"
+      },
+      "supporting_primitive_ids": []
+    },
+    {
+      "relationship_id": "flowchart.touches.connector-04.to.node-05",
+      "type": "touches",
+      "source_primitive_id": "flowchart.arrow.connector-04",
+      "target_primitive_id": "flowchart.rectangle.node-05",
+      "confidence": 0.85,
+      "measurements": {
+        "role": "to"
+      },
+      "supporting_primitive_ids": []
+    }
+  ],
+  "gaps": [],
+  "provenance": {
+    "extractor_id": "primitive-evidence-adapter",
+    "extractor_version": "1.0.0",
+    "backend": "flowchart-v1:shape_and_connector_component",
+    "metadata_source": "domain_evidence_or_image_detection",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "metadata": {
+    "source_extractor": "flowchart-v1"
+  }
+}

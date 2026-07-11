@@ -1,0 +1,36 @@
+{
+  "image_id": "image",
+  "spec_id": "flowchart-mutated-06",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-connector-extra-node-03-node-04",
+      "rule_id": "flowchart-v1.connector-links-correct",
+      "type": "extra_connector",
+      "severity": "high",
+      "message": "Detected a connector from 'node-03' to 'node-04' that is not declared in the spec.",
+      "evidence": {
+        "detected_edge": [
+          "node-03",
+          "node-04"
+        ]
+      },
+      "recommendation": "Remove the extra connector or declare it in the spec."
+    }
+  ],
+  "checks_run": [
+    "node-count-matches",
+    "required-nodes-present",
+    "node-shape-correct",
+    "node-label-correct",
+    "connector-links-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.8,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.8,
+  "overlay_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-06\\overlay.png",
+  "evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-06\\evidence_graph.json",
+  "claim_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-06\\claim_graph.json",
+  "primitive_evidence_graph_path": "..\\datasets\\flowchart\\flowchart-v1\\mutated\\mutated-06\\primitive_evidence_graph.json"
+}

@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-01",
+  "title": "A declared node is missing entirely",
+  "kind": "mutated",
+  "defect_type": "missing_node",
+  "scenario": "flowchart",
+  "dataset_track": "controlled",
+  "image_id": "mutated-01",
+  "diagram_version": "flowchart-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}

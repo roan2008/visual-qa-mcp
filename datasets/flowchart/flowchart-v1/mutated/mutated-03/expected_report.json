@@ -1,0 +1,9 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "node_shape_wrong"
+  ],
+  "expected_evidence": {
+    "node_count": 5
+  }
+}

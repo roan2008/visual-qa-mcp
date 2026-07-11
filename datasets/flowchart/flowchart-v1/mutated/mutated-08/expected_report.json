@@ -1,0 +1,7 @@
+{
+  "verdict": "needs_review",
+  "expected_finding_types": [],
+  "expected_evidence": {
+    "node_count": 5
+  }
+}

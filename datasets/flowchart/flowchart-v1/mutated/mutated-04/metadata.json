@@ -1,0 +1,12 @@
+{
+  "case_id": "mutated-04",
+  "title": "The decision node's label text is wrong",
+  "kind": "mutated",
+  "defect_type": "node_label_wrong",
+  "scenario": "flowchart",
+  "dataset_track": "controlled",
+  "image_id": "mutated-04",
+  "diagram_version": "flowchart-v1",
+  "render_options": {},
+  "renderer": "pillow"
+}
