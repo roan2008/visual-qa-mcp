@@ -11,6 +11,18 @@ metadata:
 
 ## Current Priority
 
+### 2026-07-11 session 28 - COMPLETE: synthetic-only decision confirmed + deep-research ingest
+
+The user confirmed a previously made decision: validation images are **100% synthetic**;
+independently authored/publisher images are off-strategy (old Suggested Next Work item 1 is
+redirected accordingly). An external deep-research report was commissioned (prompt covering 8
+research questions) and delivered at `research/deep-research-report-1.md`; findings are ingested
+in `wiki/knowledge-synthetic-coverage-deep-research.md`. Headline conclusions: synthetic-only is
+literature-supported as *declared-universe* coverage (held-out renderer/style/content/degradation
+splits), not as automatic real-world equivalence; layered sampling (stratified + t-way covering
+arrays + LHS for continuous nuisances) replaces plain LHS; top-3 investments are (1) formal input
+model + covering arrays, (2) failure-mining loop, (3) ground-truth-preserving degradation harness.
+
 ### 2026-07-11 session 27 - COMPLETE: remote setup + renderer crutch-stripping experiment
 
 Closed the operational risk item (uncommitted circuit-v1a/v1b work, no GitHub remote) and ran
@@ -639,28 +651,46 @@ Verified:
 question is answered; unallocated effort goes to external validity instead. Circuit-v1
 hardening (item 4 below) is in-scope background work on an *existing* vertical, not new scope.
 
-0. **Extend the crutch-stripping technique to other verticals' extractors** (arrow-v1 labels,
-   geometry-v1 dimension labels, coordinate/flowchart label catalogs) — same method as session
-   27's chart-v2 experiment, cheap, likely to surface similar crash-safety gaps since none of
-   those extractors have been tested against layout/font/content divergence either.
-1. Add independently authored or publisher-sourced open-license chart and geometry images —
-   still the biggest unclosed external-validity gap; current images are all tool-rendered
-   (including the Matplotlib pilot cases, per session 27's finding).
-2. Install and validate the optional OCR backend in a configured environment so OCR gets its own
-   evidence-backed readiness gate — this is the direct fix for the template-catalog wall session
-   27 quantified (off-catalog tick values -> `needs_review`).
-3. Boundary/magnitude sweeps on existing typed-defect classes across all six verticals (cheap,
-   no new infra, converts N/N hand-picked-mutation claims into measured sensitivity curves per
-   the accuracy roadmap's build-order item 3).
-4. Circuit-v1 hardening: a checksum-frozen noisy track, or the `PrimitiveEvidenceGraph` circuit
+**Strategy note (2026-07-11, session 28)**: the project is confirmed **synthetic-only** — no
+independently authored or publisher-sourced images. External validity is pursued via
+declared-universe synthetic coverage per `wiki/knowledge-synthetic-coverage-deep-research.md`,
+validated with renderer/style/content/degradation-held-out splits. The list below is reordered
+to match that report's evidence-backed build order.
+
+1. **Formal input model + stratified registry + mixed-strength covering arrays** (deep-research
+   top investment 1). Declare the generation space per vertical as explicit factored axes
+   (content x style x renderer x degradation), generate test matrices with t-way covering
+   arrays (2-way baseline, 3-way target) over discrete axes and LHS over continuous nuisances,
+   and report per-stratum coverage. This turns the suite from "sampled informally" into
+   "declared coverage" and is the foundation for items 2-4. Start with chart-v2.
+2. **Boundary/magnitude sweeps on existing typed-defect classes** across all six verticals —
+   the cheap entry point of the failure-mining loop (no new infra; converts N/N
+   hand-picked-mutation claims into measured per-defect-class sensitivity curves).
+3. **Full failure-mining loop** (deep-research top investment 2): covering-array seeds ->
+   boundary sweeps -> adaptive local search around low-margin cases -> delta-debug
+   minimization -> root-cause clustering into named regression strata. Never add raw failure
+   seeds to the suite directly.
+4. **Ground-truth-preserving degradation harness** (deep-research top investment 3) across the
+   four delivery paths: digital export, office reproduction (print/scan), camera capture
+   (perspective/glare — transforms ground-truth geometry via a first-class transformation
+   stack), and screen-photo/chat. Extends the current blur/downscale/JPEG tracks.
+5. **Reporting upgrade to selective-prediction statistics**: per-stratum coverage (Wilson
+   interval), selective risk on decided cases, abstention profile, and rule-of-three /
+   Clopper-Pearson upper bounds when observed failures are zero — replaces bare "N/N" language
+   in future validation summaries per Claim Discipline.
+6. **Rule-mutation testing** on the rule layer (flip inequalities, disable tolerance checks,
+   remove fallbacks; measure suite catch rate) as the fault-correlated coverage supplement.
+7. Extend the crutch-stripping technique to other verticals' extractors (arrow-v1 labels,
+   geometry-v1 dimension labels, coordinate/flowchart label catalogs) — cheap background work,
+   likely to surface crash-safety gaps like session 27's chart-v2 find.
+8. Install and validate the optional OCR backend so OCR gets its own evidence-backed readiness
+   gate — the direct fix for the template-catalog wall, and a prerequisite for LLM-generated
+   realistic label content (deep-research section 6) beyond the fixed catalogs.
+9. Circuit-v1 hardening: a checksum-frozen noisy track, or the `PrimitiveEvidenceGraph` circuit
    adapter (the only vertical without one).
-5. Extend force-balance beyond v1 when justified: (much later) torque/moment balance with points
-   of application and px-to-newton magnitude calibration.
-6. Extend coordinate-graph-v1 beyond v1 when justified: a curve-fitting mode.
-7. Extend flowchart-v1 beyond v1 when justified: additional shape types.
-8. Extend the round-trip re-rendering technique to arrow-v1/geometry-v1/coordinate-graph-v1/
-   flowchart-v1 if useful — not urgent, chart-v2's distribution is already tight and
-   well-explained.
+10. Longer-term extensions when justified: torque/moment balance, coordinate curve-fitting,
+    flowchart shape types, round-trip re-rendering for the non-chart verticals, grammar-based
+    structural generation with topological coverage taxonomy (deep-research section 8).
 
 ## Recent Completed Milestones
 

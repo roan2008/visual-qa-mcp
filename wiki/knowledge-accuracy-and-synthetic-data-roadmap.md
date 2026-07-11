@@ -60,6 +60,15 @@ tool-rendered) images have been tried. The renderer-adapter abstraction (build-o
 now lower priority than initially planned, since the Matplotlib path already exists and this
 experiment got most of its diagnostic value without building it.
 
+> **Update 2026-07-11**: an external deep-research pass validated, refined, and in places
+> corrected the ideas below against published literature. See
+> [knowledge-synthetic-coverage-deep-research](knowledge-synthetic-coverage-deep-research.md)
+> for the ingested findings — notably: layered sampling (stratified + covering arrays + LHS)
+> replaces plain Latin-hypercube sampling as the recommended design; the project direction is
+> confirmed as **synthetic-only** (declared-universe coverage with held-out splits, not
+> independently authored images); and the recommended top-3 investments are input model +
+> covering arrays, failure-mining loop, and a ground-truth-preserving degradation harness.
+
 # Accuracy Assessment and Synthetic-Data Roadmap
 
 Captured from a design discussion (session 2026-07-11, post-session-21e). Not yet

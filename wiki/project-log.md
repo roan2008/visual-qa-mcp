@@ -9,6 +9,25 @@ metadata:
 
 # Project Log
 
+## 2026-07-11 session 28 - Synthetic-only confirmation and deep-research ingest
+
+- The user corrected the session-27 framing: a prior decision stands that validation images are
+  **100% synthetic** — no independently authored/publisher image sourcing. The corresponding
+  Suggested Next Work item in `wiki/next-steps.md` was redirected to synthetic-coverage work.
+- Drafted an 8-question deep-research prompt (synthetic-only validity, sampling design via
+  covering arrays vs. LHS, coverage measurement, oracle-guided/adversarial generation,
+  degradation realism, LLM content generation, selective-prediction reporting statistics,
+  grammar-based structural generation). The user ran it externally and delivered
+  `research/deep-research-report-1.md` (Thai, ~7 sections).
+- Ingested the report into `wiki/knowledge-synthetic-coverage-deep-research.md` with per-line
+  citations to the source file, plus a source-integrity caveat: the report's own literature
+  citations are opaque tool tokens, so named-paper claims are marked unverified until
+  spot-checked.
+- Added a pointer banner to `wiki/knowledge-accuracy-and-synthetic-data-roadmap.md` noting where
+  the deep research refines it (layered sampling replaces plain LHS; synthetic-only confirmed;
+  new top-3 investment order). Updated `wiki/index.md` and `wiki/next-steps.md`.
+- No code changes this session; baseline remains 158/158 tests at commit a9712bb.
+
 ## 2026-07-11 session 27 - Remote setup and renderer crutch-stripping experiment
 
 - Reviewed the roadmap with the user: assessed that the six-vertical breadth had gotten ahead of
