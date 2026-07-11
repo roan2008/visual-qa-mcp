@@ -33,6 +33,7 @@ wiki/       -> AI-maintained project memory
 - [knowledge-qa-workflow](knowledge-qa-workflow.md) - evidence-backed QA loop
 - [knowledge-rules-validators](knowledge-rules-validators.md) - rule validator architecture
 - [knowledge-no-tuning-and-3d](knowledge-no-tuning-and-3d.md) - no-tuning and 3D roadmap
+- [knowledge-accuracy-and-synthetic-data-roadmap](knowledge-accuracy-and-synthetic-data-roadmap.md) - accuracy assessment, selective prediction, synthetic-data coverage ideas
 
 ## Implementation
 
@@ -44,6 +45,8 @@ wiki/       -> AI-maintained project memory
 - [impl-geometry-v1-mechanical](impl-geometry-v1-mechanical.md) - controlled mechanical plate verifier and bounds
 - [impl-primitive-evidence-foundation](impl-primitive-evidence-foundation.md) - shared primitives, relationships, geometry noisy gate, and compatibility bounds
 - [impl-coordinate-graph-v1-dual-axis](impl-coordinate-graph-v1-dual-axis.md) - dual-axis scatter/polyline verifier and bounds
+- [impl-flowchart-v1-vertical-chain](impl-flowchart-v1-vertical-chain.md) - vertical-chain node/connector verifier and bounds
+- [impl-chart-v2-round-trip-check](impl-chart-v2-round-trip-check.md) - additive round-trip re-rendering check and measured pixel-delta distribution
 
 ## Reference
 

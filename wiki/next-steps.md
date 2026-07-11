@@ -11,6 +11,187 @@ metadata:
 
 ## Current Priority
 
+### 2026-07-11 session 22 - COMPLETE
+
+Implemented the round-trip re-rendering accuracy check for chart-v2 (first concrete step from
+`wiki/knowledge-accuracy-and-synthetic-data-roadmap.md`, chosen via advisor-gated plan mode
+over circuit-v1 and real-world image/OCR sourcing since it needs no external data). Purely
+additive/non-blocking: new `chart_round_trip.py` module, `RoundTripComparison`/
+`BarGeometryDelta` on `VerificationResult` (optional, omit-if-None), `include_round_trip` flag
+on `run_chart_verification`, `summarize_chart_round_trip_results` + CLI
+`run-chart-round-trip-validation`. See `wiki/impl-chart-v2-round-trip-check.md` for the design
+rationale (why the naive circular version doesn't work) and the measured pixel-delta
+distribution across all three chart-v2 datasets.
+
+Verified: 150 tests pass (141 prior + 9 new), including a regression test proving
+`report.verdict`/`findings` are byte-identical whether round-trip is included or not. CLI ran
+read-only across `chart-v2` (24 cases, 17 evaluable), `chart-v2-noisy` (6 cases, 4 evaluable),
+and `chart-v2-realworld-pilot` (24 cases, 18 evaluable, checksum-frozen) with zero exceptions
+and zero dataset file mutations (`git status --porcelain` clean on all three dataset dirs).
+
+Explicitly deferred, not started this session: tolerance/threshold decision, verdict-gating,
+triaging the outlier cases (max deltas 22-33px across the three datasets), and extending the
+technique to arrow-v1/geometry-v1/coordinate-graph-v1/flowchart-v1.
+
+### 2026-07-11 session 21e - COMPLETE
+
+Advisor review after session 21d flagged that regenerating the coordinate and flowchart
+datasets had deleted their previously tracked derived artifacts (`claim_graph.json`,
+`evidence_graph.json`, `overlay.png`, `report.json`, `primitive_evidence_graph.json`).
+Restored them by running `verify-coordinate`/`verify-flowchart` with `--output-dir` per
+case across both datasets. 141/141 tests still pass; no correctness regression (these
+are recomputed outputs, not inputs). See `wiki/project-log.md` session 21e for the
+lesson: follow any `generate-*-dataset` run on an already-committed dataset with a
+per-case `verify-*` pass before considering the regeneration done.
+
+This closes out the session. All four requested extensions (arrow-v1 net-force,
+coordinate-graph label identity, coordinate-graph multi-series, flowchart branching
+topology) are implemented, validated, tested, and documented, and the dataset
+directories are clean. Only remaining open item: GitHub remote + cron-scheduled cloud
+routine setup, blocked on the user's next input (no `gh` CLI, no git remote configured).
+
+### 2026-07-11 session 21d - COMPLETE
+
+Added branching/diagonal connector topology to flowchart-v1 (fourth and last of the four
+extensions requested this session), closing that Known Limits item. Advisor gate confirmed no
+extractor/rule rework was needed (a throwaway probe showed diagonal connectors already detected
+correctly) — the feature was a single generator anchor-calculation generalization
+(`_anchor_toward`, boundary-intersection instead of hardcoded bottom/top-center) plus dataset
+cases.
+
+Verified: controlled (12 cases) typed hits `7/7`, ambiguous guard `2/2`, `0` unsupported passes,
+`0` golden failures. 141 tests pass (139 prior + 2 new).
+
+This closes all four extensions the user requested this session (arrow-v1 net-force,
+coordinate-graph label identity, coordinate-graph multi-series, flowchart branching topology).
+GitHub remote + cron-scheduled cloud routine setup remains the only pending item, blocked on the
+user's next input (no `gh` CLI, no git remote configured in this environment).
+
+### 2026-07-11 session 21c - COMPLETE
+
+Added multi-series polylines to coordinate-graph-v1 (third of the four extensions requested
+this session), closing that Known Limits item. Advisor gate confirmed no extractor rework was
+needed — the feature is a claim-graph/rule/dataset generalization of the existing single-polyline
+check into an N-series loop (`source_reference.polylines`, per-series `polyline_connection_wrong`
+findings tagged with `series_id`).
+
+Verified: controlled (15 cases) typed hits `7/7`, ambiguous guard `2/2`, `0` unsupported passes,
+`0` golden failures. 139 tests pass (137 prior + 2 new).
+
+Next in the requested sequence: flowchart branching topology. GitHub remote + cron setup still
+pending the user's input.
+
+### 2026-07-11 session 21b - COMPLETE
+
+Added label-based point identity to coordinate-graph-v1 (second of the four extensions
+requested this session), closing that Known Limits item.
+
+Verified: controlled (13 cases) typed hits `6/6`, ambiguous guard `2/2`, `0` unsupported
+passes, `0` golden failures. 137 tests pass (135 prior + 2 new).
+
+Next in the requested sequence: coordinate-graph multi-series, then flowchart branching
+topology. GitHub remote + cron setup still pending the user's input.
+
+### 2026-07-11 session 21 - COMPLETE
+
+Extended arrow-v1's force-balance check with a declared non-zero expected resultant
+(`scenario_type: "net-force"` + `source_reference.expected_resultant`), closing the
+"non-zero declared expected resultant" deferred item.
+
+Verified: controlled (19 cases) typed hits `9/9`, force-balance typed hits `2/2`, `0` unsupported
+passes, `0` golden failures. 135 tests pass (132 prior + 3 new).
+
+Still pending: GitHub remote + cron-scheduled cloud routine setup (blocked on `gh` CLI not being
+installed; needs the user's next input). User asked (this session) to extend all four remaining
+backlog items in sequence: arrow-v1 net-force (this entry), coordinate-graph label identity,
+coordinate-graph multi-series, flowchart branching topology — continuing to those next.
+
+### 2026-07-11 session 20 - COMPLETE
+
+Added a noisy-track equilibrium case pair to arrow-v1 (`arrow-v1-noisy` grew from 6 to 8 cases),
+closing one deferred item, plus the first pytest coverage for that dataset.
+
+Verified: typed hits `5/5`, force-balance typed hits `1/1`, `0` unsupported passes, `0` golden
+failures. 132 tests pass (130 prior + 2 new).
+
+Still pending: GitHub remote + cron-scheduled cloud routine setup (blocked on `gh` CLI not being
+installed; needs the user's next input).
+
+### 2026-07-11 session 19 - COMPLETE
+
+Closed the flowchart-v1 `PrimitiveEvidenceGraph` gap noted in session 17: added
+`primitive_graph_from_flowchart`, registered `flowchart-v1` as a fifth primitive profile, and
+wired `run_flowchart_verification` to populate it (previously deliberately `None`).
+
+Verified: 130 tests pass (128 prior + 2 new). Flowchart-v1 controlled metrics unchanged
+(`6/6` typed hits, `2/2` ambiguity guards, `0` unsupported passes).
+
+Still pending: GitHub remote + cron-scheduled cloud routine setup (blocked on `gh` CLI not being
+installed; needs the user's next input — see session 18's note below).
+
+### 2026-07-11 session 18 - COMPLETE
+
+Added the coordinate-graph-v1 noisy blur/downscale/JPEG track (6 cases: 2 golden, 4 typed
+mutated), continuing autonomous work after the user went to sleep with no response to a pending
+scope question. Per advisor guidance, picked a lower-risk backlog extension item over opening a
+new vertical (circuit-v1) without the ability to confirm scope first.
+
+Delivered: `coordinate_dataset.noisy_dataset_cases()` / `build_noisy_coordinate_dataset`, CLI
+`generate-noisy-coordinate-dataset`, 2 new tests. No new extractor/rule code was needed — the
+existing `run_coordinate_verification` and `summarize_coordinate_validation_results` worked
+unchanged against the noisy track.
+
+Verified: typed hits `4/4`, false unsupported passes `0`, golden failures `0`, verdict mismatches
+`0` — all passed on the first empirical measurement. 128 tests pass (126 prior + 2 new).
+
+Bounds: only two mild configured transforms tested (light blur; light downscale+JPEG).
+
+**Still pending from the prior session**: setting up a GitHub remote + cron-scheduled cloud
+routine for future feature work. Blocked on `gh` CLI not being installed in this environment (no
+way to authenticate to GitHub non-interactively). Needs the user to either (a) create a repo and
+give its URL, or (b) install/authenticate `gh` themselves (e.g. via `! gh auth login`) next
+session.
+
+### 2026-07-11 session 17 - COMPLETE
+
+Implemented `flowchart-v1`, the fifth executable vertical, during an autonomous multi-hour work
+session (user request: build features to full completion one at a time, no fixed time-box,
+pause between features; later revised to a cron-scheduled 15-30 min/feature cadence for future
+sessions — see below).
+
+Delivered:
+
+- `flowchart_generator.py` (vertical-chain Pillow renderer: rectangle/diamond nodes, straight
+  connector arrows), `flowchart_labels.py` (fixed 6-entry catalog label decoder),
+  `flowchart_extractor.py` (fill-ratio shape classification, achromatic-mask connector detection
+  reusing arrow-v1's principal-axis technique, nearest-node attach resolution), `flowchart_rules.py`,
+  `build_flowchart_claim_graph`, `flowchart_dataset.py`
+- `specs/flowchart-evidence-graph.schema.json`, flowchart service entrypoints, CLI commands
+  (`generate-flowchart-dataset`, `verify-flowchart`, `run-flowchart-validation`), 3 new MCP tools
+- `datasets/flowchart/flowchart-v1/` with 10 cases (2 golden, 8 mutated: 6 typed + 2 ambiguous)
+- Found and fixed a real extraction bug during validation: anti-aliased node-label glyph edges
+  polluted the connector mask, forcing a false `needs_review` on every golden case; fixed by
+  blanking each node's label region out of the connector mask before component search.
+
+Verified:
+
+- flowchart-v1 controlled (10 cases): typed hits `6/6`, ambiguous guard `2/2`, node-count evidence
+  `9/10` (expected: the excluded case is the deliberately degenerate node), false unsupported
+  passes `0`, golden failures `0`, verdict mismatches `0`
+- 126 tests pass (106 prior + 20 new); chart/arrow/geometry/coordinate controlled metrics
+  unaffected by construction (no shared files modified)
+
+Bounds: controlled Pillow renders only; single vertical-chain topology (no branching/diagonal
+routing); exactly two shape types (rectangle, diamond); 6-entry fixed label catalog; no noisy
+track or independently authored images yet; no `PrimitiveEvidenceGraph` adapter yet.
+
+**Operating change starting next session**: the user asked to shift to a cron-scheduled cloud
+routine that works through the backlog one feature per run, at an hourly cadence, with each
+feature scoped to at least 15-30 minutes of real implementation+test work (not a trivial change).
+See the "Suggested Next Work" list below for the feature order. This requires a GitHub remote
+(the repo currently has none — cloud routines clone from a URL and cannot see the local disk);
+setting that up plus the routine itself is the first item of the next session.
+
 ### 2026-07-11 session 16 - COMPLETE
 
 Implemented `coordinate-graph-v1`, the fourth executable vertical, proving the dual
@@ -366,17 +547,26 @@ Verified:
 
 ## Suggested Next Work
 
-1. Build `flowchart-v1` after coordinate graphs, using shapes, text regions, connectors, arrow
-   direction, and topology; then build `circuit-v1` with separately gated symbol/connectivity rules.
+0. Chart-v2 round-trip check follow-up: triage the outlier cases (max deltas 22-33px) from the
+   session 22 measurement run to see if they reveal a real axis-math bug or an artifact of
+   `layout_overrides` not being carried through the round-trip render; decide a tolerance and
+   whether/how to surface disagreement as `needs_review`; then consider extending the same
+   technique to arrow-v1/geometry-v1/coordinate-graph-v1/flowchart-v1. See
+   `wiki/impl-chart-v2-round-trip-check.md`.
+1. Build `circuit-v1` with separately gated symbol/connectivity rules (the flowchart-v1 vertical
+   is now done; circuit-v1 is the next new-vertical item).
 2. Add independently authored or publisher-sourced open-license chart and geometry images; current images
    are still locally rendered and should not be treated as general real-world coverage.
    Install and validate the optional OCR backend in a configured environment so OCR gets its own
    evidence-backed readiness gate.
-3. Extend force-balance beyond v1 when justified: a noisy-track equilibrium case, non-zero
-   declared expected resultants, and (much later) torque/moment balance with points of
-   application.
-4. Extend coordinate-graph-v1 beyond v1 when justified: a noisy blur/downscale/JPEG track, a
-   multi-series or curve-fitting mode, and label-based point identity as a second signal.
+3. Extend force-balance beyond v1 when justified: (much later) torque/moment balance with points
+   of application and px-to-newton magnitude calibration (the noisy-track equilibrium case and
+   non-zero declared expected resultants are both done).
+4. Extend coordinate-graph-v1 beyond v1 when justified: a curve-fitting mode (the noisy
+   blur/downscale/JPEG track, label-based point identity, and multi-series polylines are all
+   done).
+5. Extend flowchart-v1 beyond v1 when justified: additional shape types and a noisy track (the
+   `PrimitiveEvidenceGraph` adapter and branching/diagonal topology are both done).
 
 ## Recent Completed Milestones
 
@@ -394,3 +584,12 @@ Verified:
 - 2026-07-10: Arrow-v1 translational force-balance rule added (first theory-aware check; 17-case controlled set, 8/8 typed hits, force-balance 1/1).
 - 2026-07-10: PrimitiveEvidenceGraph v1, geometry noisy gate, and sub-minute unified regression baseline added.
 - 2026-07-11: Coordinate-graph-v1 added as the fourth executable vertical with dual independent numeric axes (11-case controlled dataset, 5/5 typed hits, 2/2 ambiguity guards).
+- 2026-07-11: Flowchart-v1 added as the fifth executable vertical with shape-typed nodes and directed connector topology (10-case controlled dataset, 6/6 typed hits, 2/2 ambiguity guards).
+- 2026-07-11: Coordinate-graph-v1 noisy blur/downscale/JPEG track added (6-case dataset, 4/4 typed hits, clean on first measurement).
+- 2026-07-11: Flowchart-v1 PrimitiveEvidenceGraph adapter added, closing the last noted gap from its initial vertical build.
+- 2026-07-11: Arrow-v1 noisy-track equilibrium case added (8-case noisy dataset, 5/5 typed hits, force-balance 1/1).
+- 2026-07-11: Arrow-v1 non-zero declared expected resultant (net-force scenario) added (19-case controlled dataset, 9/9 typed hits, force-balance 2/2).
+- 2026-07-11: Coordinate-graph-v1 label-based point identity added (13-case controlled dataset, 6/6 typed hits, 2/2 ambiguity guards).
+- 2026-07-11: Coordinate-graph-v1 multi-series polylines added (15-case controlled dataset, 7/7 typed hits, 2/2 ambiguity guards).
+- 2026-07-11: Flowchart-v1 branching/diagonal connector topology added (12-case controlled dataset, 7/7 typed hits, 2/2 ambiguity guards).
+- 2026-07-11: Chart-v2 additive round-trip re-rendering accuracy check added (verdict-unaffected, measured pixel-delta distribution across controlled/noisy/pilot datasets, no tolerance set yet).

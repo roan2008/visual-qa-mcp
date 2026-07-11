@@ -9,6 +9,310 @@ metadata:
 
 # Project Log
 
+## 2026-07-11 session 22 - Chart-v2 round-trip re-rendering accuracy check
+
+- Prior discussion this session produced `wiki/knowledge-accuracy-and-synthetic-data-roadmap.md`,
+  an honest assessment that all five verticals' near-100% recall claims are measured almost
+  entirely on self-rendered datasets. Round-trip re-rendering (analysis-by-synthesis) was the
+  roadmap's highest-priority idea for closing that gap without external data. Chosen over
+  circuit-v1 (new vertical, larger surface) and real-world image/OCR sourcing (blocked on
+  external inputs) via an advisor-gated plan-mode session, then implemented against the
+  approved plan.
+- Key design decision: a naive round-trip (re-render from extracted values using the
+  extractor's own inferred axis mapping, then re-extract and compare values) is circular and
+  would trivially match itself. The implemented version instead compares (a) the bar pixel
+  geometry the extractor directly measured on the original image (already stored unmodified
+  in `EvidenceGraph.bars[i].bbox`) against (b) freshly measured bar pixel geometry on a freshly
+  rendered image built from the extracted values + inferred axis config — isolating
+  self-consistency bugs in axis-mapping/generator math without being tautological. Does not
+  catch OCR tick misreads (accepted, documented bound).
+- Delivered: `chart_round_trip.py` (new module: `measure_bar_geometry`,
+  `build_round_trip_inputs`, `render_round_trip_image`, `compare_bar_geometry`,
+  `run_round_trip_check` — never raises), `RoundTripComparison`/`BarGeometryDelta` dataclasses
+  and an optional `round_trip` field on `VerificationResult` (contracts.py, additive
+  omit-if-None pattern matching `primitive_graph`), an `include_round_trip` flag on
+  `run_chart_verification` (round-trip runs strictly after `report` is finalized, so it cannot
+  influence `verdict`), opt-in artifact persistence (`persist_round_trip`, default off, so no
+  existing dataset directory gains new files by default), `summarize_chart_round_trip_results`
+  in `validation.py`, and the `run-chart-round-trip-validation` CLI subcommand.
+- Verified: 150 tests pass (141 prior + 9 new in `test_chart_round_trip.py`), including a
+  regression test proving `report.to_dict()` is byte-identical whether `include_round_trip` is
+  `True` or `False`. Ran the new CLI read-only against all three existing chart-v2 datasets
+  with zero exceptions and zero dataset file mutations (`git status --porcelain` clean
+  throughout, including the checksum-frozen `chart-v2-realworld-pilot`).
+- Measured (not yet acted on): median round-trip pixel delta is 0-1px across all three
+  datasets; 25-33% of cases per dataset are skipped (`skipped_no_axis_mapping`, expected where
+  the extractor never committed to a mapping); a handful of outlier cases per dataset have
+  larger deltas (max 22-33px), not yet individually triaged. No tolerance or verdict-gating was
+  set — that is explicitly deferred follow-up work, per this project's no-guessed-tolerance
+  discipline. Full numbers and the per-dataset table are in
+  `wiki/impl-chart-v2-round-trip-check.md`.
+
+## 2026-07-11 session 21e - Restore derived dataset artifacts after regeneration
+
+- An advisor review of session 21c/21d's work flagged that regenerating
+  `datasets/coordinate/coordinate-graph-v1` and `datasets/flowchart/flowchart-v1`
+  via `generate-coordinate-dataset`/`generate-flowchart-dataset` only rewrites
+  `visual_spec.json`/`metadata.json`/`expected_report.json`/`image.png` per case
+  (the generator does `shutil.rmtree` then rewrites only those files), which
+  deleted the previously tracked derived artifacts (`claim_graph.json`,
+  `evidence_graph.json`, `overlay.png`, `report.json`,
+  `primitive_evidence_graph.json`) for every regenerated case, and the new
+  cases added this session never had them at all.
+- These artifacts are recomputed outputs, not inputs, so this was never a
+  correctness bug — validation already recomputes evidence from the image on
+  every run. But it left the committed dataset directories inconsistent with
+  their own history and would have swamped a real diff with spurious deletions.
+- Fixed by running `verify-coordinate`/`verify-flowchart` with `--output-dir`
+  set to each case's own directory for every case in both datasets (this is
+  the same `write_verification_artifacts` path other verify-* commands use).
+  All previously-deleted artifacts are restored and the new cases
+  (coordinate golden-05/golden-06/mutated-08/mutated-09; flowchart
+  golden-03/mutated-09) now have the full artifact set. Re-ran the full test
+  suite afterward: 141/141 still pass, confirming no regression.
+- Lesson for future dataset regeneration: after any `generate-*-dataset` run
+  that touches an already-committed dataset directory, follow up with a
+  `verify-*` pass per case (`--output-dir` = case dir) before considering the
+  regeneration complete, rather than assuming missing derived artifacts are
+  pre-existing/acceptable drift.
+
+## 2026-07-11 session 21d - Flowchart-v1 branching/diagonal topology
+
+- Closed the "single vertical chain topology only" item from
+  `impl-flowchart-v1-vertical-chain.md`'s Known Limits — the fourth and last of the four
+  extensions the user asked for this session ("all").
+- Advisor gate before implementation: rendered a throwaway probe (one diamond, two diagonal
+  out-edges to two rectangles) and ran the existing `extract_flowchart_evidence` against it
+  before writing any dataset/rule code. Both connectors detected correctly with no gaps — the
+  extractor (`_principal_axis_ends`, PCA-based) and the claim graph/rules (arbitrary
+  `{from_id, to_id}` edge list) were already fully general. No extractor or rule changes needed.
+- Only change required: `flowchart_generator.py`'s connector anchor calculation was hardcoded to
+  bottom-center/top-center (vertical-only). Replaced with `_anchor_toward`, a general
+  ray/boundary intersection against either shape, verified to reduce to the identical
+  bottom-center/top-center calc for a purely vertical edge (regenerating the pre-existing 10-case
+  dataset reproduced identical metrics — no rendering regression).
+- `datasets/flowchart/flowchart-v1` grew to 12 cases: `golden-03` (decision node with two diagonal
+  out-edges, all correct) and `mutated-09` (one branch connector missing). Needed a widened
+  620px-wide canvas since the default width put the rightmost branch node's label region
+  off-canvas at the new horizontal spread.
+- Validation: controlled 12 cases, typed hits 7/7, ambiguous guard 2/2, 0 unsupported passes, 0
+  golden failures. Full suite: 141 passing (139 -> +2 new tests).
+- This closes all four extensions requested this session (arrow-v1 net-force, coordinate-graph
+  label identity, coordinate-graph multi-series, flowchart branching topology). GitHub remote +
+  cron-scheduled cloud routine setup remains blocked on the user's input (no `gh` CLI, no git
+  remote configured).
+
+## 2026-07-11 session 21c - Coordinate-graph-v1 multi-series polylines
+
+- Closed the "single connected polyline only; no multi-series" item from
+  `impl-coordinate-graph-v1-dual-axis.md`'s Known Limits.
+- Advisor gate before implementation: confirmed no extractor rework was needed (point-pair edge
+  detection is already color-independent), so the feature is purely a claim-graph/rule/dataset
+  generalization. Also used the advisor call to empirically confirm (via `git stash`) that the
+  pre-existing `mutated-04` extra finding is unrelated to session 21/21b changes.
+- `source_reference.polylines: [{"series_id", "ordered_point_ids"}, ...]` accepted alongside the
+  legacy singular `polyline`; both normalize to an internal `series_list` in
+  `claim_graph.build_coordinate_claim_graph`.
+- `coordinate_rules.run_coordinate_claims`'s polyline block now loops per series, tagging each
+  `polyline_connection_wrong` finding with `evidence["series_id"]`.
+- `coordinate_generator.render_coordinate_diagram` gained `polylines: list[list[str]] | None` to
+  draw multiple independent line chains.
+- `datasets/coordinate/coordinate-graph-v1` grew to 15 cases: `golden-06` (two independent
+  2-point series, both correct) and `mutated-09` (`series_polyline_connection_wrong`, series-2's
+  connection missing while series-1 stays correct).
+- Validation: controlled 15 cases, typed hits 7/7, ambiguous guard 2/2, 0 unsupported passes, 0
+  golden failures. Full suite: 139 passing (137 -> +2 new tests).
+
+## 2026-07-11 session 21b - Coordinate-graph-v1 label-based point identity
+
+- Closed the "no label-based point identity" item from `impl-coordinate-graph-v1-dual-axis.md`'s
+  Known Limits, mirroring arrow-v1's label decoder/identity pattern almost exactly.
+- `coordinate_extractor.py`: fixed 6-entry catalog `("A".."F")`, reusing `arrow_labels`'s generic
+  `read_label_text`/`rank_label_templates` unchanged. New `point_label_box` helper (fixed offset
+  from centroid) shared with `coordinate_generator.py` for rendering.
+- Found and fixed a real extraction bug during validation: the polyline runs through the fixed
+  up-right label-box direction for any generally-ascending point sequence, so every point except
+  the last on the line failed to decode (line stroke read as glyph foreground). Fixed by
+  precomputing `_line_mask` before the point loop and blanking line-mask pixels inside each
+  point's label crop before decoding.
+- `coordinate_rules._match_points_by_color` extended with label-first matching (mirrors
+  `arrow_rules._match_arrows_by_color` exactly); `ambiguous_point_colors` gap now suppressed when
+  two color-colliding points have distinct decoded labels.
+- `datasets/coordinate/coordinate-graph-v1` grew to 13 cases: `golden-05` (labeled, all correct)
+  and `mutated-08` (`label_resolved_color_collision`, color collision resolved via label,
+  surfacing a real `point_position_wrong` instead of `needs_review`).
+
+Verification:
+
+- coordinate-graph-v1 controlled (13 cases): typed hits `6/6`, ambiguous guard `2/2`, false
+  unsupported passes `0`, golden failures `0`, verdict mismatches `0`.
+- coordinate-graph-v1-noisy (6 cases): unchanged, `4/4` typed hits (regression check only).
+- Full test suite: 137 passing (135 prior + 2 new).
+
+Bounds: label catalog is a small fixed 6-entry alphabet; label box position is a fixed offset,
+not adaptive to point density.
+
+## 2026-07-11 session 21 - Arrow-v1 non-zero declared expected resultant (net-force)
+
+- Closed the last remaining tractable deferred item from `impl-arrow-v1-free-body.md`: extended
+  `force-balance-correct` with a second `scenario_type` value, `"net-force"`, requiring a declared
+  `source_reference.expected_resultant = {"magnitude_px", "direction_degrees"}`. Missing
+  `expected_resultant` under `net-force` becomes a new ClaimGraph gap
+  (`expected_resultant_not_declared`), mirroring the existing equilibrium gating pattern.
+- `arrow_rules.run_arrow_claims` now branches on `scenario_type`: `equilibrium` keeps the existing
+  zero-sum-ratio criterion unchanged; `net-force` compares the computed resultant against the
+  declared vector (magnitude relative error vs. `resultant_ratio_tolerance`, direction difference
+  vs. a new `resultant_angle_tolerance_degrees`, default 15deg). New finding type
+  `net_force_resultant_mismatch`, kept distinct from `force_balance_violation`.
+- `validation.py`'s `force_balance_metrics` counter extended to also count
+  `net_force_resultant_mismatch` cases.
+- `datasets/physics/arrow-v1` grew to 19 cases: `golden-07` (declared net-force, actual resultant
+  matches) and `mutated-12` (`net_force_magnitude_mismatch`, actual resultant diverges from the
+  declared vector). Both passed on the first empirical measurement (measure-before-claim
+  discipline), no threshold tuning needed.
+
+Verification:
+
+- arrow-v1 controlled (19 cases): typed hits `9/9`, ambiguous guard `3/3`, force-balance typed
+  hits `2/2` (equilibrium + net-force), false unsupported passes `0`, golden failures `0`,
+  verdict mismatches `0`.
+- Full test suite: 135 passing (132 prior + 3 new).
+
+Bounds: still translational only (no torque/moment balance); no px-to-newton magnitude
+calibration. This closes the force-balance deferred list down to those two long-term items only.
+
+## 2026-07-11 session 20 - Arrow-v1 noisy-track equilibrium case
+
+- Closed one deferred item from `impl-arrow-v1-free-body.md`: added a noisy-track equilibrium
+  case pair. `arrow-v1-noisy` grew from 6 to 8 cases: `noisy-golden-03` (declared equilibrium,
+  balanced, mild blur+downscale) and `noisy-mutated-05` (declared equilibrium, weight arrow
+  shortened to 50px, mild downscale+JPEG), reusing existing postprocess settings and the existing
+  `force-balance-correct` check unchanged.
+- Also added the first pytest coverage for the arrow-v1 noisy dataset (`test_arrow_noisy_dataset_structure`,
+  `test_arrow_noisy_dataset_validation_summary` in `test_arrow_v1.py`); previously the noisy
+  dataset was only exercised via CLI, not the automated test suite.
+- Per the measure-before-claim discipline, ran the new cases once before writing any test
+  assertions: both passed on the first measurement, no extractor/rule changes needed.
+
+Verification:
+
+- arrow-v1-noisy (8 cases): typed hits `5/5`, force-balance typed hits `1/1`, false unsupported
+  passes `0`, golden failures `0`, golden non-passes `0`, verdict mismatches `0`.
+- Full test suite: 132 passing (130 prior + 2 new).
+
+Bounds: still only two mild transform families (blur; downscale+JPEG); non-zero declared expected
+resultants and torque/moment balance remain deferred.
+
+## 2026-07-11 session 19 - Flowchart-v1 PrimitiveEvidenceGraph adapter
+
+- Closed the flowchart-v1 known gap noted in session 17: added `primitive_graph_from_flowchart`
+  in `primitive_evidence.py`, registering `flowchart-v1` as the fifth supported primitive profile
+  in both `SUPPORTED_PRIMITIVE_PROFILES` and `specs/primitive-evidence-graph.schema.json`'s
+  `profile` enum.
+- Mapping: rectangle nodes -> `rectangle` primitives; diamond nodes -> `symbol` primitives (the
+  fixed primitive-type enum has no dedicated diamond/polygon type, and `symbol` already supports
+  bounds-only geometry via the existing rectangle/text_region/color_region schema branch); node
+  labels -> `text_region` primitives with a `connected_to` relationship to their node (mirroring
+  geometry-v1's dimension-label pattern); connectors -> `arrow` primitives with `touches`
+  relationships to whichever endpoint node(s) resolved during extraction.
+- Wired `run_flowchart_verification` / `extract_flowchart_evidence_from_inputs` to populate
+  `primitive_graph` (previously deliberately `None`), extended `validate_domain_primitive_links`
+  with a `FlowchartEvidenceGraph` branch, and added `flowchart-v1` to the CLI/MCP `--profile`
+  choices.
+
+Verification:
+
+- 130 tests pass (128 prior + 2 new: adapter primitive-type/count assertions, profile-dispatch
+  test). Controlled flowchart-v1 metrics re-verified unchanged after wiring (`6/6` typed hits,
+  `2/2` ambiguity guards, `0` unsupported passes, node-count evidence `9/10` as before).
+
+Bounds: audit-only layer as with the other four profiles; domain rules still consume the existing
+`FlowchartEvidenceGraph` directly, not the primitive graph.
+
+## 2026-07-11 session 18 - Coordinate-graph-v1 noisy blur/downscale/JPEG track
+
+- Added the first noisy robustness track for coordinate-graph-v1, following the "Suggested Next
+  Work" backlog item and the advisor's earlier note that extension items are lower-risk/faster to
+  land than a new vertical when working without further scope confirmation available (autonomous
+  session, no user response to a scope question).
+- `coordinate_dataset.noisy_dataset_cases()`: 6 cases (2 golden, 4 typed mutated: missing_point,
+  extra_point, point_position_wrong, axis_scale_misread), reusing
+  `chart_generator._apply_postprocess` via `render_options["postprocess"]` (mild `blur_radius=0.6`
+  on one golden/two mutated cases; `downscale_factor=0.88` + `jpeg_quality=82` on the other
+  golden/two mutated cases) — no new postprocessing machinery.
+- `build_noisy_coordinate_dataset`, CLI command `generate-noisy-coordinate-dataset`. No new
+  validation summarizer was needed: `summarize_coordinate_validation_results` already takes a
+  dataset-root argument and works unchanged against the noisy track.
+- Per the no-guessed-tolerance/measure-before-claim discipline, ran the full 6-case set once
+  before writing any test assertions or wiki claims: all 6 cases passed on the first
+  measurement (no extractor bugs found here, unlike arrow-v1-noisy's first pass which surfaced
+  two real bugs before it went clean).
+
+Verification:
+
+- coordinate-graph-v1-noisy (6 cases): typed hits `4/4`, false unsupported passes `0`, golden
+  failures `0`, golden non-passes `0`, verdict mismatches `0`, point-count evidence `6/6`.
+- Full test suite: 128 passing (126 prior + 2 new noisy-track tests in
+  `test_coordinate_graph_v1.py`). Controlled coordinate-graph-v1 and all other verticals'
+  controlled metrics unaffected (only additive dataset/CLI code; no extractor/rule files touched).
+
+Bounds: only two mild configured transforms (light blur; light downscale+JPEG) — not evidence for
+heavier distortion or independently authored/real-world images.
+
+## 2026-07-11 session 17 - Flowchart-v1 vertical-chain verifier (fifth vertical)
+
+- Implemented `flowchart-v1`, the fifth executable vertical, following an autonomous multi-hour
+  work session per the user's request (build features to completion, one at a time, no fixed
+  1-hour cap, pausing between features). Ran the advisor scope-freeze gate before writing any
+  code, mirroring the discipline used for arrow-v1/geometry-v1/coordinate-graph-v1.
+- Advisor-gated design decisions: node identity = color fill (not text), text label is a separate
+  opt-in `node-label-correct` check so flaky decoding never blocks the core capability; connector
+  topology is per-declared-edge presence/direction only (not general graph reconstruction); scope
+  is a single vertical chain (no diagonal/branching/orthogonal routing) with exactly two shape
+  types (rectangle, diamond).
+- Added `flowchart_generator.py` (deterministic Pillow renderer: rectangle/diamond nodes stacked
+  vertically, straight connector arrows), `flowchart_labels.py` (fixed 6-entry catalog
+  template-matched node-label decoder, mirroring `arrow_labels.py`), `flowchart_extractor.py`
+  (spec-blind shape classification via fill-ratio geometry, achromatic-mask connector detection
+  reusing the arrow-v1 principal-axis head/tail technique, nearest-node attach resolution),
+  `flowchart_rules.py` (`run_flowchart_claims`: count/presence/shape/label/connector checks with
+  color-match + collision-guard, mirroring `arrow_rules._match_arrows_by_color`), and
+  `build_flowchart_claim_graph` in `claim_graph.py` with the same unsupported-check gap guardrail
+  as the other four verticals.
+- Found and fixed a real extraction bug during the first verification smoke test: node label text
+  (rendered achromatic, beside each node on white background) has anti-aliased glyph edges that
+  blend black text with white background across the full intensity range, landing inside the
+  connector mask's achromatic value band regardless of how that band was narrowed. Every golden
+  case initially produced dozens of false tiny "connector" components and a spurious
+  `degenerate_connector_geometry` gap forcing `needs_review`. Fixed by explicitly blanking each
+  detected node's label bbox out of the connector mask before running connected components,
+  rather than tuning thresholds around the noise.
+- Added `specs/flowchart-evidence-graph.schema.json`, flowchart service entrypoints
+  (`run_flowchart_verification` — deliberately does not populate `primitive_graph`, an explicit
+  scope bound rather than an oversight), CLI commands `generate-flowchart-dataset`,
+  `verify-flowchart`, `run-flowchart-validation`, and three new MCP tools
+  (`build_flowchart_claim_graph`, `parse_flowchart`, `verify_flowchart`).
+- Added `datasets/flowchart/flowchart-v1/` with 10 cases (2 golden, 8 mutated: 6 typed + 2
+  ambiguous: `ambiguous_node_colors`, `degenerate_node_geometry`).
+
+Verification:
+
+- flowchart-v1 controlled (10 cases): typed hits `6/6`, ambiguous guard `2/2`, node-count evidence
+  `9/10` (the 10th case's degenerate node is correctly excluded, not a miss), false unsupported
+  passes `0`, golden failures `0`, golden non-passes `0`, verdict mismatches `0`. All results
+  matched expectations on the first full dataset run after the connector-mask fix.
+- Full test suite: 126 passing (106 prior + 20 new in `test_flowchart_v1.py`, including one MCP
+  tool-list update for the 3 new tools). No shared extractor/rule files were modified, so
+  chart-v2/arrow-v1/geometry-v1/coordinate-graph-v1 controlled metrics are unaffected by
+  construction (only new files plus additive registrations in `contracts.py`, `service.py`,
+  `cli.py`, `server.py`, `validation.py`).
+
+Bounds: controlled Pillow renders only; single vertical-chain topology (no branching/diagonal/
+orthogonal routing); exactly two shape types (rectangle, diamond); node label catalog is a
+6-entry fixed alphabet; no noisy track or independently authored/real-world images yet; no
+`PrimitiveEvidenceGraph` adapter yet (audit-only layer, not a blocking gap for this vertical's
+domain verdicts).
+
 ## 2026-07-11 session 16 - Coordinate-graph-v1 dual-axis verifier (fourth vertical)
 
 - Implemented `coordinate-graph-v1`, following the fourth-vertical plan: scatter points
