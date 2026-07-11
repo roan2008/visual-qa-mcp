@@ -105,11 +105,60 @@ Observations:
   specifically got wrong — flagged as follow-up, not resolved here.
 - No tolerance/threshold/verdict-gating — this is a measurement-only landing.
 
+## Outlier triage and layout-carrying fix (2026-07-11, session 23)
+
+Triaged the four largest outliers by inspecting each case's `metadata.json` and re-running
+`run_round_trip_check` directly with full bar-delta detail:
+
+- `golden-02` (22px), `noisy-golden-01` (16px), `rw-public-golden-06` (33px) all had non-default
+  `render_options.layout_overrides` (custom `width`/`height`/`margin_left`/`axis_label_box`)
+  in their original render. `build_round_trip_inputs` was rendering the round-trip image with
+  generator **defaults** regardless, so the round-trip plot area had different margins/height
+  than the original — a pure layout artifact, not an extraction bug. Confirmed by inspecting
+  `bar_deltas`: `bottom_y_delta_px` was consistently near zero (baseline agreed) while
+  `top_y_delta_px` scaled with how far the case's layout diverged from the generator default.
+- `mutated-07` (19px, `defect_type: "shifted_scale"`) is different: `render_options` is `{}`
+  (default layout both times), but the case is deliberately rendered with a true `bar_axis` of
+  `0-80` while its tick labels are relabeled to display `0/25/50/75/100` (see
+  `generate_dataset.py:383-394`). The extractor correctly reads the (fake) labels and infers a
+  `0-75` mapping; the round-trip then re-renders using that `0-75` mapping, which necessarily
+  produces different bar heights than the original `0-80`-positioned bars. This is the round-trip
+  check correctly detecting the same scale inconsistency the deterministic
+  `chart_value_mismatch` rule already catches independently — a corroborating signal, not a bug.
+
+**Fix applied**: `chart_round_trip.py` gained `geometry_render_metadata()`, a whitelist filter
+(`layout_overrides`, `tick_font_size`, `x_label_font_size` — geometry-affecting keys only, not
+`postprocess`/noise knobs) over the original case's `render_options`. `build_round_trip_inputs`,
+`render_round_trip_image`, and `run_round_trip_check` now accept an optional `render_metadata`
+carrying these keys through to `render_chart_image`, so the round-trip render reproduces the
+original's plot-area geometry instead of silently diffing against generator defaults.
+`service.py::run_chart_verification` reads `render_options` from `metadata_path` and passes the
+filtered dict through; `write_verification_artifacts`'s persisted `round_trip.png` does the same.
+
+**Re-measured distribution after the fix** (same three datasets, re-run read-only, zero dataset
+mutations):
+
+| dataset | top_y p90 / max (px) | height p90 / max (px) |
+|---|---|---|
+| chart-v2 (24 cases, 17 evaluable) | 1.0 / 19.0 | 1.0 / 19.0 |
+| chart-v2-noisy (6 cases, 4 evaluable) | 1.0 / 2.0 | 1.0 / 2.0 |
+| chart-v2-realworld-pilot (24 cases, 18 evaluable) | 1.0 / 1.0 | 1.0 / 1.0 |
+
+p90 dropped from 6.0px to 1.0px in every dataset; max dropped from 22-33px to 1-2px everywhere
+except `mutated-07`'s expected 19px (the one case designed to disagree). All 150 tests
+(including the verdict-unaffected regression test) still pass; no dataset files were modified.
+
+**Tolerance decision**: not setting a verdict-gating tolerance yet. The remaining outlier is a
+known, intentional defect case rather than unexplained noise, and the deterministic
+`chart_value_mismatch` rule already catches it independently — round-trip gating would be
+redundant here, not additive signal. Revisit if/when round-trip is used as a standalone
+diagnostic (e.g. a future dashboard) rather than feeding `verdict`.
+
 ## Follow-up (deferred, not started)
 
-- Triage the outlier cases (22-33px max deltas) to see if they reveal a real axis-math bug or
-  are an artifact of `layout_overrides` not being carried through the round-trip render.
-- Decide a tolerance and whether/how to surface round-trip disagreement as a `needs_review`
-  signal, once the outlier triage is done — per this project's no-guessed-tolerance discipline.
-- Extend the same technique to arrow-v1/geometry-v1/coordinate-graph-v1/flowchart-v1 if this
-  first landing proves useful.
+- Extend the same technique (including the layout-carrying fix) to
+  arrow-v1/geometry-v1/coordinate-graph-v1/flowchart-v1 if useful.
+- If a future case wants round-trip to *catch* a scale-shift defect like `mutated-07` on its
+  own (not just corroborate an existing rule), that would require deliberately deciding a
+  tolerance and wiring `round_trip` into `chart_rules.py` — out of scope for this additive
+  landing.

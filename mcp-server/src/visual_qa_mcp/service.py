@@ -14,7 +14,7 @@ from .claim_graph import (
 )
 from .chart_extractor import extract_chart_evidence
 from .chart_rules import run_chart_claims
-from .chart_round_trip import render_round_trip_image, run_round_trip_check
+from .chart_round_trip import geometry_render_metadata, render_round_trip_image, run_round_trip_check
 from .coordinate_extractor import extract_coordinate_evidence
 from .coordinate_rules import run_coordinate_claims
 from .flowchart_extractor import extract_flowchart_evidence
@@ -133,7 +133,14 @@ def run_chart_verification(
     )
     report = run_chart_claims(claim_graph, evidence_graph)
     primitive_graph = primitive_graph_from_chart(evidence_graph, image_path)
-    round_trip = run_round_trip_check(evidence_graph, image_path) if include_round_trip else None
+    round_trip = None
+    if include_round_trip:
+        render_options = {}
+        if metadata_path is not None:
+            render_options = json.loads(metadata_path.read_text(encoding="utf-8")).get("render_options", {})
+        round_trip = run_round_trip_check(
+            evidence_graph, image_path, geometry_render_metadata(render_options)
+        )
     return VerificationResult(
         image_path=image_path,
         spec_path=spec_path,
@@ -196,7 +203,14 @@ def write_verification_artifacts(
             encoding="utf-8",
         )
     if paths.round_trip_image_path is not None:
-        render_round_trip_image(result.evidence_graph, paths.round_trip_image_path)
+        render_options = {}
+        if result.metadata_path is not None:
+            render_options = json.loads(result.metadata_path.read_text(encoding="utf-8")).get(
+                "render_options", {}
+            )
+        render_round_trip_image(
+            result.evidence_graph, paths.round_trip_image_path, geometry_render_metadata(render_options)
+        )
     paths.report_path.write_text(
         json.dumps(result.report.to_dict(), indent=2),
         encoding="utf-8",

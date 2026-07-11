@@ -9,6 +9,44 @@ metadata:
 
 # Project Log
 
+## 2026-07-11 session 23 - Round-trip outlier triage and layout-carrying fix
+
+- Picked up the session 22 follow-up item (triage the 22-33px round-trip outliers) per user
+  choice among three options (triage outliers / start circuit-v1 / real-world+OCR sourcing).
+- Ran `run-chart-round-trip-validation` on all three chart-v2 datasets, sorted per-case output
+  by `max(max_top_y_delta_px, max_height_delta_px)`, and inspected the top 4 outliers'
+  `metadata.json` and detailed `bar_deltas`.
+- Found: 3 of 4 outliers (`golden-02` 22px, `noisy-golden-01` 16px, `rw-public-golden-06` 33px)
+  all had non-default `render_options.layout_overrides` in their original render, but
+  `build_round_trip_inputs` always rendered the round-trip image with generator-default layout —
+  a pure layout-mismatch artifact (`bottom_y_delta_px` near zero, `top_y_delta_px` scaling with
+  how far the layout diverged), not an extraction bug.
+- Found: the 4th outlier (`mutated-07`, 19px) is the deliberately mutated `shifted_scale` defect
+  case (`generate_dataset.py:383-394`) — bars are positioned using a true `0-80` axis but tick
+  labels are relabeled to display `0/25/50/75/100`. The extractor correctly reads the fake
+  labels and infers a `0-75` mapping; round-trip re-rendering with that mapping necessarily
+  produces different bar heights than the original `0-80`-positioned bars. This is round-trip
+  correctly detecting the same scale inconsistency the deterministic `chart_value_mismatch` rule
+  already independently catches — a corroborating signal, not a bug.
+- Fix: added `geometry_render_metadata()` to `chart_round_trip.py`, a whitelist filter
+  (`layout_overrides`, `tick_font_size`, `x_label_font_size`) over the original case's
+  `render_options`. `build_round_trip_inputs`/`render_round_trip_image`/`run_round_trip_check`
+  now accept an optional `render_metadata` param carrying these through to
+  `render_chart_image`, so round-trip renders reproduce the original's plot-area geometry.
+  `service.py::run_chart_verification` and `write_verification_artifacts` both read
+  `render_options` from `metadata_path` and pass the filtered dict through.
+- Re-measured: p90 pixel delta dropped from 6.0px to 1.0px across all three datasets; max
+  dropped from 22-33px to 1-2px everywhere except the intentional `mutated-07` case (still
+  19px, expected). 150/150 tests pass, including the verdict-unaffected regression test. Zero
+  dataset file mutations (`git status --porcelain` clean on all three dataset dirs,
+  `chart-v2-realworld-pilot` checksums untouched).
+- Decision: no tolerance/verdict-gating set. The one remaining outlier is an intentional defect
+  already caught by an existing rule, so gating on it would be redundant. Revisit only if
+  round-trip becomes a standalone diagnostic surface (e.g. a dashboard) independent of
+  `verdict`.
+- See `wiki/impl-chart-v2-round-trip-check.md` "Outlier triage and layout-carrying fix" for full
+  detail.
+
 ## 2026-07-11 session 22 - Chart-v2 round-trip re-rendering accuracy check
 
 - Prior discussion this session produced `wiki/knowledge-accuracy-and-synthetic-data-roadmap.md`,

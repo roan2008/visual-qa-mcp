@@ -11,10 +11,19 @@ from .chart_extractor import _find_bar_regions, _load_image, detect_plot_area
 from .chart_generator import render_chart_image
 from .contracts import BarGeometryDelta, EvidenceGraph, ExtractedBar, RoundTripComparison
 
-# Round-trip renders use generator defaults for style (colors/fonts/layout) because
-# EvidenceGraph does not capture the original image's style. The check is only
-# validating axis-mapping/generator self-consistency, not visual fidelity.
-_ROUND_TRIP_METADATA: dict[str, Any] = {}
+# Round-trip renders use generator defaults for colors/fonts because EvidenceGraph does not
+# capture the original image's palette. Geometry-affecting keys (layout_overrides, font sizes)
+# are carried through from the original case's render_options when available, so the check
+# compares like-for-like plot-area geometry instead of confounding layout differences with
+# real extraction bugs. See wiki/impl-chart-v2-round-trip-check.md.
+_GEOMETRY_METADATA_KEYS = ("layout_overrides", "tick_font_size", "x_label_font_size")
+
+
+def geometry_render_metadata(render_options: dict[str, Any] | None) -> dict[str, Any]:
+    """Whitelist the render_options keys that affect plot-area geometry (not noise/style)."""
+    if not render_options:
+        return {}
+    return {key: render_options[key] for key in _GEOMETRY_METADATA_KEYS if key in render_options}
 
 
 def measure_bar_geometry(image_path: Path) -> list[list[int]]:
@@ -27,6 +36,7 @@ def measure_bar_geometry(image_path: Path) -> list[list[int]]:
 
 def build_round_trip_inputs(
     evidence: EvidenceGraph,
+    render_metadata: dict[str, Any] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any]] | None:
     """Adapter: EvidenceGraph -> (data, axis_config, metadata) for render_chart_image.
 
@@ -61,13 +71,17 @@ def build_round_trip_inputs(
         "display_ticks": tick_values,
         "y_label": evidence.y_axis.label_text or "",
     }
-    metadata = dict(_ROUND_TRIP_METADATA)
+    metadata = geometry_render_metadata(render_metadata)
     return data, axis_config, metadata
 
 
-def render_round_trip_image(evidence: EvidenceGraph, output_path: Path) -> bool:
+def render_round_trip_image(
+    evidence: EvidenceGraph,
+    output_path: Path,
+    render_metadata: dict[str, Any] | None = None,
+) -> bool:
     """Render a fresh chart image from extracted evidence. Returns False if evidence is insufficient."""
-    inputs = build_round_trip_inputs(evidence)
+    inputs = build_round_trip_inputs(evidence, render_metadata)
     if inputs is None:
         return False
     data, axis_config, metadata = inputs
@@ -122,12 +136,16 @@ def compare_bar_geometry(
     )
 
 
-def run_round_trip_check(evidence: EvidenceGraph, original_image_path: Path) -> RoundTripComparison:
+def run_round_trip_check(
+    evidence: EvidenceGraph,
+    original_image_path: Path,
+    render_metadata: dict[str, Any] | None = None,
+) -> RoundTripComparison:
     """Never raises: diagnostic-only, must not break the main verification path."""
     try:
         with tempfile.TemporaryDirectory() as tmp_dir:
             round_trip_path = Path(tmp_dir) / "round_trip.png"
-            rendered = render_round_trip_image(evidence, round_trip_path)
+            rendered = render_round_trip_image(evidence, round_trip_path, render_metadata)
             if not rendered:
                 if evidence.y_axis.mapping is None:
                     return RoundTripComparison(status="skipped_no_axis_mapping")

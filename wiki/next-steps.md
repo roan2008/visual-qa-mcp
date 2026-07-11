@@ -11,6 +11,28 @@ metadata:
 
 ## Current Priority
 
+### 2026-07-11 session 23 - COMPLETE
+
+Triaged the round-trip outliers flagged as follow-up in session 22 (item 0 of Suggested Next
+Work). Found and fixed a real gap: the round-trip render used generator-default layout
+regardless of the original case's `render_options.layout_overrides`, so 3 of the 4 largest
+outliers (22-33px) were pure layout artifacts, not extraction bugs. Added
+`geometry_render_metadata()` in `chart_round_trip.py` to carry `layout_overrides`/font-size
+keys through to the round-trip render; wired through `service.py`. The 4th outlier
+(`mutated-07`, 19px) is a deliberately mutated `shifted_scale` defect case where the round-trip
+delta is a correct, corroborating signal (matches the existing `chart_value_mismatch` rule), not
+a bug.
+
+Verified: p90 pixel delta dropped from 6.0px to 1.0px across all three chart-v2 datasets after
+the fix; max dropped from 22-33px to 1-2px everywhere except the intentional `mutated-07` case.
+150/150 tests still pass, including the verdict-unaffected regression test. No dataset files
+modified (checked via `git status --porcelain` on all three dataset dirs).
+
+Decision: no tolerance/verdict-gating set. The remaining outlier is an intentional defect
+already caught by an existing deterministic rule, so round-trip gating there would be redundant,
+not additive. See `wiki/impl-chart-v2-round-trip-check.md` "Outlier triage and layout-carrying
+fix" section.
+
 ### 2026-07-11 session 22 - COMPLETE
 
 Implemented the round-trip re-rendering accuracy check for chart-v2 (first concrete step from
@@ -547,26 +569,23 @@ Verified:
 
 ## Suggested Next Work
 
-0. Chart-v2 round-trip check follow-up: triage the outlier cases (max deltas 22-33px) from the
-   session 22 measurement run to see if they reveal a real axis-math bug or an artifact of
-   `layout_overrides` not being carried through the round-trip render; decide a tolerance and
-   whether/how to surface disagreement as `needs_review`; then consider extending the same
-   technique to arrow-v1/geometry-v1/coordinate-graph-v1/flowchart-v1. See
-   `wiki/impl-chart-v2-round-trip-check.md`.
-1. Build `circuit-v1` with separately gated symbol/connectivity rules (the flowchart-v1 vertical
+0. Build `circuit-v1` with separately gated symbol/connectivity rules (the flowchart-v1 vertical
    is now done; circuit-v1 is the next new-vertical item).
-2. Add independently authored or publisher-sourced open-license chart and geometry images; current images
+1. Add independently authored or publisher-sourced open-license chart and geometry images; current images
    are still locally rendered and should not be treated as general real-world coverage.
    Install and validate the optional OCR backend in a configured environment so OCR gets its own
    evidence-backed readiness gate.
-3. Extend force-balance beyond v1 when justified: (much later) torque/moment balance with points
+2. Extend force-balance beyond v1 when justified: (much later) torque/moment balance with points
    of application and px-to-newton magnitude calibration (the noisy-track equilibrium case and
    non-zero declared expected resultants are both done).
-4. Extend coordinate-graph-v1 beyond v1 when justified: a curve-fitting mode (the noisy
+3. Extend coordinate-graph-v1 beyond v1 when justified: a curve-fitting mode (the noisy
    blur/downscale/JPEG track, label-based point identity, and multi-series polylines are all
    done).
-5. Extend flowchart-v1 beyond v1 when justified: additional shape types and a noisy track (the
+4. Extend flowchart-v1 beyond v1 when justified: additional shape types and a noisy track (the
    `PrimitiveEvidenceGraph` adapter and branching/diagonal topology are both done).
+5. Extend the round-trip re-rendering technique (now layout-aware, see session 23) to
+   arrow-v1/geometry-v1/coordinate-graph-v1/flowchart-v1 if useful — not urgent, chart-v2's
+   distribution is now tight and well-explained.
 
 ## Recent Completed Milestones
 
@@ -593,3 +612,4 @@ Verified:
 - 2026-07-11: Coordinate-graph-v1 multi-series polylines added (15-case controlled dataset, 7/7 typed hits, 2/2 ambiguity guards).
 - 2026-07-11: Flowchart-v1 branching/diagonal connector topology added (12-case controlled dataset, 7/7 typed hits, 2/2 ambiguity guards).
 - 2026-07-11: Chart-v2 additive round-trip re-rendering accuracy check added (verdict-unaffected, measured pixel-delta distribution across controlled/noisy/pilot datasets, no tolerance set yet).
+- 2026-07-11: Chart-v2 round-trip check made layout-aware (carries `layout_overrides`/font sizes through); p90 delta dropped from 6px to 1px across all three datasets, remaining 19px outlier explained as an intentional defect case.
