@@ -708,6 +708,16 @@ to match that report's evidence-backed build order.
 10. Longer-term extensions when justified: torque/moment balance, coordinate curve-fitting,
     flowchart shape types, round-trip re-rendering for the non-chart verticals, grammar-based
     structural generation with topological coverage taxonomy (deep-research section 8).
+11. **Long-arc direction (not yet queued for implementation)**: migrate rules toward a generic
+    declared-vs-recovered structural diff over `PrimitiveEvidenceGraph`, with domain rules
+    shrinking to thin adapters for tolerance policy, correspondence/abstention policy, and
+    theory-aware checks (force balance etc.) that a geometry-only diff cannot express. See
+    `wiki/knowledge-representation-centric-architecture.md` for the full design discussion and
+    rationale for sequencing this *after* items 1-6 (statistical/failure-mining baselines must
+    exist before refactoring the verdict core, so regressions in the safety property are
+    detectable). Suggested pilot order: (a) flowchart-v1 rules -> `PrimitiveEvidenceGraph`
+    migration, (b) grammar-based generation for one vertical, (c) generic diff engine only
+    after both prove out.
 
 ## Recent Completed Milestones
 

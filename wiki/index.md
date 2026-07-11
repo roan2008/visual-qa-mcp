@@ -35,6 +35,7 @@ wiki/       -> AI-maintained project memory
 - [knowledge-no-tuning-and-3d](knowledge-no-tuning-and-3d.md) - no-tuning and 3D roadmap
 - [knowledge-accuracy-and-synthetic-data-roadmap](knowledge-accuracy-and-synthetic-data-roadmap.md) - accuracy assessment, selective prediction, synthetic-data coverage ideas
 - [knowledge-synthetic-coverage-deep-research](knowledge-synthetic-coverage-deep-research.md) - ingested deep-research findings on synthetic-only coverage strategy
+- [knowledge-representation-centric-architecture](knowledge-representation-centric-architecture.md) - long-arc direction: generic structural diff over PrimitiveEvidenceGraph, thin domain adapters
 
 ## Implementation
 

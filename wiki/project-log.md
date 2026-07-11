@@ -9,6 +9,37 @@ metadata:
 
 # Project Log
 
+## 2026-07-11 session 28 (cont. 2) - Representation-centric architecture discussion (no code)
+
+- User asked a series of increasingly precise questions about the long-run architecture:
+  first whether an LLM should judge correctness directly from geometric evidence (answer:
+  no — the rule layer's value is that arithmetic comparison can't hallucinate, and the LLM's
+  proper role is authoring intent and consuming findings for repair, not judging); then
+  whether the LLM could generate the feedback signal itself from structured evidence without
+  domain rules (answer: plausible for an *advisory* inner loop, but doesn't reduce the real
+  cost, which is extractors not rules, and removes regression-testability of the QA system
+  itself); then the precise question of whether the project is heading toward a mid-level
+  geometric representation (points/curves/regions/constraints) as the shared reference
+  instead of per-domain QA rules.
+- Finding: the third framing is essentially already the project's architecture
+  (`VisualSpec` declared before rendering, `PrimitiveEvidenceGraph` as domain-blind
+  recovered structure, `chart_round_trip.py` as literal analysis-by-synthesis), not an
+  alternative to it. What's genuinely open is migrating rules to primarily do *generic*
+  structural diffing instead of bespoke per-vertical logic, with three things that
+  necessarily remain domain-specific even after that: tolerance policy, correspondence/
+  abstention policy, and theory-aware checks (e.g. arrow-v1's force-balance, which catches
+  a spec that is geometrically self-consistent but physically wrong — a case pure geometry
+  diffing cannot catch). Full writeup: `wiki/knowledge-representation-centric-architecture.md`.
+- Also gave an explicit, caveated readiness estimate when asked "what percentage remains":
+  ~30% today against "trustworthy verifier for tool-generated educational visuals," ~65-75%
+  after the committed 9-item mid-term plan, with OCR validation, the repair-loop, and product
+  surface as the main gaps the plan doesn't close; ~10% today and ~20-25% after the plan
+  against the full high-assurance (medical/CAD) ambition. Labeled explicitly as calibrated
+  estimates, not measured facts.
+- No code changes. Added `wiki/knowledge-representation-centric-architecture.md` and
+  appended item 11 (long-arc direction, explicitly sequenced after items 1-6) to
+  `wiki/next-steps.md`'s Suggested Next Work list.
+
 ## 2026-07-11 session 28 (cont.) - chart-v2 covering-array input model (roadmap item 1)
 
 - Implemented the deep-research roadmap's top-priority investment for chart-v2: a formal
