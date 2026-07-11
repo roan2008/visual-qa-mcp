@@ -163,16 +163,33 @@ def build_arrow_claim_graph(spec_path: Path) -> ClaimGraph:
                 )
             )
         elif check_id == "force-balance-correct":
-            if scenario_type != "equilibrium":
+            if scenario_type not in ("equilibrium", "net-force"):
                 gaps.append(
                     ClaimGap(
                         check_id=check_id,
                         code="scenario_type_not_declared",
                         message=(
                             "Check 'force-balance-correct' requires "
-                            "source_reference.scenario_type = 'equilibrium'; found "
-                            f"{scenario_type!r}. The check is opt-in and cannot run "
-                            "without a declared equilibrium scenario."
+                            "source_reference.scenario_type = 'equilibrium' or 'net-force'; "
+                            f"found {scenario_type!r}. The check is opt-in and cannot run "
+                            "without a declared scenario."
+                        ),
+                        metadata={
+                            "check_type": check.get("type"),
+                            "severity": check.get("severity"),
+                            "scenario_type": scenario_type,
+                        },
+                    )
+                )
+            elif scenario_type == "net-force" and source_reference.get("expected_resultant") is None:
+                gaps.append(
+                    ClaimGap(
+                        check_id=check_id,
+                        code="expected_resultant_not_declared",
+                        message=(
+                            "Check 'force-balance-correct' with scenario_type = 'net-force' "
+                            "requires source_reference.expected_resultant "
+                            "({'magnitude_px': ..., 'direction_degrees': ...}); none was declared."
                         ),
                         metadata={
                             "check_type": check.get("type"),
@@ -187,6 +204,7 @@ def build_arrow_claim_graph(spec_path: Path) -> ClaimGraph:
                         target="arrows",
                         expected={
                             "scenario_type": scenario_type,
+                            "expected_resultant": source_reference.get("expected_resultant"),
                             "arrows_by_id": {
                                 arrow["id"]: {
                                     "rgb": arrow["rgb"],
@@ -200,6 +218,9 @@ def build_arrow_claim_graph(spec_path: Path) -> ClaimGraph:
                         tolerance={
                             "resultant_ratio_tolerance": params.get(
                                 "resultant_ratio_tolerance", 0.15
+                            ),
+                            "resultant_angle_tolerance_degrees": params.get(
+                                "resultant_angle_tolerance_degrees", 15.0
                             ),
                             "color_match_distance": params.get("color_match_distance", 60.0),
                         },
@@ -221,7 +242,7 @@ def build_arrow_claim_graph(spec_path: Path) -> ClaimGraph:
                 )
             )
 
-    if scenario_type == "equilibrium" and not any(
+    if scenario_type in ("equilibrium", "net-force") and not any(
         claim.check_id == "force-balance-correct" for claim in claims
     ) and not any(gap.check_id == "force-balance-correct" for gap in gaps):
         gaps.append(
@@ -229,9 +250,9 @@ def build_arrow_claim_graph(spec_path: Path) -> ClaimGraph:
                 check_id="force-balance-correct",
                 code="scenario_without_balance_check",
                 message=(
-                    "source_reference.scenario_type = 'equilibrium' is declared but no "
-                    "'force-balance-correct' check was requested, so the equilibrium "
-                    "claim cannot be verified."
+                    f"source_reference.scenario_type = {scenario_type!r} is declared but no "
+                    "'force-balance-correct' check was requested, so the scenario claim "
+                    "cannot be verified."
                 ),
                 metadata={"scenario_type": scenario_type},
             )
@@ -418,6 +439,19 @@ def build_coordinate_claim_graph(spec_path: Path) -> ClaimGraph:
     source_reference = spec.get("source_reference", {})
     expected_points = source_reference.get("points", [])
     polyline = source_reference.get("polyline")
+    polylines = source_reference.get("polylines")
+    if polylines:
+        series_list = [
+            {
+                "series_id": series.get("series_id", f"series-{index + 1}"),
+                "ordered_point_ids": series["ordered_point_ids"],
+            }
+            for index, series in enumerate(polylines)
+        ]
+    elif polyline and polyline.get("ordered_point_ids"):
+        series_list = [{"series_id": "series-1", "ordered_point_ids": polyline["ordered_point_ids"]}]
+    else:
+        series_list = []
     x_axis_reference = source_reference.get("x_axis", {})
     y_axis_reference = source_reference.get("y_axis", {})
 
@@ -471,7 +505,11 @@ def build_coordinate_claim_graph(spec_path: Path) -> ClaimGraph:
                     target="points",
                     expected={
                         "points_by_id": {
-                            point["id"]: {"rgb": point["rgb"], "name": point.get("name")}
+                            point["id"]: {
+                                "rgb": point["rgb"],
+                                "name": point.get("name"),
+                                "label_text": point.get("label_text"),
+                            }
                             for point in expected_points
                         }
                     },
@@ -485,7 +523,12 @@ def build_coordinate_claim_graph(spec_path: Path) -> ClaimGraph:
                     target="points",
                     expected={
                         "points_by_id": {
-                            point["id"]: {"rgb": point["rgb"], "x": point["x"], "y": point["y"]}
+                            point["id"]: {
+                                "rgb": point["rgb"],
+                                "x": point["x"],
+                                "y": point["y"],
+                                "label_text": point.get("label_text"),
+                            }
                             for point in expected_points
                         }
                     },
@@ -502,14 +545,15 @@ def build_coordinate_claim_graph(spec_path: Path) -> ClaimGraph:
                 )
             )
         elif check_id == "polyline-connections-correct":
-            if not polyline or not polyline.get("ordered_point_ids"):
+            if not series_list:
                 gaps.append(
                     ClaimGap(
                         check_id=check_id,
                         code="polyline_not_declared",
                         message=(
                             "Check 'polyline-connections-correct' requires "
-                            "source_reference.polyline.ordered_point_ids; none was declared. "
+                            "source_reference.polyline.ordered_point_ids or "
+                            "source_reference.polylines[].ordered_point_ids; none was declared. "
                             "The check is opt-in and cannot run without a declared polyline."
                         ),
                         metadata={
@@ -523,9 +567,13 @@ def build_coordinate_claim_graph(spec_path: Path) -> ClaimGraph:
                     _coordinate_claim(
                         target="polyline",
                         expected={
-                            "ordered_point_ids": polyline["ordered_point_ids"],
+                            "series": series_list,
                             "points_by_id": {
-                                point["id"]: {"rgb": point["rgb"]} for point in expected_points
+                                point["id"]: {
+                                    "rgb": point["rgb"],
+                                    "label_text": point.get("label_text"),
+                                }
+                                for point in expected_points
                             },
                         },
                         evidence_requirements=["point_geometry", "point_color", "polyline_edges"],
@@ -568,7 +616,7 @@ def build_coordinate_claim_graph(spec_path: Path) -> ClaimGraph:
                 )
             )
 
-    if polyline and polyline.get("ordered_point_ids") and not any(
+    if series_list and not any(
         claim.check_id == "polyline-connections-correct" for claim in claims
     ) and not any(gap.check_id == "polyline-connections-correct" for gap in gaps):
         gaps.append(
@@ -576,11 +624,11 @@ def build_coordinate_claim_graph(spec_path: Path) -> ClaimGraph:
                 check_id="polyline-connections-correct",
                 code="polyline_without_connections_check",
                 message=(
-                    "source_reference.polyline is declared but no "
+                    "source_reference.polyline or source_reference.polylines is declared but no "
                     "'polyline-connections-correct' check was requested, so the polyline "
                     "claim cannot be verified."
                 ),
-                metadata={"polyline": polyline},
+                metadata={"series": series_list},
             )
         )
 
@@ -593,6 +641,188 @@ def build_coordinate_claim_graph(spec_path: Path) -> ClaimGraph:
         source_reference=source_reference,
         metadata={
             "generator": "coordinate-graph-v1",
+            "spec_path": str(spec_path),
+            "required_elements": spec.get("required_elements", []),
+        },
+    )
+
+
+def _flowchart_rule_id(check_id: str) -> str:
+    return f"flowchart-v1.{check_id}"
+
+
+def build_flowchart_claim_graph(spec_path: Path) -> ClaimGraph:
+    spec = json.loads(spec_path.read_text(encoding="utf-8"))
+    source_reference = spec.get("source_reference", {})
+    expected_nodes = source_reference.get("nodes", [])
+    expected_connectors = source_reference.get("connectors")
+    has_labels = any(node.get("label_text") for node in expected_nodes)
+
+    claims: list[ClaimCheck] = []
+    gaps: list[ClaimGap] = []
+    for check in spec.get("checks", []):
+        check_id = check["id"]
+        params = check.get("params", {})
+        common_metadata = {
+            "description": check.get("description"),
+            "learning_objective": spec.get("learning_objective"),
+        }
+
+        def _flowchart_claim(
+            target: str,
+            expected: dict[str, Any],
+            evidence_requirements: list[str],
+            tolerance: dict[str, Any] | None = None,
+        ) -> ClaimCheck:
+            return ClaimCheck(
+                claim_id=f"claim-{check_id}",
+                rule_id=_flowchart_rule_id(check_id),
+                check_id=check_id,
+                check_type=check["type"],
+                severity=check["severity"],
+                target=target,
+                expected=expected,
+                tolerance=tolerance or {},
+                evidence_requirements=evidence_requirements,
+                metadata=common_metadata,
+            )
+
+        if check_id == "node-count-matches":
+            claims.append(
+                _flowchart_claim(
+                    target="nodes",
+                    expected={"count": len(expected_nodes)},
+                    evidence_requirements=["node_geometry"],
+                )
+            )
+        elif check_id == "required-nodes-present":
+            claims.append(
+                _flowchart_claim(
+                    target="nodes",
+                    expected={
+                        "nodes_by_id": {
+                            node["id"]: {"rgb": node["rgb"], "name": node.get("name")}
+                            for node in expected_nodes
+                        }
+                    },
+                    evidence_requirements=["node_geometry", "node_color"],
+                    tolerance={"color_match_distance": params.get("color_match_distance", 60.0)},
+                )
+            )
+        elif check_id == "node-shape-correct":
+            claims.append(
+                _flowchart_claim(
+                    target="nodes",
+                    expected={
+                        "nodes_by_id": {
+                            node["id"]: {"rgb": node["rgb"], "shape": node["shape"]}
+                            for node in expected_nodes
+                        }
+                    },
+                    evidence_requirements=["node_geometry", "node_color"],
+                    tolerance={"color_match_distance": params.get("color_match_distance", 60.0)},
+                )
+            )
+        elif check_id == "node-label-correct":
+            if not has_labels:
+                gaps.append(
+                    ClaimGap(
+                        check_id=check_id,
+                        code="labels_not_declared",
+                        message=(
+                            "Check 'node-label-correct' requires at least one node with a declared "
+                            "'label_text'; none was found. The check is opt-in and cannot run "
+                            "without a declared label."
+                        ),
+                        metadata={"check_type": check.get("type"), "severity": check.get("severity")},
+                    )
+                )
+            else:
+                claims.append(
+                    _flowchart_claim(
+                        target="nodes",
+                        expected={
+                            "nodes_by_id": {
+                                node["id"]: {
+                                    "rgb": node["rgb"],
+                                    "label_text": node.get("label_text"),
+                                }
+                                for node in expected_nodes
+                            }
+                        },
+                        evidence_requirements=["node_geometry", "node_color", "node_label_text"],
+                        tolerance={"color_match_distance": params.get("color_match_distance", 60.0)},
+                    )
+                )
+        elif check_id == "connector-links-correct":
+            if not expected_connectors:
+                gaps.append(
+                    ClaimGap(
+                        check_id=check_id,
+                        code="connectors_not_declared",
+                        message=(
+                            "Check 'connector-links-correct' requires "
+                            "source_reference.connectors; none was declared. The check is "
+                            "opt-in and cannot run without declared connectors."
+                        ),
+                        metadata={"check_type": check.get("type"), "severity": check.get("severity")},
+                    )
+                )
+            else:
+                claims.append(
+                    _flowchart_claim(
+                        target="connectors",
+                        expected={
+                            "ordered_edges": [
+                                [connector["from_id"], connector["to_id"]]
+                                for connector in expected_connectors
+                            ],
+                            "nodes_by_id": {
+                                node["id"]: {"rgb": node["rgb"]} for node in expected_nodes
+                            },
+                        },
+                        evidence_requirements=["node_geometry", "node_color", "connector_geometry"],
+                        tolerance={"color_match_distance": params.get("color_match_distance", 60.0)},
+                    )
+                )
+        else:
+            gaps.append(
+                ClaimGap(
+                    check_id=check_id,
+                    code="unsupported_claim_check",
+                    message=(
+                        f"Check '{check_id}' of type '{check.get('type')}' is not mapped "
+                        "to a flowchart-v1 ClaimGraph contract."
+                    ),
+                    metadata={"check_type": check.get("type"), "severity": check.get("severity")},
+                )
+            )
+
+    if expected_connectors and not any(
+        claim.check_id == "connector-links-correct" for claim in claims
+    ) and not any(gap.check_id == "connector-links-correct" for gap in gaps):
+        gaps.append(
+            ClaimGap(
+                check_id="connector-links-correct",
+                code="connectors_without_links_check",
+                message=(
+                    "source_reference.connectors is declared but no "
+                    "'connector-links-correct' check was requested, so the connector claim "
+                    "cannot be verified."
+                ),
+                metadata={"connector_count": len(expected_connectors)},
+            )
+        )
+
+    return ClaimGraph(
+        spec_id=spec["id"],
+        domain=spec["domain"],
+        risk_level=spec.get("risk_level", "medium"),
+        claims=claims,
+        gaps=gaps,
+        source_reference=source_reference,
+        metadata={
+            "generator": "flowchart-v1",
             "spec_path": str(spec_path),
             "required_elements": spec.get("required_elements", []),
         },

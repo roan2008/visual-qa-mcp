@@ -13,16 +13,19 @@ from .service import (
     build_arrow_claim_graph_from_spec,
     build_claim_graph_from_spec,
     build_coordinate_claim_graph_from_spec,
+    build_flowchart_claim_graph_from_spec,
     build_geometry_claim_graph_from_spec,
     extract_arrow_evidence_from_inputs,
     extract_chart_evidence_from_inputs,
     extract_coordinate_evidence_from_inputs,
+    extract_flowchart_evidence_from_inputs,
     extract_geometry_evidence_from_inputs,
     extract_primitive_evidence_from_inputs,
     run_arrow_verification,
     run_chart_rules_from_graphs,
     run_chart_verification,
     run_coordinate_verification,
+    run_flowchart_verification,
     run_geometry_verification,
     write_verification_artifacts,
 )
@@ -44,7 +47,7 @@ def create_server() -> Server:
                         "image_path": {"type": "string"},
                         "profile": {
                             "type": "string",
-                            "enum": ["chart-v2", "arrow-v1", "geometry-v1", "coordinate-graph-v1"],
+                            "enum": ["chart-v2", "arrow-v1", "geometry-v1", "coordinate-graph-v1", "flowchart-v1"],
                         },
                     },
                 },
@@ -198,6 +201,38 @@ def create_server() -> Server:
                     },
                 },
             ),
+            types.Tool(
+                name="build_flowchart_claim_graph",
+                description="Build a flowchart-v1 ClaimGraph from a visual spec JSON file path.",
+                inputSchema={
+                    "type": "object",
+                    "required": ["spec_path"],
+                    "properties": {"spec_path": {"type": "string"}},
+                },
+            ),
+            types.Tool(
+                name="parse_flowchart",
+                description="Extract controlled flowchart-v1 node and connector evidence from an image path.",
+                inputSchema={
+                    "type": "object",
+                    "required": ["image_path"],
+                    "properties": {"image_path": {"type": "string"}},
+                },
+            ),
+            types.Tool(
+                name="verify_flowchart",
+                description="End-to-end controlled flowchart-v1 verification from local inputs.",
+                inputSchema={
+                    "type": "object",
+                    "required": ["image_path", "spec_path"],
+                    "properties": {
+                        "image_path": {"type": "string"},
+                        "spec_path": {"type": "string"},
+                        "metadata_path": {"type": "string"},
+                        "output_dir": {"type": "string"},
+                    },
+                },
+            ),
         ]
 
     @server.call_tool()
@@ -299,6 +334,29 @@ def create_server() -> Server:
 
         if name == "verify_coordinate":
             result = run_coordinate_verification(
+                image_path=Path(arguments["image_path"]),
+                spec_path=Path(arguments["spec_path"]),
+                metadata_path=Path(arguments["metadata_path"])
+                if arguments.get("metadata_path")
+                else None,
+            )
+            payload = result.to_dict()
+            if arguments.get("output_dir"):
+                payload["artifact_paths"] = write_verification_artifacts(
+                    result, Path(arguments["output_dir"])
+                ).to_dict()
+            return [_json_content(payload)]
+
+        if name == "build_flowchart_claim_graph":
+            claim_graph = build_flowchart_claim_graph_from_spec(Path(arguments["spec_path"]))
+            return [_json_content(claim_graph.to_dict())]
+
+        if name == "parse_flowchart":
+            evidence_graph = extract_flowchart_evidence_from_inputs(Path(arguments["image_path"]))
+            return [_json_content(evidence_graph.to_dict())]
+
+        if name == "verify_flowchart":
+            result = run_flowchart_verification(
                 image_path=Path(arguments["image_path"]),
                 spec_path=Path(arguments["spec_path"]),
                 metadata_path=Path(arguments["metadata_path"])

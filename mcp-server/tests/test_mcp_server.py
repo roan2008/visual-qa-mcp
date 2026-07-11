@@ -48,6 +48,9 @@ def test_mcp_server_lists_expected_tools() -> None:
         "build_coordinate_claim_graph",
         "parse_coordinate",
         "verify_coordinate",
+        "build_flowchart_claim_graph",
+        "parse_flowchart",
+        "verify_flowchart",
     ]
 
 

@@ -15,6 +15,7 @@ from .contracts import (
     EvidenceGap,
     EvidenceGraph,
     ExtractionProvenance,
+    FlowchartEvidenceGraph,
     GeometryEvidenceGraph,
     Primitive,
     PrimitiveEvidenceGraph,
@@ -22,10 +23,18 @@ from .contracts import (
     PrimitiveSourceRef,
 )
 from .coordinate_extractor import extract_coordinate_evidence
+from .flowchart_extractor import extract_flowchart_evidence
+from .flowchart_labels import node_label_box
 from .geometry_extractor import extract_geometry_evidence
 from .geometry_labels import dimension_label_box
 
-SUPPORTED_PRIMITIVE_PROFILES = ("chart-v2", "arrow-v1", "geometry-v1", "coordinate-graph-v1")
+SUPPORTED_PRIMITIVE_PROFILES = (
+    "chart-v2",
+    "arrow-v1",
+    "geometry-v1",
+    "coordinate-graph-v1",
+    "flowchart-v1",
+)
 RELATIONSHIP_TYPES = {
     "inside",
     "touches",
@@ -468,6 +477,119 @@ def primitive_graph_from_coordinates(
     return graph
 
 
+def primitive_graph_from_flowchart(
+    evidence: FlowchartEvidenceGraph,
+    image_path: Path,
+) -> PrimitiveEvidenceGraph:
+    with Image.open(image_path) as image:
+        width, height = image.size
+    primitives: list[Primitive] = []
+    relationships: list[PrimitiveRelationship] = []
+    node_primitive_ids: dict[str, str] = {}
+
+    for node in evidence.nodes:
+        primitive_type = "rectangle" if node.shape == "rectangle" else "symbol"
+        primitive_id = f"flowchart.{primitive_type}.{node.node_id}"
+        bounds = _bbox(node.bbox, width, height)
+        node.primitive_ids = [primitive_id]
+        node_primitive_ids[node.node_id] = primitive_id
+        primitives.append(
+            Primitive(
+                primitive_id=primitive_id,
+                type=primitive_type,
+                bbox=bounds,
+                geometry={"bounds": bounds},
+                confidence=node.confidence,
+                attributes={
+                    "shape": node.shape,
+                    "rgb": list(node.rgb),
+                    "fill_ratio": node.fill_ratio,
+                    "pixel_count": node.pixel_count,
+                },
+                source_refs=_source("nodes", node.node_id),
+            )
+        )
+        if node.label_text is not None:
+            label_id = f"flowchart.text.{node.node_id}"
+            label_bounds = _bbox(node_label_box(node.bbox), width, height)
+            node.primitive_ids.append(label_id)
+            primitives.append(
+                Primitive(
+                    primitive_id=label_id,
+                    type="text_region",
+                    bbox=label_bounds,
+                    geometry={"bounds": label_bounds},
+                    confidence=node.label_confidence,
+                    attributes={"text": node.label_text},
+                    source_refs=_source("nodes", node.node_id),
+                )
+            )
+            relationships.append(
+                PrimitiveRelationship(
+                    relationship_id=f"flowchart.connected_to.{node.node_id}.label",
+                    type="connected_to",
+                    source_primitive_id=label_id,
+                    target_primitive_id=primitive_id,
+                    confidence=node.label_confidence,
+                    measurements={"role": "node_label"},
+                )
+            )
+
+    for connector in evidence.connectors:
+        primitive_id = f"flowchart.arrow.{connector.connector_id}"
+        bounds = _bbox(
+            [
+                min(connector.tail_xy[0], connector.head_xy[0]),
+                min(connector.tail_xy[1], connector.head_xy[1]),
+                max(connector.tail_xy[0], connector.head_xy[0]),
+                max(connector.tail_xy[1], connector.head_xy[1]),
+            ],
+            width,
+            height,
+        )
+        connector.primitive_ids = [primitive_id]
+        primitives.append(
+            Primitive(
+                primitive_id=primitive_id,
+                type="arrow",
+                bbox=bounds,
+                geometry={"tail": list(connector.tail_xy), "head": list(connector.head_xy)},
+                confidence=connector.confidence,
+                attributes={"length_px": connector.length_px},
+                source_refs=_source("connectors", connector.connector_id),
+            )
+        )
+        for role, node_id in (("from", connector.from_node_id), ("to", connector.to_node_id)):
+            target_primitive_id = node_primitive_ids.get(node_id) if node_id else None
+            if target_primitive_id is None:
+                continue
+            relationships.append(
+                PrimitiveRelationship(
+                    relationship_id=f"flowchart.touches.{connector.connector_id}.{role}.{node_id}",
+                    type="touches",
+                    source_primitive_id=primitive_id,
+                    target_primitive_id=target_primitive_id,
+                    confidence=connector.confidence,
+                    measurements={"role": role},
+                )
+            )
+
+    graph = PrimitiveEvidenceGraph(
+        schema_version="1.0",
+        image_id=evidence.image_id,
+        profile="flowchart-v1",
+        coordinate_system=_coordinate_system(width, height),
+        primitives=primitives,
+        relationships=relationships,
+        gaps=_deduplicate_gaps(list(evidence.gaps)),
+        provenance=_adapter_provenance("flowchart-v1", evidence.provenance.backend),
+        metadata={"source_extractor": evidence.provenance.extractor_id},
+    )
+    _raise_if_invalid(graph)
+    _raise_if_domain_links_invalid(evidence, graph)
+    return graph
+
+
 def extract_primitive_evidence(image_path: Path, profile: str) -> PrimitiveEvidenceGraph:
     if profile not in SUPPORTED_PRIMITIVE_PROFILES:
         raise ValueError(
@@ -483,6 +605,9 @@ def extract_primitive_evidence(image_path: Path, profile: str) -> PrimitiveEvide
     if profile == "coordinate-graph-v1":
         evidence = extract_coordinate_evidence(image_path)
         return primitive_graph_from_coordinates(evidence, image_path)
+    if profile == "flowchart-v1":
+        evidence = extract_flowchart_evidence(image_path)
+        return primitive_graph_from_flowchart(evidence, image_path)
     return _extract_spec_blind_chart_primitives(image_path)
 
 
@@ -592,7 +717,13 @@ def validate_primitive_graph_semantics(graph: PrimitiveEvidenceGraph) -> list[st
 
 
 def validate_domain_primitive_links(
-    evidence: EvidenceGraph | ArrowEvidenceGraph | GeometryEvidenceGraph | CoordinateEvidenceGraph,
+    evidence: (
+        EvidenceGraph
+        | ArrowEvidenceGraph
+        | GeometryEvidenceGraph
+        | CoordinateEvidenceGraph
+        | FlowchartEvidenceGraph
+    ),
     graph: PrimitiveEvidenceGraph,
 ) -> list[str]:
     errors: list[str] = []
@@ -617,6 +748,11 @@ def validate_domain_primitive_links(
                 domain_objects[
                     (f"{axis_evidence.orientation}_axis", f"{axis_evidence.orientation}-axis")
                 ] = axis_evidence.primitive_ids
+    elif isinstance(evidence, FlowchartEvidenceGraph):
+        for item in evidence.nodes:
+            domain_objects[("nodes", item.node_id)] = item.primitive_ids
+        for item in evidence.connectors:
+            domain_objects[("connectors", item.connector_id)] = item.primitive_ids
     else:
         for item in evidence.bars:
             domain_objects[("bars", item.bar_id)] = item.primitive_ids
@@ -686,7 +822,13 @@ def _raise_if_invalid(graph: PrimitiveEvidenceGraph) -> None:
 
 
 def _raise_if_domain_links_invalid(
-    evidence: EvidenceGraph | ArrowEvidenceGraph | GeometryEvidenceGraph | CoordinateEvidenceGraph,
+    evidence: (
+        EvidenceGraph
+        | ArrowEvidenceGraph
+        | GeometryEvidenceGraph
+        | CoordinateEvidenceGraph
+        | FlowchartEvidenceGraph
+    ),
     graph: PrimitiveEvidenceGraph,
 ) -> None:
     errors = validate_domain_primitive_links(evidence, graph)

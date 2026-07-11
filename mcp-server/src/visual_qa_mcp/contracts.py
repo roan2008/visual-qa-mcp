@@ -138,6 +138,35 @@ class EvidenceGraph:
 
 
 @dataclass
+class BarGeometryDelta:
+    bar_id: str
+    original_bbox: list[int]
+    round_trip_bbox: list[int] | None
+    top_y_delta_px: float | None
+    bottom_y_delta_px: float | None
+    height_delta_px: float | None
+    width_delta_px: float | None
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class RoundTripComparison:
+    status: str
+    bar_deltas: list[BarGeometryDelta] = field(default_factory=list)
+    max_top_y_delta_px: float | None = None
+    mean_top_y_delta_px: float | None = None
+    max_height_delta_px: float | None = None
+    mean_height_delta_px: float | None = None
+    round_trip_image_path: str | None = None
+    notes: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
 class ExtractedArrow:
     arrow_id: str
     rgb: list[int]
@@ -276,6 +305,8 @@ class ExtractedPoint:
     bbox: list[int]
     pixel_count: int
     confidence: float
+    label_text: str | None = None
+    label_confidence: float = 0.0
     primitive_ids: list[str] = field(default_factory=list)
 
 
@@ -301,6 +332,62 @@ class CoordinateEvidenceGraph:
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+
+
+@dataclass
+class ExtractedNode:
+    node_id: str
+    shape: str
+    rgb: list[int]
+    bbox: list[int]
+    center_xy: list[int]
+    pixel_count: int
+    fill_ratio: float
+    confidence: float
+    label_text: str | None = None
+    label_confidence: float = 0.0
+    primitive_ids: list[str] = field(default_factory=list)
+
+
+@dataclass
+class ExtractedConnector:
+    connector_id: str
+    tail_xy: list[int]
+    head_xy: list[int]
+    from_node_id: str | None
+    to_node_id: str | None
+    length_px: float
+    confidence: float
+    primitive_ids: list[str] = field(default_factory=list)
+
+
+@dataclass
+class FlowchartEvidenceGraph:
+    image_id: str
+    diagram_type: str
+    nodes: list[ExtractedNode]
+    connectors: list[ExtractedConnector]
+    extraction_confidence: float
+    provenance: ExtractionProvenance
+    gaps: list[EvidenceGap] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class FlowchartDatasetCase:
+    case_id: str
+    title: str
+    kind: str
+    defect_type: str | None
+    scenario: str
+    image_path: Path
+    spec_path: Path
+    metadata_path: Path
+    expected_report_path: Path
+    dataset_track: str = "controlled"
 
 
 @dataclass
@@ -444,6 +531,8 @@ class ArtifactPaths:
     claim_graph_path: Path
     report_path: Path
     primitive_evidence_graph_path: Path | None = None
+    round_trip_path: Path | None = None
+    round_trip_image_path: Path | None = None
 
     def to_dict(self) -> dict[str, str]:
         return {
@@ -457,6 +546,16 @@ class ArtifactPaths:
                 if self.primitive_evidence_graph_path is not None
                 else {}
             ),
+            **(
+                {"round_trip_path": str(self.round_trip_path)}
+                if self.round_trip_path is not None
+                else {}
+            ),
+            **(
+                {"round_trip_image_path": str(self.round_trip_image_path)}
+                if self.round_trip_image_path is not None
+                else {}
+            ),
         }
 
 
@@ -467,9 +566,16 @@ class VerificationResult:
     metadata_path: Path | None
     backend: str
     claim_graph: ClaimGraph
-    evidence_graph: EvidenceGraph | ArrowEvidenceGraph | GeometryEvidenceGraph | CoordinateEvidenceGraph
+    evidence_graph: (
+        EvidenceGraph
+        | ArrowEvidenceGraph
+        | GeometryEvidenceGraph
+        | CoordinateEvidenceGraph
+        | FlowchartEvidenceGraph
+    )
     report: VisualQaReport
     primitive_graph: PrimitiveEvidenceGraph | None = None
+    round_trip: RoundTripComparison | None = None
 
     def to_dict(self) -> dict[str, Any]:
         payload = {
@@ -483,4 +589,6 @@ class VerificationResult:
         }
         if self.primitive_graph is not None:
             payload["primitive_graph"] = self.primitive_graph.to_dict()
+        if self.round_trip is not None:
+            payload["round_trip"] = self.round_trip.to_dict()
         return payload

@@ -9,17 +9,22 @@ from .claim_graph import (
     build_arrow_claim_graph,
     build_chart_claim_graph,
     build_coordinate_claim_graph,
+    build_flowchart_claim_graph,
     build_geometry_claim_graph,
 )
 from .chart_extractor import extract_chart_evidence
 from .chart_rules import run_chart_claims
+from .chart_round_trip import render_round_trip_image, run_round_trip_check
 from .coordinate_extractor import extract_coordinate_evidence
 from .coordinate_rules import run_coordinate_claims
+from .flowchart_extractor import extract_flowchart_evidence
+from .flowchart_rules import run_flowchart_claims
 from .geometry_extractor import extract_geometry_evidence
 from .geometry_rules import run_geometry_claims
 from .contracts import (
     ArrowEvidenceGraph,
     CoordinateEvidenceGraph,
+    FlowchartEvidenceGraph,
     GeometryEvidenceGraph,
     ArtifactPaths,
     AxisMapping,
@@ -40,6 +45,7 @@ from .primitive_evidence import (
     primitive_graph_from_arrows,
     primitive_graph_from_chart,
     primitive_graph_from_coordinates,
+    primitive_graph_from_flowchart,
     primitive_graph_from_geometry,
 )
 
@@ -116,6 +122,7 @@ def run_chart_verification(
     spec_path: Path,
     metadata_path: Path | None = None,
     backend: str | None = None,
+    include_round_trip: bool = True,
 ) -> VerificationResult:
     claim_graph = build_claim_graph_from_spec(spec_path)
     evidence_graph = extract_chart_evidence_from_inputs(
@@ -126,6 +133,7 @@ def run_chart_verification(
     )
     report = run_chart_claims(claim_graph, evidence_graph)
     primitive_graph = primitive_graph_from_chart(evidence_graph, image_path)
+    round_trip = run_round_trip_check(evidence_graph, image_path) if include_round_trip else None
     return VerificationResult(
         image_path=image_path,
         spec_path=spec_path,
@@ -135,11 +143,18 @@ def run_chart_verification(
         evidence_graph=evidence_graph,
         report=report,
         primitive_graph=primitive_graph,
+        round_trip=round_trip,
     )
 
 
-def write_verification_artifacts(result: VerificationResult, output_dir: Path) -> ArtifactPaths:
+def write_verification_artifacts(
+    result: VerificationResult,
+    output_dir: Path,
+    persist_round_trip: bool = False,
+) -> ArtifactPaths:
     output_dir.mkdir(parents=True, exist_ok=True)
+    write_round_trip = persist_round_trip and result.round_trip is not None
+    persist_round_trip_image = write_round_trip and result.round_trip.status == "ok"
     paths = ArtifactPaths(
         output_dir=output_dir,
         overlay_path=output_dir / "overlay.png",
@@ -150,6 +165,10 @@ def write_verification_artifacts(result: VerificationResult, output_dir: Path) -
             output_dir / "primitive_evidence_graph.json"
             if result.primitive_graph is not None
             else None
+        ),
+        round_trip_path=output_dir / "round_trip.json" if write_round_trip else None,
+        round_trip_image_path=(
+            output_dir / "round_trip.png" if persist_round_trip_image else None
         ),
     )
 
@@ -171,6 +190,13 @@ def write_verification_artifacts(result: VerificationResult, output_dir: Path) -
             json.dumps(result.primitive_graph.to_dict(), indent=2),
             encoding="utf-8",
         )
+    if paths.round_trip_path is not None and result.round_trip is not None:
+        paths.round_trip_path.write_text(
+            json.dumps(result.round_trip.to_dict(), indent=2),
+            encoding="utf-8",
+        )
+    if paths.round_trip_image_path is not None:
+        render_round_trip_image(result.evidence_graph, paths.round_trip_image_path)
     paths.report_path.write_text(
         json.dumps(result.report.to_dict(), indent=2),
         encoding="utf-8",
@@ -259,6 +285,37 @@ def run_coordinate_verification(
     evidence_graph = extract_coordinate_evidence(image_path)
     report = run_coordinate_claims(claim_graph, evidence_graph)
     primitive_graph = primitive_graph_from_coordinates(evidence_graph, image_path)
+    return VerificationResult(
+        image_path=image_path,
+        spec_path=spec_path,
+        metadata_path=metadata_path,
+        backend=evidence_graph.provenance.backend,
+        claim_graph=claim_graph,
+        evidence_graph=evidence_graph,
+        report=report,
+        primitive_graph=primitive_graph,
+    )
+
+
+def build_flowchart_claim_graph_from_spec(spec_path: Path) -> ClaimGraph:
+    return build_flowchart_claim_graph(spec_path)
+
+
+def extract_flowchart_evidence_from_inputs(image_path: Path) -> FlowchartEvidenceGraph:
+    evidence = extract_flowchart_evidence(image_path)
+    primitive_graph_from_flowchart(evidence, image_path)
+    return evidence
+
+
+def run_flowchart_verification(
+    image_path: Path,
+    spec_path: Path,
+    metadata_path: Path | None = None,
+) -> VerificationResult:
+    claim_graph = build_flowchart_claim_graph(spec_path)
+    evidence_graph = extract_flowchart_evidence(image_path)
+    report = run_flowchart_claims(claim_graph, evidence_graph)
+    primitive_graph = primitive_graph_from_flowchart(evidence_graph, image_path)
     return VerificationResult(
         image_path=image_path,
         spec_path=spec_path,

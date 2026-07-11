@@ -6,7 +6,8 @@ import sys
 from pathlib import Path
 
 from .arrow_dataset import build_arrow_dataset, build_noisy_arrow_dataset
-from .coordinate_dataset import build_coordinate_dataset
+from .coordinate_dataset import build_coordinate_dataset, build_noisy_coordinate_dataset
+from .flowchart_dataset import build_flowchart_dataset
 from .generate_dataset import build_dataset, build_noisy_dataset, build_realworld_pilot_dataset
 from .geometry_dataset import build_geometry_dataset, build_noisy_geometry_dataset
 from .server import main as server_main
@@ -18,6 +19,7 @@ from .service import (
     run_chart_rules_from_graphs,
     run_chart_verification,
     run_coordinate_verification,
+    run_flowchart_verification,
     run_geometry_verification,
     write_verification_artifacts,
 )
@@ -26,7 +28,9 @@ from .validation import (
     load_schema,
     run_case,
     summarize_arrow_validation_results,
+    summarize_chart_round_trip_results,
     summarize_coordinate_validation_results,
+    summarize_flowchart_validation_results,
     summarize_ocr_validation,
     summarize_chart_validation_suite,
     summarize_geometry_validation_results,
@@ -80,6 +84,10 @@ def main(argv: list[str] | None = None) -> int:
     validate_parser = subparsers.add_parser("run-validation")
     validate_parser.add_argument("--dataset", type=Path, default=Path("datasets") / "charts" / "chart-v2")
     validate_parser.add_argument("--backend", choices=["template", "optional_ocr"], default=None)
+
+    round_trip_validate_parser = subparsers.add_parser("run-chart-round-trip-validation")
+    round_trip_validate_parser.add_argument("--dataset", type=Path, default=Path("datasets") / "charts" / "chart-v2")
+    round_trip_validate_parser.add_argument("--backend", choices=["template", "optional_ocr"], default=None)
 
     phase2_validate_parser = subparsers.add_parser("run-phase2-validation")
     phase2_validate_parser.add_argument("--controlled-dataset", type=Path, default=Path("datasets") / "charts" / "chart-v2")
@@ -137,7 +145,7 @@ def main(argv: list[str] | None = None) -> int:
     primitive_parser.add_argument(
         "--profile",
         required=True,
-        choices=["chart-v2", "arrow-v1", "geometry-v1", "coordinate-graph-v1"],
+        choices=["chart-v2", "arrow-v1", "geometry-v1", "coordinate-graph-v1", "flowchart-v1"],
     )
 
     coordinate_generate_parser = subparsers.add_parser("generate-coordinate-dataset")
@@ -145,6 +153,13 @@ def main(argv: list[str] | None = None) -> int:
         "--output",
         type=Path,
         default=Path("datasets") / "coordinate" / "coordinate-graph-v1",
+    )
+
+    coordinate_noisy_generate_parser = subparsers.add_parser("generate-noisy-coordinate-dataset")
+    coordinate_noisy_generate_parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path("datasets") / "coordinate" / "coordinate-graph-v1-noisy",
     )
 
     coordinate_verify_parser = subparsers.add_parser("verify-coordinate")
@@ -176,6 +191,25 @@ def main(argv: list[str] | None = None) -> int:
         "--noisy-dataset",
         type=Path,
         default=Path("datasets") / "mechanical" / "geometry-v1-noisy",
+    )
+
+    flowchart_generate_parser = subparsers.add_parser("generate-flowchart-dataset")
+    flowchart_generate_parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path("datasets") / "flowchart" / "flowchart-v1",
+    )
+
+    flowchart_verify_parser = subparsers.add_parser("verify-flowchart")
+    flowchart_verify_parser.add_argument("image_path", type=Path)
+    flowchart_verify_parser.add_argument("spec_path", type=Path)
+    flowchart_verify_parser.add_argument("--output-dir", type=Path, default=None)
+
+    flowchart_validate_parser = subparsers.add_parser("run-flowchart-validation")
+    flowchart_validate_parser.add_argument(
+        "--dataset",
+        type=Path,
+        default=Path("datasets") / "flowchart" / "flowchart-v1",
     )
 
     serve_parser = subparsers.add_parser("serve-mcp")
@@ -249,6 +283,11 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "run-validation":
         summary = summarize_validation_results(args.dataset, backend_override=args.backend)
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "run-chart-round-trip-validation":
+        summary = summarize_chart_round_trip_results(args.dataset, backend_override=args.backend)
         print(json.dumps(summary, indent=2))
         return 0
 
@@ -352,6 +391,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Coordinate dataset generated at {args.output}")
         return 0
 
+    if args.command == "generate-noisy-coordinate-dataset":
+        build_noisy_coordinate_dataset(args.output)
+        print(f"Noisy coordinate dataset generated at {args.output}")
+        return 0
+
     if args.command == "verify-coordinate":
         result = run_coordinate_verification(
             image_path=args.image_path,
@@ -366,6 +410,28 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "run-coordinate-validation":
         summary = summarize_coordinate_validation_results(args.dataset)
+        print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "generate-flowchart-dataset":
+        build_flowchart_dataset(args.output)
+        print(f"Flowchart dataset generated at {args.output}")
+        return 0
+
+    if args.command == "verify-flowchart":
+        result = run_flowchart_verification(
+            image_path=args.image_path,
+            spec_path=args.spec_path,
+        )
+        payload = result.to_dict()
+        if args.output_dir is not None:
+            artifact_paths = write_verification_artifacts(result, args.output_dir)
+            payload["artifact_paths"] = artifact_paths.to_dict()
+        print(json.dumps(payload, indent=2))
+        return 0
+
+    if args.command == "run-flowchart-validation":
+        summary = summarize_flowchart_validation_results(args.dataset)
         print(json.dumps(summary, indent=2))
         return 0
 

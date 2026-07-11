@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import hashlib
+import statistics
 from pathlib import Path
 from typing import Any
 
@@ -14,6 +15,8 @@ from .contracts import (
     CoordinateDatasetCase,
     CoordinateEvidenceGraph,
     EvidenceGraph,
+    FlowchartDatasetCase,
+    FlowchartEvidenceGraph,
     GeometryDatasetCase,
     GeometryEvidenceGraph,
     VisualQaReport,
@@ -23,6 +26,7 @@ from .service import (
     run_arrow_verification,
     run_chart_verification,
     run_coordinate_verification,
+    run_flowchart_verification,
     run_geometry_verification,
     write_verification_artifacts,
 )
@@ -236,6 +240,94 @@ def summarize_validation_results_for_cases(
     }
 
 
+def _distribution_stats(values: list[float]) -> dict[str, float] | None:
+    if not values:
+        return None
+    ordered = sorted(values)
+    quantile_index = max(0, min(len(ordered) - 1, round(0.9 * (len(ordered) - 1))))
+    return {
+        "min": round(ordered[0], 3),
+        "max": round(ordered[-1], 3),
+        "mean": round(statistics.fmean(ordered), 3),
+        "median": round(statistics.median(ordered), 3),
+        "p90": round(ordered[quantile_index], 3),
+    }
+
+
+def summarize_chart_round_trip_results(dataset_root: Path, backend_override: str | None = None) -> dict[str, Any]:
+    """Pure measurement summary of chart-v2 round-trip pixel deltas. No pass/fail
+    field or threshold is reported here — tolerance/verdict-gating is deferred
+    follow-up work once this distribution has been measured on real data."""
+    cases = discover_cases(dataset_root)
+    per_case: list[dict[str, Any]] = []
+    skipped_by_status: dict[str, int] = {}
+    top_y_deltas: list[float] = []
+    height_deltas: list[float] = []
+    by_axis_mode: dict[str, dict[str, list[float]]] = {}
+    by_kind: dict[str, dict[str, list[float]]] = {}
+
+    for case in cases:
+        backend = backend_override or case.backend
+        result = run_chart_verification(
+            image_path=case.image_path,
+            spec_path=case.spec_path,
+            metadata_path=case.metadata_path,
+            backend=backend,
+        )
+        comparison = result.round_trip
+        status = comparison.status if comparison is not None else "not_run"
+        entry = {
+            "case_id": case.case_id,
+            "kind": case.kind,
+            "axis_mode": case.axis_mode,
+            "status": status,
+            "max_top_y_delta_px": comparison.max_top_y_delta_px if comparison else None,
+            "mean_top_y_delta_px": comparison.mean_top_y_delta_px if comparison else None,
+            "max_height_delta_px": comparison.max_height_delta_px if comparison else None,
+            "mean_height_delta_px": comparison.mean_height_delta_px if comparison else None,
+        }
+        per_case.append(entry)
+
+        if status != "ok":
+            skipped_by_status[status] = skipped_by_status.get(status, 0) + 1
+            continue
+
+        axis_bucket = by_axis_mode.setdefault(case.axis_mode, {"top_y": [], "height": []})
+        kind_bucket = by_kind.setdefault(case.kind, {"top_y": [], "height": []})
+        for delta in comparison.bar_deltas:
+            if delta.top_y_delta_px is not None:
+                top_y_deltas.append(delta.top_y_delta_px)
+                axis_bucket["top_y"].append(delta.top_y_delta_px)
+                kind_bucket["top_y"].append(delta.top_y_delta_px)
+            if delta.height_delta_px is not None:
+                height_deltas.append(delta.height_delta_px)
+                axis_bucket["height"].append(delta.height_delta_px)
+                kind_bucket["height"].append(delta.height_delta_px)
+
+    return {
+        "total_cases": len(cases),
+        "evaluable_cases": len(cases) - sum(skipped_by_status.values()),
+        "skipped_by_status": skipped_by_status,
+        "top_y_delta_px": _distribution_stats(top_y_deltas),
+        "height_delta_px": _distribution_stats(height_deltas),
+        "by_axis_mode": {
+            mode: {
+                "top_y_delta_px": _distribution_stats(buckets["top_y"]),
+                "height_delta_px": _distribution_stats(buckets["height"]),
+            }
+            for mode, buckets in by_axis_mode.items()
+        },
+        "by_kind": {
+            kind: {
+                "top_y_delta_px": _distribution_stats(buckets["top_y"]),
+                "height_delta_px": _distribution_stats(buckets["height"]),
+            }
+            for kind, buckets in by_kind.items()
+        },
+        "per_case": per_case,
+    }
+
+
 def discover_arrow_cases(dataset_root: Path) -> list[ArrowDatasetCase]:
     cases: list[ArrowDatasetCase] = []
     for metadata_path in sorted(dataset_root.glob("**/metadata.json")):
@@ -336,9 +428,9 @@ def summarize_arrow_validation_results(dataset_root: Path) -> dict[str, Any]:
                 ambiguous_cases += 1
                 if report.verdict != "pass":
                     ambiguous_guarded += 1
-        if "force_balance_violation" in expected_types:
+        if "force_balance_violation" in expected_types or "net_force_resultant_mismatch" in expected_types:
             force_balance_cases += 1
-            if "force_balance_violation" in matched_types:
+            if expected_types.intersection(matched_types):
                 force_balance_hits += 1
         if expected["verdict"] != "pass" and report.verdict == "pass":
             unsupported_passes += 1
@@ -687,6 +779,132 @@ def run_coordinate_case(
     if write_artifacts:
         write_verification_artifacts(result, case.image_path.parent)
     return result.evidence_graph, result.report
+
+
+def discover_flowchart_cases(dataset_root: Path) -> list[FlowchartDatasetCase]:
+    cases: list[FlowchartDatasetCase] = []
+    for metadata_path in sorted(dataset_root.glob("**/metadata.json")):
+        metadata = load_json(metadata_path)
+        case_dir = metadata_path.parent
+        cases.append(
+            FlowchartDatasetCase(
+                case_id=metadata["case_id"],
+                title=metadata["title"],
+                kind=metadata["kind"],
+                defect_type=metadata.get("defect_type"),
+                scenario=metadata.get("scenario", "flowchart"),
+                image_path=case_dir / "image.png",
+                spec_path=case_dir / "visual_spec.json",
+                metadata_path=metadata_path,
+                expected_report_path=case_dir / "expected_report.json",
+                dataset_track=metadata.get("dataset_track", "controlled"),
+            )
+        )
+    return cases
+
+
+def run_flowchart_case(
+    case: FlowchartDatasetCase,
+    evidence_schema: Draft202012Validator | None = None,
+    write_artifacts: bool = True,
+) -> tuple[FlowchartEvidenceGraph, VisualQaReport]:
+    result = run_flowchart_verification(
+        image_path=case.image_path,
+        spec_path=case.spec_path,
+        metadata_path=case.metadata_path,
+    )
+    claim_schema = load_schema(REPO_ROOT / "specs" / "claim-graph.schema.json")
+    claim_errors = validate_json(claim_schema, result.claim_graph.to_dict())
+    if claim_errors:
+        raise ValueError(f"Claim schema validation failed for {case.case_id}: {claim_errors}")
+    if evidence_schema is not None:
+        errors = validate_json(evidence_schema, result.evidence_graph.to_dict())
+        if errors:
+            raise ValueError(f"Evidence schema validation failed for {case.case_id}: {errors}")
+    if write_artifacts:
+        write_verification_artifacts(result, case.image_path.parent)
+    return result.evidence_graph, result.report
+
+
+def summarize_flowchart_validation_results(dataset_root: Path) -> dict[str, Any]:
+    findings_schema = load_schema(REPO_ROOT / "specs" / "findings.schema.json")
+    evidence_schema = load_schema(REPO_ROOT / "specs" / "flowchart-evidence-graph.schema.json")
+    cases = discover_flowchart_cases(dataset_root)
+    results: list[dict[str, Any]] = []
+    typed_mutated = 0
+    typed_mutated_hits = 0
+    unsupported_passes = 0
+    golden_failures = 0
+    golden_non_passes = 0
+    ambiguous_cases = 0
+    ambiguous_guarded = 0
+    verdict_mismatches = 0
+    node_count_cases = 0
+    node_count_hits = 0
+
+    for case in cases:
+        evidence, report = run_flowchart_case(case, evidence_schema, write_artifacts=False)
+        report_errors = validate_json(findings_schema, report.to_dict())
+        if report_errors:
+            raise ValueError(f"Report schema validation failed for {case.case_id}: {report_errors}")
+        expected = load_json(case.expected_report_path)
+        expected_evidence = expected.get("expected_evidence", {})
+        if expected_evidence.get("node_count") is not None:
+            node_count_cases += 1
+            if len(evidence.nodes) == int(expected_evidence["node_count"]):
+                node_count_hits += 1
+        matched_types = {finding.type for finding in report.findings}
+        expected_types = set(expected.get("expected_finding_types", []))
+        results.append(
+            {
+                "case_id": case.case_id,
+                "kind": case.kind,
+                "defect_type": case.defect_type,
+                "expected_verdict": expected["verdict"],
+                "actual_verdict": report.verdict,
+                "expected_types": sorted(expected_types),
+                "actual_types": sorted(matched_types),
+            }
+        )
+        if case.kind == "golden" and report.verdict == "fail":
+            golden_failures += 1
+        if case.kind == "golden" and report.verdict != "pass":
+            golden_non_passes += 1
+        if case.kind == "mutated":
+            if expected_types:
+                typed_mutated += 1
+                if expected_types.issubset(matched_types):
+                    typed_mutated_hits += 1
+            else:
+                ambiguous_cases += 1
+                if report.verdict != "pass":
+                    ambiguous_guarded += 1
+        if expected["verdict"] != "pass" and report.verdict == "pass":
+            unsupported_passes += 1
+        if expected["verdict"] != report.verdict:
+            verdict_mismatches += 1
+
+    return {
+        "total_cases": len(cases),
+        "golden_cases": sum(1 for case in cases if case.kind == "golden"),
+        "mutated_cases": sum(1 for case in cases if case.kind == "mutated"),
+        "critical_error_recall": round(typed_mutated_hits / max(typed_mutated, 1), 2),
+        "typed_mutated_cases": typed_mutated,
+        "typed_mutated_hits": typed_mutated_hits,
+        "ambiguous_cases": ambiguous_cases,
+        "ambiguous_guard_rate": round(ambiguous_guarded / max(ambiguous_cases, 1), 2),
+        "false_unsupported_passes": unsupported_passes,
+        "golden_failures": golden_failures,
+        "golden_non_passes": golden_non_passes,
+        "verdict_mismatches": verdict_mismatches,
+        "verdict_accuracy": round((len(cases) - verdict_mismatches) / max(len(cases), 1), 2),
+        "evidence_metrics": {
+            "node_count_cases": node_count_cases,
+            "node_count_hits": node_count_hits,
+            "node_count_accuracy": round(node_count_hits / max(node_count_cases, 1), 2),
+        },
+        "results": results,
+    }
 
 
 def summarize_coordinate_validation_results(dataset_root: Path) -> dict[str, Any]:
