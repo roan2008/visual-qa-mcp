@@ -1,0 +1,82 @@
+{
+  "image_id": "image",
+  "spec_id": "circuit-v1b-mutated-10",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-net-missing-battery.b-lamp_a.b-lamp_b.b",
+      "rule_id": "circuit-v1.terminal-netlist-correct",
+      "type": "missing_net",
+      "severity": "critical",
+      "message": "Declared terminal net ['battery.b', 'lamp_a.b', 'lamp_b.b'] was not found.",
+      "evidence": {
+        "expected_terminals": [
+          "battery.b",
+          "lamp_a.b",
+          "lamp_b.b"
+        ]
+      },
+      "recommendation": "Connect the declared terminals with one wire net."
+    },
+    {
+      "id": "finding-net-missing-lamp_a.a-lamp_b.a-resistor.b",
+      "rule_id": "circuit-v1.terminal-netlist-correct",
+      "type": "missing_net",
+      "severity": "critical",
+      "message": "Declared terminal net ['lamp_a.a', 'lamp_b.a', 'resistor.b'] was not found.",
+      "evidence": {
+        "expected_terminals": [
+          "lamp_a.a",
+          "lamp_b.a",
+          "resistor.b"
+        ]
+      },
+      "recommendation": "Connect the declared terminals with one wire net."
+    },
+    {
+      "id": "finding-net-extra-battery.b-lamp_a.a-lamp_b.b",
+      "rule_id": "circuit-v1.terminal-netlist-correct",
+      "type": "extra_net",
+      "severity": "high",
+      "message": "Detected terminal net ['battery.b', 'lamp_a.a', 'lamp_b.b'] is not declared.",
+      "evidence": {
+        "detected_terminals": [
+          "battery.b",
+          "lamp_a.a",
+          "lamp_b.b"
+        ]
+      },
+      "recommendation": "Remove the extra wire or declare the intended net."
+    },
+    {
+      "id": "finding-net-extra-lamp_a.b-lamp_b.a-resistor.b",
+      "rule_id": "circuit-v1.terminal-netlist-correct",
+      "type": "extra_net",
+      "severity": "high",
+      "message": "Detected terminal net ['lamp_a.b', 'lamp_b.a', 'resistor.b'] is not declared.",
+      "evidence": {
+        "detected_terminals": [
+          "lamp_a.b",
+          "lamp_b.a",
+          "resistor.b"
+        ]
+      },
+      "recommendation": "Remove the extra wire or declare the intended net."
+    }
+  ],
+  "checks_run": [
+    "component-count-matches",
+    "required-components-present",
+    "component-type-correct",
+    "terminal-netlist-correct",
+    "junction-count-correct",
+    "declared-topology-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.3,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.3,
+  "overlay_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-10\\overlay.png",
+  "evidence_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-10\\evidence_graph.json",
+  "claim_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-10\\claim_graph.json"
+}

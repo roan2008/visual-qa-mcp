@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-09",
+  "title": "mutated 09",
+  "kind": "mutated",
+  "defect_type": "complete_missing_split_branch",
+  "scenario": "series_parallel",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1b",
+  "renderer": "pillow"
+}

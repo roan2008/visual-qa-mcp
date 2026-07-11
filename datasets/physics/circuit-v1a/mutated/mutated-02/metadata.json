@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-02",
+  "title": "Battery rendered as lamp with terminal-compatible controlled geometry",
+  "kind": "mutated",
+  "defect_type": "component_type_wrong",
+  "scenario": "circuit",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1a",
+  "renderer": "pillow"
+}

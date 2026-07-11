@@ -1,0 +1,22 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "extra_junction"
+  ],
+  "expected_evidence": {
+    "component_count": 3,
+    "terminal_nets": [
+      [
+        "battery.a",
+        "resistor.a",
+        "lamp.a"
+      ],
+      [
+        "battery.b",
+        "resistor.b",
+        "lamp.b"
+      ]
+    ],
+    "junction_count": 3
+  }
+}

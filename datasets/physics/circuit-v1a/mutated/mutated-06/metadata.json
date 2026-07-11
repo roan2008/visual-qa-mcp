@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-06",
+  "title": "Extra disconnected wire fragment",
+  "kind": "mutated",
+  "defect_type": "extra_wire_fragment",
+  "scenario": "circuit",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1a",
+  "renderer": "pillow"
+}

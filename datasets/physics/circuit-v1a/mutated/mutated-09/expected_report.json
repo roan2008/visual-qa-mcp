@@ -1,0 +1,26 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "missing_net",
+    "extra_net",
+    "series_topology_wrong"
+  ],
+  "expected_evidence": {
+    "component_count": 3,
+    "net_count": 3,
+    "terminal_nets": [
+      [
+        "battery.a",
+        "battery.b"
+      ],
+      [
+        "resistor.a",
+        "resistor.b"
+      ],
+      [
+        "lamp.a",
+        "lamp.b"
+      ]
+    ]
+  }
+}

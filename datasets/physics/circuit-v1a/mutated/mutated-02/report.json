@@ -1,0 +1,47 @@
+{
+  "image_id": "image",
+  "spec_id": "circuit-v1a-mutated-02",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-component-type-battery",
+      "rule_id": "circuit-v1a.component-type-correct",
+      "type": "component_type_wrong",
+      "severity": "critical",
+      "message": "Component 'battery' renders as 'lamp' but the spec declares 'battery'.",
+      "evidence": {
+        "component_id": "battery",
+        "expected_type": "battery",
+        "detected_type": "lamp"
+      },
+      "recommendation": "Redraw the component using the declared symbol type."
+    }
+  ],
+  "checks_run": [
+    "component-count-matches",
+    "required-components-present",
+    "component-type-correct",
+    "terminal-netlist-correct",
+    "series-topology-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.7,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.7,
+  "overlay_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1a\\mutated\\mutated-02\\overlay.png",
+  "evidence_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1a\\mutated\\mutated-02\\evidence_graph.json",
+  "claim_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1a\\mutated\\mutated-02\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-component-type-battery",
+      "kind": "bbox",
+      "bbox": [
+        78,
+        168,
+        122,
+        212
+      ],
+      "label": "battery: type"
+    }
+  ]
+}

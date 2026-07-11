@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-09",
+  "title": "Complete disconnected self-loops instead of one series loop",
+  "kind": "mutated",
+  "defect_type": "non_series_topology",
+  "scenario": "circuit",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1a",
+  "renderer": "pillow"
+}

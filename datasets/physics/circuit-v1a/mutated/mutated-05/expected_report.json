@@ -1,0 +1,8 @@
+{
+  "verdict": "needs_review",
+  "expected_finding_types": [],
+  "expected_evidence": {
+    "component_count": 3,
+    "net_count": 0
+  }
+}

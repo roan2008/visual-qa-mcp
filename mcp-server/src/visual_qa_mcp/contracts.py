@@ -377,7 +377,69 @@ class FlowchartEvidenceGraph:
 
 
 @dataclass
+class ExtractedCircuitComponent:
+    component_id: str
+    symbol_type: str
+    rgb: list[int]
+    bbox: list[int]
+    center_xy: list[float]
+    pixel_count: int
+    terminals: dict[str, list[float]]
+    confidence: float
+    primitive_ids: list[str] = field(default_factory=list)
+
+
+@dataclass
+class ExtractedCircuitNet:
+    net_id: str
+    pixel_count: int
+    attached_terminals: list[str]
+    confidence: float
+    primitive_ids: list[str] = field(default_factory=list)
+
+
+@dataclass
+class ExtractedCircuitJunction:
+    junction_id: str
+    net_id: str
+    center_xy: list[float]
+    bbox: list[int]
+    pixel_support: int
+    confidence: float
+
+
+@dataclass
+class CircuitEvidenceGraph:
+    image_id: str
+    diagram_type: str
+    components: list[ExtractedCircuitComponent]
+    nets: list[ExtractedCircuitNet]
+    junctions: list[ExtractedCircuitJunction]
+    extraction_confidence: float
+    provenance: ExtractionProvenance
+    gaps: list[EvidenceGap] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
 class FlowchartDatasetCase:
+    case_id: str
+    title: str
+    kind: str
+    defect_type: str | None
+    scenario: str
+    image_path: Path
+    spec_path: Path
+    metadata_path: Path
+    expected_report_path: Path
+    dataset_track: str = "controlled"
+
+
+@dataclass
+class CircuitDatasetCase:
     case_id: str
     title: str
     kind: str
@@ -572,6 +634,7 @@ class VerificationResult:
         | GeometryEvidenceGraph
         | CoordinateEvidenceGraph
         | FlowchartEvidenceGraph
+        | CircuitEvidenceGraph
     )
     report: VisualQaReport
     primitive_graph: PrimitiveEvidenceGraph | None = None

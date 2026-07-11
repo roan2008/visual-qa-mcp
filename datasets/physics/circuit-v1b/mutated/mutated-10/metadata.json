@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-10",
+  "title": "mutated 10",
+  "kind": "mutated",
+  "defect_type": "swapped_branch_attachment",
+  "scenario": "series_parallel",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1b",
+  "renderer": "pillow"
+}

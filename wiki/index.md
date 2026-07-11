@@ -47,6 +47,7 @@ wiki/       -> AI-maintained project memory
 - [impl-coordinate-graph-v1-dual-axis](impl-coordinate-graph-v1-dual-axis.md) - dual-axis scatter/polyline verifier and bounds
 - [impl-flowchart-v1-vertical-chain](impl-flowchart-v1-vertical-chain.md) - vertical-chain node/connector verifier and bounds
 - [impl-chart-v2-round-trip-check](impl-chart-v2-round-trip-check.md) - additive round-trip re-rendering check and measured pixel-delta distribution
+- [impl-circuit-v1](impl-circuit-v1.md) - circuit-v1 controlled structural verifier feasibility and implementation record
 
 ## Reference
 

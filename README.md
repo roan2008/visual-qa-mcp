@@ -69,13 +69,16 @@ The agent can still use a vision-language model, but only as one part of an evid
 
 ## Current Executable MVP
 
-The current runtime has three bounded executable verticals:
+The current runtime has six bounded executable verticals:
 
 - `chart-v2`: template-backed bar charts with image-read Y-axis scale evidence
 - `arrow-v1`: controlled free-body diagrams with arrow identity, direction, anchor, and opt-in translational force balance
 - `geometry-v1`: controlled mechanical plates with circular-hole count, relative diameter, linear alignment/spacing, and fixed-catalog dimension labels
+- `coordinate-graph-v1`: controlled dual-axis scatter/polyline diagrams
+- `flowchart-v1`: controlled rectangle/diamond flowcharts with directed topology
+- `circuit-v1`: a two-gate controlled structural-netlist verifier (`v1a` series loops; `v1b` explicit-junction simple-parallel and bounded series-parallel branches)
 
-All three can also project into an additive `PrimitiveEvidenceGraph` audit layer containing basic
+The first five can also project into an additive `PrimitiveEvidenceGraph` audit layer containing basic
 shapes, arrows, text regions, spatial relationships, provenance, and links back to domain evidence.
 Domain rules still consume the established domain graphs.
 
@@ -86,7 +89,7 @@ Implemented pieces:
 - claim-generation gaps and `claim_graph.json` audit artifacts so unsupported checks degrade to `needs_review` instead of disappearing silently.
 - Local callable Python tool surface in `mcp-server/src/visual_qa_mcp/` for claim generation, evidence extraction, verification, and artifact writing.
 - MCP server wrapper over chart, arrow, and geometry claim/extraction/verification surfaces.
-- Spec-blind `parse_primitives` MCP and `extract-primitives` CLI surfaces for the three bounded profiles.
+- Spec-blind `parse_primitives` MCP and `extract-primitives` CLI surfaces for five bounded profiles; circuit evidence remains on its typed domain graph.
 - Audit-oriented provenance and confidence separation:
   - extractor provenance in `EvidenceGraph`
   - stable `rule_id` values in claims and findings
@@ -109,6 +112,13 @@ Geometry-v1 has a 14-case controlled Pillow-rendered family (`7/7` typed, `2/2` 
 separate checksum-frozen 20-case noisy family (`5/5` typed, `5/5` ambiguity, `10/10` golden). This
 does not cover arbitrary mechanical drawings, independently authored images, general OCR,
 calibrated units, or native CAD.
+
+Circuit-v1a has 11 controlled cases (`4/4` typed, `5/5` ambiguity, `2/2` golden,
+terminal-netlist evidence `6/6`). Circuit-v1b has 14 controlled cases (`7/7` typed, `3/3`
+ambiguity, `4/4` golden, terminal-netlist and junction-count evidence `11/11`). These claims cover
+only controlled colored Pillow symbols, orthogonal non-crossing wires, explicit junction dots,
+simple parallel, and one bounded series-parallel family. They do not cover arbitrary schematics,
+crossings, OCR, electrical values/laws, or engineering certification.
 
 The bounded readiness claim remains narrow: the validated default is the template backend on the
 controlled chart-v2 family and the configured noisy transform family. The real-world pilot is an

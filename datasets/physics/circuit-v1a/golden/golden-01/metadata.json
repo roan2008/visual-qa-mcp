@@ -1,0 +1,10 @@
+{
+  "case_id": "golden-01",
+  "title": "Canonical battery-resistor-lamp series loop",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "circuit",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1a",
+  "renderer": "pillow"
+}

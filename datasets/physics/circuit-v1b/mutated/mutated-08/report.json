@@ -1,0 +1,39 @@
+{
+  "image_id": "image",
+  "spec_id": "circuit-v1b-mutated-08",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [],
+  "checks_skipped": [
+    {
+      "check_id": "component-count-matches",
+      "reason": "A colored component does not match the controlled circuit-v1a symbol catalog."
+    },
+    {
+      "check_id": "required-components-present",
+      "reason": "A colored component does not match the controlled circuit-v1a symbol catalog."
+    },
+    {
+      "check_id": "component-type-correct",
+      "reason": "A colored component does not match the controlled circuit-v1a symbol catalog."
+    },
+    {
+      "check_id": "terminal-netlist-correct",
+      "reason": "A colored component does not match the controlled circuit-v1a symbol catalog."
+    },
+    {
+      "check_id": "junction-count-correct",
+      "reason": "A colored component does not match the controlled circuit-v1a symbol catalog."
+    },
+    {
+      "check_id": "declared-topology-correct",
+      "reason": "A colored component does not match the controlled circuit-v1a symbol catalog."
+    }
+  ],
+  "confidence": 0.4,
+  "extraction_confidence": 0.75,
+  "rule_confidence": 0.4,
+  "overlay_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-08\\overlay.png",
+  "evidence_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-08\\evidence_graph.json",
+  "claim_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-08\\claim_graph.json"
+}

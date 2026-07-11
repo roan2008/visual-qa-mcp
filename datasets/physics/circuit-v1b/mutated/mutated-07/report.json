@@ -1,0 +1,39 @@
+{
+  "image_id": "image",
+  "spec_id": "circuit-v1b-mutated-07",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [],
+  "checks_skipped": [
+    {
+      "check_id": "component-count-matches",
+      "reason": "At least one wire component does not attach to exactly two component terminals."
+    },
+    {
+      "check_id": "required-components-present",
+      "reason": "At least one wire component does not attach to exactly two component terminals."
+    },
+    {
+      "check_id": "component-type-correct",
+      "reason": "At least one wire component does not attach to exactly two component terminals."
+    },
+    {
+      "check_id": "terminal-netlist-correct",
+      "reason": "At least one wire component does not attach to exactly two component terminals."
+    },
+    {
+      "check_id": "junction-count-correct",
+      "reason": "At least one wire component does not attach to exactly two component terminals."
+    },
+    {
+      "check_id": "declared-topology-correct",
+      "reason": "At least one wire component does not attach to exactly two component terminals."
+    }
+  ],
+  "confidence": 0.4,
+  "extraction_confidence": 0.75,
+  "rule_confidence": 0.4,
+  "overlay_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-07\\overlay.png",
+  "evidence_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-07\\evidence_graph.json",
+  "claim_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-07\\claim_graph.json"
+}

@@ -1,0 +1,69 @@
+{
+  "image_id": "image",
+  "spec_id": "circuit-v1b-mutated-05",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-component-count",
+      "rule_id": "circuit-v1.component-count-matches",
+      "type": "component_count_mismatch",
+      "severity": "high",
+      "message": "Detected 4 components but expected 3.",
+      "evidence": {
+        "expected_count": 3,
+        "detected_count": 4
+      },
+      "recommendation": "Regenerate the diagram with the declared number of components."
+    },
+    {
+      "id": "finding-component-extra-component-04",
+      "rule_id": "circuit-v1.required-components-present",
+      "type": "extra_component",
+      "severity": "high",
+      "message": "Detected component 'component-04' does not match a declared component color.",
+      "evidence": {
+        "component_id": "component-04",
+        "detected_rgb": [
+          170,
+          40,
+          175
+        ],
+        "bbox": [
+          468,
+          328,
+          512,
+          372
+        ]
+      },
+      "recommendation": "Remove the extra component or declare it in the spec."
+    }
+  ],
+  "checks_run": [
+    "component-count-matches",
+    "required-components-present",
+    "component-type-correct",
+    "terminal-netlist-correct",
+    "junction-count-correct",
+    "declared-topology-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.6,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.6,
+  "overlay_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-05\\overlay.png",
+  "evidence_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-05\\evidence_graph.json",
+  "claim_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-05\\claim_graph.json",
+  "overlay_annotations": [
+    {
+      "finding_id": "finding-component-extra-component-04",
+      "kind": "bbox",
+      "bbox": [
+        468,
+        328,
+        512,
+        372
+      ],
+      "label": "Unexpected component"
+    }
+  ]
+}

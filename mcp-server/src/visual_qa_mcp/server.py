@@ -15,11 +15,13 @@ from .service import (
     build_coordinate_claim_graph_from_spec,
     build_flowchart_claim_graph_from_spec,
     build_geometry_claim_graph_from_spec,
+    build_circuit_claim_graph_from_spec,
     extract_arrow_evidence_from_inputs,
     extract_chart_evidence_from_inputs,
     extract_coordinate_evidence_from_inputs,
     extract_flowchart_evidence_from_inputs,
     extract_geometry_evidence_from_inputs,
+    extract_circuit_evidence_from_inputs,
     extract_primitive_evidence_from_inputs,
     run_arrow_verification,
     run_chart_rules_from_graphs,
@@ -27,6 +29,7 @@ from .service import (
     run_coordinate_verification,
     run_flowchart_verification,
     run_geometry_verification,
+    run_circuit_verification,
     write_verification_artifacts,
 )
 
@@ -233,6 +236,21 @@ def create_server() -> Server:
                     },
                 },
             ),
+            types.Tool(
+                name="build_circuit_claim_graph",
+                description="Build a controlled circuit-v1a ClaimGraph from a visual spec JSON file path.",
+                inputSchema={"type": "object", "required": ["spec_path"], "properties": {"spec_path": {"type": "string"}}},
+            ),
+            types.Tool(
+                name="parse_circuit",
+                description="Extract controlled circuit-v1a component-terminal-net evidence from an image path.",
+                inputSchema={"type": "object", "required": ["image_path"], "properties": {"image_path": {"type": "string"}}},
+            ),
+            types.Tool(
+                name="verify_circuit",
+                description="End-to-end controlled circuit-v1a verification from local inputs.",
+                inputSchema={"type": "object", "required": ["image_path", "spec_path"], "properties": {"image_path": {"type": "string"}, "spec_path": {"type": "string"}, "metadata_path": {"type": "string"}, "output_dir": {"type": "string"}}},
+            ),
         ]
 
     @server.call_tool()
@@ -368,6 +386,22 @@ def create_server() -> Server:
                 payload["artifact_paths"] = write_verification_artifacts(
                     result, Path(arguments["output_dir"])
                 ).to_dict()
+            return [_json_content(payload)]
+
+        if name == "build_circuit_claim_graph":
+            return [_json_content(build_circuit_claim_graph_from_spec(Path(arguments["spec_path"])).to_dict())]
+
+        if name == "parse_circuit":
+            return [_json_content(extract_circuit_evidence_from_inputs(Path(arguments["image_path"])).to_dict())]
+
+        if name == "verify_circuit":
+            result = run_circuit_verification(
+                image_path=Path(arguments["image_path"]), spec_path=Path(arguments["spec_path"]),
+                metadata_path=Path(arguments["metadata_path"]) if arguments.get("metadata_path") else None,
+            )
+            payload = result.to_dict()
+            if arguments.get("output_dir"):
+                payload["artifact_paths"] = write_verification_artifacts(result, Path(arguments["output_dir"])).to_dict()
             return [_json_content(payload)]
 
         raise ValueError(f"Unknown tool: {name}")

@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-08",
+  "title": "Complete circuit with swapped terminal pairings",
+  "kind": "mutated",
+  "defect_type": "swapped_terminal_netlist",
+  "scenario": "circuit",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1a",
+  "renderer": "pillow"
+}

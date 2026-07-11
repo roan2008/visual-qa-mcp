@@ -1,0 +1,20 @@
+{
+  "image_id": "image",
+  "spec_id": "circuit-v1a-golden-02",
+  "verdict": "pass",
+  "findings": [],
+  "checks_run": [
+    "component-count-matches",
+    "required-components-present",
+    "component-type-correct",
+    "terminal-netlist-correct",
+    "series-topology-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 1.0,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 1.0,
+  "overlay_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1a\\golden\\golden-02\\overlay.png",
+  "evidence_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1a\\golden\\golden-02\\evidence_graph.json",
+  "claim_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1a\\golden\\golden-02\\claim_graph.json"
+}

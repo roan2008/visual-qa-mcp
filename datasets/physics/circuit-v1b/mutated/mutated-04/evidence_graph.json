@@ -1,0 +1,174 @@
+{
+  "image_id": "image",
+  "diagram_type": "circuit",
+  "components": [
+    {
+      "component_id": "component-01",
+      "symbol_type": "resistor",
+      "rgb": [
+        45,
+        155,
+        65
+      ],
+      "bbox": [
+        245,
+        154,
+        275,
+        226
+      ],
+      "center_xy": [
+        258.2,
+        190.0
+      ],
+      "pixel_count": 800,
+      "terminals": {
+        "a": [
+          258.2,
+          154.0
+        ],
+        "b": [
+          258.2,
+          226.0
+        ]
+      },
+      "confidence": 0.9,
+      "primitive_ids": []
+    },
+    {
+      "component_id": "component-02",
+      "symbol_type": "battery",
+      "rgb": [
+        220,
+        50,
+        50
+      ],
+      "bbox": [
+        89,
+        158,
+        112,
+        223
+      ],
+      "center_xy": [
+        99.3,
+        190.3
+      ],
+      "pixel_count": 809,
+      "terminals": {
+        "a": [
+          99.3,
+          157.3
+        ],
+        "b": [
+          99.3,
+          223.3
+        ]
+      },
+      "confidence": 0.9,
+      "primitive_ids": []
+    },
+    {
+      "component_id": "component-03",
+      "symbol_type": "lamp",
+      "rgb": [
+        45,
+        90,
+        220
+      ],
+      "bbox": [
+        398,
+        168,
+        442,
+        212
+      ],
+      "center_xy": [
+        420.0,
+        190.0
+      ],
+      "pixel_count": 1025,
+      "terminals": {
+        "a": [
+          420.0,
+          166.0
+        ],
+        "b": [
+          420.0,
+          214.0
+        ]
+      },
+      "confidence": 0.9,
+      "primitive_ids": []
+    }
+  ],
+  "nets": [
+    {
+      "net_id": "net-01",
+      "pixel_count": 2123,
+      "attached_terminals": [
+        "component-01.a",
+        "component-02.a",
+        "component-03.a"
+      ],
+      "confidence": 0.9,
+      "primitive_ids": []
+    },
+    {
+      "net_id": "net-02",
+      "pixel_count": 2123,
+      "attached_terminals": [
+        "component-01.b",
+        "component-02.b",
+        "component-03.b"
+      ],
+      "confidence": 0.9,
+      "primitive_ids": []
+    }
+  ],
+  "junctions": [
+    {
+      "junction_id": "junction-01",
+      "net_id": "net-01",
+      "center_xy": [
+        260.0,
+        101.2
+      ],
+      "bbox": [
+        255,
+        97,
+        265,
+        106
+      ],
+      "pixel_support": 90,
+      "confidence": 0.9
+    },
+    {
+      "junction_id": "junction-02",
+      "net_id": "net-02",
+      "center_xy": [
+        260.0,
+        278.8
+      ],
+      "bbox": [
+        255,
+        274,
+        265,
+        283
+      ],
+      "pixel_support": 90,
+      "confidence": 0.9
+    }
+  ],
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "circuit-v1a",
+    "extractor_version": "0.1.0",
+    "backend": "component_and_wire_components",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "image_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-04\\image.png",
+    "topology_family": "terminal_net_graph"
+  }
+}

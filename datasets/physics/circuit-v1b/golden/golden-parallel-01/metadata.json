@@ -1,0 +1,10 @@
+{
+  "case_id": "golden-parallel-01",
+  "title": "golden parallel 01",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "simple_parallel",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1b",
+  "renderer": "pillow"
+}

@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-04",
+  "title": "Wire terminates near but not at lamp terminal",
+  "kind": "mutated",
+  "defect_type": "near_terminal_miss",
+  "scenario": "circuit",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1a",
+  "renderer": "pillow"
+}

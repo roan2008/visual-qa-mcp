@@ -1,0 +1,10 @@
+{
+  "case_id": "golden-mixed-01",
+  "title": "golden mixed 01",
+  "kind": "golden",
+  "defect_type": null,
+  "scenario": "series_parallel",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1b",
+  "renderer": "pillow"
+}

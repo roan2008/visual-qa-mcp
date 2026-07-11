@@ -1,0 +1,174 @@
+{
+  "image_id": "image",
+  "diagram_type": "circuit",
+  "components": [
+    {
+      "component_id": "component-01",
+      "symbol_type": "resistor",
+      "rgb": [
+        45,
+        155,
+        65
+      ],
+      "bbox": [
+        265,
+        154,
+        295,
+        226
+      ],
+      "center_xy": [
+        278.2,
+        190.0
+      ],
+      "pixel_count": 800,
+      "terminals": {
+        "a": [
+          278.2,
+          154.0
+        ],
+        "b": [
+          278.2,
+          226.0
+        ]
+      },
+      "confidence": 0.9,
+      "primitive_ids": []
+    },
+    {
+      "component_id": "component-02",
+      "symbol_type": "battery",
+      "rgb": [
+        220,
+        50,
+        50
+      ],
+      "bbox": [
+        69,
+        158,
+        92,
+        223
+      ],
+      "center_xy": [
+        79.3,
+        190.3
+      ],
+      "pixel_count": 809,
+      "terminals": {
+        "a": [
+          79.3,
+          157.3
+        ],
+        "b": [
+          79.3,
+          223.3
+        ]
+      },
+      "confidence": 0.9,
+      "primitive_ids": []
+    },
+    {
+      "component_id": "component-03",
+      "symbol_type": "lamp",
+      "rgb": [
+        45,
+        90,
+        220
+      ],
+      "bbox": [
+        438,
+        168,
+        482,
+        212
+      ],
+      "center_xy": [
+        460.0,
+        190.0
+      ],
+      "pixel_count": 1025,
+      "terminals": {
+        "a": [
+          460.0,
+          166.0
+        ],
+        "b": [
+          460.0,
+          214.0
+        ]
+      },
+      "confidence": 0.9,
+      "primitive_ids": []
+    }
+  ],
+  "nets": [
+    {
+      "net_id": "net-01",
+      "pixel_count": 2753,
+      "attached_terminals": [
+        "component-01.a",
+        "component-02.a",
+        "component-03.a"
+      ],
+      "confidence": 0.9,
+      "primitive_ids": []
+    },
+    {
+      "net_id": "net-02",
+      "pixel_count": 2753,
+      "attached_terminals": [
+        "component-01.b",
+        "component-02.b",
+        "component-03.b"
+      ],
+      "confidence": 0.9,
+      "primitive_ids": []
+    }
+  ],
+  "junctions": [
+    {
+      "junction_id": "junction-01",
+      "net_id": "net-01",
+      "center_xy": [
+        280.0,
+        71.2
+      ],
+      "bbox": [
+        275,
+        67,
+        285,
+        76
+      ],
+      "pixel_support": 90,
+      "confidence": 0.9
+    },
+    {
+      "junction_id": "junction-02",
+      "net_id": "net-02",
+      "center_xy": [
+        280.0,
+        308.8
+      ],
+      "bbox": [
+        275,
+        304,
+        285,
+        313
+      ],
+      "pixel_support": 90,
+      "confidence": 0.9
+    }
+  ],
+  "extraction_confidence": 0.9,
+  "provenance": {
+    "extractor_id": "circuit-v1a",
+    "extractor_version": "0.1.0",
+    "backend": "component_and_wire_components",
+    "metadata_source": "none",
+    "dependency_versions": {},
+    "environment": {}
+  },
+  "gaps": [],
+  "metadata": {
+    "image_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\golden\\golden-parallel-02\\image.png",
+    "topology_family": "terminal_net_graph"
+  }
+}

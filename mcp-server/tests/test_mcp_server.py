@@ -10,12 +10,14 @@ from visual_qa_mcp.generate_dataset import build_dataset
 from visual_qa_mcp.arrow_dataset import build_arrow_dataset
 from visual_qa_mcp.coordinate_dataset import build_coordinate_dataset
 from visual_qa_mcp.geometry_dataset import build_geometry_dataset
+from visual_qa_mcp.circuit_dataset import build_circuit_dataset
 from visual_qa_mcp.server import create_server
 from visual_qa_mcp.validation import (
     discover_cases,
     discover_arrow_cases,
     discover_coordinate_cases,
     discover_geometry_cases,
+    discover_circuit_cases,
     load_schema,
     validate_json,
 )
@@ -51,7 +53,33 @@ def test_mcp_server_lists_expected_tools() -> None:
         "build_flowchart_claim_graph",
         "parse_flowchart",
         "verify_flowchart",
+        "build_circuit_claim_graph",
+        "parse_circuit",
+        "verify_circuit",
     ]
+
+
+def test_mcp_circuit_tools_execute_end_to_end(tmp_path: Path) -> None:
+    dataset_root = tmp_path / "circuit-v1a"
+    build_circuit_dataset(dataset_root)
+    case = next(case for case in discover_circuit_cases(dataset_root) if case.case_id == "mutated-08")
+    server = create_server()
+
+    async def call(name: str, arguments: dict[str, str]) -> dict:
+        handler = server.request_handlers[types.CallToolRequest]
+        result = await handler(types.CallToolRequest(method="tools/call", params=types.CallToolRequestParams(name=name, arguments=arguments)))
+        return json.loads(result.model_dump()["content"][0]["text"])
+
+    claim = anyio.run(call, "build_circuit_claim_graph", {"spec_path": str(case.spec_path)})
+    evidence = anyio.run(call, "parse_circuit", {"image_path": str(case.image_path)})
+    output_dir = tmp_path / "mcp-artifacts"
+    verified = anyio.run(call, "verify_circuit", {"image_path": str(case.image_path), "spec_path": str(case.spec_path), "metadata_path": str(case.metadata_path), "output_dir": str(output_dir)})
+
+    assert validate_json(load_schema(ROOT / "specs" / "claim-graph.schema.json"), claim) == []
+    assert validate_json(load_schema(ROOT / "specs" / "circuit-evidence-graph.schema.json"), evidence) == []
+    assert validate_json(load_schema(ROOT / "specs" / "findings.schema.json"), verified["report"]) == []
+    assert verified["report"]["verdict"] == "fail"
+    assert (output_dir / "report.json").exists()
 
 
 def test_mcp_parse_primitives_returns_schema_valid_payload() -> None:

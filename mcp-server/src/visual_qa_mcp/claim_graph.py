@@ -960,3 +960,107 @@ def build_chart_claim_graph(spec_path: Path) -> ClaimGraph:
             "required_elements": spec.get("required_elements", []),
         },
     )
+
+
+def _circuit_rule_id(check_id: str) -> str:
+    return f"circuit-v1.{check_id}"
+
+
+def build_circuit_claim_graph(spec_path: Path) -> ClaimGraph:
+    """Build claims for the controlled circuit-v1 terminal/netlist contract."""
+    spec = json.loads(spec_path.read_text(encoding="utf-8"))
+    source_reference = spec.get("source_reference", {})
+    components = source_reference.get("components", [])
+    nets = source_reference.get("nets")
+    topology = source_reference.get("topology")
+    components_by_id = {
+        component["id"]: {
+            "rgb": component["rgb"],
+            "symbol_type": component["symbol_type"],
+            "name": component.get("name"),
+        }
+        for component in components
+    }
+    claims: list[ClaimCheck] = []
+    gaps: list[ClaimGap] = []
+
+    for check in spec.get("checks", []):
+        check_id = check["id"]
+        params = check.get("params", {})
+        metadata = {
+            "description": check.get("description"),
+            "learning_objective": spec.get("learning_objective"),
+        }
+
+        def circuit_claim(target: str, expected: dict[str, Any], requirements: list[str]) -> ClaimCheck:
+            return ClaimCheck(
+                claim_id=f"claim-{check_id}",
+                rule_id=_circuit_rule_id(check_id),
+                check_id=check_id,
+                check_type=check["type"],
+                severity=check["severity"],
+                target=target,
+                expected=expected,
+                tolerance={"color_match_distance": params.get("color_match_distance", 60.0)},
+                evidence_requirements=requirements,
+                metadata=metadata,
+            )
+
+        if check_id == "component-count-matches":
+            claims.append(circuit_claim("components", {"count": len(components)}, ["component_geometry"]))
+        elif check_id == "required-components-present":
+            claims.append(circuit_claim("components", {"components_by_id": components_by_id}, ["component_geometry", "component_color"]))
+        elif check_id == "component-type-correct":
+            claims.append(circuit_claim("components", {"components_by_id": components_by_id}, ["component_geometry", "component_color", "symbol_geometry"]))
+        elif check_id == "terminal-netlist-correct":
+            if not nets:
+                gaps.append(ClaimGap(
+                    check_id=check_id,
+                    code="nets_not_declared",
+                    message="Check 'terminal-netlist-correct' requires source_reference.nets with terminal attachments.",
+                    metadata={"check_type": check.get("type"), "severity": check.get("severity")},
+                ))
+            else:
+                claims.append(circuit_claim(
+                    "terminal_net_graph",
+                    {"components_by_id": components_by_id, "nets": [sorted(net["terminals"]) for net in nets]},
+                    ["component_color", "terminal_geometry", "wire_net_attachments"],
+                ))
+        elif check_id == "series-topology-correct":
+            if topology != "series_loop":
+                gaps.append(ClaimGap(
+                    check_id=check_id,
+                    code="series_loop_not_declared",
+                    message="Check 'series-topology-correct' requires source_reference.topology = 'series_loop'.",
+                    metadata={"topology": topology},
+                ))
+            else:
+                claims.append(circuit_claim(
+                    "terminal_net_graph",
+                    {"topology": "series_loop", "components_by_id": components_by_id},
+                    ["complete_terminal_net_graph"],
+                ))
+        elif check_id == "junction-count-correct":
+            expected_junctions = source_reference.get("junction_count")
+            if expected_junctions is None:
+                gaps.append(ClaimGap(check_id=check_id, code="junction_count_not_declared", message="Check 'junction-count-correct' requires source_reference.junction_count.", metadata={"topology": topology}))
+            else:
+                claims.append(circuit_claim("junctions", {"count": int(expected_junctions)}, ["explicit_junction_dots"]))
+        elif check_id == "declared-topology-correct":
+            if topology not in {"simple_parallel", "series_parallel"} or not nets:
+                gaps.append(ClaimGap(check_id=check_id, code="branch_topology_not_declared", message="Check 'declared-topology-correct' requires a supported branch topology and declared nets.", metadata={"topology": topology}))
+            else:
+                claims.append(circuit_claim("terminal_net_graph", {"topology": topology, "components_by_id": components_by_id, "nets": [sorted(net["terminals"]) for net in nets]}, ["complete_terminal_net_graph", "explicit_junction_dots"]))
+        else:
+            gaps.append(ClaimGap(
+                check_id=check_id,
+                code="unsupported_claim_check",
+                message=f"Check '{check_id}' of type '{check.get('type')}' is not mapped to a circuit-v1 ClaimGraph contract.",
+                metadata={"check_type": check.get("type"), "severity": check.get("severity")},
+            ))
+
+    return ClaimGraph(
+        spec_id=spec["id"], domain=spec["domain"], risk_level=spec.get("risk_level", "medium"),
+        claims=claims, gaps=gaps, source_reference=source_reference,
+        metadata={"generator": "circuit-v1", "spec_path": str(spec_path), "required_elements": spec.get("required_elements", [])},
+    )

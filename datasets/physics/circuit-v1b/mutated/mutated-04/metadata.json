@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-04",
+  "title": "mutated 04",
+  "kind": "mutated",
+  "defect_type": "wrong_declared_topology",
+  "scenario": "series_parallel",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1b",
+  "renderer": "pillow"
+}

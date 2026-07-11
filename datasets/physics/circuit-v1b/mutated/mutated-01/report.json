@@ -1,0 +1,34 @@
+{
+  "image_id": "image",
+  "spec_id": "circuit-v1b-mutated-01",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-junction-count",
+      "rule_id": "circuit-v1.junction-count-correct",
+      "type": "missing_junction",
+      "severity": "critical",
+      "message": "Detected 1 explicit junction dots but expected 2.",
+      "evidence": {
+        "expected_count": 2,
+        "detected_count": 1
+      },
+      "recommendation": "Restore the declared explicit junction dots at branch joins."
+    }
+  ],
+  "checks_run": [
+    "component-count-matches",
+    "required-components-present",
+    "component-type-correct",
+    "terminal-netlist-correct",
+    "junction-count-correct",
+    "declared-topology-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.7,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.7,
+  "overlay_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-01\\overlay.png",
+  "evidence_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-01\\evidence_graph.json",
+  "claim_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-01\\claim_graph.json"
+}

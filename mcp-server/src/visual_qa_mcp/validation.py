@@ -17,17 +17,21 @@ from .contracts import (
     EvidenceGraph,
     FlowchartDatasetCase,
     FlowchartEvidenceGraph,
+    CircuitDatasetCase,
+    CircuitEvidenceGraph,
     GeometryDatasetCase,
     GeometryEvidenceGraph,
     VisualQaReport,
 )
 from .environment import capture_ocr_environment
+from .circuit_rules import _match_components, _observed_nets
 from .service import (
     run_arrow_verification,
     run_chart_verification,
     run_coordinate_verification,
     run_flowchart_verification,
     run_geometry_verification,
+    run_circuit_verification,
     write_verification_artifacts,
 )
 
@@ -36,6 +40,79 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def discover_circuit_cases(dataset_root: Path) -> list[CircuitDatasetCase]:
+    return [
+        CircuitDatasetCase(
+            case_id=(metadata := load_json(path))["case_id"], title=metadata["title"], kind=metadata["kind"],
+            defect_type=metadata.get("defect_type"), scenario=metadata.get("scenario", "circuit"),
+            image_path=path.parent / "image.png", spec_path=path.parent / "visual_spec.json", metadata_path=path,
+            expected_report_path=path.parent / "expected_report.json", dataset_track=metadata.get("dataset_track", "controlled"),
+        ) for path in sorted(dataset_root.glob("**/metadata.json"))
+    ]
+
+
+def run_circuit_case(case: CircuitDatasetCase, evidence_schema: Draft202012Validator | None = None, write_artifacts: bool = True) -> tuple[CircuitEvidenceGraph, VisualQaReport]:
+    result = run_circuit_verification(case.image_path, case.spec_path, case.metadata_path)
+    claim_errors = validate_json(load_schema(REPO_ROOT / "specs" / "claim-graph.schema.json"), result.claim_graph.to_dict())
+    if claim_errors:
+        raise ValueError(f"Claim schema validation failed for {case.case_id}: {claim_errors}")
+    if evidence_schema and (errors := validate_json(evidence_schema, result.evidence_graph.to_dict())):
+        raise ValueError(f"Evidence schema validation failed for {case.case_id}: {errors}")
+    if write_artifacts:
+        write_verification_artifacts(result, case.image_path.parent)
+    return result.evidence_graph, result.report
+
+
+def summarize_circuit_validation_results(dataset_root: Path) -> dict[str, Any]:
+    evidence_schema = load_schema(REPO_ROOT / "specs" / "circuit-evidence-graph.schema.json")
+    findings_schema = load_schema(REPO_ROOT / "specs" / "findings.schema.json")
+    cases = discover_circuit_cases(dataset_root)
+    results: list[dict[str, Any]] = []
+    typed = typed_hits = ambiguous = ambiguous_guarded = unsupported = golden_failures = golden_non_passes = mismatches = 0
+    component_count_hits = net_count_hits = component_count_cases = net_count_cases = 0
+    terminal_netlist_hits = terminal_netlist_cases = 0
+    junction_count_hits = junction_count_cases = 0
+    topology_stats: dict[str, dict[str, int]] = {}
+    for case in cases:
+        evidence, report = run_circuit_case(case, evidence_schema, write_artifacts=False)
+        if (errors := validate_json(findings_schema, report.to_dict())):
+            raise ValueError(f"Report schema validation failed for {case.case_id}: {errors}")
+        expected = load_json(case.expected_report_path)
+        expected_types = set(expected.get("expected_finding_types", []))
+        actual_types = {finding.type for finding in report.findings}
+        expected_evidence = expected.get("expected_evidence", {})
+        if "component_count" in expected_evidence:
+            component_count_cases += 1; component_count_hits += len(evidence.components) == expected_evidence["component_count"]
+        if "net_count" in expected_evidence:
+            net_count_cases += 1; net_count_hits += len(evidence.nets) == expected_evidence["net_count"]
+        if "terminal_nets" in expected_evidence:
+            terminal_netlist_cases += 1
+            spec = load_json(case.spec_path)
+            declared = {component["id"]: component for component in spec["source_reference"]["components"]}
+            matched, _ = _match_components(declared, evidence.components, 45.0)
+            expected_nets = {tuple(sorted(net)) for net in expected_evidence["terminal_nets"]}
+            terminal_netlist_hits += _observed_nets(evidence, matched) == expected_nets
+        if "junction_count" in expected_evidence:
+            junction_count_cases += 1
+            junction_count_hits += len(evidence.junctions) == int(expected_evidence["junction_count"])
+        results.append({"case_id": case.case_id, "kind": case.kind, "defect_type": case.defect_type, "expected_verdict": expected["verdict"], "actual_verdict": report.verdict, "expected_types": sorted(expected_types), "actual_types": sorted(actual_types)})
+        if case.kind == "golden":
+            golden_failures += report.verdict == "fail"; golden_non_passes += report.verdict != "pass"
+        stats = topology_stats.setdefault(case.scenario, {"cases": 0, "typed_cases": 0, "typed_hits": 0, "golden_cases": 0, "golden_passes": 0})
+        stats["cases"] += 1
+        if case.kind == "golden":
+            stats["golden_cases"] += 1; stats["golden_passes"] += report.verdict == "pass"
+        if case.kind == "mutated":
+            if expected_types:
+                typed += 1; typed_hits += expected_types.issubset(actual_types)
+                stats["typed_cases"] += 1; stats["typed_hits"] += expected_types.issubset(actual_types)
+            else:
+                ambiguous += 1; ambiguous_guarded += report.verdict != "pass"
+        unsupported += expected["verdict"] != "pass" and report.verdict == "pass"
+        mismatches += expected["verdict"] != report.verdict
+    return {"total_cases": len(cases), "golden_cases": sum(case.kind == "golden" for case in cases), "mutated_cases": sum(case.kind == "mutated" for case in cases), "critical_error_recall": round(typed_hits / max(typed, 1), 2), "typed_mutated_cases": typed, "typed_mutated_hits": typed_hits, "ambiguous_cases": ambiguous, "ambiguous_guard_rate": round(ambiguous_guarded / max(ambiguous, 1), 2), "false_unsupported_passes": unsupported, "golden_failures": golden_failures, "golden_non_passes": golden_non_passes, "verdict_mismatches": mismatches, "verdict_accuracy": round((len(cases) - mismatches) / max(len(cases), 1), 2), "subset_metrics": {name: {**stats, "typed_recall": round(stats["typed_hits"] / max(stats["typed_cases"], 1), 2), "golden_pass_rate": round(stats["golden_passes"] / max(stats["golden_cases"], 1), 2)} for name, stats in topology_stats.items()}, "evidence_metrics": {"component_count_cases": component_count_cases, "component_count_hits": component_count_hits, "component_count_accuracy": round(component_count_hits / max(component_count_cases, 1), 2), "net_count_cases": net_count_cases, "net_count_hits": net_count_hits, "net_count_accuracy": round(net_count_hits / max(net_count_cases, 1), 2), "terminal_netlist_cases": terminal_netlist_cases, "terminal_netlist_hits": terminal_netlist_hits, "terminal_netlist_accuracy": round(terminal_netlist_hits / max(terminal_netlist_cases, 1), 2), "junction_count_cases": junction_count_cases, "junction_count_hits": junction_count_hits, "junction_count_accuracy": round(junction_count_hits / max(junction_count_cases, 1), 2)}, "results": results}
 
 
 def load_schema(schema_path: Path) -> Draft202012Validator:

@@ -11,7 +11,10 @@ from .claim_graph import (
     build_coordinate_claim_graph,
     build_flowchart_claim_graph,
     build_geometry_claim_graph,
+    build_circuit_claim_graph,
 )
+from .circuit_extractor import extract_circuit_evidence
+from .circuit_rules import run_circuit_claims
 from .chart_extractor import extract_chart_evidence
 from .chart_rules import run_chart_claims
 from .chart_round_trip import geometry_render_metadata, render_round_trip_image, run_round_trip_check
@@ -25,6 +28,7 @@ from .contracts import (
     ArrowEvidenceGraph,
     CoordinateEvidenceGraph,
     FlowchartEvidenceGraph,
+    CircuitEvidenceGraph,
     GeometryEvidenceGraph,
     ArtifactPaths,
     AxisMapping,
@@ -339,6 +343,33 @@ def run_flowchart_verification(
         evidence_graph=evidence_graph,
         report=report,
         primitive_graph=primitive_graph,
+    )
+
+
+def build_circuit_claim_graph_from_spec(spec_path: Path) -> ClaimGraph:
+    return build_circuit_claim_graph(spec_path)
+
+
+def extract_circuit_evidence_from_inputs(image_path: Path) -> CircuitEvidenceGraph:
+    return extract_circuit_evidence(image_path)
+
+
+def run_circuit_verification(
+    image_path: Path,
+    spec_path: Path,
+    metadata_path: Path | None = None,
+) -> VerificationResult:
+    claim_graph = build_circuit_claim_graph(spec_path)
+    evidence_graph = extract_circuit_evidence(image_path)
+    report = run_circuit_claims(claim_graph, evidence_graph)
+    return VerificationResult(
+        image_path=image_path,
+        spec_path=spec_path,
+        metadata_path=metadata_path,
+        backend=evidence_graph.provenance.backend,
+        claim_graph=claim_graph,
+        evidence_graph=evidence_graph,
+        report=report,
     )
 
 

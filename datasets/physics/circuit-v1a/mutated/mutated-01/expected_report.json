@@ -1,0 +1,25 @@
+{
+  "verdict": "fail",
+  "expected_finding_types": [
+    "component_count_mismatch",
+    "extra_component"
+  ],
+  "expected_evidence": {
+    "component_count": 4,
+    "net_count": 3,
+    "terminal_nets": [
+      [
+        "battery.a",
+        "resistor.a"
+      ],
+      [
+        "resistor.b",
+        "lamp.a"
+      ],
+      [
+        "lamp.b",
+        "battery.b"
+      ]
+    ]
+  }
+}

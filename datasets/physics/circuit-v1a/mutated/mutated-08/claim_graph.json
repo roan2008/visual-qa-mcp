@@ -1,0 +1,302 @@
+{
+  "spec_id": "circuit-v1a-mutated-08",
+  "domain": "physics",
+  "risk_level": "medium",
+  "claims": [
+    {
+      "claim_id": "claim-component-count-matches",
+      "rule_id": "circuit-v1a.component-count-matches",
+      "check_id": "component-count-matches",
+      "check_type": "component_count_matches",
+      "severity": "high",
+      "target": "components",
+      "expected": {
+        "count": 3
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "component_geometry"
+      ],
+      "metadata": {
+        "description": null,
+        "learning_objective": "Verify the declared structural connectivity of a controlled series DC circuit."
+      }
+    },
+    {
+      "claim_id": "claim-required-components-present",
+      "rule_id": "circuit-v1a.required-components-present",
+      "check_id": "required-components-present",
+      "check_type": "required_components_present",
+      "severity": "critical",
+      "target": "components",
+      "expected": {
+        "components_by_id": {
+          "battery": {
+            "rgb": [
+              220,
+              50,
+              50
+            ],
+            "symbol_type": "battery",
+            "name": null
+          },
+          "resistor": {
+            "rgb": [
+              45,
+              155,
+              65
+            ],
+            "symbol_type": "resistor",
+            "name": null
+          },
+          "lamp": {
+            "rgb": [
+              45,
+              90,
+              220
+            ],
+            "symbol_type": "lamp",
+            "name": null
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "component_geometry",
+        "component_color"
+      ],
+      "metadata": {
+        "description": null,
+        "learning_objective": "Verify the declared structural connectivity of a controlled series DC circuit."
+      }
+    },
+    {
+      "claim_id": "claim-component-type-correct",
+      "rule_id": "circuit-v1a.component-type-correct",
+      "check_id": "component-type-correct",
+      "check_type": "component_type_correct",
+      "severity": "critical",
+      "target": "components",
+      "expected": {
+        "components_by_id": {
+          "battery": {
+            "rgb": [
+              220,
+              50,
+              50
+            ],
+            "symbol_type": "battery",
+            "name": null
+          },
+          "resistor": {
+            "rgb": [
+              45,
+              155,
+              65
+            ],
+            "symbol_type": "resistor",
+            "name": null
+          },
+          "lamp": {
+            "rgb": [
+              45,
+              90,
+              220
+            ],
+            "symbol_type": "lamp",
+            "name": null
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "component_geometry",
+        "component_color",
+        "symbol_geometry"
+      ],
+      "metadata": {
+        "description": null,
+        "learning_objective": "Verify the declared structural connectivity of a controlled series DC circuit."
+      }
+    },
+    {
+      "claim_id": "claim-terminal-netlist-correct",
+      "rule_id": "circuit-v1a.terminal-netlist-correct",
+      "check_id": "terminal-netlist-correct",
+      "check_type": "terminal_netlist_correct",
+      "severity": "critical",
+      "target": "terminal_net_graph",
+      "expected": {
+        "components_by_id": {
+          "battery": {
+            "rgb": [
+              220,
+              50,
+              50
+            ],
+            "symbol_type": "battery",
+            "name": null
+          },
+          "resistor": {
+            "rgb": [
+              45,
+              155,
+              65
+            ],
+            "symbol_type": "resistor",
+            "name": null
+          },
+          "lamp": {
+            "rgb": [
+              45,
+              90,
+              220
+            ],
+            "symbol_type": "lamp",
+            "name": null
+          }
+        },
+        "nets": [
+          [
+            "battery.a",
+            "resistor.a"
+          ],
+          [
+            "lamp.a",
+            "resistor.b"
+          ],
+          [
+            "battery.b",
+            "lamp.b"
+          ]
+        ]
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "component_color",
+        "terminal_geometry",
+        "wire_net_attachments"
+      ],
+      "metadata": {
+        "description": null,
+        "learning_objective": "Verify the declared structural connectivity of a controlled series DC circuit."
+      }
+    },
+    {
+      "claim_id": "claim-series-topology-correct",
+      "rule_id": "circuit-v1a.series-topology-correct",
+      "check_id": "series-topology-correct",
+      "check_type": "series_topology_correct",
+      "severity": "critical",
+      "target": "terminal_net_graph",
+      "expected": {
+        "topology": "series_loop",
+        "components_by_id": {
+          "battery": {
+            "rgb": [
+              220,
+              50,
+              50
+            ],
+            "symbol_type": "battery",
+            "name": null
+          },
+          "resistor": {
+            "rgb": [
+              45,
+              155,
+              65
+            ],
+            "symbol_type": "resistor",
+            "name": null
+          },
+          "lamp": {
+            "rgb": [
+              45,
+              90,
+              220
+            ],
+            "symbol_type": "lamp",
+            "name": null
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "complete_terminal_net_graph"
+      ],
+      "metadata": {
+        "description": null,
+        "learning_objective": "Verify the declared structural connectivity of a controlled series DC circuit."
+      }
+    }
+  ],
+  "gaps": [],
+  "source_reference": {
+    "topology": "series_loop",
+    "components": [
+      {
+        "id": "battery",
+        "symbol_type": "battery",
+        "rgb": [
+          220,
+          50,
+          50
+        ]
+      },
+      {
+        "id": "resistor",
+        "symbol_type": "resistor",
+        "rgb": [
+          45,
+          155,
+          65
+        ]
+      },
+      {
+        "id": "lamp",
+        "symbol_type": "lamp",
+        "rgb": [
+          45,
+          90,
+          220
+        ]
+      }
+    ],
+    "nets": [
+      {
+        "terminals": [
+          "battery.a",
+          "resistor.a"
+        ]
+      },
+      {
+        "terminals": [
+          "resistor.b",
+          "lamp.a"
+        ]
+      },
+      {
+        "terminals": [
+          "lamp.b",
+          "battery.b"
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "generator": "circuit-v1a",
+    "spec_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1a\\mutated\\mutated-08\\visual_spec.json",
+    "required_elements": []
+  }
+}

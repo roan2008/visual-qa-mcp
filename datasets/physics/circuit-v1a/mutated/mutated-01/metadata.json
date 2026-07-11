@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-01",
+  "title": "Extra undeclared resistor component",
+  "kind": "mutated",
+  "defect_type": "extra_component",
+  "scenario": "circuit",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1a",
+  "renderer": "pillow"
+}

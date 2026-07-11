@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-03",
+  "title": "Broken return wire creates incomplete attachment evidence",
+  "kind": "mutated",
+  "defect_type": "broken_wire",
+  "scenario": "circuit",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1a",
+  "renderer": "pillow"
+}

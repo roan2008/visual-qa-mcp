@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-03",
+  "title": "mutated 03",
+  "kind": "mutated",
+  "defect_type": "merged_branch_nets",
+  "scenario": "simple_parallel",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1b",
+  "renderer": "pillow"
+}

@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-05",
+  "title": "No wire evidence",
+  "kind": "mutated",
+  "defect_type": "missing_wire_evidence",
+  "scenario": "circuit",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1a",
+  "renderer": "pillow"
+}

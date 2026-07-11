@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-06",
+  "title": "mutated 06",
+  "kind": "mutated",
+  "defect_type": "disconnected_branch",
+  "scenario": "simple_parallel",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1b",
+  "renderer": "pillow"
+}

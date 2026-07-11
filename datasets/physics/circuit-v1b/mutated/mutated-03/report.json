@@ -1,0 +1,88 @@
+{
+  "image_id": "image",
+  "spec_id": "circuit-v1b-mutated-03",
+  "verdict": "fail",
+  "findings": [
+    {
+      "id": "finding-net-missing-battery.a-lamp.a-resistor.a",
+      "rule_id": "circuit-v1.terminal-netlist-correct",
+      "type": "missing_net",
+      "severity": "critical",
+      "message": "Declared terminal net ['battery.a', 'lamp.a', 'resistor.a'] was not found.",
+      "evidence": {
+        "expected_terminals": [
+          "battery.a",
+          "lamp.a",
+          "resistor.a"
+        ]
+      },
+      "recommendation": "Connect the declared terminals with one wire net."
+    },
+    {
+      "id": "finding-net-missing-battery.b-lamp.b-resistor.b",
+      "rule_id": "circuit-v1.terminal-netlist-correct",
+      "type": "missing_net",
+      "severity": "critical",
+      "message": "Declared terminal net ['battery.b', 'lamp.b', 'resistor.b'] was not found.",
+      "evidence": {
+        "expected_terminals": [
+          "battery.b",
+          "lamp.b",
+          "resistor.b"
+        ]
+      },
+      "recommendation": "Connect the declared terminals with one wire net."
+    },
+    {
+      "id": "finding-branch-topology",
+      "rule_id": "circuit-v1.declared-topology-correct",
+      "type": "branch_topology_wrong",
+      "severity": "critical",
+      "message": "Complete terminal-net evidence does not form the declared simple_parallel family.",
+      "evidence": {
+        "net_degrees": [
+          6
+        ],
+        "component_net_counts": {
+          "battery": 2,
+          "resistor": 2,
+          "lamp": 2
+        }
+      },
+      "recommendation": "Restore the declared bounded branch topology."
+    },
+    {
+      "id": "finding-net-extra-battery.a-battery.b-lamp.a-lamp.b-resistor.a-resistor.b",
+      "rule_id": "circuit-v1.terminal-netlist-correct",
+      "type": "extra_net",
+      "severity": "high",
+      "message": "Detected terminal net ['battery.a', 'battery.b', 'lamp.a', 'lamp.b', 'resistor.a', 'resistor.b'] is not declared.",
+      "evidence": {
+        "detected_terminals": [
+          "battery.a",
+          "battery.b",
+          "lamp.a",
+          "lamp.b",
+          "resistor.a",
+          "resistor.b"
+        ]
+      },
+      "recommendation": "Remove the extra wire or declare the intended net."
+    }
+  ],
+  "checks_run": [
+    "component-count-matches",
+    "required-components-present",
+    "component-type-correct",
+    "terminal-netlist-correct",
+    "junction-count-correct",
+    "declared-topology-correct"
+  ],
+  "checks_skipped": [],
+  "confidence": 0.3,
+  "extraction_confidence": 0.9,
+  "rule_confidence": 0.3,
+  "overlay_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-03\\overlay.png",
+  "evidence_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-03\\evidence_graph.json",
+  "claim_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-03\\claim_graph.json"
+}

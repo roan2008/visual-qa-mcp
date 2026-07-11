@@ -11,6 +11,48 @@ metadata:
 
 ## Current Priority
 
+### 2026-07-11 session 26 - COMPLETE: circuit-v1a and circuit-v1b
+
+Both separately gated circuit milestones are complete within their controlled Pillow-rendered scope.
+`circuit-v1a` validates orthogonal, non-crossing battery/resistor/lamp series loops across 11 cases
+(4/4 typed, 5/5 ambiguity, 2/2 golden, terminal netlists 6/6). `circuit-v1b` adds explicit
+junction-dot evidence, arbitrary-degree nets, simple-parallel and one bounded series-parallel family
+across 14 cases (7/7 typed, 3/3 ambiguity, 4/4 golden, terminal netlists 11/11, junction counts 11/11).
+Both record zero unsupported passes, golden non-passes, and verdict mismatches. CLI/MCP/schema/artifact
+coverage is executable; the unified suite passes 157/157.
+
+Next gate: choose hardening rather than silently broadening the claim. Candidate work is a
+checksum-frozen noisy circuit track, independently authored holdout diagrams, more complete-evidence
+branch mutations, or a `PrimitiveEvidenceGraph` circuit adapter. Crossings, arbitrary schematics,
+OCR, rotation, electrical quantities/laws, and engineering certification remain prohibited.
+
+### 2026-07-11 session 25 - COMPLETE: circuit-v1a graph foundation
+
+The scope was advisor-reconciled with the GPT-5.6 Sol medium-effort review and implemented as
+`circuit-v1a`, not a broad undifferentiated circuit-v1 claim. It built a
+typed component-terminal-to-net evidence graph, canonical netlist comparison, controlled
+one-loop-series rules, dataset cases, and callable runtime artifacts. `circuit-v1b` (explicit
+junction dots plus simple parallel/mixed branches) is deferred to its own evidence and validation
+gate. Crossings, arbitrary schematics, electrical values/laws, OCR, rotation, and functionality
+remain out of scope.
+
+Completion evidence: 11 cases, 4/4 typed defects, 5/5 ambiguity guards, 2/2 golden layouts,
+exact terminal-netlist accuracy 6/6, zero unsupported passes/non-passing goldens/mismatches,
+persisted artifacts, end-to-end CLI/MCP tests, and a passing unified regression suite.
+
+### 2026-07-11 session 24 - GO: corrected circuit-v1 feasibility gate
+
+The repaired probe received a bounded implementation **GO** from GPT-5.6 Sol. It now holds
+canonical wire routes fixed under the wrong-symbol mutation, uses a true near miss outside terminal
+tolerance, asserts golden completeness, and covers the advisor-required negative cases. This is a
+GO to build the controlled verifier, not a readiness claim.
+
+Bounded scope remains: controlled Pillow-rendered, orthogonal, single-loop DC diagrams; structural
+component presence/type plus terminal/netlist connectivity only. Deferred: switches, crossings,
+junctions, branches, OCR, rotation, values/polarity, and Ohm/Kirchhoff rules. Next work is to build
+the normal circuit-specific evidence/claim/rule/dataset/CLI/MCP surface, and promote the probe cases
+to exact automated tests before claiming validation.
+
 ### 2026-07-11 session 23 - COMPLETE
 
 Triaged the round-trip outliers flagged as follow-up in session 22 (item 0 of Suggested Next

@@ -1,0 +1,390 @@
+{
+  "spec_id": "circuit-v1b-mutated-10",
+  "domain": "physics",
+  "risk_level": "medium",
+  "claims": [
+    {
+      "claim_id": "claim-component-count-matches",
+      "rule_id": "circuit-v1.component-count-matches",
+      "check_id": "component-count-matches",
+      "check_type": "component_count_matches",
+      "severity": "high",
+      "target": "components",
+      "expected": {
+        "count": 4
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "component_geometry"
+      ],
+      "metadata": {
+        "description": null,
+        "learning_objective": "Verify explicit junctions and a bounded branch circuit topology."
+      }
+    },
+    {
+      "claim_id": "claim-required-components-present",
+      "rule_id": "circuit-v1.required-components-present",
+      "check_id": "required-components-present",
+      "check_type": "required_components_present",
+      "severity": "critical",
+      "target": "components",
+      "expected": {
+        "components_by_id": {
+          "battery": {
+            "rgb": [
+              220,
+              50,
+              50
+            ],
+            "symbol_type": "battery",
+            "name": null
+          },
+          "resistor": {
+            "rgb": [
+              45,
+              155,
+              65
+            ],
+            "symbol_type": "resistor",
+            "name": null
+          },
+          "lamp_a": {
+            "rgb": [
+              45,
+              90,
+              220
+            ],
+            "symbol_type": "lamp",
+            "name": null
+          },
+          "lamp_b": {
+            "rgb": [
+              190,
+              105,
+              35
+            ],
+            "symbol_type": "lamp",
+            "name": null
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "component_geometry",
+        "component_color"
+      ],
+      "metadata": {
+        "description": null,
+        "learning_objective": "Verify explicit junctions and a bounded branch circuit topology."
+      }
+    },
+    {
+      "claim_id": "claim-component-type-correct",
+      "rule_id": "circuit-v1.component-type-correct",
+      "check_id": "component-type-correct",
+      "check_type": "component_type_correct",
+      "severity": "critical",
+      "target": "components",
+      "expected": {
+        "components_by_id": {
+          "battery": {
+            "rgb": [
+              220,
+              50,
+              50
+            ],
+            "symbol_type": "battery",
+            "name": null
+          },
+          "resistor": {
+            "rgb": [
+              45,
+              155,
+              65
+            ],
+            "symbol_type": "resistor",
+            "name": null
+          },
+          "lamp_a": {
+            "rgb": [
+              45,
+              90,
+              220
+            ],
+            "symbol_type": "lamp",
+            "name": null
+          },
+          "lamp_b": {
+            "rgb": [
+              190,
+              105,
+              35
+            ],
+            "symbol_type": "lamp",
+            "name": null
+          }
+        }
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "component_geometry",
+        "component_color",
+        "symbol_geometry"
+      ],
+      "metadata": {
+        "description": null,
+        "learning_objective": "Verify explicit junctions and a bounded branch circuit topology."
+      }
+    },
+    {
+      "claim_id": "claim-terminal-netlist-correct",
+      "rule_id": "circuit-v1.terminal-netlist-correct",
+      "check_id": "terminal-netlist-correct",
+      "check_type": "terminal_netlist_correct",
+      "severity": "critical",
+      "target": "terminal_net_graph",
+      "expected": {
+        "components_by_id": {
+          "battery": {
+            "rgb": [
+              220,
+              50,
+              50
+            ],
+            "symbol_type": "battery",
+            "name": null
+          },
+          "resistor": {
+            "rgb": [
+              45,
+              155,
+              65
+            ],
+            "symbol_type": "resistor",
+            "name": null
+          },
+          "lamp_a": {
+            "rgb": [
+              45,
+              90,
+              220
+            ],
+            "symbol_type": "lamp",
+            "name": null
+          },
+          "lamp_b": {
+            "rgb": [
+              190,
+              105,
+              35
+            ],
+            "symbol_type": "lamp",
+            "name": null
+          }
+        },
+        "nets": [
+          [
+            "battery.a",
+            "resistor.a"
+          ],
+          [
+            "lamp_a.a",
+            "lamp_b.a",
+            "resistor.b"
+          ],
+          [
+            "battery.b",
+            "lamp_a.b",
+            "lamp_b.b"
+          ]
+        ]
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "component_color",
+        "terminal_geometry",
+        "wire_net_attachments"
+      ],
+      "metadata": {
+        "description": null,
+        "learning_objective": "Verify explicit junctions and a bounded branch circuit topology."
+      }
+    },
+    {
+      "claim_id": "claim-junction-count-correct",
+      "rule_id": "circuit-v1.junction-count-correct",
+      "check_id": "junction-count-correct",
+      "check_type": "junction_count_correct",
+      "severity": "critical",
+      "target": "junctions",
+      "expected": {
+        "count": 2
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "explicit_junction_dots"
+      ],
+      "metadata": {
+        "description": null,
+        "learning_objective": "Verify explicit junctions and a bounded branch circuit topology."
+      }
+    },
+    {
+      "claim_id": "claim-declared-topology-correct",
+      "rule_id": "circuit-v1.declared-topology-correct",
+      "check_id": "declared-topology-correct",
+      "check_type": "declared_topology_correct",
+      "severity": "critical",
+      "target": "terminal_net_graph",
+      "expected": {
+        "topology": "series_parallel",
+        "components_by_id": {
+          "battery": {
+            "rgb": [
+              220,
+              50,
+              50
+            ],
+            "symbol_type": "battery",
+            "name": null
+          },
+          "resistor": {
+            "rgb": [
+              45,
+              155,
+              65
+            ],
+            "symbol_type": "resistor",
+            "name": null
+          },
+          "lamp_a": {
+            "rgb": [
+              45,
+              90,
+              220
+            ],
+            "symbol_type": "lamp",
+            "name": null
+          },
+          "lamp_b": {
+            "rgb": [
+              190,
+              105,
+              35
+            ],
+            "symbol_type": "lamp",
+            "name": null
+          }
+        },
+        "nets": [
+          [
+            "battery.a",
+            "resistor.a"
+          ],
+          [
+            "lamp_a.a",
+            "lamp_b.a",
+            "resistor.b"
+          ],
+          [
+            "battery.b",
+            "lamp_a.b",
+            "lamp_b.b"
+          ]
+        ]
+      },
+      "tolerance": {
+        "color_match_distance": 60.0
+      },
+      "evidence_requirements": [
+        "complete_terminal_net_graph",
+        "explicit_junction_dots"
+      ],
+      "metadata": {
+        "description": null,
+        "learning_objective": "Verify explicit junctions and a bounded branch circuit topology."
+      }
+    }
+  ],
+  "gaps": [],
+  "source_reference": {
+    "topology": "series_parallel",
+    "junction_count": 2,
+    "components": [
+      {
+        "id": "battery",
+        "symbol_type": "battery",
+        "rgb": [
+          220,
+          50,
+          50
+        ]
+      },
+      {
+        "id": "resistor",
+        "symbol_type": "resistor",
+        "rgb": [
+          45,
+          155,
+          65
+        ]
+      },
+      {
+        "id": "lamp_a",
+        "symbol_type": "lamp",
+        "rgb": [
+          45,
+          90,
+          220
+        ]
+      },
+      {
+        "id": "lamp_b",
+        "symbol_type": "lamp",
+        "rgb": [
+          190,
+          105,
+          35
+        ]
+      }
+    ],
+    "nets": [
+      {
+        "terminals": [
+          "battery.a",
+          "resistor.a"
+        ]
+      },
+      {
+        "terminals": [
+          "resistor.b",
+          "lamp_a.a",
+          "lamp_b.a"
+        ]
+      },
+      {
+        "terminals": [
+          "battery.b",
+          "lamp_a.b",
+          "lamp_b.b"
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "generator": "circuit-v1",
+    "spec_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1b\\mutated\\mutated-10\\visual_spec.json",
+    "required_elements": []
+  }
+}

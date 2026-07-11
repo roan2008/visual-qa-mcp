@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://visual-qa-mcp.local/schemas/circuit-evidence-graph.schema.json",
+  "title": "CircuitEvidenceGraph",
+  "type": "object",
+  "required": ["image_id", "diagram_type", "components", "nets", "junctions", "extraction_confidence", "provenance", "gaps", "metadata"],
+  "properties": {
+    "image_id": {"type": "string"},
+    "diagram_type": {"const": "circuit"},
+    "components": {"type": "array", "items": {"$ref": "#/$defs/component"}},
+    "nets": {"type": "array", "items": {"$ref": "#/$defs/net"}},
+    "junctions": {"type": "array", "items": {"$ref": "#/$defs/junction"}},
+    "extraction_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "provenance": {"type": "object"},
+    "gaps": {"type": "array", "items": {"type": "object"}},
+    "metadata": {"type": "object"}
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "required": ["component_id", "symbol_type", "rgb", "bbox", "center_xy", "pixel_count", "terminals", "confidence"],
+      "properties": {
+        "component_id": {"type": "string"},
+        "symbol_type": {"enum": ["battery", "resistor", "lamp"]},
+        "rgb": {"type": "array", "items": {"type": "integer"}, "minItems": 3, "maxItems": 3},
+        "bbox": {"type": "array", "items": {"type": "integer"}, "minItems": 4, "maxItems": 4},
+        "center_xy": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
+        "pixel_count": {"type": "integer", "minimum": 0},
+        "terminals": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2}},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "net": {
+      "type": "object",
+      "required": ["net_id", "pixel_count", "attached_terminals", "confidence"],
+      "properties": {
+        "net_id": {"type": "string"},
+        "pixel_count": {"type": "integer", "minimum": 0},
+        "attached_terminals": {"type": "array", "items": {"type": "string"}},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "junction": {
+      "type": "object",
+      "required": ["junction_id", "net_id", "center_xy", "bbox", "pixel_support", "confidence"],
+      "properties": {
+        "junction_id": {"type": "string"},
+        "net_id": {"type": "string"},
+        "center_xy": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
+        "bbox": {"type": "array", "items": {"type": "integer"}, "minItems": 4, "maxItems": 4},
+        "pixel_support": {"type": "integer", "minimum": 0},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    }
+  }
+}

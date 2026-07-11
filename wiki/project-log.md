@@ -9,6 +9,92 @@ metadata:
 
 # Project Log
 
+## 2026-07-11 session 26 - Circuit v1a/v1b completion
+
+- Closed the prior circuit-v1a advisor blockers with complete-evidence swapped-netlist and
+  non-series topology mutations, a genuinely different golden route, exact semantic attachment
+  metrics, direct CLI tests, all three MCP handler execution tests, and persisted artifacts.
+- v1a controlled gate: 11 cases; typed 4/4; ambiguity 5/5; golden 2/2; terminal netlists 6/6;
+  zero unsupported passes, golden non-passes, or verdict mismatches.
+- GPT-5.6 Sol medium advisor independently returned GO for the bounded v1a completion claim and GO
+  to begin v1b after verifying the evidence locally.
+- Implemented v1b as a separate branch/junction gate: explicit junction evidence in
+  `CircuitEvidenceGraph`, arbitrary-degree nets, vertical controlled resistor support, junction
+  count claims, and derived simple-parallel/bounded series-parallel topology checks.
+- Added a 14-case v1b controlled dataset with two routed goldens per topology, typed missing/extra
+  junction, merged-net, wrong-topology and extra-component cases, plus fail-closed disconnected
+  branch, near-junction and unrecognized-symbol cases.
+- v1b gate: typed 7/7; ambiguity 3/3; golden 4/4; terminal netlists 11/11; junction counts 11/11;
+  zero unsupported passes, golden non-passes, or verdict mismatches. All 14 cases have persisted
+  claim/evidence/report artifacts.
+- GPT-5.6 Sol medium initially paused v1b on missing branch-connectivity acceptance cases. After
+  the live 14-case expansion it independently reran the gate and suite, reconciled every prior
+  blocker as met, and returned GO for the bounded v1b completion claim.
+- Final local unified regression: 157/157 tests pass in 109.50 seconds. The remaining 10 warnings are the
+  existing Pillow `mode` deprecation in chart generation.
+
+## 2026-07-11 session 25 - Circuit-v1a scope decision and implementation start
+
+- Reconciled the GPT-5.6 Sol medium-effort architecture review before beginning the public runtime.
+  Agreed to a two-gate delivery: `circuit-v1a` is the controlled series-loop graph foundation;
+  `circuit-v1b` is a later bounded junction-dot/parallel extension.
+- v1a’s durable contract is a bipartite `TerminalNetGraph` linking typed component terminals to
+  electrical nets. Validation will canonicalize and compare that graph, rather than treating
+  detector IDs or pixel geometry as topology identity.
+- Scope excludes crossing/junction inference, arbitrary schematics, electrical quantities/laws,
+  rotation, OCR, and professional engineering claims. Missing or ambiguous evidence must remain
+  `needs_review`; a structural defect requires complete contradictory evidence.
+- Began implementation by promoting the feasibility extractor’s untyped output to a
+  `CircuitEvidenceGraph` contract and new JSON schema. Verified the golden probe has three typed
+  components, three nets, no gaps, and schema-valid evidence. Kept the probe adapter and its
+  existing ambiguity code compatible; no circuit readiness claim follows from this unit-level
+  check.
+- Added the circuit-v1a ClaimGraph and deterministic structural rules. The rules canonicalize
+  declared and extracted undirected terminal nets after controlled color identity matching, and
+  separately check component count/presence/type and series-loop structure. Evidence gaps gate all
+  affected claims to `needs_review` rather than guessing a missing or shorted connection.
+- Added two initial automated tests: a golden three-component series loop passes all five checks;
+  absent wire evidence produces `needs_review` with five skipped checks and no invented finding.
+  `pytest mcp-server/tests/test_circuit_v1.py -q` passes (`2 passed`).
+
+## 2026-07-11 session 24 - Circuit-v1 feasibility probe (GO after corrected independent review)
+
+- Began the next planned vertical, `circuit-v1`, with the advisor-required feasibility gate rather
+  than committing immediately to schemas/rules/dataset infrastructure.
+- Added a deliberately private controlled renderer/extractor probe for orthogonal single-loop DC
+  diagrams containing a battery, resistor, and lamp. Symbol pixels use saturated component colors;
+  wires use a separate achromatic gray band. The probe is spec-blind: it detects colored symbol
+  components, classifies their bounded geometry, derives fixed terminal locations, extracts gray
+  wire components, and attaches terminals by measured image-space proximity.
+- Probe evidence: the golden circuit yields three symbols and three two-terminal wire nets with no
+  evidence gaps. A substituted lamp-for-resistor preserves wire evidence while changing only the
+  detected symbol type. A deliberately broken lower return wire yields two one-terminal fragments
+  and `unresolved_wire_attachment`. A near-terminal miss likewise yields an unresolved attachment.
+- Found and corrected an initial terminal-offset flaw before recording the result: terminal points
+  had been placed beyond the drawn glyph boundaries, which could have made wire attachment appear
+  successful without representing a true component contact.
+- Initial decision was **GO** for the controlled circuit-v1 implementation. That decision was
+  independently reviewed by a GPT-5.6 Sol medium-effort advisor and is now **PAUSED**, not carried
+  forward as a readiness claim. The scope remains constrained to battery/resistor/lamp, single
+  loops, orthogonal wires, structural component/netlist checks, and explicit `needs_review` gaps.
+- Advisor findings: the wrong-symbol renderer recalculates ports and wire paths from the substituted
+  symbol, so it does not hold topology fixed; the near-miss wire path passes through the nominal
+  terminal despite its endpoint offset, so it does not prove ambiguity; and the probe lacks
+  assertions/completeness guards for no-wire, duplicate, and malformed attachment evidence.
+- Required correction before GO: use fixed orthogonal wires for glyph-only mutations; construct a
+  true near miss outside the attachment tolerance; assert complete golden evidence (three nets,
+  six unique terminal attachments, no duplicates/self-attachments); and add missing-all-wire,
+  extra-fragment, spurious-bridge, unrecognized-symbol, and terminal-displacement cases. Preserve
+  expected probe results as assertions. [source: GPT-5.6 Sol advisor task 019f4f82-1457-73d1-a227-01b8e4672ce2]
+- Implemented those corrections and sent the result back to the same GPT-5.6 Sol advisor. The
+  revised probe passed: canonical wire routes remain fixed under a wrong symbol; the true near
+  miss is unresolved; golden evidence is complete; and missing-wire, broken-wire, extra-fragment,
+  spurious-bridge, duplicate-attachment, and unrecognized-symbol cases all avoid unsupported
+  passes. The advisor grants a **GO for bounded implementation**, not validation readiness. Exact
+  probe outputs must become automated tests before readiness metrics are claimed. [source:
+  GPT-5.6 Sol advisor task 019f4f82-1457-73d1-a227-01b8e4672ce2]
+
+
 ## 2026-07-11 session 23 - Round-trip outlier triage and layout-carrying fix
 
 - Picked up the session 22 follow-up item (triage the 22-33px round-trip outliers) per user

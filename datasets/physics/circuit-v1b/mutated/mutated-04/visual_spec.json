@@ -1,0 +1,87 @@
+{
+  "id": "circuit-v1b-mutated-04",
+  "domain": "physics",
+  "risk_level": "medium",
+  "learning_objective": "Verify explicit junctions and a bounded branch circuit topology.",
+  "source_reference": {
+    "topology": "series_parallel",
+    "junction_count": 2,
+    "components": [
+      {
+        "id": "battery",
+        "symbol_type": "battery",
+        "rgb": [
+          220,
+          50,
+          50
+        ]
+      },
+      {
+        "id": "resistor",
+        "symbol_type": "resistor",
+        "rgb": [
+          45,
+          155,
+          65
+        ]
+      },
+      {
+        "id": "lamp",
+        "symbol_type": "lamp",
+        "rgb": [
+          45,
+          90,
+          220
+        ]
+      }
+    ],
+    "nets": [
+      {
+        "terminals": [
+          "battery.a",
+          "resistor.a",
+          "lamp.a"
+        ]
+      },
+      {
+        "terminals": [
+          "battery.b",
+          "resistor.b",
+          "lamp.b"
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "id": "component-count-matches",
+      "type": "component_count_matches",
+      "severity": "high"
+    },
+    {
+      "id": "required-components-present",
+      "type": "required_components_present",
+      "severity": "critical"
+    },
+    {
+      "id": "component-type-correct",
+      "type": "component_type_correct",
+      "severity": "critical"
+    },
+    {
+      "id": "terminal-netlist-correct",
+      "type": "terminal_netlist_correct",
+      "severity": "critical"
+    },
+    {
+      "id": "junction-count-correct",
+      "type": "junction_count_correct",
+      "severity": "critical"
+    },
+    {
+      "id": "declared-topology-correct",
+      "type": "declared_topology_correct",
+      "severity": "critical"
+    }
+  ]
+}

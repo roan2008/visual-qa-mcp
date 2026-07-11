@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-07",
+  "title": "mutated 07",
+  "kind": "mutated",
+  "defect_type": "false_near_junction",
+  "scenario": "simple_parallel",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1b",
+  "renderer": "pillow"
+}

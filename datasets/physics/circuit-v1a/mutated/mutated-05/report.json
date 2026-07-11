@@ -1,0 +1,35 @@
+{
+  "image_id": "image",
+  "spec_id": "circuit-v1a-mutated-05",
+  "verdict": "needs_review",
+  "findings": [],
+  "checks_run": [],
+  "checks_skipped": [
+    {
+      "check_id": "component-count-matches",
+      "reason": "The controlled series-loop net evidence is incomplete or contains an extra net."
+    },
+    {
+      "check_id": "required-components-present",
+      "reason": "The controlled series-loop net evidence is incomplete or contains an extra net."
+    },
+    {
+      "check_id": "component-type-correct",
+      "reason": "The controlled series-loop net evidence is incomplete or contains an extra net."
+    },
+    {
+      "check_id": "terminal-netlist-correct",
+      "reason": "The controlled series-loop net evidence is incomplete or contains an extra net."
+    },
+    {
+      "check_id": "series-topology-correct",
+      "reason": "The controlled series-loop net evidence is incomplete or contains an extra net."
+    }
+  ],
+  "confidence": 0.4,
+  "extraction_confidence": 0.6,
+  "rule_confidence": 0.4,
+  "overlay_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1a\\mutated\\mutated-05\\overlay.png",
+  "evidence_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1a\\mutated\\mutated-05\\evidence_graph.json",
+  "claim_graph_path": "D:\\visual-qa-mcp\\datasets\\physics\\circuit-v1a\\mutated\\mutated-05\\claim_graph.json"
+}

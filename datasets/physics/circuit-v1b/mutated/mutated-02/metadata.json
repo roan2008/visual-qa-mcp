@@ -1,0 +1,10 @@
+{
+  "case_id": "mutated-02",
+  "title": "mutated 02",
+  "kind": "mutated",
+  "defect_type": "extra_junction",
+  "scenario": "simple_parallel",
+  "dataset_track": "controlled",
+  "diagram_version": "circuit-v1b",
+  "renderer": "pillow"
+}

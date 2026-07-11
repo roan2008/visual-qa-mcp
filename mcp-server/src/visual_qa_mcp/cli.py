@@ -8,6 +8,8 @@ from pathlib import Path
 from .arrow_dataset import build_arrow_dataset, build_noisy_arrow_dataset
 from .coordinate_dataset import build_coordinate_dataset, build_noisy_coordinate_dataset
 from .flowchart_dataset import build_flowchart_dataset
+from .circuit_dataset import build_circuit_dataset
+from .circuit_v1b_dataset import build_circuit_v1b_dataset
 from .generate_dataset import build_dataset, build_noisy_dataset, build_realworld_pilot_dataset
 from .geometry_dataset import build_geometry_dataset, build_noisy_geometry_dataset
 from .server import main as server_main
@@ -21,6 +23,7 @@ from .service import (
     run_coordinate_verification,
     run_flowchart_verification,
     run_geometry_verification,
+    run_circuit_verification,
     write_verification_artifacts,
 )
 from .validation import (
@@ -37,6 +40,7 @@ from .validation import (
     summarize_geometry_validation_suite,
     summarize_phase2_validation,
     summarize_validation_results,
+    summarize_circuit_validation_results,
 )
 
 
@@ -211,6 +215,17 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         default=Path("datasets") / "flowchart" / "flowchart-v1",
     )
+
+    circuit_generate_parser = subparsers.add_parser("generate-circuit-dataset")
+    circuit_generate_parser.add_argument("--output", type=Path, default=Path("datasets") / "physics" / "circuit-v1a")
+    circuit_v1b_generate_parser = subparsers.add_parser("generate-circuit-v1b-dataset")
+    circuit_v1b_generate_parser.add_argument("--output", type=Path, default=Path("datasets") / "physics" / "circuit-v1b")
+    circuit_verify_parser = subparsers.add_parser("verify-circuit")
+    circuit_verify_parser.add_argument("image_path", type=Path)
+    circuit_verify_parser.add_argument("spec_path", type=Path)
+    circuit_verify_parser.add_argument("--output-dir", type=Path, default=None)
+    circuit_validate_parser = subparsers.add_parser("run-circuit-validation")
+    circuit_validate_parser.add_argument("--dataset", type=Path, default=Path("datasets") / "physics" / "circuit-v1a")
 
     serve_parser = subparsers.add_parser("serve-mcp")
 
@@ -433,6 +448,28 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "run-flowchart-validation":
         summary = summarize_flowchart_validation_results(args.dataset)
         print(json.dumps(summary, indent=2))
+        return 0
+
+    if args.command == "generate-circuit-dataset":
+        build_circuit_dataset(args.output)
+        print(f"Circuit dataset generated at {args.output}")
+        return 0
+
+    if args.command == "generate-circuit-v1b-dataset":
+        build_circuit_v1b_dataset(args.output)
+        print(f"Circuit v1b dataset generated at {args.output}")
+        return 0
+
+    if args.command == "verify-circuit":
+        result = run_circuit_verification(args.image_path, args.spec_path)
+        payload = result.to_dict()
+        if args.output_dir is not None:
+            payload["artifact_paths"] = write_verification_artifacts(result, args.output_dir).to_dict()
+        print(json.dumps(payload, indent=2))
+        return 0
+
+    if args.command == "run-circuit-validation":
+        print(json.dumps(summarize_circuit_validation_results(args.dataset), indent=2))
         return 0
 
     if args.command == "serve-mcp":
