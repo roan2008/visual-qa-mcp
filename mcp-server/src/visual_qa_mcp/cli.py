@@ -10,7 +10,7 @@ from .coordinate_dataset import build_coordinate_dataset, build_noisy_coordinate
 from .flowchart_dataset import build_flowchart_dataset
 from .circuit_dataset import build_circuit_dataset
 from .circuit_v1b_dataset import build_circuit_v1b_dataset
-from .generate_dataset import build_dataset, build_noisy_dataset, build_realworld_pilot_dataset
+from .generate_dataset import build_covering_array_dataset, build_dataset, build_noisy_dataset, build_realworld_pilot_dataset
 from .geometry_dataset import build_geometry_dataset, build_noisy_geometry_dataset
 from .server import main as server_main
 from .service import (
@@ -59,6 +59,13 @@ def main(argv: list[str] | None = None) -> int:
         "--output",
         type=Path,
         default=Path("datasets") / "charts" / "chart-v2-realworld-pilot",
+    )
+
+    covering_generate_parser = subparsers.add_parser("generate-chart-covering-dataset")
+    covering_generate_parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path("datasets") / "charts" / "chart-v2-covering-v1",
     )
 
     claim_parser = subparsers.add_parser("build-claim-graph")
@@ -244,6 +251,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "generate-realworld-pilot":
         build_realworld_pilot_dataset(args.output)
         print(f"Real-world pilot dataset generated at {args.output}")
+        return 0
+
+    if args.command == "generate-chart-covering-dataset":
+        build_covering_array_dataset(args.output)
+        print(f"Covering-array dataset generated at {args.output}")
         return 0
 
     if args.command == "build-claim-graph":

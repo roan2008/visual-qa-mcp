@@ -1,0 +1,26 @@
+{
+  "case_id": "covering-b-matplotlib-non_arial_font-none",
+  "title": "Set B: matplotlib/non_arial_font/none",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "non_arial_font__none",
+  "dataset_track": "covering_array",
+  "image_id": "covering-b-matplotlib-non_arial_font-none",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "font_family": "DejaVu Serif"
+  },
+  "renderer": "matplotlib",
+  "transform_family": "out_of_universe",
+  "provenance": {
+    "source_type": "synthetic_generated",
+    "license": "n/a_internal",
+    "retrieved_at": "2026-07-11",
+    "universe": "out",
+    "axes": {
+      "out_axis": "non_arial_font",
+      "defect": "none"
+    }
+  }
+}

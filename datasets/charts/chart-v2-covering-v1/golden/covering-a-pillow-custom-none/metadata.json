@@ -1,0 +1,37 @@
+{
+  "case_id": "covering-a-pillow-custom-none",
+  "title": "Matrix A: pillow/custom/none",
+  "kind": "golden",
+  "axis_mode": "zero_baseline",
+  "defect_type": null,
+  "dataset_track": "covering_array",
+  "image_id": "covering-a-pillow-custom-none",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {
+    "bar_fill": [
+      45,
+      104,
+      230
+    ],
+    "grid_fill": [
+      230,
+      232,
+      238
+    ]
+  },
+  "renderer": "pillow",
+  "transform_family": "in_universe",
+  "provenance": {
+    "source_type": "synthetic_generated",
+    "license": "n/a_internal",
+    "retrieved_at": "2026-07-11",
+    "universe": "in",
+    "axes": {
+      "tick_catalog": "catalog",
+      "font_family": "n/a",
+      "color_style": "custom",
+      "defect": "none"
+    }
+  }
+}

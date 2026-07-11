@@ -1,0 +1,26 @@
+{
+  "case_id": "covering-a-matplotlib-default-none",
+  "title": "Matrix A: matplotlib/default/none",
+  "kind": "golden",
+  "axis_mode": "zero_baseline",
+  "defect_type": null,
+  "dataset_track": "covering_array",
+  "image_id": "covering-a-matplotlib-default-none",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {},
+  "renderer": "matplotlib",
+  "transform_family": "in_universe",
+  "provenance": {
+    "source_type": "synthetic_generated",
+    "license": "n/a_internal",
+    "retrieved_at": "2026-07-11",
+    "universe": "in",
+    "axes": {
+      "tick_catalog": "catalog",
+      "font_family": "arial",
+      "color_style": "default",
+      "defect": "none"
+    }
+  }
+}

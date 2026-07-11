@@ -73,6 +73,8 @@ Do this automatically after each meaningful implementation, validation, design d
 - `wiki/impl-flowchart-v1-vertical-chain.md` - flowchart-v1 vertical-chain node/connector design, evidence, validation, and bounds.
 - `wiki/impl-chart-v2-round-trip-check.md` - chart-v2 additive round-trip re-rendering check design and measured pixel-delta distribution.
 - `wiki/knowledge-accuracy-and-synthetic-data-roadmap.md` - accuracy assessment, selective prediction, and synthetic-data coverage roadmap.
+- `wiki/knowledge-synthetic-coverage-deep-research.md` - ingested deep-research findings on synthetic-only coverage strategy.
+- `wiki/impl-chart-v2-covering-array-input-model.md` - chart-v2 Matrix A / Set B formal input model and frozen 18-case covering-array dataset.
 
 ## QA Philosophy
 
@@ -99,7 +101,8 @@ lesson objective -> visual spec -> generated image -> evidence graph -> claim gr
 - `PrimitiveEvidenceGraph` v1 is an additive audit layer for explicit chart/arrow/geometry/coordinate/flowchart profiles. It records type-discriminated primitives, relationships, provenance, gaps, and domain traceability. Current domain rules do not consume it; standalone chart primitive parsing stays spec-blind. Read `wiki/impl-primitive-evidence-foundation.md` before changing shared evidence or starting a new vertical.
 - `chart-v2` has an additive, non-blocking round-trip re-rendering accuracy check (`chart_round_trip.py`, optional `VerificationResult.round_trip`, `run-chart-round-trip-validation` CLI). It never changes `verdict`/`findings` (proven by a byte-identical regression test) and has no tolerance or verdict-gating set yet — measurement-only. Read `wiki/impl-chart-v2-round-trip-check.md` for the measured pixel-delta distribution.
 - `chart_extractor.py`'s bar-label crop box is bounds-clamped against the actual image before cropping, so a renderer whose plot-area geometry diverges from `ChartLayout`'s assumptions degrades that bar's label to unmatched (`missing_bar_label` gap) instead of raising `ValueError`. Found via a throwaway Matplotlib-layout-independence probe (`experiments/renderer_strip_test.py`), not from any dataset case.
-- The unified 158-test suite passes in about 105 seconds on the milestone machine; chart end-to-end passes 16/16 in about 35 seconds.
+- `chart-v2` has a frozen, checksum-manifested 18-case covering-array dataset (`datasets/charts/chart-v2-covering-v1`, `generate-chart-covering-dataset` CLI, validated via the existing generic `run-validation --dataset ...`) implementing a formal input model: Matrix A (in-universe presentation x defect, exhaustively enumerated, 12 cases, non-circular oracle: expected verdict is a pure function of the defect axis) and Set B (any out-of-universe axis flipped x defect, always `needs_review`, 6 cases, proves defect masking under degraded evidence). Chart-v2-only; does not cover layout-mismatch or continuous-nuisance axes. Read `wiki/impl-chart-v2-covering-array-input-model.md`.
+- The unified 159-test suite passes in about 105-110 seconds on the milestone machine; chart end-to-end passes 17/17 in about 35-40 seconds.
 - The installable console entrypoint is `visual-qa`; editable local setup is `python -m pip install -e .`.
 
 ## Readiness And Claims

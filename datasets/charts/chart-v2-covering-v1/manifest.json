@@ -1,0 +1,392 @@
+{
+  "dataset": "chart-v2-covering-v1",
+  "status": "frozen",
+  "frozen_at": "2026-07-11",
+  "case_count": 18,
+  "cases": [
+    {
+      "case_id": "covering-a-matplotlib-custom-none",
+      "relative_path": "golden/covering-a-matplotlib-custom-none",
+      "checksums": {
+        "image.png": "e139d85b5d349848cde1f410addc444e91f2c53dee9bcab1122d09f0f87fd59d",
+        "visual_spec.json": "f06d41b383311191f58be1760d159b4f7ee1052a8378120895b00cca2d03fded",
+        "expected_report.json": "0d9acd0894227f014bc7c4854421494b27affde16314fc8a4419316a8b11a1fa",
+        "metadata.json": "1890b100815be9aae04ae7e76a314b0fa59ff8af89bf658716f92ea2be7d30d5"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "in",
+        "axes": {
+          "tick_catalog": "catalog",
+          "font_family": "arial",
+          "color_style": "custom",
+          "defect": "none"
+        }
+      }
+    },
+    {
+      "case_id": "covering-a-matplotlib-default-none",
+      "relative_path": "golden/covering-a-matplotlib-default-none",
+      "checksums": {
+        "image.png": "20ae4c566974af9e8e23e5add5d24e59b6bd21e0db9965325785dfd321de7b68",
+        "visual_spec.json": "db38d9eed3f83a7e24f30467db3edb7524064dbf9d300cd201ac5b893e53f2c9",
+        "expected_report.json": "0d9acd0894227f014bc7c4854421494b27affde16314fc8a4419316a8b11a1fa",
+        "metadata.json": "e4c4a1cee47682e3d1df1032eef24cf1d971c85d979a7ead8a9a7fc206b3f996"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "in",
+        "axes": {
+          "tick_catalog": "catalog",
+          "font_family": "arial",
+          "color_style": "default",
+          "defect": "none"
+        }
+      }
+    },
+    {
+      "case_id": "covering-a-pillow-custom-none",
+      "relative_path": "golden/covering-a-pillow-custom-none",
+      "checksums": {
+        "image.png": "7e53399538d1debd10fc61edc6b467778b4753c5b9938306ec9767b8e731492e",
+        "visual_spec.json": "fcad12fc4821a1fd421eebee285db6bd80e96bc04f7aaba53cb97ae44935664a",
+        "expected_report.json": "0d9acd0894227f014bc7c4854421494b27affde16314fc8a4419316a8b11a1fa",
+        "metadata.json": "6df87266f088328bf88c6a6e4d840ddf03cb8df7f2fdba205ad5a0bd328af8a3"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "in",
+        "axes": {
+          "tick_catalog": "catalog",
+          "font_family": "n/a",
+          "color_style": "custom",
+          "defect": "none"
+        }
+      }
+    },
+    {
+      "case_id": "covering-a-pillow-default-none",
+      "relative_path": "golden/covering-a-pillow-default-none",
+      "checksums": {
+        "image.png": "eccc6e55290f11034727743c6d9ba22279905dd49ae20bf4b728f8dee545d4e7",
+        "visual_spec.json": "e9d2b90f47b036f10864b90a432eecbf55d729527058a4d6618890770bcfb087",
+        "expected_report.json": "0d9acd0894227f014bc7c4854421494b27affde16314fc8a4419316a8b11a1fa",
+        "metadata.json": "0578bfe7c19fe5e9532c41a36937e0ad56fb4b2902fc2738bba5a2695956cc0f"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "in",
+        "axes": {
+          "tick_catalog": "catalog",
+          "font_family": "n/a",
+          "color_style": "default",
+          "defect": "none"
+        }
+      }
+    },
+    {
+      "case_id": "covering-a-matplotlib-custom-wrong_axis_unit",
+      "relative_path": "mutated/covering-a-matplotlib-custom-wrong_axis_unit",
+      "checksums": {
+        "image.png": "4a5a51791048e932f09edd6ad6b4e9102bd257c9d35b8cb38e5fe00dead82d9e",
+        "visual_spec.json": "6649825d1151ce96a16349f4a2e34457d8b412e049c7795c80945aad55d02ba1",
+        "expected_report.json": "d9395774f061edcbb31a01fead04d5a9e749748f78d83279d5c22068c2bf1eb5",
+        "metadata.json": "90650820fc056d53af4c2184b085a3ff54bb58872e33d06afec012817fde6620"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "in",
+        "axes": {
+          "tick_catalog": "catalog",
+          "font_family": "arial",
+          "color_style": "custom",
+          "defect": "wrong_axis_unit"
+        }
+      }
+    },
+    {
+      "case_id": "covering-a-matplotlib-custom-wrong_bar_height",
+      "relative_path": "mutated/covering-a-matplotlib-custom-wrong_bar_height",
+      "checksums": {
+        "image.png": "befc6baf99927ba970ef6ba6732756be1b47f8b07dc36865845f1dcf17587bfe",
+        "visual_spec.json": "4bf669bb9e878bd43abbe710b7dd50196224d7fa604d17c24e8ef4083f30ef0c",
+        "expected_report.json": "646cebf55dbe0b432edd37d49023db40c2b9279dfea4550c825d14c71034955f",
+        "metadata.json": "54fa94a37de41245bc4fde8b093ac83c9e861034fe14ef3d20f12ee6a2315926"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "in",
+        "axes": {
+          "tick_catalog": "catalog",
+          "font_family": "arial",
+          "color_style": "custom",
+          "defect": "wrong_bar_height"
+        }
+      }
+    },
+    {
+      "case_id": "covering-a-matplotlib-default-wrong_axis_unit",
+      "relative_path": "mutated/covering-a-matplotlib-default-wrong_axis_unit",
+      "checksums": {
+        "image.png": "c2c8d7ff6f3154d53e94d76b8ccda2c5cc5489cb49ebbb00e9a2b4dbf4eb9b8c",
+        "visual_spec.json": "ad913966aa01db106e8d490a03995f1c236ce8c2fdd709490f193275967b0891",
+        "expected_report.json": "d9395774f061edcbb31a01fead04d5a9e749748f78d83279d5c22068c2bf1eb5",
+        "metadata.json": "a80f0d212493383acf45d505173d074239e9f66a95ab4d487131622217430000"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "in",
+        "axes": {
+          "tick_catalog": "catalog",
+          "font_family": "arial",
+          "color_style": "default",
+          "defect": "wrong_axis_unit"
+        }
+      }
+    },
+    {
+      "case_id": "covering-a-matplotlib-default-wrong_bar_height",
+      "relative_path": "mutated/covering-a-matplotlib-default-wrong_bar_height",
+      "checksums": {
+        "image.png": "3d39f407b2747488c486fe349199c04553433b650b7c006cbeae770d987e53e4",
+        "visual_spec.json": "eb6bac45c60b741806b44ed03c85a8f85a0b579c40b77ec3dc517266c3a57900",
+        "expected_report.json": "646cebf55dbe0b432edd37d49023db40c2b9279dfea4550c825d14c71034955f",
+        "metadata.json": "f6440b87b23a167a7a6284873e2986aa30ad8a49d63f24225c71d9882026dc3d"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "in",
+        "axes": {
+          "tick_catalog": "catalog",
+          "font_family": "arial",
+          "color_style": "default",
+          "defect": "wrong_bar_height"
+        }
+      }
+    },
+    {
+      "case_id": "covering-a-pillow-custom-wrong_axis_unit",
+      "relative_path": "mutated/covering-a-pillow-custom-wrong_axis_unit",
+      "checksums": {
+        "image.png": "3aa06a9da323058d36502dc3aa4be7c3106d3b9c46f8563bf4ab12eab09fd4ee",
+        "visual_spec.json": "89ffe3b2bb3142c70577b71248c7186f727a602332c2e7ddd3f34c26e73e0881",
+        "expected_report.json": "d9395774f061edcbb31a01fead04d5a9e749748f78d83279d5c22068c2bf1eb5",
+        "metadata.json": "b27f2f6210a4a9d659014431444aa103455257fbfda2241475c6b5ea5ce36124"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "in",
+        "axes": {
+          "tick_catalog": "catalog",
+          "font_family": "n/a",
+          "color_style": "custom",
+          "defect": "wrong_axis_unit"
+        }
+      }
+    },
+    {
+      "case_id": "covering-a-pillow-custom-wrong_bar_height",
+      "relative_path": "mutated/covering-a-pillow-custom-wrong_bar_height",
+      "checksums": {
+        "image.png": "1b06a646570845279e63e7f18a237b792f88a48c5f25ac9647ce3c93b03998e3",
+        "visual_spec.json": "120b28aabf21fbfb4cf2477a350166c95eef2afd44afa6243778984e0f94b3bd",
+        "expected_report.json": "646cebf55dbe0b432edd37d49023db40c2b9279dfea4550c825d14c71034955f",
+        "metadata.json": "feb64c983ac85665c8abb1f4dcb9e391ffc2d8b57650354d42828a58db69e825"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "in",
+        "axes": {
+          "tick_catalog": "catalog",
+          "font_family": "n/a",
+          "color_style": "custom",
+          "defect": "wrong_bar_height"
+        }
+      }
+    },
+    {
+      "case_id": "covering-a-pillow-default-wrong_axis_unit",
+      "relative_path": "mutated/covering-a-pillow-default-wrong_axis_unit",
+      "checksums": {
+        "image.png": "ee5f259ca143406862d4253b223c7c3f05261d7729268193a9254dfdca0860d0",
+        "visual_spec.json": "ef82233683896893cf14c334c100b5f8adaaa4114bf82a1bce0d013486eda279",
+        "expected_report.json": "d9395774f061edcbb31a01fead04d5a9e749748f78d83279d5c22068c2bf1eb5",
+        "metadata.json": "9e2ac6b3d3aaab2b522234a4014b88f7609ef0fe25da9ca94ac5e23917a8dc36"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "in",
+        "axes": {
+          "tick_catalog": "catalog",
+          "font_family": "n/a",
+          "color_style": "default",
+          "defect": "wrong_axis_unit"
+        }
+      }
+    },
+    {
+      "case_id": "covering-a-pillow-default-wrong_bar_height",
+      "relative_path": "mutated/covering-a-pillow-default-wrong_bar_height",
+      "checksums": {
+        "image.png": "2c07b937ebc96539ea8793935e10c20b726733dba8a8b7fe65e005b00cd86ca4",
+        "visual_spec.json": "da8c62f7d9fb12f64059ff8f354f6dbf3f7fae17925d7811baf21d049d7a0f02",
+        "expected_report.json": "646cebf55dbe0b432edd37d49023db40c2b9279dfea4550c825d14c71034955f",
+        "metadata.json": "f49c37aec12310f3fb710bc9c5df106d743aaf3cee140f4865623a1a09206635"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "in",
+        "axes": {
+          "tick_catalog": "catalog",
+          "font_family": "n/a",
+          "color_style": "default",
+          "defect": "wrong_bar_height"
+        }
+      }
+    },
+    {
+      "case_id": "covering-b-matplotlib-non_arial_font-none",
+      "relative_path": "mutated/covering-b-matplotlib-non_arial_font-none",
+      "checksums": {
+        "image.png": "b10c96374dc2718df113f370d0d3beb65a0854cf6cd206cba8815470e31fa7c7",
+        "visual_spec.json": "88ee5466fb95ce96e06838fd7bcf1887c6d15c6fc33ad59b5caf06da0ec644fb",
+        "expected_report.json": "e685bf5e6637e18676cc104106aa80b4205bb9f03964c667db81528181ee2353",
+        "metadata.json": "5a28dc33c9bbccc50e13aebd23c8c419d63f86cb80081a29e6c5bc2091f46552"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "out",
+        "axes": {
+          "out_axis": "non_arial_font",
+          "defect": "none"
+        }
+      }
+    },
+    {
+      "case_id": "covering-b-matplotlib-non_arial_font-wrong_bar_height",
+      "relative_path": "mutated/covering-b-matplotlib-non_arial_font-wrong_bar_height",
+      "checksums": {
+        "image.png": "c4fdcfe2d38fd4aae97da4b97c0a06c9cd71c2338e1fdf80e0e7744554e09b6a",
+        "visual_spec.json": "11ffd098c86d9d23fa21d846e9b64a3a5d77c6ac6f7fff0e2f1ab3a69c3af1d1",
+        "expected_report.json": "e685bf5e6637e18676cc104106aa80b4205bb9f03964c667db81528181ee2353",
+        "metadata.json": "4f556fee004ac9026150e3dca6f6e9865b5d3b7c6070b8b36af798e85f6565d6"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "out",
+        "axes": {
+          "out_axis": "non_arial_font",
+          "defect": "wrong_bar_height"
+        }
+      }
+    },
+    {
+      "case_id": "covering-b-matplotlib-off_catalog_ticks-none",
+      "relative_path": "mutated/covering-b-matplotlib-off_catalog_ticks-none",
+      "checksums": {
+        "image.png": "02f3723658bdefc89be167aae94b5ec9cf16106a7e0eec7b984c3cabcde7974f",
+        "visual_spec.json": "d3a0d64d08c16765dc2b49630cd65dc169759c3b58d6303a1be170f3c78e46f9",
+        "expected_report.json": "e685bf5e6637e18676cc104106aa80b4205bb9f03964c667db81528181ee2353",
+        "metadata.json": "1db36ec431851794690f9f86def80e5b32485724b86cdd66c69e710838c3bfe8"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "out",
+        "axes": {
+          "out_axis": "off_catalog_ticks",
+          "defect": "none"
+        }
+      }
+    },
+    {
+      "case_id": "covering-b-matplotlib-off_catalog_ticks-wrong_bar_height",
+      "relative_path": "mutated/covering-b-matplotlib-off_catalog_ticks-wrong_bar_height",
+      "checksums": {
+        "image.png": "d2b53a1f3ebb34643d2f545354592937e17782c8c36ac3ed6156a2c6850cbfe7",
+        "visual_spec.json": "a6ddc04a1d58f3156c9eb5233dd15c6f9b46d2964a5f077135f18cef3c4ad6d4",
+        "expected_report.json": "e685bf5e6637e18676cc104106aa80b4205bb9f03964c667db81528181ee2353",
+        "metadata.json": "0c3796d5d8d69da3acc48e18425542279b4d612441ae0b6356735ea179036d98"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "out",
+        "axes": {
+          "out_axis": "off_catalog_ticks",
+          "defect": "wrong_bar_height"
+        }
+      }
+    },
+    {
+      "case_id": "covering-b-pillow-off_catalog_ticks-none",
+      "relative_path": "mutated/covering-b-pillow-off_catalog_ticks-none",
+      "checksums": {
+        "image.png": "13cdcb05bf743c08eed80072c7870a514344141ffb7b3a2063a9ec5751379393",
+        "visual_spec.json": "ca6ab8269704ec6474f7e3545b8e2a8c6085898c09c7f0011391edbefe739111",
+        "expected_report.json": "e685bf5e6637e18676cc104106aa80b4205bb9f03964c667db81528181ee2353",
+        "metadata.json": "a3fbafd2037bcd5e0f56dbeafba4b664dd7d0003d962fe78665bb28ed0f84d68"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "out",
+        "axes": {
+          "out_axis": "off_catalog_ticks",
+          "defect": "none"
+        }
+      }
+    },
+    {
+      "case_id": "covering-b-pillow-off_catalog_ticks-wrong_bar_height",
+      "relative_path": "mutated/covering-b-pillow-off_catalog_ticks-wrong_bar_height",
+      "checksums": {
+        "image.png": "7077f0ad687c4208e741f8ee75bc518d23de439e6d93d2893f2474f654a4afec",
+        "visual_spec.json": "6b01c735a049551e3610d05c07727bc58c66a90b17391ca82ccc26a81291729f",
+        "expected_report.json": "e685bf5e6637e18676cc104106aa80b4205bb9f03964c667db81528181ee2353",
+        "metadata.json": "9b83f0d83c97874f7b9a0f32d2fff710a58be529c5295ae566a9c3cb6ef226d1"
+      },
+      "provenance": {
+        "source_type": "synthetic_generated",
+        "license": "n/a_internal",
+        "retrieved_at": "2026-07-11",
+        "universe": "out",
+        "axes": {
+          "out_axis": "off_catalog_ticks",
+          "defect": "wrong_bar_height"
+        }
+      }
+    }
+  ]
+}

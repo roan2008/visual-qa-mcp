@@ -10,7 +10,12 @@ import pytest
 import visual_qa_mcp.cli as cli_module
 import visual_qa_mcp.validation as validation_module
 from visual_qa_mcp.contracts import ClaimGraph, VerificationResult
-from visual_qa_mcp.generate_dataset import build_dataset, build_noisy_dataset, build_realworld_pilot_dataset
+from visual_qa_mcp.generate_dataset import (
+    build_covering_array_dataset,
+    build_dataset,
+    build_noisy_dataset,
+    build_realworld_pilot_dataset,
+)
 from visual_qa_mcp.service import run_chart_verification, write_verification_artifacts
 from visual_qa_mcp.validation import (
     discover_cases,
@@ -290,6 +295,28 @@ def test_realworld_manifest_rejects_incomplete_case_list(chart_datasets: dict[st
     assert result["valid"] is False
     assert "manifest:case_count_does_not_match_list" in result["mismatches"]
     assert any(item.startswith("manifest:unlisted_case:") for item in result["mismatches"])
+
+
+def test_covering_array_matrix_a_and_set_b_oracle_holds(tmp_path: Path) -> None:
+    dataset_root = tmp_path / "chart-v2-covering-v1"
+    build_covering_array_dataset(dataset_root)
+    summary = summarize_validation_results(dataset_root)
+    manifest = verify_dataset_manifest(dataset_root)
+
+    assert summary["total_cases"] == 18
+    assert summary["golden_cases"] == 4
+    assert summary["typed_mutated_cases"] == 8
+    assert summary["typed_mutated_hits"] == 8
+    assert summary["ambiguous_cases"] == 6
+    assert summary["ambiguous_guard_rate"] == 1.0
+    assert summary["false_unsupported_passes"] == 0
+    assert summary["verdict_mismatches"] == 0
+    assert manifest == {"valid": True, "case_count": 18, "mismatches": []}
+
+    results_by_id = {result["case_id"]: result for result in summary["results"]}
+    for case_id, result in results_by_id.items():
+        if case_id.startswith("covering-b-"):
+            assert result["actual_verdict"] == "needs_review", case_id
 
 
 def test_validation_summary_hits_v2_targets(phase2_summary: dict) -> None:

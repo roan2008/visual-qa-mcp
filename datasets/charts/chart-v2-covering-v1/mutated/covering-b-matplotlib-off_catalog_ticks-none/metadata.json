@@ -1,0 +1,24 @@
+{
+  "case_id": "covering-b-matplotlib-off_catalog_ticks-none",
+  "title": "Set B: matplotlib/off_catalog_ticks/none",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "off_catalog_ticks__none",
+  "dataset_track": "covering_array",
+  "image_id": "covering-b-matplotlib-off_catalog_ticks-none",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {},
+  "renderer": "matplotlib",
+  "transform_family": "out_of_universe",
+  "provenance": {
+    "source_type": "synthetic_generated",
+    "license": "n/a_internal",
+    "retrieved_at": "2026-07-11",
+    "universe": "out",
+    "axes": {
+      "out_axis": "off_catalog_ticks",
+      "defect": "none"
+    }
+  }
+}

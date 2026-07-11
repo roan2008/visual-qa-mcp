@@ -9,6 +9,45 @@ metadata:
 
 # Project Log
 
+## 2026-07-11 session 28 (cont.) - chart-v2 covering-array input model (roadmap item 1)
+
+- Implemented the deep-research roadmap's top-priority investment for chart-v2: a formal
+  input model with a non-circular expected-verdict oracle. Design gate: called `advisor`
+  before writing code; it flagged that the oracle must not be derived by running the
+  verifier and recording output as golden, and that evidence-degrading presentation
+  factors (masking) flip the expected verdict to `needs_review` independent of whatever
+  defect was injected — the covering array can't label cells by defect type alone.
+- Design: partitioned axes into in-universe (`tick_catalog=catalog`,
+  `font_family=arial` on matplotlib, both `color_style` levels) vs. out-of-universe
+  (`tick_catalog=off_catalog`, `font_family=dejavu_serif`), based on the session-27
+  crutch-stripping experiment. Matrix A = in-universe x defect (exhaustively enumerated,
+  12 cases — the space is small enough that exhaustive enumeration is already a complete
+  covering array, confirming the advisor's prediction that Matrix A would be thin). Set B
+  = any out-of-universe axis flipped x 2 defect levels, expected `needs_review` always (6
+  cases, directly tests masking).
+- Scoped out: layout-mismatch (the fourth out-of-universe axis found in session 27) is not
+  reproducible with the shipped generator, because the extractor derives its layout
+  expectation from the same `render_options.layout_overrides` the renderer used
+  (`chart_extractor.py:483`), so overrides can never diverge. Documented as a gap rather
+  than half-built.
+- Implementation: `covering_array_cases()` / `build_covering_array_dataset()` in
+  `generate_dataset.py`, new CLI command `generate-chart-covering-dataset`, one new line in
+  `validation.py`'s manifest checker (`chart-v2-covering-v1` case count must be 18), and one
+  new regression test (`test_covering_array_matrix_a_and_set_b_oracle_holds`) that checks
+  the full oracle including that every `covering-b-*` case individually resolves to
+  `needs_review`. No new validation-summary code was needed — the existing
+  `golden`/`mutated`/`expected_finding_types=[]` machinery already expresses Matrix A / Set
+  B semantics exactly.
+- Result: frozen 18-case dataset at `datasets/charts/chart-v2-covering-v1` (checksum
+  manifest verified valid). Measured: 4 golden, 8/8 typed-defect hits, 6/6 masking cases
+  correctly guarded to `needs_review`, 0 unsupported passes, 0 verdict mismatches. Unified
+  suite: 159/159 (158 prior + 1 new). Full detail in
+  `wiki/impl-chart-v2-covering-array-input-model.md`.
+- Found (not yet read/ingested) a second, untracked deep-research file at
+  `research/synthetic-data-coverage-report.md` (dated 2026-07-12) using named, checkable
+  sources rather than opaque citation tokens — flagged in `wiki/next-steps.md` for next
+  session.
+
 ## 2026-07-11 session 28 - Synthetic-only confirmation and deep-research ingest
 
 - The user corrected the session-27 framing: a prior decision stands that validation images are

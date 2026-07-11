@@ -774,6 +774,142 @@ def realworld_pilot_cases() -> list[dict[str, Any]]:
     return cases
 
 
+def covering_array_cases() -> list[dict[str, Any]]:
+    """chart-v2 formal input model, per wiki/knowledge-synthetic-coverage-deep-research.md.
+
+    Matrix A: every axis at its in-universe level (catalog ticks, Arial font on
+    matplotlib) crossed with color style and defect type. Space is small enough
+    (2x3 per renderer) to enumerate exhaustively rather than needing a t-way
+    covering-array algorithm; that thinness is itself the finding.
+    Set B: any single axis flipped to its out-of-universe level (off-catalog
+    ticks, or non-Arial font on matplotlib), crossed with a couple of defect
+    levels to test that evidence degradation masks defect detection down to
+    needs_review rather than a wrong pass/fail.
+    """
+    source_values = [20, 55, 75]
+    catalog_axis = {"bar_axis": {"min": 0, "max": 80}, "display_ticks": [0, 20, 40, 60, 80]}
+    off_catalog_axis = {"bar_axis": {"min": 0, "max": 100}, "display_ticks": [0, 22, 47, 83, 100]}
+
+    color_levels: dict[str, dict[str, Any]] = {
+        "default": {},
+        "custom": {"bar_fill": [45, 104, 230], "grid_fill": [230, 232, 238]},
+    }
+    defect_levels: dict[str, tuple[list[float], dict[str, Any]]] = {
+        "none": (source_values, {"verdict": "pass", "expected_finding_types": []}),
+        "wrong_bar_height": ([20, 40, 75], {"verdict": "fail", "expected_finding_types": ["chart_value_mismatch"]}),
+        "wrong_axis_unit": (source_values, {"verdict": "fail", "expected_finding_types": ["label_missing_or_wrong", "unit_mismatch"]}),
+    }
+
+    def provenance(universe: str, axes: dict[str, str]) -> dict[str, Any]:
+        return {
+            "source_type": "synthetic_generated",
+            "license": "n/a_internal",
+            "retrieved_at": "2026-07-11",
+            "universe": universe,
+            "axes": axes,
+        }
+
+    cases: list[dict[str, Any]] = []
+
+    for renderer in ("pillow", "matplotlib"):
+        for color_name, color_options in color_levels.items():
+            for defect_name, (render_values, expected_report) in defect_levels.items():
+                display_y_label = "Rainfall (cm)" if defect_name == "wrong_axis_unit" else None
+                cases.append(
+                    _case(
+                        f"covering-a-{renderer}-{color_name}-{defect_name}",
+                        f"Matrix A: {renderer}/{color_name}/{defect_name}",
+                        "golden" if defect_name == "none" else "mutated",
+                        "zero_baseline",
+                        source_values,
+                        BASE_MONTHS,
+                        render_values,
+                        catalog_axis,
+                        expected_report,
+                        defect_type=None if defect_name == "none" else defect_name,
+                        display_y_label=display_y_label,
+                        render_options=dict(color_options),
+                        dataset_track="covering_array",
+                        renderer=renderer,
+                        transform_family="in_universe",
+                        provenance=provenance(
+                            "in",
+                            {
+                                "tick_catalog": "catalog",
+                                "font_family": "arial" if renderer == "matplotlib" else "n/a",
+                                "color_style": color_name,
+                                "defect": defect_name,
+                            },
+                        ),
+                    )
+                )
+
+    def set_b_case(renderer: str, out_axis: str, defect_name: str) -> dict[str, Any]:
+        render_values, _ = defect_levels[defect_name]
+        expected_report = {"verdict": "needs_review", "expected_finding_types": []}
+        render_options: dict[str, Any] = {}
+        axis_config = catalog_axis
+        if out_axis == "off_catalog_ticks":
+            axis_config = off_catalog_axis
+        elif out_axis == "non_arial_font":
+            render_options["font_family"] = "DejaVu Serif"
+        return _case(
+            f"covering-b-{renderer}-{out_axis}-{defect_name}",
+            f"Set B: {renderer}/{out_axis}/{defect_name}",
+            "mutated",
+            "zero_baseline",
+            source_values,
+            BASE_MONTHS,
+            render_values,
+            axis_config,
+            expected_report,
+            defect_type=f"{out_axis}__{defect_name}",
+            render_options=render_options,
+            dataset_track="covering_array",
+            renderer=renderer,
+            transform_family="out_of_universe",
+            provenance=provenance("out", {"out_axis": out_axis, "defect": defect_name}),
+        )
+
+    for renderer in ("pillow", "matplotlib"):
+        for defect_name in ("none", "wrong_bar_height"):
+            cases.append(set_b_case(renderer, "off_catalog_ticks", defect_name))
+    for defect_name in ("none", "wrong_bar_height"):
+        cases.append(set_b_case("matplotlib", "non_arial_font", defect_name))
+
+    return cases
+
+
+def build_covering_array_dataset(output_root: Path) -> None:
+    build_cases_dataset(output_root, covering_array_cases())
+    manifest_cases: list[dict[str, Any]] = []
+    for metadata_path in sorted(output_root.glob("**/metadata.json")):
+        case_dir = metadata_path.parent
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        checksums = {}
+        for name in ("image.png", "visual_spec.json", "expected_report.json", "metadata.json"):
+            path = case_dir / name
+            checksums[name] = hashlib.sha256(path.read_bytes()).hexdigest()
+        manifest_cases.append(
+            {
+                "case_id": metadata["case_id"],
+                "relative_path": str(case_dir.relative_to(output_root)).replace("\\", "/"),
+                "checksums": checksums,
+                "provenance": metadata.get("provenance", {}),
+            }
+        )
+    write_json(
+        output_root / "manifest.json",
+        {
+            "dataset": "chart-v2-covering-v1",
+            "status": "frozen",
+            "frozen_at": "2026-07-11",
+            "case_count": len(manifest_cases),
+            "cases": manifest_cases,
+        },
+    )
+
+
 def build_dataset(output_root: Path) -> None:
     build_cases_dataset(output_root, dataset_cases())
 

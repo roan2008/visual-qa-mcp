@@ -11,6 +11,17 @@ metadata:
 
 ## Current Priority
 
+### 2026-07-11 session 28 (cont.) - chart-v2 covering-array input model implemented; second research report found unread
+
+Implemented next-steps item 1 (see item 1 below and
+`wiki/impl-chart-v2-covering-array-input-model.md`). While working, found a second,
+untracked deep-research file at `research/synthetic-data-coverage-report.md` (dated
+2026-07-12, not yet ingested, not produced by this agent this session) that uses named,
+checkable sources (FigureQA, DVQA, ChartQA, DePlot, etc.) rather than the first report's
+opaque `citeturn` tokens — likely higher source-integrity value. **Not yet read in full or
+ingested.** Next session should read it and decide whether it supersedes or extends
+`knowledge-synthetic-coverage-deep-research.md`.
+
 ### 2026-07-11 session 28 - COMPLETE: synthetic-only decision confirmed + deep-research ingest
 
 The user confirmed a previously made decision: validation images are **100% synthetic**;
@@ -657,12 +668,18 @@ declared-universe synthetic coverage per `wiki/knowledge-synthetic-coverage-deep
 validated with renderer/style/content/degradation-held-out splits. The list below is reordered
 to match that report's evidence-backed build order.
 
-1. **Formal input model + stratified registry + mixed-strength covering arrays** (deep-research
-   top investment 1). Declare the generation space per vertical as explicit factored axes
-   (content x style x renderer x degradation), generate test matrices with t-way covering
-   arrays (2-way baseline, 3-way target) over discrete axes and LHS over continuous nuisances,
-   and report per-stratum coverage. This turns the suite from "sampled informally" into
-   "declared coverage" and is the foundation for items 2-4. Start with chart-v2.
+1. **[DONE 2026-07-11] Formal input model + stratified registry + mixed-strength covering
+   arrays** for chart-v2. Delivered as a Matrix A (in-universe presentation x defect,
+   exhaustively enumerated since the space is small: 12 cases) / Set B (any out-of-universe
+   axis flipped, testing that degraded evidence masks defect detection to `needs_review`: 6
+   cases) design, frozen at `datasets/charts/chart-v2-covering-v1` (18 cases, checksum
+   manifest), generated via `generate-chart-covering-dataset` and validated via the existing
+   generic `run-validation --dataset ...` command. See
+   `wiki/impl-chart-v2-covering-array-input-model.md` for the full design and measured
+   result (18/18 cases correct, 8/8 typed-defect hits, 6/6 masking-guard cases, 0
+   unsupported passes). Known gap: layout-mismatch out-of-universe axis not reproducible
+   with the current renderer and is deferred, not silently dropped. Not yet extended to the
+   other five verticals or to continuous-nuisance axes (LHS) — those remain open.
 2. **Boundary/magnitude sweeps on existing typed-defect classes** across all six verticals —
    the cheap entry point of the failure-mining loop (no new infra; converts N/N
    hand-picked-mutation claims into measured per-defect-class sensitivity curves).

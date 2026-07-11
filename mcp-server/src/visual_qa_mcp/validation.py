@@ -735,6 +735,8 @@ def verify_dataset_manifest(dataset_root: Path) -> dict[str, Any]:
         mismatches.append("manifest:geometry_noisy_case_count_must_be_20")
     if manifest.get("dataset") == "geometry-v1-noisy" and not manifest.get("version"):
         mismatches.append("manifest:version_missing")
+    if manifest.get("dataset") == "chart-v2-covering-v1" and declared_count != 18:
+        mismatches.append("manifest:covering_array_case_count_must_be_18")
 
     case_ids = [str(case.get("case_id")) for case in manifest_cases]
     relative_paths = [str(case.get("relative_path")) for case in manifest_cases]

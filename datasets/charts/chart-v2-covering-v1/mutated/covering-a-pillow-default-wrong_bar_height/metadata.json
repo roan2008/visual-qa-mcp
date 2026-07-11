@@ -1,0 +1,26 @@
+{
+  "case_id": "covering-a-pillow-default-wrong_bar_height",
+  "title": "Matrix A: pillow/default/wrong_bar_height",
+  "kind": "mutated",
+  "axis_mode": "zero_baseline",
+  "defect_type": "wrong_bar_height",
+  "dataset_track": "covering_array",
+  "image_id": "covering-a-pillow-default-wrong_bar_height",
+  "backend": "template",
+  "chart_version": "v2",
+  "render_options": {},
+  "renderer": "pillow",
+  "transform_family": "in_universe",
+  "provenance": {
+    "source_type": "synthetic_generated",
+    "license": "n/a_internal",
+    "retrieved_at": "2026-07-11",
+    "universe": "in",
+    "axes": {
+      "tick_catalog": "catalog",
+      "font_family": "n/a",
+      "color_style": "default",
+      "defect": "wrong_bar_height"
+    }
+  }
+}
