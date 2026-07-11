@@ -489,11 +489,18 @@ def extract_chart_evidence(
         label_matches: list[tuple[str | None, float]] = []
         for y_offset in (0, -4, -8, -12, 4):
             candidate_box = [
-                crop_box[0],
-                max(0, crop_box[1] + y_offset),
-                crop_box[2],
-                min(image.height, crop_box[3] + y_offset),
+                max(0, min(image.width, crop_box[0])),
+                max(0, min(image.height, crop_box[1] + y_offset)),
+                max(0, min(image.width, crop_box[2])),
+                max(0, min(image.height, crop_box[3] + y_offset)),
             ]
+            if candidate_box[0] >= candidate_box[2] or candidate_box[1] >= candidate_box[3]:
+                # The assumed label geometry falls outside (or is inverted against) the
+                # actual image bounds -- e.g. a renderer whose plot-area layout diverges
+                # from the extractor's ChartLayout assumption. Treat as no match rather
+                # than crashing on an invalid crop box.
+                label_matches.append((None, 0.0))
+                continue
             match = _match_text(
                 image.crop(tuple(candidate_box)),
                 expected_categories,

@@ -7,6 +7,59 @@ metadata:
   last_updated: 2026-07-11
 ---
 
+## Renderer crutch-stripping experiment (session 2026-07-11, post-circuit-v1)
+
+Ran the "cheapest honest experiment" an advisor review recommended in place of building a
+new style-pack/renderer-adapter abstraction from scratch: the existing
+`chart-v2-realworld-pilot` Matplotlib cases already prove rasterizer-independence
+(Pillow vs. Matplotlib), but every one of them is still tuned to the extractor — matched
+`ChartLayout` pixel geometry, the validated Arial font family, and tick values drawn
+from the template reader's fixed multiples-of-5 catalog. `experiments/renderer_strip_test.py`
+(throwaway, not a dataset or test-suite addition) stripped each crutch independently
+against an otherwise-identical golden 3-bar chart:
+
+1. **Baseline** (matched layout, Arial, catalog ticks `[0,25,50,75,100]`): `pass`, as expected —
+   reproduces the existing pilot claim.
+2. **Off-catalog tick values** (`[0,22,47,83,100]`, not multiples of 5): tick reader returns
+   `None` for every tick, axis mapping fails to resolve, verdict `needs_review`. This is the
+   template-catalog wall from the "Honest accuracy assessment" section above, now demonstrated
+   directly rather than only asserted — and confirmed **safe**: zero unsupported passes, zero
+   wrong values, clean abstention.
+3. **Unmatched layout** (Matplotlib's own `tight_layout()` placement, not `ChartLayout`-matched):
+   **raised `ValueError: Coordinate 'lower' is less than 'upper'`** instead of degrading to
+   `needs_review`. Root cause: `chart_extractor.py`'s bar-label crop box
+   (`ChartLayout.label_box()`) is computed from a fixed offset with no bounds check against the
+   actual image; when the real layout diverges enough, the box's top coordinate exceeds
+   `image.height` while `_apply_postprocess`'s clamp only bounds it from below, producing an
+   inverted crop rectangle. This is a genuine robustness gap, not a test-harness artifact — a
+   Matplotlib chart using default `tight_layout()` (an extremely common real-world default) would
+   crash the extractor rather than safely abstain. **Fixed** in the same session: the crop box is
+   now clamped to image bounds on all four sides before cropping, and a degenerate
+   (post-clamp-empty) box is treated as "no label match" rather than raising. Regression test:
+   `test_bar_label_crop_out_of_bounds_degrades_instead_of_raising` in
+   `test_extractor_hardening.py`. Verified: 158/158 tests pass (157 prior + 1 new); no change to
+   any existing controlled/noisy/pilot dataset metric (fix only activates on crop boxes that were
+   previously unreachable without crashing).
+4. **Non-Arial font** (DejaVu Serif instead of Arial, matched layout, catalog ticks): tick reading
+   still succeeded (the numeric glyph templates are somewhat font-tolerant), but x-axis category
+   label matching failed (`missing_bar_label`), correctly degrading to `needs_review` rather than
+   a wrong or silent value.
+
+**Net result**: the safety property held under every stripped condition once the crash bug was
+fixed — three of four conditions degrade to `needs_review` exactly as designed, and the fourth
+(matched baseline) still passes. But the experiment also reclassifies the bottleneck: it is no
+longer just "no validated OCR" in the abstract — it is now a quantified, reproducible wall (any
+non-catalog tick value on any renderer fails closed) plus a fixed robustness bug that would have
+caused real crashes on ordinary Matplotlib-default output. This is exactly the kind of "coverage
+per stratum" measurement the roadmap called for, at negligible cost (no new dataset infra, one
+throwaway script, one afternoon).
+
+**Not yet done**: the font/layout findings above were not turned into permanent dataset cases or
+CI-enforced coverage; the OCR backend is still unvalidated; and no independently authored (not
+tool-rendered) images have been tried. The renderer-adapter abstraction (build-order item 1) is
+now lower priority than initially planned, since the Matplotlib path already exists and this
+experiment got most of its diagnostic value without building it.
+
 # Accuracy Assessment and Synthetic-Data Roadmap
 
 Captured from a design discussion (session 2026-07-11, post-session-21e). Not yet

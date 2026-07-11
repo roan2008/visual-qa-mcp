@@ -9,6 +9,45 @@ metadata:
 
 # Project Log
 
+## 2026-07-11 session 27 - Remote setup and renderer crutch-stripping experiment
+
+- Reviewed the roadmap with the user: assessed that the six-vertical breadth had gotten ahead of
+  external validity (every headline metric is still measured on self-rendered images) and
+  recommended freezing new-vertical work in favor of input-scope expansion (other renderers,
+  validated OCR, independently authored images) plus closing the operational risk of an
+  uncommitted milestone on a single machine with no remote.
+- Committed the pending `circuit-v1a`/`circuit-v1b` work (223 files) after re-running the full
+  suite to confirm it was still green (157/157). Created `https://github.com/roan2008/visual-qa-mcp`
+  with the user, added it as `origin`, and pushed `master` (`-u origin master`). All prior history
+  and the circuit milestone are now off the local-only machine.
+- Ran an advisor gate before starting implementation on the reordered plan's item 3
+  (style-pack/renderer-adapter abstraction). The advisor caught that the premise was partly wrong:
+  `chart_generator.py` already has `render_matplotlib_chart_image`, used by 12 of the 24
+  `chart-v2-realworld-pilot` cases — so Matplotlib rasterizer-independence was already proven, not
+  missing. It reframed the next step as cheaper: strip the *remaining* crutches (matched
+  `ChartLayout` geometry, Arial font, catalog tick values) from the existing Matplotlib path one at
+  a time, rather than building a new renderer abstraction from scratch.
+- Built `experiments/renderer_strip_test.py` (throwaway, not a dataset or test-suite addition) and
+  ran four stripped variants. See `wiki/knowledge-accuracy-and-synthetic-data-roadmap.md`
+  "Renderer crutch-stripping experiment" for full detail. Headline results: off-catalog tick values
+  correctly degrade to `needs_review` (template-catalog wall demonstrated safely); non-Arial font
+  correctly degrades to `needs_review` via `missing_bar_label`; matched-layout baseline still
+  passes — but an unmatched-layout (Matplotlib `tight_layout()`) case **crashed** with
+  `ValueError: Coordinate 'lower' is less than 'upper'` instead of degrading safely.
+- Found and fixed the crash: `chart_extractor.py`'s bar-label crop box
+  (`ChartLayout.label_box()`) had no bounds check against the actual image, so a sufficiently
+  diverged layout produced an inverted crop rectangle. Fixed by clamping the crop box to image
+  bounds on all sides and treating a degenerate post-clamp box as "no label match" instead of
+  raising. Added `test_bar_label_crop_out_of_bounds_degrades_instead_of_raising` in
+  `test_extractor_hardening.py`, using a `margin_bottom: 2` layout override against the existing
+  `chart-v2/golden/golden-01` case to reproduce the exact failure deterministically.
+- Verified: 158/158 tests pass (157 prior + 1 new); re-ran the renderer-strip script after the fix
+  and confirmed all four cases now either pass or degrade to `needs_review`, with zero crashes and
+  zero unsupported passes. No existing controlled/noisy/pilot dataset metric changed (the fix only
+  activates on crop geometry that previously crashed rather than being reachable).
+- Updated `AGENTS.md`/`CLAUDE.md` per the Guide Maintenance Policy (test count 157 -> 158, new
+  extractor robustness note).
+
 ## 2026-07-11 session 26 - Circuit v1a/v1b completion
 
 - Closed the prior circuit-v1a advisor blockers with complete-evidence swapped-netlist and

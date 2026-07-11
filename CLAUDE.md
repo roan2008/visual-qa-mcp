@@ -146,7 +146,8 @@ Capture knowledge immediately after each meaningful step, in this priority order
 - `PrimitiveEvidenceGraph` v1 is an additive audit layer for explicit chart/arrow/geometry/coordinate/flowchart profiles. It records type-discriminated primitives, relationships, provenance, gaps, and domain traceability. Current domain rules do not consume it; standalone chart primitive parsing remains spec-blind.
 - The MCP wrapper exposes chart, arrow, geometry, coordinate, flowchart, and `parse_primitives` tools. The package can be installed locally with `python -m pip install -e .`, which provides the `visual-qa` console command.
 - `chart-v2` has an additive, non-blocking round-trip re-rendering check (`chart_round_trip.py`, optional `VerificationResult.round_trip` field, `run-chart-round-trip-validation` CLI command). It never changes `verdict`/`findings` (proven by a byte-identical regression test) and has no tolerance or verdict-gating set yet — it is a measurement-only layer. See `wiki/impl-chart-v2-round-trip-check.md` for the measured pixel-delta distribution and design rationale.
-- The unified 157-test suite passes in about 105 seconds on the milestone machine; chart end-to-end passes 16/16 in about 35 seconds.
+- `chart_extractor.py`'s bar-label crop box is bounds-clamped against the actual image before cropping, so a renderer whose plot-area geometry diverges from `ChartLayout`'s assumptions degrades that bar's label to unmatched (`missing_bar_label` gap) instead of raising `ValueError`. Found via a throwaway Matplotlib-layout-independence probe, not from any dataset case; see `wiki/knowledge-accuracy-and-synthetic-data-roadmap.md`.
+- The unified 158-test suite passes in about 105 seconds on the milestone machine; chart end-to-end passes 16/16 in about 35 seconds.
 
 ## Claim Discipline
 

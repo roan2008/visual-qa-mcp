@@ -5,11 +5,14 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
+import json
+
 import visual_qa_mcp.tick_reader as tick_reader_module
 from visual_qa_mcp.chart_extractor import (
     _blue_bar_mask,
     _find_bar_regions,
     detect_plot_area,
+    extract_chart_evidence,
     infer_axis_mapping,
 )
 from visual_qa_mcp.contracts import TickLabel
@@ -20,6 +23,8 @@ from visual_qa_mcp.tick_reader import (
     _decode_tick_sequence_result,
     read_tick_texts,
 )
+
+CHART_V2_GOLDEN_01 = Path(__file__).resolve().parents[2] / "datasets" / "charts" / "chart-v2" / "golden" / "golden-01"
 
 
 def test_blue_bar_mask_widens_uint8_before_channel_delta() -> None:
@@ -130,3 +135,24 @@ def test_axis_mapping_rejects_irregular_pixel_spacing() -> None:
     )
     assert mapping is None
     assert [gap.code for gap in gaps] == ["inconsistent_tick_step"]
+
+
+def test_bar_label_crop_out_of_bounds_degrades_instead_of_raising(tmp_path: Path) -> None:
+    # A renderer whose plot-area geometry diverges enough from ChartLayout's
+    # assumptions can push the assumed x-axis label crop box entirely below the
+    # image (top > image.height), which previously raised
+    # "ValueError: Coordinate 'lower' is less than 'upper'" instead of degrading to
+    # needs_review. margin_bottom=2 forces exactly that: plot_bottom sits 2px above
+    # the image edge, and label_box's fixed x_label_offset_y pushes the crop top past it.
+    metadata_path = tmp_path / "metadata.json"
+    metadata = json.loads((CHART_V2_GOLDEN_01 / "metadata.json").read_text(encoding="utf-8"))
+    metadata["render_options"] = {"layout_overrides": {"margin_bottom": 2}}
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+
+    evidence = extract_chart_evidence(
+        image_path=CHART_V2_GOLDEN_01 / "image.png",
+        spec_path=CHART_V2_GOLDEN_01 / "visual_spec.json",
+        metadata_path=metadata_path,
+    )
+    assert all(bar.category is None for bar in evidence.bars)
+    assert any(gap.code == "missing_bar_label" for gap in evidence.gaps)

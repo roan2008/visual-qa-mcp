@@ -11,6 +11,29 @@ metadata:
 
 ## Current Priority
 
+### 2026-07-11 session 27 - COMPLETE: remote setup + renderer crutch-stripping experiment
+
+Closed the operational risk item (uncommitted circuit-v1a/v1b work, no GitHub remote) and ran
+the first concrete external-validity experiment from the accuracy roadmap. See
+`wiki/project-log.md` session 27 and `wiki/knowledge-accuracy-and-synthetic-data-roadmap.md`
+"Renderer crutch-stripping experiment" for full detail.
+
+**Decision going forward: freeze the vertical count at six** (chart-v2, arrow-v1, geometry-v1,
+coordinate-graph-v1, flowchart-v1, circuit-v1a/v1b). The architecture-generalizes question is
+answered; the priority is now closing external validity, not proving generalization again with
+a seventh vertical.
+
+Key result: the Matplotlib renderer path was already less crutch-dependent than assumed
+(rasterizer-independence was already proven via the pilot dataset), but stripping the remaining
+crutches (matched layout, Arial font, catalog tick values) found and fixed a real crash-safety
+bug — an unmatched Matplotlib `tight_layout()` layout previously raised an unhandled
+`ValueError` instead of degrading to `needs_review`. Fixed and regression-tested (158/158).
+Off-catalog tick values and non-Arial fonts both correctly degrade to `needs_review` (no
+unsupported passes) — the template-catalog wall is now a measured, reproducible finding
+instead of an assertion.
+
+Repo is now at `https://github.com/roan2008/visual-qa-mcp` (origin, `master` pushed and tracked).
+
 ### 2026-07-11 session 26 - COMPLETE: circuit-v1a and circuit-v1b
 
 Both separately gated circuit milestones are complete within their controlled Pillow-rendered scope.
@@ -611,23 +634,33 @@ Verified:
 
 ## Suggested Next Work
 
-0. Build `circuit-v1` with separately gated symbol/connectivity rules (the flowchart-v1 vertical
-   is now done; circuit-v1 is the next new-vertical item).
-1. Add independently authored or publisher-sourced open-license chart and geometry images; current images
-   are still locally rendered and should not be treated as general real-world coverage.
-   Install and validate the optional OCR backend in a configured environment so OCR gets its own
-   evidence-backed readiness gate.
-2. Extend force-balance beyond v1 when justified: (much later) torque/moment balance with points
-   of application and px-to-newton magnitude calibration (the noisy-track equilibrium case and
-   non-zero declared expected resultants are both done).
-3. Extend coordinate-graph-v1 beyond v1 when justified: a curve-fitting mode (the noisy
-   blur/downscale/JPEG track, label-based point identity, and multi-series polylines are all
-   done).
-4. Extend flowchart-v1 beyond v1 when justified: additional shape types and a noisy track (the
-   `PrimitiveEvidenceGraph` adapter and branching/diagonal topology are both done).
-5. Extend the round-trip re-rendering technique (now layout-aware, see session 23) to
-   arrow-v1/geometry-v1/coordinate-graph-v1/flowchart-v1 if useful — not urgent, chart-v2's
-   distribution is now tight and well-explained.
+**Vertical count is frozen at six as of session 27.** Do not start a seventh vertical
+(new domain) without an explicit user decision to unfreeze it — the architecture-generalizes
+question is answered; unallocated effort goes to external validity instead. Circuit-v1
+hardening (item 4 below) is in-scope background work on an *existing* vertical, not new scope.
+
+0. **Extend the crutch-stripping technique to other verticals' extractors** (arrow-v1 labels,
+   geometry-v1 dimension labels, coordinate/flowchart label catalogs) — same method as session
+   27's chart-v2 experiment, cheap, likely to surface similar crash-safety gaps since none of
+   those extractors have been tested against layout/font/content divergence either.
+1. Add independently authored or publisher-sourced open-license chart and geometry images —
+   still the biggest unclosed external-validity gap; current images are all tool-rendered
+   (including the Matplotlib pilot cases, per session 27's finding).
+2. Install and validate the optional OCR backend in a configured environment so OCR gets its own
+   evidence-backed readiness gate — this is the direct fix for the template-catalog wall session
+   27 quantified (off-catalog tick values -> `needs_review`).
+3. Boundary/magnitude sweeps on existing typed-defect classes across all six verticals (cheap,
+   no new infra, converts N/N hand-picked-mutation claims into measured sensitivity curves per
+   the accuracy roadmap's build-order item 3).
+4. Circuit-v1 hardening: a checksum-frozen noisy track, or the `PrimitiveEvidenceGraph` circuit
+   adapter (the only vertical without one).
+5. Extend force-balance beyond v1 when justified: (much later) torque/moment balance with points
+   of application and px-to-newton magnitude calibration.
+6. Extend coordinate-graph-v1 beyond v1 when justified: a curve-fitting mode.
+7. Extend flowchart-v1 beyond v1 when justified: additional shape types.
+8. Extend the round-trip re-rendering technique to arrow-v1/geometry-v1/coordinate-graph-v1/
+   flowchart-v1 if useful — not urgent, chart-v2's distribution is already tight and
+   well-explained.
 
 ## Recent Completed Milestones
 
@@ -655,3 +688,5 @@ Verified:
 - 2026-07-11: Flowchart-v1 branching/diagonal connector topology added (12-case controlled dataset, 7/7 typed hits, 2/2 ambiguity guards).
 - 2026-07-11: Chart-v2 additive round-trip re-rendering accuracy check added (verdict-unaffected, measured pixel-delta distribution across controlled/noisy/pilot datasets, no tolerance set yet).
 - 2026-07-11: Chart-v2 round-trip check made layout-aware (carries `layout_overrides`/font sizes through); p90 delta dropped from 6px to 1px across all three datasets, remaining 19px outlier explained as an intentional defect case.
+- 2026-07-11: Circuit-v1a/v1b committed and pushed to a new GitHub remote (`roan2008/visual-qa-mcp`), closing a ~9-session-old operational risk item.
+- 2026-07-11: Renderer crutch-stripping experiment on chart-v2's Matplotlib path found and fixed a real crash-safety gap (unmatched layout raised `ValueError` instead of `needs_review`); off-catalog ticks and non-Arial fonts both confirmed to degrade safely. Vertical count frozen at six going forward.
